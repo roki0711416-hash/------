@@ -35,7 +35,16 @@ export default async function Home() {
                 <li key={p.id}>
                   <div>
                     <span className="text-neutral-500">{p.date}：</span>
-                    {p.title}
+                    {p.href ? (
+                      <Link
+                        href={p.href}
+                        className="font-medium text-neutral-900 underline underline-offset-2"
+                      >
+                        {p.title}
+                      </Link>
+                    ) : (
+                      p.title
+                    )}
                   </div>
                   {p.body.trim() !== p.title.trim() ? (
                     <div className="mt-1 whitespace-pre-line text-xs text-neutral-600">

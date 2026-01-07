@@ -6,6 +6,7 @@ export type Post = {
   date: string; // YYYY-MM-DD
   title: string;
   body: string;
+  href?: string;
 };
 
 function getPostsFilePath() {
@@ -35,7 +36,9 @@ export async function getPosts(): Promise<Post[]> {
         typeof title === "string" &&
         typeof body === "string"
       ) {
-        posts.push({ id, date, title, body });
+        const hrefRaw = (item as Record<string, unknown>).href;
+        const href = typeof hrefRaw === "string" ? hrefRaw : undefined;
+        posts.push({ id, date, title, body, href });
       }
     }
   }
