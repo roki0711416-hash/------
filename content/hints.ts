@@ -140,6 +140,24 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     machineId: "smart-magireco",
     groups: [
       {
+        id: "big_end_screens",
+        title: "BIGボーナス終了画面",
+        note: "BIGボーナス終了時に表示。カードの確認先: https://p-town.dmm.com/machines/4745#anc-point",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "big_end_default", label: "楽曲対応画面（デフォルト）", effect: { type: "none" } },
+          { id: "big_end_iroha_felicia", label: "いろは＆フェリシア（設定3・5・6示唆）", effect: { type: "none" } },
+          { id: "big_end_iroha_sana", label: "いろは＆さな（設定2・4・6示唆）", effect: { type: "none" } },
+          { id: "big_end_team_3", label: "いろは＆やちよ＆鶴乃（高設定示唆［弱］）", effect: { type: "none" } },
+          { id: "big_end_team_momoko", label: "いろは＆やちよ＆ももこチーム（高設定示唆［強］）", effect: { type: "none" } },
+          { id: "big_end_mikazuki", label: "みかづき荘バケーション（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "big_end_keyvisual_s2", label: "2nd Season キービジュアル（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "big_end_keyvisual_s1", label: "1st Season キービジュアル（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "big_end_small_kyubey", label: "小さいキュゥべえ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
         id: "ending_cards",
         title: "エンディング：カードごとの示唆",
         note: "エンディング中のレア役成立時は、サブ液晶にタッチ。カードの確認先: https://p-town.dmm.com/machines/4745#anc-point",
