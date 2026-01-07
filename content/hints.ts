@@ -134,6 +134,31 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       },
     ],
   },
+
+  "smart-magireco": {
+    machineId: "smart-magireco",
+    groups: [
+      {
+        id: "ending_cards",
+        title: "エンディング：カードごとの示唆",
+        note: "エンディング中のレア役成立時は、サブ液晶にタッチ。引用: https://p-town.dmm.com/machines/4745#anc-point",
+        items: [
+          { id: "ending_card_zekkou", label: "絶交階段のウワサ（奇数示唆 弱）", effect: { type: "none" } },
+          { id: "ending_card_machibito", label: "マチビト馬のウワサ（偶数示唆 弱）", effect: { type: "none" } },
+          { id: "ending_card_fukurou", label: "フクロウ幸運水のウワサ（奇数示唆 強）", effect: { type: "none" } },
+          { id: "ending_card_saihate", label: "ひとりぼっちの最果てのウワサ（偶数示唆 強）", effect: { type: "none" } },
+          { id: "ending_card_museum", label: "記憶ミュージアムのウワサ（高設定示唆 弱）", effect: { type: "none" } },
+          { id: "ending_card_mannen", label: "万年桜のウワサ（高設定示唆 強）", effect: { type: "none" } },
+          { id: "ending_card_ishinaka", label: "石中魚の魔女（設定2否定）", effect: { type: "none" } },
+          { id: "ending_card_tachimimi", label: "立ち耳の魔女（設定3否定）", effect: { type: "none" } },
+          { id: "ending_card_saruko", label: "猿子の魔女（設定4否定）", effect: { type: "none" } },
+          { id: "ending_card_iinchou", label: "委員長の魔女（設定1否定かつ高設定示唆）", effect: { type: "none" } },
+          { id: "ending_card_yodaka", label: "ヨダカの魔女（設定4否定かつ高設定示唆）", effect: { type: "none" } },
+          { id: "ending_card_butai", label: "舞台装置の魔女（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+        ],
+      },
+    ],
+  },
 };
 
 export function getHintConfig(machineId: string): MachineHintConfig | null {
