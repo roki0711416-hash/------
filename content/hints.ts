@@ -519,6 +519,44 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
   },
 };
 
+  hintConfigs["smart-monkey-v"] = {
+    machineId: "smart-monkey-v",
+    helpUrl: "https://p-town.dmm.com/machines/4450",
+    groups: [
+      {
+        id: "monkeyv_payout_display",
+        title: "獲得枚数表示（特定表示）",
+        note: "獲得枚数表示で設定を示唆。",
+        defaultCollapsed: true,
+        items: [
+          { id: "monkeyv_payout_456", label: "456 OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "monkeyv_payout_666", label: "666 OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "monkeyv_payout_803", label: "803 OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+        ],
+      },
+      {
+        id: "monkeyv_enoki",
+        title: "榎木（赤/紫）出現",
+        note: "榎木紫は設定4以上、赤は2/4/6で出現。",
+        defaultCollapsed: true,
+        items: [
+          { id: "monkeyv_enoki_purple", label: "榎木 紫（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "monkeyv_enoki_red", label: "榎木 赤（設定2/4/6）", effect: { type: "weight", weights: { 2: 1.2, 4: 1.2, 6: 1.2 } } },
+        ],
+      },
+      {
+        id: "monkeyv_hatano_ratio",
+        title: "波多野A/B比率（参考表示）",
+        note: "設定判別には未反映。A/B比率は参考用。",
+        defaultCollapsed: true,
+        items: [
+          { id: "monkeyv_hatano_a", label: "波多野A", effect: { type: "none" } },
+          { id: "monkeyv_hatano_b", label: "波多野B", effect: { type: "none" } },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }

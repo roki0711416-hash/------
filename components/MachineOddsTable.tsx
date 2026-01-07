@@ -18,6 +18,9 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
   const suikaCzRateLabel = machine.metricsLabels?.suikaCzRateLabel ?? "スイカCZ当選率";
   const hasSuikaCzRate = machine.odds.settings.some((s) => typeof s.suikaCzRate === "number");
 
+  const extraMetrics = machine.metricsLabels?.extraMetrics ?? [];
+  const hasExtras = extraMetrics.length > 0 && machine.odds.settings.some((s) => s.extras);
+
   return (
     <section className="rounded-2xl border border-neutral-200 bg-white p-5">
       <h2 className="text-lg font-semibold">確率・機械割</h2>
@@ -43,6 +46,9 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
               {hasExtra ? (
                 <th className="px-3 py-2 border border-neutral-200">{extraLabel}</th>
               ) : null}
+              {hasExtras ? extraMetrics.map((em) => (
+                <th key={em.id} className="px-3 py-2 border border-neutral-200">{em.label}</th>
+              )) : null}
               {hasSuikaCzRate ? (
                 <th className="px-3 py-2 border border-neutral-200">{suikaCzRateLabel}</th>
               ) : null}
@@ -67,6 +73,11 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
                     {typeof row.extra === "number" ? `1/${fmt(row.extra)}` : "-"}
                   </td>
                 ) : null}
+                {hasExtras ? extraMetrics.map((em) => (
+                  <td key={em.id} className="px-3 py-2 border border-neutral-200">
+                    {row.extras?.[em.id] ? `1/${fmt(row.extras[em.id])}` : "-"}
+                  </td>
+                )) : null}
                 {hasSuikaCzRate ? (
                   <td className="px-3 py-2 border border-neutral-200">
                     {typeof row.suikaCzRate === "number"

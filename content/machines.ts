@@ -453,4 +453,93 @@ export const machines = [
       ],
     },
   },
+
+  // --- YAMASA スマスロ追加 ---
+  {
+    id: "smart-monkey-v",
+    name: "スマスロ モンキーターンV",
+    maker: "山佐",
+    series: "モンキーターン",
+    category: "SMART",
+    inHall: true,
+    description: "AT終了時即優出・AT直撃（強チェ/強チャンス目）・5枚役ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+      extraMetrics: [
+        { id: "fiveCoin", label: "5枚役" },
+      ],
+      suikaTrialsLabel: "AT終了回数",
+    suikaCzHitsLabel: "即優出突入回数",
+    suikaCzRateLabel: "即優出突入率",
+    uraAtTrialsLabel: "強チェ/強チャンス目成立回数",
+    uraAtHitsLabel: "AT直撃回数",
+    uraAtRateLabel: "AT直撃当選率",
+  },
+  odds: {
+    settings: [
+      {
+        s: 1,
+        big: 389.9,
+        reg: 1_000_000_000,
+        total: 389.9,
+        rate: 97.6,
+        suikaCzRate: 0.016,
+        uraAtRate: 0.004,
+        extras: {
+          fiveCoin: 38.15,
+        },
+      },
+      {
+        s: 2,
+        big: 370.7,
+        reg: 1_000_000_000,
+        total: 370.7,
+        rate: 98.7,
+        suikaCzRate: 0.017,
+        uraAtRate: 0.012,
+        extras: {
+          fiveCoin: 36.86,
+        },
+      },
+      {
+        s: 4,
+        big: 334.2,
+        reg: 1_000_000_000,
+        total: 334.2,
+        rate: 104.1,
+        suikaCzRate: 0.022,
+        uraAtRate: 0.02,
+        extras: {
+          fiveCoin: 30.27,
+        },
+      },
+      {
+        s: 5,
+        big: 312.2,
+        reg: 1_000_000_000,
+        total: 312.2,
+        rate: 108.2,
+        suikaCzRate: 0.03,
+        uraAtRate: 0.02,
+        extras: {
+          fiveCoin: 24.51,
+        },
+      },
+      {
+        s: 6,
+        big: 292.2,
+        reg: 1_000_000_000,
+        total: 292.2,
+        rate: 113.0,
+        suikaCzRate: 0.037,
+        uraAtRate: 0.02,
+        extras: {
+          fiveCoin: 22.53,
+        },
+      },
+    ],
+  },
+  },
 ] satisfies readonly Machine[];
