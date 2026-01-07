@@ -314,31 +314,56 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
     if (!hintConfig) return { posteriors: base, note: null };
 
-    // Apply only deterministic constraints (minSetting / exactSetting).
-    let hasConstraint = false;
-    let minSetting = 1;
-    let exactSetting: number | null = null;
-    let contradiction = false;
+  // Apply hint effects on the posterior distribution directly.
+  // - Deterministic constraints: minSetting / exactSetting / excludeSetting
+  // - Soft hints: weight (multipliers)
+  let hasConstraint = false;
+  let hasWeight = false;
+  let minSetting = 1;
+  let exactSetting: number | null = null;
+  const excluded = new Set<number>();
+  const weightBySetting = new Map<number, number>();
+  let contradiction = false;
 
     for (const group of hintConfig.groups) {
       for (const item of group.items) {
         const count = toIntOrZero(hintCounts[item.id] ?? "");
         if (count <= 0) continue;
-        const eff = item.effect;
 
-        if (eff.type === "minSetting") {
-          hasConstraint = true;
-          minSetting = Math.max(minSetting, eff.min);
-        }
-        if (eff.type === "exactSetting") {
-          hasConstraint = true;
-          if (exactSetting === null) exactSetting = eff.exact;
-          else if (exactSetting !== eff.exact) contradiction = true;
+        const effects = (() => {
+          const root = item.effect;
+          if (root.type !== "allOf") return [root];
+          // one-level flatten is enough for our use cases
+          return root.effects;
+        })();
+
+        for (const eff of effects) {
+          if (eff.type === "minSetting") {
+            hasConstraint = true;
+            minSetting = Math.max(minSetting, eff.min);
+          } else if (eff.type === "exactSetting") {
+            hasConstraint = true;
+            if (exactSetting === null) exactSetting = eff.exact;
+            else if (exactSetting !== eff.exact) contradiction = true;
+          } else if (eff.type === "excludeSetting") {
+            hasConstraint = true;
+            excluded.add(eff.exclude);
+          } else if (eff.type === "weight") {
+            hasWeight = true;
+            for (const [k, v] of Object.entries(eff.weights)) {
+              const settingNum = Number(k);
+              if (!Number.isFinite(settingNum)) continue;
+              const multiplier = Number(v);
+              if (!Number.isFinite(multiplier) || multiplier <= 0) continue;
+              const current = weightBySetting.get(settingNum) ?? 1;
+              weightBySetting.set(settingNum, current * Math.pow(multiplier, count));
+            }
+          }
         }
       }
     }
 
-    if (!hasConstraint) return { posteriors: base, note: null };
+    if (!hasConstraint && !hasWeight) return { posteriors: base, note: null };
     if (contradiction) {
       return {
         posteriors: base,
@@ -350,41 +375,61 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       .map((s) => ({ key: s.s, num: settingKeyToNumber(s.s) }))
       .filter((x) => Number.isFinite(x.num));
 
-    const allowed =
+    const allowedNums =
       exactSetting !== null
-        ? numericSettings.filter((x) => x.num === exactSetting).map((x) => x.key)
-        : numericSettings.filter((x) => x.num >= minSetting).map((x) => x.key);
+        ? numericSettings
+            .filter((x) => x.num === exactSetting && !excluded.has(x.num))
+            .map((x) => x.num)
+        : numericSettings
+            .filter((x) => x.num >= minSetting && !excluded.has(x.num))
+            .map((x) => x.num);
 
-    if (allowed.length === 0) {
+    if (hasConstraint && allowedNums.length === 0) {
       return {
         posteriors: base,
         note: "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
       };
     }
 
-    const constrained = calcSettingPosteriors(
-      machine.odds.settings,
-      {
-        games: parsed.games,
-        bigCount: parsed.bigCount,
-        regCount: parsed.regCount,
-      },
-      { allowedSettings: allowed },
-    );
+    const allowedSet = new Set<number>(allowedNums);
 
-    const sum = constrained.reduce((acc, cur) => acc + cur.posterior, 0);
-    if (sum > 0) {
-      const note =
-        exactSetting !== null
-          ? `示唆を反映：設定${exactSetting}確定`
-          : `示唆を反映：設定${minSetting}以上`;
-      return { posteriors: constrained, note };
+    const adjusted = base.map((p) => {
+      const n = settingKeyToNumber(p.s);
+      const isNumeric = Number.isFinite(n);
+      if (hasConstraint) {
+        if (!isNumeric) return { ...p, posterior: 0 };
+        if (!allowedSet.has(n)) return { ...p, posterior: 0 };
+      }
+
+      if (!isNumeric) return p;
+
+      const mult = hasWeight ? (weightBySetting.get(n) ?? 1) : 1;
+      return { ...p, posterior: p.posterior * mult };
+    });
+
+    const sum = adjusted.reduce((acc, cur) => acc + cur.posterior, 0);
+    if (!(sum > 0)) {
+      return {
+        posteriors: base,
+        note: "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
+      };
     }
 
-    return {
-      posteriors: base,
-      note: "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
-    };
+    const normalized = adjusted.map((p) => ({ ...p, posterior: p.posterior / sum }));
+
+    const noteParts: string[] = [];
+    if (hasConstraint) {
+      if (exactSetting !== null) noteParts.push(`設定${exactSetting}確定`);
+      else if (minSetting > 1) noteParts.push(`設定${minSetting}以上`);
+      if (excluded.size > 0) {
+        const xs = Array.from(excluded).sort((a, b) => a - b).join(",");
+        noteParts.push(`設定${xs}否定`);
+      }
+    }
+    if (hasWeight) noteParts.push("ソフト示唆");
+
+    const note = noteParts.length > 0 ? `示唆を反映：${noteParts.join(" / ")}` : null;
+    return { posteriors: normalized, note };
   }, [
     machine.odds.settings,
     parsed,

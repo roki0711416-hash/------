@@ -1,7 +1,10 @@
 export type HintEffect =
   | { type: "none" }
   | { type: "minSetting"; min: number }
-  | { type: "exactSetting"; exact: number };
+  | { type: "exactSetting"; exact: number }
+  | { type: "excludeSetting"; exclude: number }
+  | { type: "weight"; weights: Record<number, number> }
+  | { type: "allOf"; effects: HintEffect[] };
 
 export type HintItem = {
   id: string;
@@ -172,9 +175,23 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         ],
       },
       {
+        id: "univa_plate",
+        title: "ユニバプレート",
+        note: "実戦上の示唆。",
+        defaultCollapsed: true,
+        items: [
+          { id: "univa_plate_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "univa_plate_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "univa_plate_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "univa_plate_fireworks", label: "花火柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "univa_plate_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
         id: "story_intro_chars",
         title: "ストーリー中：キャラ紹介（パターン）",
-        note: "現状は表示のみ（判別には未反映）",
+        note:
+          "ストーリーコンプリート後／エンブリオ・イブ覚醒中のストーリー中に出現。パターン5〜8はソフト示唆（高設定寄りの重み付け）として判別に反映。パターン9は設定5以上として反映。",
         defaultCollapsed: true,
         items: [
           {
@@ -199,29 +216,69 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           },
           {
             id: "story_intro_p5",
-            label: "パターン5：パターン1〜4のいずれかの逆順",
-            effect: { type: "none" },
+            label: "パターン5：パターン1〜4のいずれかの逆順（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
           },
           {
             id: "story_intro_p6",
-            label: "パターン6：ももこ→やちよ→鶴乃→みふゆ→みたま",
-            effect: { type: "none" },
+            label: "パターン6：ももこ→やちよ→鶴乃→みふゆ→みたま（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
           },
           {
             id: "story_intro_p7",
-            label: "パターン7：いろは→うい→灯花→ねむ→アリナ",
-            effect: { type: "none" },
+            label: "パターン7：いろは→うい→灯花→ねむ→アリナ（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
           },
           {
             id: "story_intro_p8",
-            label: "パターン8：まどか→さやか→マミ→杏子",
-            effect: { type: "none" },
+            label: "パターン8：まどか→さやか→マミ→杏子（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
           },
           {
             id: "story_intro_p9",
-            label: "パターン9：パターン1〜7の最後に小さいキュゥべえ",
-            effect: { type: "none" },
+            label: "パターン9：パターン1〜7の最後に小さいキュゥべえ（設定5以上!?）",
+            effect: { type: "minSetting", min: 5 },
           },
+        ],
+      },
+      {
+        id: "story_order",
+        title: "ストーリーの順番",
+        note: "奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。否定・濃厚系は制約として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "story_order_12345", label: "1スタート：1→2→3→4→5（やや奇数設定示唆）", effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } } },
+          { id: "story_order_12354", label: "1スタート：1→2→3→5→4（奇数かつ高設定示唆）", effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 4: 1.15, 5: 1.25, 6: 1.2 } } },
+          { id: "story_order_13245", label: "1スタート：1→3→2→4→5（奇数設定示唆）", effect: { type: "weight", weights: { 1: 1.12, 3: 1.12, 5: 1.12 } } },
+          { id: "story_order_13254", label: "1スタート：1→3→2→5→4（奇数かつ高設定示唆）", effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 4: 1.15, 5: 1.25, 6: 1.2 } } },
+
+          { id: "story_order_21345", label: "2スタート：2→1→3→4→5（やや偶数設定示唆）", effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } } },
+          { id: "story_order_21354", label: "2スタート：2→1→3→5→4（偶数かつ高設定示唆）", effect: { type: "weight", weights: { 2: 1.08, 4: 1.15, 5: 1.2, 6: 1.25 } } },
+          { id: "story_order_24135", label: "2スタート：2→4→1→3→5（偶数設定示唆）", effect: { type: "weight", weights: { 2: 1.12, 4: 1.12, 6: 1.12 } } },
+          { id: "story_order_24153", label: "2スタート：2→4→1→5→3（偶数かつ高設定示唆）", effect: { type: "weight", weights: { 2: 1.08, 4: 1.15, 5: 1.2, 6: 1.25 } } },
+
+          { id: "story_order_31245", label: "3スタート：3→1→2→4→5（奇数設定示唆）", effect: { type: "weight", weights: { 1: 1.12, 3: 1.12, 5: 1.12 } } },
+          { id: "story_order_31254", label: "3スタート：3→1→2→5→4（奇数かつ高設定示唆）", effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 4: 1.15, 5: 1.25, 6: 1.2 } } },
+
+          { id: "story_order_41235", label: "4スタート：4→1→2→3→5（偶数設定示唆）", effect: { type: "weight", weights: { 2: 1.12, 4: 1.12, 6: 1.12 } } },
+          { id: "story_order_41253", label: "4スタート：4→1→2→5→3（偶数かつ高設定示唆）", effect: { type: "weight", weights: { 2: 1.08, 4: 1.15, 5: 1.2, 6: 1.25 } } },
+
+          { id: "story_order_51234", label: "5スタート：5→1→2→3→4（設定1否定）", effect: { type: "excludeSetting", exclude: 1 } },
+          { id: "story_order_52134", label: "5スタート：5→2→1→3→4（設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
+          { id: "story_order_53124", label: "5スタート：5→3→1→2→4（設定3否定）", effect: { type: "excludeSetting", exclude: 3 } },
+          { id: "story_order_54213", label: "5スタート：5→4→2→1→3（設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
+          {
+            id: "story_order_54312",
+            label: "5スタート：5→4→3→1→2（設定1否定かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "weight", weights: { 4: 1.15, 5: 1.25, 6: 1.2 } },
+              ],
+            },
+          },
+          { id: "story_order_54321", label: "5スタート：5→4→3→2→1（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
         ],
       },
       {
