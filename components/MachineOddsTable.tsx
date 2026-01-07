@@ -6,7 +6,9 @@ function fmt(n: number) {
 
 export default function MachineOddsTable({ machine }: { machine: Machine }) {
   const bigLabel = machine.metricsLabels?.bigLabel ?? "BIG";
-  const regLabel = machine.metricsLabels?.regLabel ?? "REG";
+  const regLabelRaw = machine.metricsLabels?.regLabel;
+  const showReg = regLabelRaw !== null;
+  const regLabel = regLabelRaw ?? "REG";
   const totalLabelRaw = machine.metricsLabels?.totalLabel;
   const showTotal = totalLabelRaw !== null;
   const totalLabel = (totalLabelRaw === undefined ? "合算" : totalLabelRaw) ?? "合算";
@@ -32,7 +34,9 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
                 設定
               </th>
               <th className="px-3 py-2 border border-neutral-200">{bigLabel}</th>
-              <th className="px-3 py-2 border border-neutral-200">{regLabel}</th>
+              {showReg ? (
+                <th className="px-3 py-2 border border-neutral-200">{regLabel}</th>
+              ) : null}
               {showTotal ? (
                 <th className="px-3 py-2 border border-neutral-200">{totalLabel}</th>
               ) : null}
@@ -52,7 +56,9 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
                   {row.s}
                 </td>
                 <td className="px-3 py-2 border border-neutral-200">1/{fmt(row.big)}</td>
-                <td className="px-3 py-2 border border-neutral-200">1/{fmt(row.reg)}</td>
+                {showReg ? (
+                  <td className="px-3 py-2 border border-neutral-200">1/{fmt(row.reg)}</td>
+                ) : null}
                 {showTotal ? (
                   <td className="px-3 py-2 border border-neutral-200">1/{fmt(row.total)}</td>
                 ) : null}

@@ -61,8 +61,12 @@ export default async function ToolPage({
         {selectedMachine ? (
           <>
             <MachineOddsTable machine={selectedMachine} />
-            <MachineJudgeForm machine={selectedMachine} />
-            <MachineReviewsCard machineId={selectedMachine.id} />
+            {selectedMachine.toolMode !== "odds-only" ? (
+              <MachineJudgeForm machine={selectedMachine} />
+            ) : null}
+            {selectedMachine.toolMode !== "odds-only" ? (
+              <MachineReviewsCard machineId={selectedMachine.id} />
+            ) : null}
           </>
         ) : null}
 

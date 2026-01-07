@@ -64,7 +64,9 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const [suikaCzHits, setSuikaCzHits] = useState<string>("");
 
   const bigLabel = machine.metricsLabels?.bigLabel ?? "BIG";
-  const regLabel = machine.metricsLabels?.regLabel ?? "REG";
+  const regLabelRaw = machine.metricsLabels?.regLabel;
+  const showReg = regLabelRaw !== null;
+  const regLabel = regLabelRaw ?? "REG";
   const totalLabelRaw = machine.metricsLabels?.totalLabel;
   const showTotal = totalLabelRaw !== null;
   const totalLabel = (totalLabelRaw === undefined ? "合算" : totalLabelRaw) ?? "合算";
@@ -140,12 +142,12 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     return {
       games: Number.isFinite(g) ? g : NaN,
       bigCount: Number.isFinite(b) ? b : NaN,
-      regCount: Number.isFinite(r) ? r : NaN,
+      regCount: showReg ? (Number.isFinite(r) ? r : NaN) : 0,
       extraCount: Number.isFinite(x) ? x : NaN,
       suikaTrials: Number.isFinite(st) ? st : NaN,
       suikaCzHits: Number.isFinite(sh) ? sh : NaN,
     };
-  }, [games, bigCount, regCount, extraCount, suikaTrials, suikaCzHits]);
+  }, [games, bigCount, regCount, extraCount, suikaTrials, suikaCzHits, showReg]);
 
   function cleanupObjectUrl() {
     if (lastObjectUrlRef.current) {
@@ -230,14 +232,14 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     if (!ocrSuggestion) return;
     if (typeof ocrSuggestion.games === "number") setGames(String(ocrSuggestion.games));
     if (typeof ocrSuggestion.big === "number") setBigCount(String(ocrSuggestion.big));
-    if (typeof ocrSuggestion.reg === "number") setRegCount(String(ocrSuggestion.reg));
+    if (showReg && typeof ocrSuggestion.reg === "number") setRegCount(String(ocrSuggestion.reg));
   }
 
   const error = useMemo(() => {
     if (
       games === "" &&
       bigCount === "" &&
-      regCount === "" &&
+      (showReg ? regCount === "" : true) &&
       extraCount === "" &&
       suikaTrials === "" &&
       suikaCzHits === ""
@@ -247,10 +249,15 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     if (!(parsed.games > 0)) return "総ゲーム数は1以上で入力してください。";
     if (!(parsed.bigCount >= 0) || !Number.isInteger(parsed.bigCount))
       return `${bigLabel}回数は0以上の整数で入力してください。`;
-    if (!(parsed.regCount >= 0) || !Number.isInteger(parsed.regCount))
-      return `${regLabel}回数は0以上の整数で入力してください。`;
-    if (parsed.bigCount + parsed.regCount > parsed.games)
-      return `${bigLabel}回数 + ${regLabel}回数 が総ゲーム数を超えています。`;
+    if (showReg) {
+      if (!(parsed.regCount >= 0) || !Number.isInteger(parsed.regCount))
+        return `${regLabel}回数は0以上の整数で入力してください。`;
+      if (parsed.bigCount + parsed.regCount > parsed.games)
+        return `${bigLabel}回数 + ${regLabel}回数 が総ゲーム数を超えています。`;
+    } else {
+      if (parsed.bigCount > parsed.games)
+        return `${bigLabel}回数が総ゲーム数を超えています。`;
+    }
 
     if (extraLabel) {
       if (extraCount !== "") {
@@ -287,6 +294,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     extraLabel,
     bigLabel,
     regLabel,
+    showReg,
     suikaTrialsLabel,
     suikaCzHitsLabel,
   ]);
@@ -296,7 +304,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     if (
       games === "" &&
       bigCount === "" &&
-      regCount === "" &&
+      (showReg ? regCount === "" : true) &&
       extraCount === "" &&
       suikaTrials === "" &&
       suikaCzHits === ""
@@ -306,7 +314,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     const base = calcSettingPosteriors(machine.odds.settings, {
       games: parsed.games,
       bigCount: parsed.bigCount,
-      regCount: parsed.regCount,
+      regCount: showReg ? parsed.regCount : 0,
       extraCount: extraCount === "" ? undefined : parsed.extraCount,
       suikaTrials: suikaTrials === "" ? undefined : parsed.suikaTrials,
       suikaCzHits: suikaCzHits === "" ? undefined : parsed.suikaCzHits,
@@ -440,6 +448,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     extraCount,
     suikaTrials,
     suikaCzHits,
+    showReg,
     hintConfig,
     hintCounts,
   ]);
@@ -505,13 +514,17 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     <section className="rounded-2xl border border-neutral-200 bg-white p-5">
       <h2 className="text-lg font-semibold">設定判別</h2>
       <p className="mt-1 text-sm text-neutral-600">
-        総ゲーム数 / {bigLabel} / {regLabel} を入力すると、近い設定TOP3を表示します。
+        総ゲーム数 / {bigLabel}
+        {showReg ? ` / ${regLabel}` : ""}
+        を入力すると、近い設定TOP3を表示します。
       </p>
 
       <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
         <p className="text-sm font-semibold">データカウンター画像から入力</p>
         <p className="mt-1 text-xs text-neutral-500">
-          スクショを読み込んで、総G/{bigLabel}/{regLabel}を自動入力します（対応していない表示もあります）。
+          スクショを読み込んで、総G/{bigLabel}
+          {showReg ? `/${regLabel}` : ""}
+          を自動入力します（対応していない表示もあります）。
         </p>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -572,7 +585,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
               推定：
               {typeof ocrSuggestion.games === "number" ? `総G ${ocrSuggestion.games} / ` : ""}
               {typeof ocrSuggestion.big === "number" ? `${bigLabel} ${ocrSuggestion.big} / ` : ""}
-              {typeof ocrSuggestion.reg === "number" ? `${regLabel} ${ocrSuggestion.reg}` : ""}
+              {showReg && typeof ocrSuggestion.reg === "number" ? `${regLabel} ${ocrSuggestion.reg}` : ""}
             </p>
           ) : null}
         </div>
@@ -624,20 +637,22 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
           }}
         />
 
-        <CountField
-          label={regLabel}
-          value={regCount}
-          onChange={setRegCount}
-          placeholder="例: 8"
-          onStep={(delta) => {
-            const g = parsed.games;
-            const current = toIntOrZero(regCount);
-            const big = toIntOrZero(bigCount);
-            const max = g > 0 ? Math.max(0, Math.trunc(g) - big) : Number.POSITIVE_INFINITY;
-            const next = Math.min(Math.max(current + delta, 0), max);
-            setRegCount(String(next));
-          }}
-        />
+        {showReg ? (
+          <CountField
+            label={regLabel}
+            value={regCount}
+            onChange={setRegCount}
+            placeholder="例: 8"
+            onStep={(delta) => {
+              const g = parsed.games;
+              const current = toIntOrZero(regCount);
+              const big = toIntOrZero(bigCount);
+              const max = g > 0 ? Math.max(0, Math.trunc(g) - big) : Number.POSITIVE_INFINITY;
+              const next = Math.min(Math.max(current + delta, 0), max);
+              setRegCount(String(next));
+            }}
+          />
+        ) : null}
 
         {extraLabel ? (
           <CountField
@@ -694,7 +709,9 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
           <p className="text-sm font-semibold">示唆カウント</p>
           {!hideHintDescriptions ? (
             <p className="mt-1 text-xs text-neutral-500">
-              反映される示唆（設定◯以上/確定系）は、総G/{bigLabel}/{regLabel}を入力すると判別に反映されます。
+              反映される示唆（設定◯以上/確定系）は、総G/{bigLabel}
+              {showReg ? `/${regLabel}` : ""}
+              を入力すると判別に反映されます。
             </p>
           ) : null}
 
@@ -766,7 +783,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
                   {showWarn ? (
                     <p className="mt-2 text-xs font-medium text-red-600">
-                      合計({total})が {group.maxTotalFrom === "regCount" ? `${regLabel}回数` : `${bigLabel}回数`}
+                      合計({total})が {group.maxTotalFrom === "regCount" && showReg ? `${regLabel}回数` : `${bigLabel}回数`}
                       ({maxBase}) を超えています。
                     </p>
                   ) : null}
@@ -807,7 +824,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       {!error &&
       (games !== "" ||
         bigCount !== "" ||
-        regCount !== "" ||
+        (showReg ? regCount !== "" : false) ||
         extraCount !== "" ||
         suikaTrials !== "" ||
         suikaCzHits !== "") ? (
@@ -818,7 +835,12 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
               className={`mt-2 grid gap-2 text-sm text-neutral-700 ${
                 (() => {
                   const showSuika = !!suikaTrialsLabel && !!suikaCzHitsLabel && suikaTrials !== "";
-                  const cols = 2 + (showTotal ? 1 : 0) + (showSuika ? 1 : 0) + (extraLabel ? 1 : 0);
+                  const baseCols = showReg ? 2 : 1;
+                  const cols =
+                    baseCols +
+                    (showTotal ? 1 : 0) +
+                    (showSuika ? 1 : 0) +
+                    (extraLabel ? 1 : 0);
                   if (cols <= 2) return "grid-cols-2";
                   if (cols === 3) return "grid-cols-3";
                   if (cols === 4) return "grid-cols-2 sm:grid-cols-4";
@@ -832,17 +854,19 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                   {fmtOneOver(parsed.games, parsed.bigCount)}
                 </p>
               </div>
-              <div>
-                <p className="text-xs text-neutral-500">{regLabel}</p>
-                <p className="font-semibold">
-                  {fmtOneOver(parsed.games, parsed.regCount)}
-                </p>
-              </div>
+              {showReg ? (
+                <div>
+                  <p className="text-xs text-neutral-500">{regLabel}</p>
+                  <p className="font-semibold">
+                    {fmtOneOver(parsed.games, parsed.regCount)}
+                  </p>
+                </div>
+              ) : null}
               {showTotal ? (
                 <div>
                   <p className="text-xs text-neutral-500">{totalLabel}</p>
                   <p className="font-semibold">
-                    {fmtOneOver(parsed.games, parsed.bigCount + parsed.regCount)}
+                    {fmtOneOver(parsed.games, parsed.bigCount + (showReg ? parsed.regCount : 0))}
                   </p>
                 </div>
               ) : null}
@@ -1052,7 +1076,9 @@ function PosteriorOddsTable({
   posteriors: SettingPosterior[];
 }) {
   const bigLabel = machine.metricsLabels?.bigLabel ?? "BIG";
-  const regLabel = machine.metricsLabels?.regLabel ?? "REG";
+  const regLabelRaw = machine.metricsLabels?.regLabel;
+  const showReg = regLabelRaw !== null;
+  const regLabel = regLabelRaw ?? "REG";
   const totalLabelRaw = machine.metricsLabels?.totalLabel;
   const showTotal = totalLabelRaw !== null;
   const totalLabel = (totalLabelRaw === undefined ? "合算" : totalLabelRaw) ?? "合算";
@@ -1076,7 +1102,9 @@ function PosteriorOddsTable({
             <th className="px-3 py-2 border border-neutral-200">設定</th>
             <th className="px-3 py-2 border border-neutral-200">確率</th>
             <th className="px-3 py-2 border border-neutral-200">{bigLabel}</th>
-            <th className="px-3 py-2 border border-neutral-200">{regLabel}</th>
+            {showReg ? (
+              <th className="px-3 py-2 border border-neutral-200">{regLabel}</th>
+            ) : null}
             {showTotal ? (
               <th className="px-3 py-2 border border-neutral-200">{totalLabel}</th>
             ) : null}
@@ -1096,9 +1124,11 @@ function PosteriorOddsTable({
                 <td className="px-3 py-2 border border-neutral-200">
                   {odds ? `1/${fmt(odds.big)}` : "-"}
                 </td>
-                <td className="px-3 py-2 border border-neutral-200">
-                  {odds ? `1/${fmt(odds.reg)}` : "-"}
-                </td>
+                {showReg ? (
+                  <td className="px-3 py-2 border border-neutral-200">
+                    {odds ? `1/${fmt(odds.reg)}` : "-"}
+                  </td>
+                ) : null}
                 {showTotal ? (
                   <td className="px-3 py-2 border border-neutral-200">
                     {odds ? `1/${fmt(odds.total)}` : "-"}

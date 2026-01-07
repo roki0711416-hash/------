@@ -2,7 +2,7 @@ export type MachineCategory = "JUG" | "HANAHANA" | string;
 
 export type MachineMetricsLabels = {
   bigLabel?: string;
-  regLabel?: string;
+  regLabel?: string | null;
   totalLabel?: string | null;
   extraLabel?: string;
   suikaTrialsLabel?: string;
@@ -30,6 +30,7 @@ export type Machine = {
   description?: string;
   image?: string;
   metricsLabels?: MachineMetricsLabels;
+  toolMode?: "odds-only";
   odds: {
     settings: MachineOddsSetting[];
   };
@@ -330,6 +331,33 @@ export const machines = [
           extra: 50.0,
           suikaCzRate: 0.336,
         },
+      ],
+    },
+  },
+
+  // --- SPIKY スマスロ追加 ---
+  {
+    id: "smart-tokyo-ghoul",
+    name: "スマスロ 東京喰種",
+    maker: "スパイキー",
+    series: "東京喰種",
+    category: "SMART",
+    inHall: true,
+    description: "スマスロ（初当り）ベースの簡易判別。",
+    toolMode: "odds-only",
+    metricsLabels: {
+      bigLabel: "初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 394.4, reg: 1_000_000_000, total: 394.4, rate: 97.5 },
+        { s: 2, big: 380.5, reg: 1_000_000_000, total: 380.5, rate: 99.0 },
+        { s: 3, big: 357.0, reg: 1_000_000_000, total: 357.0, rate: 101.6 },
+        { s: 4, big: 325.9, reg: 1_000_000_000, total: 325.9, rate: 105.6 },
+        { s: 5, big: 291.2, reg: 1_000_000_000, total: 291.2, rate: 110.3 },
+        { s: 6, big: 261.3, reg: 1_000_000_000, total: 261.3, rate: 114.9 },
       ],
     },
   },
