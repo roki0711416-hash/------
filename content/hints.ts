@@ -172,6 +172,59 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         ],
       },
       {
+        id: "story_intro_chars",
+        title: "ストーリー中：キャラ紹介（パターン）",
+        note: "現状は表示のみ（判別には未反映）",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "story_intro_p1",
+            label: "パターン1：いろは→やちよ→鶴乃→フェリシア→さな",
+            effect: { type: "none" },
+          },
+          {
+            id: "story_intro_p2",
+            label: "パターン2：ももこ→レナ→かえで→みたま→黒江",
+            effect: { type: "none" },
+          },
+          {
+            id: "story_intro_p3",
+            label: "パターン3：灯花→ねむ→天音姉妹→みふゆ→アリナ",
+            effect: { type: "none" },
+          },
+          {
+            id: "story_intro_p4",
+            label: "パターン4：まどか→さやか→マミ→杏子→ほむら",
+            effect: { type: "none" },
+          },
+          {
+            id: "story_intro_p5",
+            label: "パターン5：パターン1〜4のいずれかの逆順",
+            effect: { type: "none" },
+          },
+          {
+            id: "story_intro_p6",
+            label: "パターン6：ももこ→やちよ→鶴乃→みふゆ→みたま",
+            effect: { type: "none" },
+          },
+          {
+            id: "story_intro_p7",
+            label: "パターン7：いろは→うい→灯花→ねむ→アリナ",
+            effect: { type: "none" },
+          },
+          {
+            id: "story_intro_p8",
+            label: "パターン8：まどか→さやか→マミ→杏子",
+            effect: { type: "none" },
+          },
+          {
+            id: "story_intro_p9",
+            label: "パターン9：パターン1〜7の最後に小さいキュゥべえ",
+            effect: { type: "none" },
+          },
+        ],
+      },
+      {
         id: "ending_cards",
         title: "エンディング：カードごとの示唆",
         note: "エンディング中のレア役成立時は、サブ液晶にタッチ。",
