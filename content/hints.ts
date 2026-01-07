@@ -140,6 +140,18 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     machineId: "smart-magireco",
     groups: [
       {
+        id: "at_end_screens",
+        title: "AT終了画面",
+        note: "AT終了時に表示。カードの確認先: https://p-town.dmm.com/machines/4745#anc-point",
+        defaultCollapsed: true,
+        items: [
+          { id: "at_end_default", label: "背景（デフォルト）", effect: { type: "none" } },
+          { id: "at_end_magius", label: "マギウス（設定3・5・6示唆）", effect: { type: "none" } },
+          { id: "at_end_team_mikazuki", label: "チームみかづき荘（設定2・4・6示唆）", effect: { type: "none" } },
+          { id: "at_end_madoka_iroha", label: "まどか＆いろは（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
         id: "big_end_screens",
         title: "BIGボーナス終了画面",
         note: "BIGボーナス終了時に表示。カードの確認先: https://p-town.dmm.com/machines/4745#anc-point",
