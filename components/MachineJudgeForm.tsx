@@ -76,6 +76,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
   const hintConfig = useMemo(() => getHintConfig(machine.id), [machine.id]);
   const [hintCounts, setHintCounts] = useState<Record<string, string>>({});
+  const [collapsedHintGroups, setCollapsedHintGroups] = useState<Record<string, boolean>>({});
 
   const [ocrImageUrl, setOcrImageUrl] = useState<string | null>(null);
   const [ocrText, setOcrText] = useState<string>("");
@@ -106,7 +107,28 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   useEffect(() => {
     // Avoid carrying hint inputs across machine switches.
     setHintCounts({});
+    setCollapsedHintGroups({});
   }, [machine.id]);
+
+  const renderNoteWithLinks = (note: string) => {
+    const urlRe = /(https?:\/\/[^\s]+)/g;
+    const parts = note.split(urlRe);
+    return parts.map((part, idx) => {
+      const isUrl = /^https?:\/\//.test(part);
+      if (!isUrl) return <span key={idx}>{part}</span>;
+      return (
+        <a
+          key={idx}
+          href={part}
+          target="_blank"
+          rel="noreferrer"
+          className="underline text-neutral-900"
+        >
+          {part}
+        </a>
+      );
+    });
+  };
 
   const parsed = useMemo(() => {
     const g = Number(games);
@@ -638,6 +660,11 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                 0,
               );
 
+              const collapsed =
+                group.id in collapsedHintGroups
+                  ? !!collapsedHintGroups[group.id]
+                  : !!group.defaultCollapsed;
+
               const maxBase =
                 group.maxTotalFrom === "regCount"
                   ? toIntOrZero(regCount)
@@ -652,10 +679,31 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                   key={group.id}
                   className="rounded-lg border border-neutral-200 bg-white p-3"
                 >
-                  <p className="text-xs font-semibold text-neutral-700">{group.title}</p>
-                  {!hideHintDescriptions && group.note ? (
-                    <p className="mt-1 text-xs text-neutral-500">{group.note}</p>
-                  ) : null}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold text-neutral-700">{group.title}</p>
+                      {!hideHintDescriptions && group.note ? (
+                        <p className="mt-1 text-xs text-neutral-500">
+                          {renderNoteWithLinks(group.note)}
+                        </p>
+                      ) : null}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="shrink-0 rounded-md border border-neutral-200 bg-white px-2 py-1 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 active:bg-neutral-100"
+                      onClick={() =>
+                        setCollapsedHintGroups((prev) => ({
+                          ...prev,
+                          [group.id]: !collapsed,
+                        }))
+                      }
+                      aria-expanded={!collapsed}
+                      aria-controls={`hint-group-${group.id}`}
+                    >
+                      {collapsed ? "開く" : "閉じる"}
+                    </button>
+                  </div>
 
                   {showWarn ? (
                     <p className="mt-2 text-xs font-medium text-red-600">
@@ -664,26 +712,28 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                     </p>
                   ) : null}
 
-                  <div className="mt-3 grid gap-2">
-                    {group.items.map((item) => {
-                      const value = hintCounts[item.id] ?? "";
-                      return (
-                        <CountField
-                          key={item.id}
-                          label={item.label}
-                          value={value}
-                          onChange={(next) =>
-                            setHintCounts((prev) => ({ ...prev, [item.id]: next }))
-                          }
-                          onStep={(delta) => {
-                            const current = toIntOrZero(value);
-                            const next = String(Math.max(0, current + delta));
-                            setHintCounts((prev) => ({ ...prev, [item.id]: next }));
-                          }}
-                        />
-                      );
-                    })}
-                  </div>
+                  {!collapsed ? (
+                    <div id={`hint-group-${group.id}`} className="mt-3 grid gap-2">
+                      {group.items.map((item) => {
+                        const value = hintCounts[item.id] ?? "";
+                        return (
+                          <CountField
+                            key={item.id}
+                            label={item.label}
+                            value={value}
+                            onChange={(next) =>
+                              setHintCounts((prev) => ({ ...prev, [item.id]: next }))
+                            }
+                            onStep={(delta) => {
+                              const current = toIntOrZero(value);
+                              const next = String(Math.max(0, current + delta));
+                              setHintCounts((prev) => ({ ...prev, [item.id]: next }));
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
+                  ) : null}
                 </div>
               );
             })}

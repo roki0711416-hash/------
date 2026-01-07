@@ -13,6 +13,7 @@ export type HintGroup = {
   id: string;
   title: string;
   note?: string;
+  defaultCollapsed?: boolean;
   // Optional: if set, total count is expected to be <= this input field.
   maxTotalFrom?: "bigCount" | "regCount";
   items: HintItem[];
@@ -142,6 +143,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         id: "ending_cards",
         title: "エンディング：カードごとの示唆",
         note: "エンディング中のレア役成立時は、サブ液晶にタッチ。引用: https://p-town.dmm.com/machines/4745#anc-point",
+        defaultCollapsed: true,
         items: [
           { id: "ending_card_zekkou", label: "絶交階段のウワサ（奇数示唆 弱）", effect: { type: "none" } },
           { id: "ending_card_machibito", label: "マチビト馬のウワサ（偶数示唆 弱）", effect: { type: "none" } },
