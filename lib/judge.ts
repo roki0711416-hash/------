@@ -7,6 +7,7 @@ export type MachineSettingOdds = {
   total: number; // 1/total (display only)
   rate: number; // payout percent (display only)
   extra?: number; // optional extra metric per game (e.g., weak cherry): 1/extra
+  extras?: Record<string, number>; // optional extra metrics per game: { metricId: 1/oddsDenom }
   suikaCzRate?: number; // optional: probability (0..1)
 };
 
@@ -15,6 +16,7 @@ export type JudgeInput = {
   bigCount: number;
   regCount: number;
   extraCount?: number;
+  extraCounts?: Record<string, number>;
   suikaTrials?: number;
   suikaCzHits?: number;
 };
@@ -45,6 +47,18 @@ export function calcSettingPosteriors(
   const extraCountRaw = input.extraCount;
   const extraCount = typeof extraCountRaw === "number" ? Math.floor(extraCountRaw) : null;
 
+  const extraCountsRaw = input.extraCounts;
+  const extraCounts: Record<string, number> | null = (() => {
+    if (!extraCountsRaw || typeof extraCountsRaw !== "object") return null;
+    const out: Record<string, number> = {};
+    for (const [k, v] of Object.entries(extraCountsRaw)) {
+      const n = typeof v === "number" ? Math.floor(v) : NaN;
+      if (!Number.isFinite(n)) continue;
+      out[k] = n;
+    }
+    return Object.keys(out).length > 0 ? out : null;
+  })();
+
   const suikaTrialsRaw = input.suikaTrials;
   const suikaCzHitsRaw = input.suikaCzHits;
   const suikaTrials = typeof suikaTrialsRaw === "number" ? Math.floor(suikaTrialsRaw) : null;
@@ -54,6 +68,11 @@ export function calcSettingPosteriors(
   if (bigCount < 0 || regCount < 0) return [];
   if (bigCount + regCount > games) return [];
   if (extraCount !== null && (extraCount < 0 || extraCount > games)) return [];
+  if (extraCounts) {
+    for (const n of Object.values(extraCounts)) {
+      if (n < 0 || n > games) return [];
+    }
+  }
   if ((suikaTrials === null) !== (suikaCzHits === null)) return [];
   if (suikaTrials !== null && suikaCzHits !== null) {
     if (suikaTrials < 0 || suikaCzHits < 0) return [];
@@ -90,6 +109,25 @@ export function calcSettingPosteriors(
       return extraCount * safeLog(p) + none * safeLog(q);
     })();
 
+    const extrasLogL = (() => {
+      if (!extraCounts) return 0;
+      if (!st.extras) return 0;
+
+      let sum = 0;
+      for (const [metricId, cnt] of Object.entries(extraCounts)) {
+        if (!(cnt > 0)) continue;
+
+        const denom = st.extras[metricId];
+        if (!denom || !(denom > 0)) continue;
+
+        const p = 1 / denom;
+        const q = 1 - p;
+        const none = games - cnt;
+        sum += cnt * safeLog(p) + none * safeLog(q);
+      }
+      return sum;
+    })();
+
     const suikaCzLogL = (() => {
       if (suikaTrials === null || suikaCzHits === null) return 0;
       if (typeof st.suikaCzRate !== "number") return 0;
@@ -104,6 +142,7 @@ export function calcSettingPosteriors(
       regCount * safeLog(pReg) +
       noneCount * safeLog(pNone) +
       extraLogL +
+      extrasLogL +
       suikaCzLogL;
 
     return {

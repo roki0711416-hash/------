@@ -60,6 +60,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const [bigCount, setBigCount] = useState<string>("");
   const [regCount, setRegCount] = useState<string>("");
   const [extraCount, setExtraCount] = useState<string>("");
+  const [extraCounts, setExtraCounts] = useState<Record<string, string>>({});
   const [suikaTrials, setSuikaTrials] = useState<string>("");
   const [suikaCzHits, setSuikaCzHits] = useState<string>("");
 
@@ -106,10 +107,14 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
         ? "ベル"
         : null);
 
+  const extraMetrics = machine.metricsLabels?.extraMetrics ?? null;
+  const showExtraMetrics = !!extraMetrics && extraMetrics.length > 0;
+
   useEffect(() => {
     // Avoid carrying hint inputs across machine switches.
     setHintCounts({});
     setCollapsedHintGroups({});
+    setExtraCounts({});
   }, [machine.id]);
 
   const renderNoteWithLinks = (note: string) => {
@@ -139,15 +144,23 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     const x = Number(extraCount);
     const st = Number(suikaTrials);
     const sh = Number(suikaCzHits);
+
+    const parsedExtraCounts: Record<string, number> = {};
+    for (const [k, v] of Object.entries(extraCounts)) {
+      const n = Number(v);
+      parsedExtraCounts[k] = Number.isFinite(n) ? n : Number.NaN;
+    }
+
     return {
       games: Number.isFinite(g) ? g : NaN,
       bigCount: Number.isFinite(b) ? b : NaN,
       regCount: showReg ? (Number.isFinite(r) ? r : NaN) : 0,
       extraCount: Number.isFinite(x) ? x : NaN,
+      extraCounts: parsedExtraCounts,
       suikaTrials: Number.isFinite(st) ? st : NaN,
       suikaCzHits: Number.isFinite(sh) ? sh : NaN,
     };
-  }, [games, bigCount, regCount, extraCount, suikaTrials, suikaCzHits, showReg]);
+  }, [games, bigCount, regCount, extraCount, extraCounts, suikaTrials, suikaCzHits, showReg]);
 
   function cleanupObjectUrl() {
     if (lastObjectUrlRef.current) {
@@ -241,6 +254,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       bigCount === "" &&
       (showReg ? regCount === "" : true) &&
       extraCount === "" &&
+      Object.values(extraCounts).every((v) => v === "") &&
       suikaTrials === "" &&
       suikaCzHits === ""
     )
@@ -259,12 +273,23 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
         return `${bigLabel}回数が総ゲーム数を超えています。`;
     }
 
-    if (extraLabel) {
+    if (!showExtraMetrics && extraLabel) {
       if (extraCount !== "") {
         if (!(parsed.extraCount >= 0) || !Number.isInteger(parsed.extraCount))
           return `${extraLabel}回数は0以上の整数で入力してください。`;
         if (parsed.extraCount > parsed.games)
           return `${extraLabel}回数が総ゲーム数を超えています。`;
+      }
+    }
+
+    if (showExtraMetrics && extraMetrics) {
+      for (const m of extraMetrics) {
+        const raw = extraCounts[m.id] ?? "";
+        if (raw === "") continue;
+        const n = parsed.extraCounts[m.id];
+        if (!(n >= 0) || !Number.isInteger(n))
+          return `${m.label}回数は0以上の整数で入力してください。`;
+        if (n > parsed.games) return `${m.label}回数が総ゲーム数を超えています。`;
       }
     }
 
@@ -289,9 +314,12 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     bigCount,
     regCount,
     extraCount,
+    extraCounts,
     suikaTrials,
     suikaCzHits,
     extraLabel,
+    extraMetrics,
+    showExtraMetrics,
     bigLabel,
     regLabel,
     showReg,
@@ -301,21 +329,38 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
   const posteriorCalc = useMemo(() => {
     if (error) return null;
+
+    const hasAnyExtraMetricsInput = Object.values(extraCounts).some((v) => v !== "");
     if (
       games === "" &&
       bigCount === "" &&
       (showReg ? regCount === "" : true) &&
       extraCount === "" &&
+      !hasAnyExtraMetricsInput &&
       suikaTrials === "" &&
       suikaCzHits === ""
     )
       return null;
+
+    const extraCountsForJudge: Record<string, number> | undefined = (() => {
+      if (!showExtraMetrics || !extraMetrics) return undefined;
+      const out: Record<string, number> = {};
+      for (const m of extraMetrics) {
+        const raw = extraCounts[m.id] ?? "";
+        if (raw === "") continue;
+        const n = parsed.extraCounts[m.id];
+        if (!Number.isFinite(n)) continue;
+        out[m.id] = n;
+      }
+      return Object.keys(out).length > 0 ? out : undefined;
+    })();
 
     const base = calcSettingPosteriors(machine.odds.settings, {
       games: parsed.games,
       bigCount: parsed.bigCount,
       regCount: showReg ? parsed.regCount : 0,
       extraCount: extraCount === "" ? undefined : parsed.extraCount,
+      extraCounts: extraCountsForJudge,
       suikaTrials: suikaTrials === "" ? undefined : parsed.suikaTrials,
       suikaCzHits: suikaCzHits === "" ? undefined : parsed.suikaCzHits,
     });
@@ -446,11 +491,14 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     bigCount,
     regCount,
     extraCount,
+    extraCounts,
     suikaTrials,
     suikaCzHits,
     showReg,
     hintConfig,
     hintCounts,
+    extraMetrics,
+    showExtraMetrics,
   ]);
 
   const posteriors = posteriorCalc?.posteriors ?? null;
@@ -606,7 +654,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
       <form
         className={`mt-4 grid gap-3 ${
-          extraLabel || (suikaTrialsLabel && suikaCzHitsLabel)
+          extraLabel || showExtraMetrics || (suikaTrialsLabel && suikaCzHitsLabel)
             ? "grid-cols-2 sm:grid-cols-4"
             : "grid-cols-2 sm:grid-cols-3"
         }`}
@@ -654,7 +702,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
           />
         ) : null}
 
-        {extraLabel ? (
+        {!showExtraMetrics && extraLabel ? (
           <CountField
             label={extraLabel}
             value={extraCount}
@@ -670,6 +718,34 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
             }}
           />
         ) : null}
+
+        {showExtraMetrics && extraMetrics
+          ? extraMetrics.map((m) => (
+              <CountField
+                key={m.id}
+                label={m.label}
+                value={extraCounts[m.id] ?? ""}
+                onChange={(next) =>
+                  setExtraCounts((prev) => ({
+                    ...prev,
+                    [m.id]: next,
+                  }))
+                }
+                placeholder="例: 10"
+                showStep5
+                onStep={(delta) => {
+                  const g = parsed.games;
+                  const current = toIntOrZero(extraCounts[m.id] ?? "");
+                  const max = g > 0 ? Math.trunc(g) : Number.POSITIVE_INFINITY;
+                  const next = Math.min(Math.max(current + delta, 0), max);
+                  setExtraCounts((prev) => ({
+                    ...prev,
+                    [m.id]: String(next),
+                  }));
+                }}
+              />
+            ))
+          : null}
 
         {suikaTrialsLabel && suikaCzHitsLabel ? (
           <>
@@ -826,6 +902,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
         bigCount !== "" ||
         (showReg ? regCount !== "" : false) ||
         extraCount !== "" ||
+        Object.values(extraCounts).some((v) => v !== "") ||
         suikaTrials !== "" ||
         suikaCzHits !== "") ? (
         <div className="mt-4 space-y-4">
@@ -836,11 +913,16 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                 (() => {
                   const showSuika = !!suikaTrialsLabel && !!suikaCzHitsLabel && suikaTrials !== "";
                   const baseCols = showReg ? 2 : 1;
+                  const extraCols = showExtraMetrics && extraMetrics
+                    ? extraMetrics.length
+                    : extraLabel
+                      ? 1
+                      : 0;
                   const cols =
                     baseCols +
                     (showTotal ? 1 : 0) +
                     (showSuika ? 1 : 0) +
-                    (extraLabel ? 1 : 0);
+                    extraCols;
                   if (cols <= 2) return "grid-cols-2";
                   if (cols === 3) return "grid-cols-3";
                   if (cols === 4) return "grid-cols-2 sm:grid-cols-4";
@@ -885,12 +967,23 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                 </div>
               ) : null}
 
-              {extraLabel ? (
+              {!showExtraMetrics && extraLabel ? (
                 <div>
                   <p className="text-xs text-neutral-500">{extraLabel}</p>
                   <p className="font-semibold">{fmtOneOver(parsed.games, parsed.extraCount)}</p>
                 </div>
               ) : null}
+
+              {showExtraMetrics && extraMetrics
+                ? extraMetrics.map((m) => (
+                    <div key={m.id}>
+                      <p className="text-xs text-neutral-500">{m.label}</p>
+                      <p className="font-semibold">
+                        {fmtOneOver(parsed.games, parsed.extraCounts[m.id])}
+                      </p>
+                    </div>
+                  ))
+                : null}
             </div>
           </div>
 

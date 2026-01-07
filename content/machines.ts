@@ -5,6 +5,7 @@ export type MachineMetricsLabels = {
   regLabel?: string | null;
   totalLabel?: string | null;
   extraLabel?: string;
+  extraMetrics?: { id: string; label: string }[];
   suikaTrialsLabel?: string;
   suikaCzHitsLabel?: string;
   suikaCzRateLabel?: string;
@@ -17,6 +18,7 @@ export type MachineOddsSetting = {
   total: number;
   rate: number;
   extra?: number;
+  extras?: Record<string, number>;
   suikaCzRate?: number;
 };
 
@@ -348,16 +350,93 @@ export const machines = [
       bigLabel: "初当り",
       regLabel: null,
       totalLabel: null,
-      extraLabel: "下段リプレイ",
+      extraMetrics: [
+        { id: "lowerReplay", label: "下段リプレイ" },
+        { id: "reminiscence", label: "レミニセンス" },
+        { id: "bigEaterRize", label: "大喰いの利世" },
+        { id: "episodeBonus", label: "エピソードボーナス" },
+      ],
     },
     odds: {
       settings: [
-        { s: 1, big: 394.4, reg: 1_000_000_000, total: 394.4, rate: 97.5, extra: 1260.3 },
-        { s: 2, big: 380.5, reg: 1_000_000_000, total: 380.5, rate: 99.0, extra: 1213.6 },
-        { s: 3, big: 357.0, reg: 1_000_000_000, total: 357.0, rate: 101.6, extra: 1170.3 },
-        { s: 4, big: 325.9, reg: 1_000_000_000, total: 325.9, rate: 105.6, extra: 1129.9 },
-        { s: 5, big: 291.2, reg: 1_000_000_000, total: 291.2, rate: 110.3, extra: 1092.3 },
-        { s: 6, big: 261.3, reg: 1_000_000_000, total: 261.3, rate: 114.9, extra: 1024.0 },
+        {
+          s: 1,
+          big: 394.4,
+          reg: 1_000_000_000,
+          total: 394.4,
+          rate: 97.5,
+          extras: {
+            lowerReplay: 1260.3,
+            reminiscence: 300.5,
+            bigEaterRize: 2079.1,
+            episodeBonus: 6620.2,
+          },
+        },
+        {
+          s: 2,
+          big: 380.5,
+          reg: 1_000_000_000,
+          total: 380.5,
+          rate: 99.0,
+          extras: {
+            lowerReplay: 1213.6,
+            reminiscence: 295.1,
+            bigEaterRize: 1906.5,
+            episodeBonus: 5879.7,
+          },
+        },
+        {
+          s: 3,
+          big: 357.0,
+          reg: 1_000_000_000,
+          total: 357.0,
+          rate: 101.6,
+          extras: {
+            lowerReplay: 1170.3,
+            reminiscence: 287.6,
+            bigEaterRize: 1722.8,
+            episodeBonus: 5114.5,
+          },
+        },
+        {
+          s: 4,
+          big: 325.9,
+          reg: 1_000_000_000,
+          total: 325.9,
+          rate: 105.6,
+          extras: {
+            lowerReplay: 1129.9,
+            reminiscence: 276.7,
+            bigEaterRize: 1478.9,
+            episodeBonus: 4062.5,
+          },
+        },
+        {
+          s: 5,
+          big: 291.2,
+          reg: 1_000_000_000,
+          total: 291.2,
+          rate: 110.3,
+          extras: {
+            lowerReplay: 1092.3,
+            reminiscence: 262.7,
+            bigEaterRize: 1226.6,
+            episodeBonus: 3166.7,
+          },
+        },
+        {
+          s: 6,
+          big: 261.3,
+          reg: 1_000_000_000,
+          total: 261.3,
+          rate: 114.9,
+          extras: {
+            lowerReplay: 1024.0,
+            reminiscence: 251.2,
+            bigEaterRize: 1074.9,
+            episodeBonus: 2639.5,
+          },
+        },
       ],
     },
   },
