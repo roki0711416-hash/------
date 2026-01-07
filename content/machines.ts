@@ -462,13 +462,14 @@ export const machines = [
     series: "モンキーターン",
     category: "SMART",
     inHall: true,
-    description: "AT終了時即優出・AT直撃（強チェ/強チャンス目）・5枚役ベースの簡易判別。",
+    description: "AT終了時即優出・AT直撃（強チェ/強チャンス目）・5枚役・黒メダルベースの簡易判別。",
     metricsLabels: {
       bigLabel: "AT初当り",
       regLabel: null,
       totalLabel: null,
       extraMetrics: [
         { id: "fiveCoin", label: "5枚役" },
+        { id: "blackMedal", label: "黒メダル" },
       ],
       suikaTrialsLabel: "AT終了回数",
     suikaCzHitsLabel: "即優出突入回数",
@@ -489,6 +490,7 @@ export const machines = [
         uraAtRate: 0.004,
         extras: {
           fiveCoin: 38.15,
+          blackMedal: 8000,
         },
       },
       {
@@ -501,6 +503,7 @@ export const machines = [
         uraAtRate: 0.012,
         extras: {
           fiveCoin: 36.86,
+          blackMedal: 6666.7,
         },
       },
       {
@@ -513,6 +516,7 @@ export const machines = [
         uraAtRate: 0.02,
         extras: {
           fiveCoin: 30.27,
+          blackMedal: 2500,
         },
       },
       {
@@ -525,6 +529,7 @@ export const machines = [
         uraAtRate: 0.02,
         extras: {
           fiveCoin: 24.51,
+          blackMedal: 2222.2,
         },
       },
       {
@@ -537,6 +542,7 @@ export const machines = [
         uraAtRate: 0.02,
         extras: {
           fiveCoin: 22.53,
+          blackMedal: 2222.2,
         },
       },
     ],

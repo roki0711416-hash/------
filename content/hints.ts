@@ -535,6 +535,49 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         ],
       },
       {
+        id: "monkeyv_at_end_item",
+        title: "AT終了画面：アイテム別示唆",
+        note: "AT終了時に出現するアイテムで設定を示唆。",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "monkeyv_at_sgmedal_blue",
+            label: "SGメダル 青（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } },
+          },
+          {
+            id: "monkeyv_at_sgmedal_yellow",
+            label: "SGメダル 黄（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.08, 5: 1.12, 6: 1.15 } },
+          },
+          {
+            id: "monkeyv_at_sgmedal_black",
+            label: "SGメダル 黒（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.3, 6: 1.35 } },
+          },
+          {
+            id: "monkeyv_at_trophy_silver",
+            label: "ケロットトロフィー 銀（設定2以上）",
+            effect: { type: "minSetting", min: 2 },
+          },
+          {
+            id: "monkeyv_at_trophy_gold",
+            label: "ケロットトロフィー 金（設定4以上）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "monkeyv_at_trophy_kerot",
+            label: "ケロットトロフィー ケロット柄（設定5以上）",
+            effect: { type: "minSetting", min: 5 },
+          },
+          {
+            id: "monkeyv_at_trophy_rainbow",
+            label: "ケロットトロフィー 虹（設定6）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
         id: "monkeyv_enoki",
         title: "榎木（赤/紫）出現",
         note: "榎木紫は設定4以上、赤は2/4/6で出現。",
