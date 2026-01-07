@@ -60,6 +60,19 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const [bigCount, setBigCount] = useState<string>("");
   const [regCount, setRegCount] = useState<string>("");
   const [extraCount, setExtraCount] = useState<string>("");
+  const [suikaTrials, setSuikaTrials] = useState<string>("");
+  const [suikaCzHits, setSuikaCzHits] = useState<string>("");
+
+  const bigLabel = machine.metricsLabels?.bigLabel ?? "BIG";
+  const regLabel = machine.metricsLabels?.regLabel ?? "REG";
+  const totalLabelRaw = machine.metricsLabels?.totalLabel;
+  const showTotal = totalLabelRaw !== null;
+  const totalLabel = (totalLabelRaw === undefined ? "合算" : totalLabelRaw) ?? "合算";
+  const suikaTrialsLabel = machine.metricsLabels?.suikaTrialsLabel ?? null;
+  const suikaCzHitsLabel = machine.metricsLabels?.suikaCzHitsLabel ?? null;
+  const suikaCzRateLabel = machine.metricsLabels?.suikaCzRateLabel ?? "スイカCZ当選率";
+
+  const hideHintDescriptions = machine.maker === "パイオニア";
 
   const hintConfig = useMemo(() => getHintConfig(machine.id), [machine.id]);
   const [hintCounts, setHintCounts] = useState<Record<string, string>>({});
@@ -83,11 +96,12 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   );
 
   const extraLabel =
-    machine.category === "JUG"
+    machine.metricsLabels?.extraLabel ??
+    (machine.category === "JUG"
       ? "ブドウ"
       : machine.category === "HANAHANA"
         ? "ベル"
-        : null;
+        : null);
 
   useEffect(() => {
     // Avoid carrying hint inputs across machine switches.
@@ -99,13 +113,17 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     const b = Number(bigCount);
     const r = Number(regCount);
     const x = Number(extraCount);
+    const st = Number(suikaTrials);
+    const sh = Number(suikaCzHits);
     return {
       games: Number.isFinite(g) ? g : NaN,
       bigCount: Number.isFinite(b) ? b : NaN,
       regCount: Number.isFinite(r) ? r : NaN,
       extraCount: Number.isFinite(x) ? x : NaN,
+      suikaTrials: Number.isFinite(st) ? st : NaN,
+      suikaCzHits: Number.isFinite(sh) ? sh : NaN,
     };
-  }, [games, bigCount, regCount, extraCount]);
+  }, [games, bigCount, regCount, extraCount, suikaTrials, suikaCzHits]);
 
   function cleanupObjectUrl() {
     if (lastObjectUrlRef.current) {
@@ -135,8 +153,11 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     };
 
     // Labels differ by data-counter, so keep this flexible.
-    const big = pickInt(find(/\b(?:BIG|BB)\b\s*[:：]?\s*(\d{1,4})/i));
-    const reg = pickInt(find(/\b(?:REG|RB)\b\s*[:：]?\s*(\d{1,4})/i));
+    const big = pickInt(
+      find(/\b(?:BIG|BB|BONUS)\b\s*[:：]?\s*(\d{1,4})/i) ??
+        find(/ボーナス\s*[:：]?\s*(\d{1,4})/i),
+    );
+    const reg = pickInt(find(/\b(?:REG|RB|AT)\b\s*[:：]?\s*(\d{1,4})/i));
 
     // Games often appears as "G" or "GAME" or "TOTAL" or "回転".
     const gamesByLabel = pickInt(
@@ -191,16 +212,23 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   }
 
   const error = useMemo(() => {
-    if (games === "" && bigCount === "" && regCount === "" && extraCount === "")
+    if (
+      games === "" &&
+      bigCount === "" &&
+      regCount === "" &&
+      extraCount === "" &&
+      suikaTrials === "" &&
+      suikaCzHits === ""
+    )
       return null;
 
     if (!(parsed.games > 0)) return "総ゲーム数は1以上で入力してください。";
     if (!(parsed.bigCount >= 0) || !Number.isInteger(parsed.bigCount))
-      return "BIG回数は0以上の整数で入力してください。";
+      return `${bigLabel}回数は0以上の整数で入力してください。`;
     if (!(parsed.regCount >= 0) || !Number.isInteger(parsed.regCount))
-      return "REG回数は0以上の整数で入力してください。";
+      return `${regLabel}回数は0以上の整数で入力してください。`;
     if (parsed.bigCount + parsed.regCount > parsed.games)
-      return "BIG回数 + REG回数 が総ゲーム数を超えています。";
+      return `${bigLabel}回数 + ${regLabel}回数 が総ゲーム数を超えています。`;
 
     if (extraLabel) {
       if (extraCount !== "") {
@@ -211,18 +239,55 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       }
     }
 
+    const showSuika = !!suikaTrialsLabel && !!suikaCzHitsLabel;
+    if (showSuika) {
+      if ((suikaTrials === "") !== (suikaCzHits === ""))
+        return `${suikaTrialsLabel}と${suikaCzHitsLabel}は両方入力してください。`;
+      if (suikaTrials !== "") {
+        if (!(parsed.suikaTrials >= 0) || !Number.isInteger(parsed.suikaTrials))
+          return `${suikaTrialsLabel}は0以上の整数で入力してください。`;
+        if (!(parsed.suikaCzHits >= 0) || !Number.isInteger(parsed.suikaCzHits))
+          return `${suikaCzHitsLabel}は0以上の整数で入力してください。`;
+        if (parsed.suikaCzHits > parsed.suikaTrials)
+          return `${suikaCzHitsLabel}が${suikaTrialsLabel}を超えています。`;
+      }
+    }
+
     return null;
-  }, [parsed, games, bigCount, regCount, extraCount, extraLabel]);
+  }, [
+    parsed,
+    games,
+    bigCount,
+    regCount,
+    extraCount,
+    suikaTrials,
+    suikaCzHits,
+    extraLabel,
+    bigLabel,
+    regLabel,
+    suikaTrialsLabel,
+    suikaCzHitsLabel,
+  ]);
 
   const posteriorCalc = useMemo(() => {
     if (error) return null;
-    if (games === "" && bigCount === "" && regCount === "" && extraCount === "")
+    if (
+      games === "" &&
+      bigCount === "" &&
+      regCount === "" &&
+      extraCount === "" &&
+      suikaTrials === "" &&
+      suikaCzHits === ""
+    )
       return null;
 
     const base = calcSettingPosteriors(machine.odds.settings, {
       games: parsed.games,
       bigCount: parsed.bigCount,
       regCount: parsed.regCount,
+      extraCount: extraCount === "" ? undefined : parsed.extraCount,
+      suikaTrials: suikaTrials === "" ? undefined : parsed.suikaTrials,
+      suikaCzHits: suikaCzHits === "" ? undefined : parsed.suikaCzHits,
     });
 
     if (!hintConfig) return { posteriors: base, note: null };
@@ -306,6 +371,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     bigCount,
     regCount,
     extraCount,
+    suikaTrials,
+    suikaCzHits,
     hintConfig,
     hintCounts,
   ]);
@@ -371,13 +438,13 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     <section className="rounded-2xl border border-neutral-200 bg-white p-5">
       <h2 className="text-lg font-semibold">設定判別</h2>
       <p className="mt-1 text-sm text-neutral-600">
-        総ゲーム数 / BIG / REG を入力すると、近い設定TOP3を表示します。
+        総ゲーム数 / {bigLabel} / {regLabel} を入力すると、近い設定TOP3を表示します。
       </p>
 
       <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
         <p className="text-sm font-semibold">データカウンター画像から入力</p>
         <p className="mt-1 text-xs text-neutral-500">
-          スクショを読み込んで、総G/BIG/REGを自動入力します（対応していない表示もあります）。
+          スクショを読み込んで、総G/{bigLabel}/{regLabel}を自動入力します（対応していない表示もあります）。
         </p>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -437,8 +504,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
             <p className="text-xs text-neutral-600">
               推定：
               {typeof ocrSuggestion.games === "number" ? `総G ${ocrSuggestion.games} / ` : ""}
-              {typeof ocrSuggestion.big === "number" ? `BIG ${ocrSuggestion.big} / ` : ""}
-              {typeof ocrSuggestion.reg === "number" ? `REG ${ocrSuggestion.reg}` : ""}
+              {typeof ocrSuggestion.big === "number" ? `${bigLabel} ${ocrSuggestion.big} / ` : ""}
+              {typeof ocrSuggestion.reg === "number" ? `${regLabel} ${ocrSuggestion.reg}` : ""}
             </p>
           ) : null}
         </div>
@@ -459,7 +526,9 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
       <form
         className={`mt-4 grid gap-3 ${
-          extraLabel ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-2 sm:grid-cols-3"
+          extraLabel || (suikaTrialsLabel && suikaCzHitsLabel)
+            ? "grid-cols-2 sm:grid-cols-4"
+            : "grid-cols-2 sm:grid-cols-3"
         }`}
       >
         <label className="block">
@@ -474,7 +543,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
         </label>
 
         <CountField
-          label="BIG"
+          label={bigLabel}
           value={bigCount}
           onChange={setBigCount}
           placeholder="例: 10"
@@ -489,7 +558,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
         />
 
         <CountField
-          label="REG"
+          label={regLabel}
           value={regCount}
           onChange={setRegCount}
           placeholder="例: 8"
@@ -519,14 +588,48 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
             }}
           />
         ) : null}
+
+        {suikaTrialsLabel && suikaCzHitsLabel ? (
+          <>
+            <CountField
+              label={suikaTrialsLabel}
+              value={suikaTrials}
+              onChange={setSuikaTrials}
+              placeholder="例: 40"
+              showStep5
+              onStep={(delta) => {
+                const current = toIntOrZero(suikaTrials);
+                const next = Math.max(0, current + delta);
+                const hits = toIntOrZero(suikaCzHits);
+                const cappedHits = Math.min(hits, next);
+                setSuikaTrials(String(next));
+                if (cappedHits !== hits) setSuikaCzHits(String(cappedHits));
+              }}
+            />
+            <CountField
+              label={suikaCzHitsLabel}
+              value={suikaCzHits}
+              onChange={setSuikaCzHits}
+              placeholder="例: 10"
+              onStep={(delta) => {
+                const trials = toIntOrZero(suikaTrials);
+                const current = toIntOrZero(suikaCzHits);
+                const next = Math.min(Math.max(current + delta, 0), trials);
+                setSuikaCzHits(String(next));
+              }}
+            />
+          </>
+        ) : null}
       </form>
 
       {hintConfig ? (
         <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
           <p className="text-sm font-semibold">示唆カウント</p>
-          <p className="mt-1 text-xs text-neutral-500">
-            反映される示唆（設定◯以上/確定系）は、総G/BIG/REGを入力すると判別に反映されます。
-          </p>
+          {!hideHintDescriptions ? (
+            <p className="mt-1 text-xs text-neutral-500">
+              反映される示唆（設定◯以上/確定系）は、総G/{bigLabel}/{regLabel}を入力すると判別に反映されます。
+            </p>
+          ) : null}
 
           <div className="mt-3 space-y-3">
             {hintConfig.groups.map((group) => {
@@ -550,13 +653,13 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                   className="rounded-lg border border-neutral-200 bg-white p-3"
                 >
                   <p className="text-xs font-semibold text-neutral-700">{group.title}</p>
-                  {group.note ? (
+                  {!hideHintDescriptions && group.note ? (
                     <p className="mt-1 text-xs text-neutral-500">{group.note}</p>
                   ) : null}
 
                   {showWarn ? (
                     <p className="mt-2 text-xs font-medium text-red-600">
-                      合計({total})が {group.maxTotalFrom === "regCount" ? "REG回数" : "BIG回数"}
+                      合計({total})が {group.maxTotalFrom === "regCount" ? `${regLabel}回数` : `${bigLabel}回数`}
                       ({maxBase}) を超えています。
                     </p>
                   ) : null}
@@ -592,33 +695,62 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
         <p className="mt-3 text-sm font-medium text-red-600">{error}</p>
       ) : null}
 
-      {!error && (games !== "" || bigCount !== "" || regCount !== "" || extraCount !== "") ? (
+      {!error &&
+      (games !== "" ||
+        bigCount !== "" ||
+        regCount !== "" ||
+        extraCount !== "" ||
+        suikaTrials !== "" ||
+        suikaCzHits !== "") ? (
         <div className="mt-4 space-y-4">
           <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
             <p className="text-sm font-semibold">実測確率</p>
             <div
               className={`mt-2 grid gap-2 text-sm text-neutral-700 ${
-                extraLabel ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3"
+                (() => {
+                  const showSuika = !!suikaTrialsLabel && !!suikaCzHitsLabel && suikaTrials !== "";
+                  const cols = 2 + (showTotal ? 1 : 0) + (showSuika ? 1 : 0) + (extraLabel ? 1 : 0);
+                  if (cols <= 2) return "grid-cols-2";
+                  if (cols === 3) return "grid-cols-3";
+                  if (cols === 4) return "grid-cols-2 sm:grid-cols-4";
+                  return "grid-cols-2 sm:grid-cols-5";
+                })()
               }`}
             >
               <div>
-                <p className="text-xs text-neutral-500">BIG</p>
+                <p className="text-xs text-neutral-500">{bigLabel}</p>
                 <p className="font-semibold">
                   {fmtOneOver(parsed.games, parsed.bigCount)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-neutral-500">REG</p>
+                <p className="text-xs text-neutral-500">{regLabel}</p>
                 <p className="font-semibold">
                   {fmtOneOver(parsed.games, parsed.regCount)}
                 </p>
               </div>
-              <div>
-                <p className="text-xs text-neutral-500">合算</p>
-                <p className="font-semibold">
-                  {fmtOneOver(parsed.games, parsed.bigCount + parsed.regCount)}
-                </p>
-              </div>
+              {showTotal ? (
+                <div>
+                  <p className="text-xs text-neutral-500">{totalLabel}</p>
+                  <p className="font-semibold">
+                    {fmtOneOver(parsed.games, parsed.bigCount + parsed.regCount)}
+                  </p>
+                </div>
+              ) : null}
+
+              {suikaTrialsLabel && suikaCzHitsLabel && suikaTrials !== "" ? (
+                <div>
+                  <p className="text-xs text-neutral-500">{suikaCzRateLabel}</p>
+                  <p className="font-semibold">
+                    {(() => {
+                      const t = parsed.suikaTrials;
+                      const h = parsed.suikaCzHits;
+                      if (!(t > 0) || !(h >= 0)) return "-";
+                      return `${((h / t) * 100).toFixed(1)}%`;
+                    })()}
+                  </p>
+                </div>
+              ) : null}
 
               {extraLabel ? (
                 <div>
@@ -810,6 +942,15 @@ function PosteriorOddsTable({
   machine: Machine;
   posteriors: SettingPosterior[];
 }) {
+  const bigLabel = machine.metricsLabels?.bigLabel ?? "BIG";
+  const regLabel = machine.metricsLabels?.regLabel ?? "REG";
+  const totalLabelRaw = machine.metricsLabels?.totalLabel;
+  const showTotal = totalLabelRaw !== null;
+  const totalLabel = (totalLabelRaw === undefined ? "合算" : totalLabelRaw) ?? "合算";
+
+  const suikaCzRateLabel = machine.metricsLabels?.suikaCzRateLabel ?? "スイカCZ当選率";
+  const hasSuikaCzRate = machine.odds.settings.some((s) => typeof s.suikaCzRate === "number");
+
   const oddsBySetting = useMemo(() => {
     const map = new Map<string, OddsRow>();
     for (const row of machine.odds.settings) {
@@ -825,9 +966,14 @@ function PosteriorOddsTable({
           <tr className="text-left text-neutral-600">
             <th className="px-3 py-2 border border-neutral-200">設定</th>
             <th className="px-3 py-2 border border-neutral-200">確率</th>
-            <th className="px-3 py-2 border border-neutral-200">BIG</th>
-            <th className="px-3 py-2 border border-neutral-200">REG</th>
-            <th className="px-3 py-2 border border-neutral-200">合算</th>
+            <th className="px-3 py-2 border border-neutral-200">{bigLabel}</th>
+            <th className="px-3 py-2 border border-neutral-200">{regLabel}</th>
+            {showTotal ? (
+              <th className="px-3 py-2 border border-neutral-200">{totalLabel}</th>
+            ) : null}
+            {hasSuikaCzRate ? (
+              <th className="px-3 py-2 border border-neutral-200">{suikaCzRateLabel}</th>
+            ) : null}
             <th className="px-3 py-2 border border-neutral-200">機械割(%)</th>
           </tr>
         </thead>
@@ -844,9 +990,18 @@ function PosteriorOddsTable({
                 <td className="px-3 py-2 border border-neutral-200">
                   {odds ? `1/${fmt(odds.reg)}` : "-"}
                 </td>
-                <td className="px-3 py-2 border border-neutral-200">
-                  {odds ? `1/${fmt(odds.total)}` : "-"}
-                </td>
+                {showTotal ? (
+                  <td className="px-3 py-2 border border-neutral-200">
+                    {odds ? `1/${fmt(odds.total)}` : "-"}
+                  </td>
+                ) : null}
+                {hasSuikaCzRate ? (
+                  <td className="px-3 py-2 border border-neutral-200">
+                    {odds && typeof odds.suikaCzRate === "number"
+                      ? `${(odds.suikaCzRate * 100).toFixed(1)}%`
+                      : "-"}
+                  </td>
+                ) : null}
                 <td className="px-3 py-2 border border-neutral-200">{odds ? fmt(odds.rate) : "-"}</td>
               </tr>
             );

@@ -5,9 +5,10 @@ import { useEffect, useId, useState } from "react";
 
 type Props = {
   profileUrl: string;
+  latestThreadUrl?: string;
 };
 
-export default function LatestXCard({ profileUrl }: Props) {
+export default function LatestXCard({ profileUrl, latestThreadUrl }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [scriptReady, setScriptReady] = useState(false);
   const regionId = useId();
@@ -38,6 +39,19 @@ export default function LatestXCard({ profileUrl }: Props) {
       <p className="mt-3 text-sm text-neutral-600">
         表示が重いので、必要な時だけ開けるようにしています。
       </p>
+
+      {latestThreadUrl ? (
+        <p className="mt-2 text-sm">
+          <a
+            href={latestThreadUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="text-neutral-900 underline"
+          >
+            最新スレッドを見る
+          </a>
+        </p>
+      ) : null}
 
       {isOpen ? (
         <div id={regionId} className="mt-4">

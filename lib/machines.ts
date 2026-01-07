@@ -29,7 +29,7 @@ export async function getMachinesData(): Promise<MachinesData> {
     byMaker.set(m.maker, list);
   }
 
-  const makerOrder = ["北電子", "パイオニア"] as const;
+  const makerOrder = ["北電子", "パイオニア", "ユニバーサル"] as const;
 
   const makers: Maker[] = Array.from(byMaker.entries())
     .sort(([a], [b]) => {

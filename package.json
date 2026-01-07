@@ -6,9 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "publish:machine": "node scripts/publish-machine-update.mjs",
+    "db:init-reviews": "node scripts/init-reviews-table.mjs"
   },
   "dependencies": {
+    "@vercel/postgres": "^0.10.0",
+    "dotenv": "^17.2.3",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",

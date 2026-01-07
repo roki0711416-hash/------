@@ -33,8 +33,15 @@ export default async function Home() {
             <ul className="mt-3 space-y-2 text-sm text-neutral-700">
               {recentPosts.map((p) => (
                 <li key={p.id}>
-                  <span className="text-neutral-500">{p.date}：</span>
-                  {p.title}
+                  <div>
+                    <span className="text-neutral-500">{p.date}：</span>
+                    {p.title}
+                  </div>
+                  {p.body.trim() !== p.title.trim() ? (
+                    <div className="mt-1 whitespace-pre-line text-xs text-neutral-600">
+                      {p.body}
+                    </div>
+                  ) : null}
                 </li>
               ))}
             </ul>
@@ -45,7 +52,10 @@ export default async function Home() {
           )}
         </div>
 
-        <LatestXCard profileUrl={xConfig.profileUrl} />
+        <LatestXCard
+          profileUrl={xConfig.profileUrl}
+          latestThreadUrl={xConfig.latestThreadUrl}
+        />
       </section>
     </main>
   );

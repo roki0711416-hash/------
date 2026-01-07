@@ -2,6 +2,7 @@ import Link from "next/link";
 import SideMenu from "../../components/SideMenu";
 import MachineOddsTable from "../../components/MachineOddsTable";
 import MachineJudgeForm from "../../components/MachineJudgeForm";
+import MachineReviewsCard from "../../components/MachineReviewsCard";
 import { getMachineById, getMachinesData } from "../../lib/machines";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -61,6 +62,7 @@ export default async function ToolPage({
           <>
             <MachineOddsTable machine={selectedMachine} />
             <MachineJudgeForm machine={selectedMachine} />
+            <MachineReviewsCard machineId={selectedMachine.id} />
           </>
         ) : null}
 

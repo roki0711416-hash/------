@@ -3,6 +3,7 @@ import path from "node:path";
 
 export type XConfig = {
   profileUrl: string;
+  latestThreadUrl?: string;
 };
 
 function getXConfigPath() {
@@ -19,7 +20,16 @@ export async function getXConfig(): Promise<XConfig> {
     "profileUrl" in data &&
     typeof (data as { profileUrl: unknown }).profileUrl === "string"
   ) {
-    return { profileUrl: (data as { profileUrl: string }).profileUrl };
+    const latestThreadUrl =
+      "latestThreadUrl" in data &&
+      typeof (data as { latestThreadUrl: unknown }).latestThreadUrl === "string"
+        ? (data as { latestThreadUrl: string }).latestThreadUrl
+        : undefined;
+
+    return {
+      profileUrl: (data as { profileUrl: string }).profileUrl,
+      latestThreadUrl,
+    };
   }
 
   return { profileUrl: "https://x.com/" };

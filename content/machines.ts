@@ -1,11 +1,23 @@
 export type MachineCategory = "JUG" | "HANAHANA" | string;
 
+export type MachineMetricsLabels = {
+  bigLabel?: string;
+  regLabel?: string;
+  totalLabel?: string | null;
+  extraLabel?: string;
+  suikaTrialsLabel?: string;
+  suikaCzHitsLabel?: string;
+  suikaCzRateLabel?: string;
+};
+
 export type MachineOddsSetting = {
   s: number | string;
   big: number;
   reg: number;
   total: number;
   rate: number;
+  extra?: number;
+  suikaCzRate?: number;
 };
 
 export type Machine = {
@@ -17,6 +29,7 @@ export type Machine = {
   category: MachineCategory;
   description?: string;
   image?: string;
+  metricsLabels?: MachineMetricsLabels;
   odds: {
     settings: MachineOddsSetting[];
   };
@@ -239,6 +252,84 @@ export const machines = [
         { s: 4, big: 262, reg: 397, total: 157, rate: 103 },
         { s: 5, big: 249, reg: 366, total: 148, rate: 106 },
         { s: 6, big: 236, reg: 337, total: 139, rate: 109 },
+      ],
+    },
+  },
+
+  // --- UNIVERSAL スマスロ追加 ---
+  {
+    id: "smart-magireco",
+    name: "スマスロ マギアレコード 魔法少女まどか☆マギカ外伝",
+    maker: "ユニバーサル",
+    series: "まどマギ",
+    category: "SMART",
+    inHall: true,
+    description: "スマスロ（ボーナス初当り/AT初当り）ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "ボーナス初当り",
+      regLabel: "AT初当り",
+      totalLabel: null,
+      extraLabel: "弱チェリー",
+      suikaTrialsLabel: "スイカ回数",
+      suikaCzHitsLabel: "CZ当選(スイカ)",
+      suikaCzRateLabel: "スイカCZ当選率",
+    },
+    odds: {
+      settings: [
+        {
+          s: 1,
+          big: 240.6,
+          reg: 654.6,
+          total: 175.9,
+          rate: 97.6,
+          extra: 60.0,
+          suikaCzRate: 0.203,
+        },
+        {
+          s: 2,
+          big: 236.1,
+          reg: 633.4,
+          total: 172.0,
+          rate: 98.9,
+          extra: 57.7,
+          suikaCzRate: 0.227,
+        },
+        {
+          s: 3,
+          big: 222.8,
+          reg: 571.8,
+          total: 160.3,
+          rate: 102.0,
+          extra: 55.5,
+          suikaCzRate: 0.25,
+        },
+        {
+          s: 4,
+          big: 208.5,
+          reg: 516.6,
+          total: 148.5,
+          rate: 106.0,
+          extra: 53.5,
+          suikaCzRate: 0.281,
+        },
+        {
+          s: 5,
+          big: 195.1,
+          reg: 456.5,
+          total: 136.7,
+          rate: 110.4,
+          extra: 51.7,
+          suikaCzRate: 0.309,
+        },
+        {
+          s: 6,
+          big: 184.3,
+          reg: 416.7,
+          total: 127.8,
+          rate: 114.9,
+          extra: 50.0,
+          suikaCzRate: 0.336,
+        },
       ],
     },
   },

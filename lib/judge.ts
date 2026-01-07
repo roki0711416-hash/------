@@ -6,12 +6,17 @@ export type MachineSettingOdds = {
   reg: number; // 1/reg
   total: number; // 1/total (display only)
   rate: number; // payout percent (display only)
+  extra?: number; // optional extra metric per game (e.g., weak cherry): 1/extra
+  suikaCzRate?: number; // optional: probability (0..1)
 };
 
 export type JudgeInput = {
   games: number;
   bigCount: number;
   regCount: number;
+  extraCount?: number;
+  suikaTrials?: number;
+  suikaCzHits?: number;
 };
 
 export type JudgeOptions = {
@@ -37,10 +42,23 @@ export function calcSettingPosteriors(
   const games = Math.floor(input.games);
   const bigCount = Math.floor(input.bigCount);
   const regCount = Math.floor(input.regCount);
+  const extraCountRaw = input.extraCount;
+  const extraCount = typeof extraCountRaw === "number" ? Math.floor(extraCountRaw) : null;
+
+  const suikaTrialsRaw = input.suikaTrials;
+  const suikaCzHitsRaw = input.suikaCzHits;
+  const suikaTrials = typeof suikaTrialsRaw === "number" ? Math.floor(suikaTrialsRaw) : null;
+  const suikaCzHits = typeof suikaCzHitsRaw === "number" ? Math.floor(suikaCzHitsRaw) : null;
 
   if (!(games > 0)) return [];
   if (bigCount < 0 || regCount < 0) return [];
   if (bigCount + regCount > games) return [];
+  if (extraCount !== null && (extraCount < 0 || extraCount > games)) return [];
+  if ((suikaTrials === null) !== (suikaCzHits === null)) return [];
+  if (suikaTrials !== null && suikaCzHits !== null) {
+    if (suikaTrials < 0 || suikaCzHits < 0) return [];
+    if (suikaCzHits > suikaTrials) return [];
+  }
 
   const noneCount = games - bigCount - regCount;
 
@@ -60,10 +78,33 @@ export function calcSettingPosteriors(
     const pReg = 1 / st.reg;
     const pNone = 1 - pBig - pReg;
 
+    // Optional extra metric: treat as binomial over games (independent of BIG/REG occurrences)
+    // This is a simplification but works well for small-role counts like weak cherry.
+    const extraLogL = (() => {
+      if (extraCount === null) return 0;
+      if (!st.extra || !(st.extra > 0)) return 0;
+
+      const p = 1 / st.extra;
+      const q = 1 - p;
+      const none = games - extraCount;
+      return extraCount * safeLog(p) + none * safeLog(q);
+    })();
+
+    const suikaCzLogL = (() => {
+      if (suikaTrials === null || suikaCzHits === null) return 0;
+      if (typeof st.suikaCzRate !== "number") return 0;
+      const p = st.suikaCzRate;
+      if (!(p >= 0 && p <= 1)) return 0;
+      const none = suikaTrials - suikaCzHits;
+      return suikaCzHits * safeLog(p) + none * safeLog(1 - p);
+    })();
+
     const logL =
       bigCount * safeLog(pBig) +
       regCount * safeLog(pReg) +
-      noneCount * safeLog(pNone);
+      noneCount * safeLog(pNone) +
+      extraLogL +
+      suikaCzLogL;
 
     return {
       s: st.s,
