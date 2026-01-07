@@ -63,6 +63,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const [extraCounts, setExtraCounts] = useState<Record<string, string>>({});
   const [suikaTrials, setSuikaTrials] = useState<string>("");
   const [suikaCzHits, setSuikaCzHits] = useState<string>("");
+  const [uraAtTrials, setUraAtTrials] = useState<string>("");
+  const [uraAtHits, setUraAtHits] = useState<string>("");
 
   const bigLabel = machine.metricsLabels?.bigLabel ?? "BIG";
   const regLabelRaw = machine.metricsLabels?.regLabel;
@@ -74,6 +76,10 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const suikaTrialsLabel = machine.metricsLabels?.suikaTrialsLabel ?? null;
   const suikaCzHitsLabel = machine.metricsLabels?.suikaCzHitsLabel ?? null;
   const suikaCzRateLabel = machine.metricsLabels?.suikaCzRateLabel ?? "スイカCZ当選率";
+
+  const uraAtTrialsLabel = machine.metricsLabels?.uraAtTrialsLabel ?? null;
+  const uraAtHitsLabel = machine.metricsLabels?.uraAtHitsLabel ?? null;
+  const uraAtRateLabel = machine.metricsLabels?.uraAtRateLabel ?? "裏AT直行率";
 
   const hideHintDescriptions = machine.maker === "パイオニア";
 
@@ -144,6 +150,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     const x = Number(extraCount);
     const st = Number(suikaTrials);
     const sh = Number(suikaCzHits);
+    const ut = Number(uraAtTrials);
+    const uh = Number(uraAtHits);
 
     const parsedExtraCounts: Record<string, number> = {};
     for (const [k, v] of Object.entries(extraCounts)) {
@@ -159,8 +167,21 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       extraCounts: parsedExtraCounts,
       suikaTrials: Number.isFinite(st) ? st : NaN,
       suikaCzHits: Number.isFinite(sh) ? sh : NaN,
+      uraAtTrials: Number.isFinite(ut) ? ut : NaN,
+      uraAtHits: Number.isFinite(uh) ? uh : NaN,
     };
-  }, [games, bigCount, regCount, extraCount, extraCounts, suikaTrials, suikaCzHits, showReg]);
+  }, [
+    games,
+    bigCount,
+    regCount,
+    extraCount,
+    extraCounts,
+    suikaTrials,
+    suikaCzHits,
+    uraAtTrials,
+    uraAtHits,
+    showReg,
+  ]);
 
   function cleanupObjectUrl() {
     if (lastObjectUrlRef.current) {
@@ -168,6 +189,12 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       lastObjectUrlRef.current = null;
     }
   }
+
+  useEffect(() => {
+    return () => {
+      cleanupObjectUrl();
+    };
+  }, []);
 
   function parseOcr(text: string) {
     const normalized = text
@@ -256,7 +283,9 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       extraCount === "" &&
       Object.values(extraCounts).every((v) => v === "") &&
       suikaTrials === "" &&
-      suikaCzHits === ""
+      suikaCzHits === "" &&
+      uraAtTrials === "" &&
+      uraAtHits === ""
     )
       return null;
 
@@ -307,6 +336,20 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       }
     }
 
+    const showUraAt = !!uraAtTrialsLabel && !!uraAtHitsLabel;
+    if (showUraAt) {
+      if ((uraAtTrials === "") !== (uraAtHits === ""))
+        return `${uraAtTrialsLabel}と${uraAtHitsLabel}は両方入力してください。`;
+      if (uraAtTrials !== "") {
+        if (!(parsed.uraAtTrials >= 0) || !Number.isInteger(parsed.uraAtTrials))
+          return `${uraAtTrialsLabel}は0以上の整数で入力してください。`;
+        if (!(parsed.uraAtHits >= 0) || !Number.isInteger(parsed.uraAtHits))
+          return `${uraAtHitsLabel}は0以上の整数で入力してください。`;
+        if (parsed.uraAtHits > parsed.uraAtTrials)
+          return `${uraAtHitsLabel}が${uraAtTrialsLabel}を超えています。`;
+      }
+    }
+
     return null;
   }, [
     parsed,
@@ -317,6 +360,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     extraCounts,
     suikaTrials,
     suikaCzHits,
+    uraAtTrials,
+    uraAtHits,
     extraLabel,
     extraMetrics,
     showExtraMetrics,
@@ -325,6 +370,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     showReg,
     suikaTrialsLabel,
     suikaCzHitsLabel,
+    uraAtTrialsLabel,
+    uraAtHitsLabel,
   ]);
 
   const posteriorCalc = useMemo(() => {
@@ -338,7 +385,9 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       extraCount === "" &&
       !hasAnyExtraMetricsInput &&
       suikaTrials === "" &&
-      suikaCzHits === ""
+      suikaCzHits === "" &&
+      uraAtTrials === "" &&
+      uraAtHits === ""
     )
       return null;
 
@@ -363,6 +412,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       extraCounts: extraCountsForJudge,
       suikaTrials: suikaTrials === "" ? undefined : parsed.suikaTrials,
       suikaCzHits: suikaCzHits === "" ? undefined : parsed.suikaCzHits,
+      uraAtTrials: uraAtTrials === "" ? undefined : parsed.uraAtTrials,
+      uraAtHits: uraAtHits === "" ? undefined : parsed.uraAtHits,
     });
 
     if (!hintConfig) return { posteriors: base, note: null };
@@ -494,6 +545,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     extraCounts,
     suikaTrials,
     suikaCzHits,
+    uraAtTrials,
+    uraAtHits,
     showReg,
     hintConfig,
     hintCounts,
@@ -654,7 +707,10 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
       <form
         className={`mt-4 grid gap-3 ${
-          extraLabel || showExtraMetrics || (suikaTrialsLabel && suikaCzHitsLabel)
+          extraLabel ||
+          showExtraMetrics ||
+          (suikaTrialsLabel && suikaCzHitsLabel) ||
+          (uraAtTrialsLabel && uraAtHitsLabel)
             ? "grid-cols-2 sm:grid-cols-4"
             : "grid-cols-2 sm:grid-cols-3"
         }`}
@@ -774,6 +830,38 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                 const current = toIntOrZero(suikaCzHits);
                 const next = Math.min(Math.max(current + delta, 0), trials);
                 setSuikaCzHits(String(next));
+              }}
+            />
+          </>
+        ) : null}
+
+        {uraAtTrialsLabel && uraAtHitsLabel ? (
+          <>
+            <CountField
+              label={uraAtTrialsLabel}
+              value={uraAtTrials}
+              onChange={setUraAtTrials}
+              placeholder="例: 20"
+              showStep5
+              onStep={(delta) => {
+                const current = toIntOrZero(uraAtTrials);
+                const next = Math.max(0, current + delta);
+                const hits = toIntOrZero(uraAtHits);
+                const cappedHits = Math.min(hits, next);
+                setUraAtTrials(String(next));
+                if (cappedHits !== hits) setUraAtHits(String(cappedHits));
+              }}
+            />
+            <CountField
+              label={uraAtHitsLabel}
+              value={uraAtHits}
+              onChange={setUraAtHits}
+              placeholder="例: 1"
+              onStep={(delta) => {
+                const trials = toIntOrZero(uraAtTrials);
+                const current = toIntOrZero(uraAtHits);
+                const next = Math.min(Math.max(current + delta, 0), trials);
+                setUraAtHits(String(next));
               }}
             />
           </>
@@ -904,7 +992,9 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
         extraCount !== "" ||
         Object.values(extraCounts).some((v) => v !== "") ||
         suikaTrials !== "" ||
-        suikaCzHits !== "") ? (
+        suikaCzHits !== "" ||
+        uraAtTrials !== "" ||
+        uraAtHits !== "") ? (
         <div className="mt-4 space-y-4">
           <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
             <p className="text-sm font-semibold">実測確率</p>
@@ -912,6 +1002,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
               className={`mt-2 grid gap-2 text-sm text-neutral-700 ${
                 (() => {
                   const showSuika = !!suikaTrialsLabel && !!suikaCzHitsLabel && suikaTrials !== "";
+                  const showUraAt =
+                    !!uraAtTrialsLabel && !!uraAtHitsLabel && uraAtTrials !== "";
                   const baseCols = showReg ? 2 : 1;
                   const extraCols = showExtraMetrics && extraMetrics
                     ? extraMetrics.length
@@ -922,6 +1014,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                     baseCols +
                     (showTotal ? 1 : 0) +
                     (showSuika ? 1 : 0) +
+                    (showUraAt ? 1 : 0) +
                     extraCols;
                   if (cols <= 2) return "grid-cols-2";
                   if (cols === 3) return "grid-cols-3";
@@ -962,6 +1055,20 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                       const h = parsed.suikaCzHits;
                       if (!(t > 0) || !(h >= 0)) return "-";
                       return `${((h / t) * 100).toFixed(1)}%`;
+                    })()}
+                  </p>
+                </div>
+              ) : null}
+
+              {uraAtTrialsLabel && uraAtHitsLabel && uraAtTrials !== "" ? (
+                <div>
+                  <p className="text-xs text-neutral-500">{uraAtRateLabel}</p>
+                  <p className="font-semibold">
+                    {(() => {
+                      const t = parsed.uraAtTrials;
+                      const h = parsed.uraAtHits;
+                      if (!(t > 0) || !(h >= 0)) return "-";
+                      return `${((h / t) * 100).toFixed(2)}%`;
                     })()}
                   </p>
                 </div>
@@ -1179,6 +1286,9 @@ function PosteriorOddsTable({
   const suikaCzRateLabel = machine.metricsLabels?.suikaCzRateLabel ?? "スイカCZ当選率";
   const hasSuikaCzRate = machine.odds.settings.some((s) => typeof s.suikaCzRate === "number");
 
+  const uraAtRateLabel = machine.metricsLabels?.uraAtRateLabel ?? "裏AT直行率";
+  const hasUraAtRate = machine.odds.settings.some((s) => typeof s.uraAtRate === "number");
+
   const oddsBySetting = useMemo(() => {
     const map = new Map<string, OddsRow>();
     for (const row of machine.odds.settings) {
@@ -1203,6 +1313,9 @@ function PosteriorOddsTable({
             ) : null}
             {hasSuikaCzRate ? (
               <th className="px-3 py-2 border border-neutral-200">{suikaCzRateLabel}</th>
+            ) : null}
+            {hasUraAtRate ? (
+              <th className="px-3 py-2 border border-neutral-200">{uraAtRateLabel}</th>
             ) : null}
             <th className="px-3 py-2 border border-neutral-200">機械割(%)</th>
           </tr>
@@ -1231,6 +1344,13 @@ function PosteriorOddsTable({
                   <td className="px-3 py-2 border border-neutral-200">
                     {odds && typeof odds.suikaCzRate === "number"
                       ? `${(odds.suikaCzRate * 100).toFixed(1)}%`
+                      : "-"}
+                  </td>
+                ) : null}
+                {hasUraAtRate ? (
+                  <td className="px-3 py-2 border border-neutral-200">
+                    {odds && typeof odds.uraAtRate === "number"
+                      ? `${(odds.uraAtRate * 100).toFixed(2)}%`
                       : "-"}
                   </td>
                 ) : null}

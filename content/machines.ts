@@ -9,6 +9,9 @@ export type MachineMetricsLabels = {
   suikaTrialsLabel?: string;
   suikaCzHitsLabel?: string;
   suikaCzRateLabel?: string;
+  uraAtTrialsLabel?: string;
+  uraAtHitsLabel?: string;
+  uraAtRateLabel?: string;
 };
 
 export type MachineOddsSetting = {
@@ -20,6 +23,7 @@ export type MachineOddsSetting = {
   extra?: number;
   extras?: Record<string, number>;
   suikaCzRate?: number;
+  uraAtRate?: number;
 };
 
 export type Machine = {
@@ -356,6 +360,9 @@ export const machines = [
         { id: "bigEaterRize", label: "大喰いの利世" },
         { id: "episodeBonus", label: "エピソードボーナス" },
       ],
+      uraAtTrialsLabel: "AT当選(有馬J非経由)",
+      uraAtHitsLabel: "裏AT突入(直行)",
+      uraAtRateLabel: "裏AT直行率",
     },
     odds: {
       settings: [
@@ -365,6 +372,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 394.4,
           rate: 97.5,
+          uraAtRate: 0.011,
           extras: {
             lowerReplay: 1260.3,
             reminiscence: 300.5,
@@ -378,6 +386,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 380.5,
           rate: 99.0,
+          uraAtRate: 0.0132,
           extras: {
             lowerReplay: 1213.6,
             reminiscence: 295.1,
@@ -391,6 +400,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 357.0,
           rate: 101.6,
+          uraAtRate: 0.0163,
           extras: {
             lowerReplay: 1170.3,
             reminiscence: 287.6,
@@ -404,6 +414,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 325.9,
           rate: 105.6,
+          uraAtRate: 0.0219,
           extras: {
             lowerReplay: 1129.9,
             reminiscence: 276.7,
@@ -417,6 +428,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 291.2,
           rate: 110.3,
+          uraAtRate: 0.0285,
           extras: {
             lowerReplay: 1092.3,
             reminiscence: 262.7,
@@ -430,6 +442,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 261.3,
           rate: 114.9,
+          uraAtRate: 0.0332,
           extras: {
             lowerReplay: 1024.0,
             reminiscence: 251.2,

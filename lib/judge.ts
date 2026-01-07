@@ -9,6 +9,7 @@ export type MachineSettingOdds = {
   extra?: number; // optional extra metric per game (e.g., weak cherry): 1/extra
   extras?: Record<string, number>; // optional extra metrics per game: { metricId: 1/oddsDenom }
   suikaCzRate?: number; // optional: probability (0..1)
+  uraAtRate?: number; // optional: probability (0..1)
 };
 
 export type JudgeInput = {
@@ -19,6 +20,8 @@ export type JudgeInput = {
   extraCounts?: Record<string, number>;
   suikaTrials?: number;
   suikaCzHits?: number;
+  uraAtTrials?: number;
+  uraAtHits?: number;
 };
 
 export type JudgeOptions = {
@@ -64,6 +67,11 @@ export function calcSettingPosteriors(
   const suikaTrials = typeof suikaTrialsRaw === "number" ? Math.floor(suikaTrialsRaw) : null;
   const suikaCzHits = typeof suikaCzHitsRaw === "number" ? Math.floor(suikaCzHitsRaw) : null;
 
+  const uraAtTrialsRaw = input.uraAtTrials;
+  const uraAtHitsRaw = input.uraAtHits;
+  const uraAtTrials = typeof uraAtTrialsRaw === "number" ? Math.floor(uraAtTrialsRaw) : null;
+  const uraAtHits = typeof uraAtHitsRaw === "number" ? Math.floor(uraAtHitsRaw) : null;
+
   if (!(games > 0)) return [];
   if (bigCount < 0 || regCount < 0) return [];
   if (bigCount + regCount > games) return [];
@@ -77,6 +85,12 @@ export function calcSettingPosteriors(
   if (suikaTrials !== null && suikaCzHits !== null) {
     if (suikaTrials < 0 || suikaCzHits < 0) return [];
     if (suikaCzHits > suikaTrials) return [];
+  }
+
+  if ((uraAtTrials === null) !== (uraAtHits === null)) return [];
+  if (uraAtTrials !== null && uraAtHits !== null) {
+    if (uraAtTrials < 0 || uraAtHits < 0) return [];
+    if (uraAtHits > uraAtTrials) return [];
   }
 
   const noneCount = games - bigCount - regCount;
@@ -137,13 +151,23 @@ export function calcSettingPosteriors(
       return suikaCzHits * safeLog(p) + none * safeLog(1 - p);
     })();
 
+    const uraAtLogL = (() => {
+      if (uraAtTrials === null || uraAtHits === null) return 0;
+      if (typeof st.uraAtRate !== "number") return 0;
+      const p = st.uraAtRate;
+      if (!(p >= 0 && p <= 1)) return 0;
+      const none = uraAtTrials - uraAtHits;
+      return uraAtHits * safeLog(p) + none * safeLog(1 - p);
+    })();
+
     const logL =
       bigCount * safeLog(pBig) +
       regCount * safeLog(pReg) +
       noneCount * safeLog(pNone) +
       extraLogL +
       extrasLogL +
-      suikaCzLogL;
+      suikaCzLogL +
+      uraAtLogL;
 
     return {
       s: st.s,
