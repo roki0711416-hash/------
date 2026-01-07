@@ -653,6 +653,20 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
             </p>
           ) : null}
 
+          {!hideHintDescriptions && hintConfig.helpUrl ? (
+            <p className="mt-1 text-xs text-neutral-500">
+              示唆画面の確認はこちら：
+              <a
+                href={hintConfig.helpUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="underline text-neutral-900"
+              >
+                {hintConfig.helpUrl}
+              </a>
+            </p>
+          ) : null}
+
           <div className="mt-3 space-y-3">
             {hintConfig.groups.map((group) => {
               const total = group.items.reduce(

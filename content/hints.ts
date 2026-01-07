@@ -21,6 +21,7 @@ export type HintGroup = {
 
 export type MachineHintConfig = {
   machineId: string;
+  helpUrl?: string;
   groups: HintGroup[];
 };
 
@@ -138,11 +139,12 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
 
   "smart-magireco": {
     machineId: "smart-magireco",
+    helpUrl: "https://p-town.dmm.com/machines/4745#anc-point",
     groups: [
       {
         id: "big_end_screens",
         title: "BIGボーナス終了画面",
-        note: "BIGボーナス終了時に表示。カードの確認先: https://p-town.dmm.com/machines/4745#anc-point",
+        note: "BIGボーナス終了時に表示。",
         defaultCollapsed: true,
         maxTotalFrom: "bigCount",
         items: [
@@ -160,7 +162,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "at_end_screens",
         title: "AT終了画面",
-        note: "AT終了時に表示。カードの確認先: https://p-town.dmm.com/machines/4745#anc-point",
+        note: "AT終了時に表示。",
         defaultCollapsed: true,
         items: [
           { id: "at_end_default", label: "背景（デフォルト）", effect: { type: "none" } },
@@ -172,7 +174,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "ending_cards",
         title: "エンディング：カードごとの示唆",
-        note: "エンディング中のレア役成立時は、サブ液晶にタッチ。カードの確認先: https://p-town.dmm.com/machines/4745#anc-point",
+        note: "エンディング中のレア役成立時は、サブ液晶にタッチ。",
         defaultCollapsed: true,
         items: [
           { id: "ending_card_zekkou", label: "絶交階段のウワサ（奇数示唆 弱）", effect: { type: "none" } },
