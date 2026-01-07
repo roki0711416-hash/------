@@ -303,6 +303,220 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       },
     ],
   },
+
+  "smart-tokyo-ghoul": {
+    machineId: "smart-tokyo-ghoul",
+    helpUrl: "https://p-town.dmm.com/machines/4742",
+    groups: [
+      {
+        id: "tg_at_end_screens",
+        title: "AT終了画面",
+        note: "AT終了画面で設定を示唆。",
+        defaultCollapsed: true,
+        items: [
+          { id: "tg_at_end_default", label: "金木研（デフォルト）", effect: { type: "none" } },
+          {
+            id: "tg_at_end_odd",
+            label: "亜門鋼太朗＆真戸暁（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.06, 3: 1.06, 5: 1.06 } },
+          },
+          {
+            id: "tg_at_end_even",
+            label: "鈴屋什造＆篠原幸紀（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.06, 4: 1.06, 6: 1.06 } },
+          },
+          {
+            id: "tg_at_end_exclude_1",
+            label: "神代利世（設定1否定）",
+            effect: { type: "excludeSetting", exclude: 1 },
+          },
+          {
+            id: "tg_at_end_high_weak",
+            label: "笛口雛実＆笛口リョーコ（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+          {
+            id: "tg_at_end_high_strong",
+            label: "四方蓮示＆イトリ＆ウタ（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          {
+            id: "tg_at_end_min_4",
+            label: "金木研＆霧嶋董香（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "tg_at_end_exact_6",
+            label: "あんていく全員集合（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "tg_cz_end_cards",
+        title: "CZ終了画面：エンドカード（設定示唆）",
+        note: "CZ終了時にPUSHで表示。モード示唆は判別に未反映。",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "tg_cz_end_even_strong",
+            label: "鈴屋什造（偶数設定濃厚）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 3 },
+                { type: "excludeSetting", exclude: 5 },
+              ],
+            },
+          },
+          {
+            id: "tg_cz_end_min_4",
+            label: "梟（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "tg_cz_end_exact_6",
+            label: "有馬貴将（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "tg_cz_end_cards_mode",
+        title: "CZ終了画面：エンドカード（モード示唆・表示のみ）",
+        note: "滞在モード示唆です（設定判別には反映しません）。",
+        defaultCollapsed: true,
+        items: [
+          { id: "tg_cz_mode_kaneki_a", label: "金木研A（デフォルト）", effect: { type: "none" } },
+          { id: "tg_cz_mode_kaneki_b", label: "金木研B（デフォルト）", effect: { type: "none" } },
+          { id: "tg_cz_mode_touka", label: "霧嶋董香（通常B以上示唆）", effect: { type: "none" } },
+          { id: "tg_cz_mode_hinami", label: "笛口雛実（通常B以上示唆）", effect: { type: "none" } },
+          { id: "tg_cz_mode_amon", label: "亜門鋼太朗（通常B以上濃厚）", effect: { type: "none" } },
+          { id: "tg_cz_mode_mado", label: "真戸呉緒（通常C以上濃厚）", effect: { type: "none" } },
+          { id: "tg_cz_mode_kaneki_ghoul", label: "金木研（喰種）（チャンス以上濃厚）", effect: { type: "none" } },
+          { id: "tg_cz_mode_touka_ghoul", label: "霧嶋董香（喰種）（チャンス以上濃厚）", effect: { type: "none" } },
+          { id: "tg_cz_mode_tsukiyama", label: "月山習（天国準備以上濃厚）", effect: { type: "none" } },
+          { id: "tg_cz_mode_rize", label: "神代利世（天国濃厚）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "tg_trophy",
+        title: "ナミちゃんトロフィー（AT終了画面）",
+        note: "AT終了画面で出現。黒は次回トロフィー出現濃厚（設定判別には未反映）。",
+        defaultCollapsed: true,
+        items: [
+          { id: "tg_trophy_black", label: "黒（次回トロフィー出現濃厚）", effect: { type: "none" } },
+          { id: "tg_trophy_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "tg_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "tg_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tg_trophy_ghoul", label: "喰種柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "tg_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tg_invitation",
+        title: "月山招待状（設定示唆）",
+        note: "50G消化ごとに表示。色付き文字は残りG数示唆（設定判別には未反映）。",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "tg_inv_even",
+            label: "偶にはディナーでもどうだい？（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.06, 4: 1.06, 6: 1.06 } },
+          },
+          {
+            id: "tg_inv_exclude_1",
+            label: "不思議な香りだ…（設定1否定）",
+            effect: { type: "excludeSetting", exclude: 1 },
+          },
+          {
+            id: "tg_inv_exclude_2",
+            label: "君はなかなかの活字中毒らしいね（設定2否定）",
+            effect: { type: "excludeSetting", exclude: 2 },
+          },
+          {
+            id: "tg_inv_exclude_3",
+            label: "本は良いよね…（設定3否定）",
+            effect: { type: "excludeSetting", exclude: 3 },
+          },
+          {
+            id: "tg_inv_exclude_4",
+            label: "僕としたことがすまない（設定4否定）",
+            effect: { type: "excludeSetting", exclude: 4 },
+          },
+          {
+            id: "tg_inv_min_4",
+            label: "存分に楽しもうじゃないか（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "tg_inv_exact_6",
+            label: "特別な夜を楽しもうじゃないか（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "tg_payout_display",
+        title: "獲得枚数表示（特定表示）",
+        note: "獲得枚数表示で設定を示唆。",
+        defaultCollapsed: true,
+        items: [
+          { id: "tg_payout_456", label: "456 OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tg_payout_666", label: "666 OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "tg_payout_1000_7", label: "1000-7 OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tg_ending_cards",
+        title: "エンディング中：レア役時の示唆カード",
+        note:
+          "エンディング中にレア役成立で示唆カードが出現。『示唆（弱/強）』は重み付け、『否定/濃厚』は制約として反映。",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "tg_endcard_odd_weak",
+            label: "白（奇数設定示唆［弱］）",
+            effect: { type: "weight", weights: { 1: 1.04, 3: 1.04, 5: 1.04 } },
+          },
+          {
+            id: "tg_endcard_odd_strong",
+            label: "白（奇数設定示唆［強］）",
+            effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+          },
+          {
+            id: "tg_endcard_even_weak",
+            label: "青（偶数設定示唆［弱］）",
+            effect: { type: "weight", weights: { 2: 1.04, 4: 1.04, 6: 1.04 } },
+          },
+          {
+            id: "tg_endcard_even_strong",
+            label: "青（偶数設定示唆［強］）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "tg_endcard_high_weak",
+            label: "赤（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+          {
+            id: "tg_endcard_high_strong",
+            label: "赤（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          { id: "tg_endcard_excl_1", label: "銅：鈴屋什造（設定1否定）", effect: { type: "excludeSetting", exclude: 1 } },
+          { id: "tg_endcard_excl_2", label: "銅：高槻泉（設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
+          { id: "tg_endcard_excl_3", label: "銅：梟（設定3否定）", effect: { type: "excludeSetting", exclude: 3 } },
+          { id: "tg_endcard_excl_4", label: "銅：エト（設定4否定）", effect: { type: "excludeSetting", exclude: 4 } },
+          { id: "tg_endcard_min_3", label: "銀：金木研（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "tg_endcard_min_4", label: "金：神代利世（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tg_endcard_min_5", label: "隻眼の梟（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "tg_endcard_exact_6", label: "虹：有馬貴将（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
 };
 
 export function getHintConfig(machineId: string): MachineHintConfig | null {
