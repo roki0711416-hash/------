@@ -553,6 +553,9 @@ export const machines = [
       bigLabel: "ボーナス初当り",
       regLabel: null,
       totalLabel: null,
+      suikaTrialsLabel: "スイカ回数",
+      suikaCzHitsLabel: "ストックタイム直撃回数",
+      suikaCzRateLabel: "スイカのストックタイム直撃当選率",
     },
     odds: {
       settings: [
@@ -562,6 +565,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 241.7,
           rate: 97.8,
+          suikaCzRate: 0.004,
         },
         {
           s: 2,
@@ -569,6 +573,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 238.8,
           rate: 98.7,
+          suikaCzRate: 0.004,
         },
         {
           s: 3,
@@ -576,6 +581,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 235.9,
           rate: 100.1,
+          suikaCzRate: 0.005,
         },
         {
           s: 4,
@@ -583,6 +589,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 201.8,
           rate: 105.7,
+          suikaCzRate: 0.007,
         },
         {
           s: 5,
@@ -590,6 +597,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 194.9,
           rate: 110.0,
+          suikaCzRate: 0.014,
         },
         {
           s: 6,
@@ -597,6 +605,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 181.3,
           rate: 112.7,
+          suikaCzRate: 0.016,
         },
       ],
     },
