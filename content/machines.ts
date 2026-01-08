@@ -458,7 +458,7 @@ export const machines = [
   {
     id: "smart-god-eater-resurrection",
     name: "スマスロ ゴッドイーター リザレクション",
-    maker: "ヤマサ",
+    maker: "山佐",
     series: "ゴッドイーター",
     category: "SMART",
     inHall: true,
