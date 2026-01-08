@@ -454,6 +454,97 @@ export const machines = [
     },
   },
 
+  // --- SAMMY スマスロ追加 ---
+  {
+    id: "smart-hokuto-no-ken",
+    name: "スマスロ北斗の拳",
+    maker: "サミー",
+    series: "北斗の拳",
+    category: "SMART",
+    inHall: true,
+    description: "スマスロ（BB初当り）ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "BB初当り",
+      regLabel: null,
+      totalLabel: null,
+      extraMetrics: [
+        { id: "weakSuika", label: "弱スイカ" },
+        { id: "strongSuikaSum", label: "強スイカ合算" },
+        { id: "chudanCherrySum", label: "中段チェリー合算" },
+        { id: "reachmeYaku", label: "リーチ目役" },
+      ],
+    },
+    odds: {
+      settings: [
+        {
+          s: 1,
+          big: 383.4,
+          reg: 1_000_000_000,
+          total: 383.4,
+          rate: 98.0,
+          extras: {
+            weakSuika: 109.0,
+            strongSuikaSum: 409.6,
+            chudanCherrySum: 210.1,
+            reachmeYaku: 16384.0,
+          },
+        },
+        {
+          s: 2,
+          big: 370.5,
+          reg: 1_000_000_000,
+          total: 370.5,
+          rate: 98.9,
+          extras: {
+            weakSuika: 108.7,
+            strongSuikaSum: 404.5,
+            chudanCherrySum: 204.8,
+            reachmeYaku: 13107.2,
+          },
+        },
+        {
+          s: 4,
+          big: 297.8,
+          reg: 1_000_000_000,
+          total: 297.8,
+          rate: 105.7,
+          extras: {
+            weakSuika: 105.9,
+            strongSuikaSum: 376.6,
+            chudanCherrySum: 199.8,
+            reachmeYaku: 10922.7,
+          },
+        },
+        {
+          s: 5,
+          big: 258.7,
+          reg: 1_000_000_000,
+          total: 258.7,
+          rate: 110.0,
+          extras: {
+            weakSuika: 100.7,
+            strongSuikaSum: 352.3,
+            chudanCherrySum: 195.0,
+            reachmeYaku: 9362.3,
+          },
+        },
+        {
+          s: 6,
+          big: 235.1,
+          reg: 1_000_000_000,
+          total: 235.1,
+          rate: 113.0,
+          extras: {
+            weakSuika: 98.3,
+            strongSuikaSum: 337.8,
+            chudanCherrySum: 190.5,
+            reachmeYaku: 8192.0,
+          },
+        },
+      ],
+    },
+  },
+
   // --- YAMASA スマスロ追加 ---
   {
     id: "smart-god-eater-resurrection",

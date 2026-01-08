@@ -304,6 +304,83 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "smart-hokuto-no-ken": {
+    machineId: "smart-hokuto-no-ken",
+    helpUrl: "https://p-town.dmm.com/machines/4301",
+    groups: [
+      {
+        id: "sammy_trophy",
+        title: "サミートロフィー",
+        defaultCollapsed: true,
+        items: [
+          { id: "trophy_gold", label: "金（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "trophy_kirin", label: "キリン柄（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "trophy_rainbow", label: "虹（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "bb_end_voice",
+        title: "BB終了時のボイス",
+        note:
+          "BB終了画面から通常ステージ移行ゲームでサブ液晶をタッチ。『高設定示唆』は重み付けで反映（確定ではないため）。",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "voice_shin",
+            label: "シン『おまえが思っているほど 北斗神拳は無敵ではない』（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          {
+            id: "voice_souther",
+            label: "サウザー『退かぬ！媚びぬ！省みぬ！』（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          {
+            id: "voice_jagi",
+            label: "ジャギ『ケンシロウ おれの名を言ってみろ！』（高設定示唆［中］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.4, 6: 1.6 } },
+          },
+          {
+            id: "voice_amiba",
+            label: "アミバ『ふむ…この秘孔ではないらしい…』（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.4, 5: 1.7, 6: 2.0 } },
+          },
+          {
+            id: "voice_kenshiro_a",
+            label: "ケンシロウA『戦うのが 北斗神拳伝承者としての宿命だ!!』（設定4以上の期待大）",
+            effect: { type: "weight", weights: { 4: 2.0, 5: 2.5, 6: 3.0 } },
+          },
+          {
+            id: "voice_yuria",
+            label: "ユリア『まちつづけるのがわたしの宿命 そしてケンとの約束』（設定5以上の期待大）",
+            effect: { type: "weight", weights: { 5: 2.5, 6: 3.0 } },
+          },
+          {
+            id: "voice_kenshiro_b",
+            label: "ケンシロウB『おまえは もう死んでいる！』（1G連）",
+            effect: { type: "none" },
+          },
+        ],
+      },
+      {
+        id: "kodaigamen",
+        title: "初代の画面が表示",
+        note: "通常時の連続演出やBB中の復活演出で表示されれば設定5以上確定。",
+        defaultCollapsed: true,
+        items: [{ id: "kodaigamen_seen", label: "初代の画面が表示（設定5以上確定）", effect: { type: "minSetting", min: 5 } }],
+      },
+      {
+        id: "payout_milestone",
+        title: "特定枚数表示",
+        defaultCollapsed: true,
+        items: [
+          { id: "payout_over_456", label: "456枚突破（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "payout_over_666", label: "666枚突破（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "smart-tokyo-ghoul": {
     machineId: "smart-tokyo-ghoul",
     helpUrl: "https://p-town.dmm.com/machines/4742",
