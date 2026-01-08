@@ -540,6 +540,68 @@ export const machines = [
       ],
     },
   },
+
+  {
+    id: "smart-super-blackjack",
+    name: "スマスロ スーパーブラックジャック",
+    maker: "山佐",
+    series: "スーパーブラックジャック",
+    category: "SMART",
+    inHall: true,
+    description: "スマスロ（ボーナス初当り）ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "ボーナス初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        {
+          s: 1,
+          big: 241.7,
+          reg: 1_000_000_000,
+          total: 241.7,
+          rate: 97.8,
+        },
+        {
+          s: 2,
+          big: 238.8,
+          reg: 1_000_000_000,
+          total: 238.8,
+          rate: 98.7,
+        },
+        {
+          s: 3,
+          big: 235.9,
+          reg: 1_000_000_000,
+          total: 235.9,
+          rate: 100.1,
+        },
+        {
+          s: 4,
+          big: 201.8,
+          reg: 1_000_000_000,
+          total: 201.8,
+          rate: 105.7,
+        },
+        {
+          s: 5,
+          big: 194.9,
+          reg: 1_000_000_000,
+          total: 194.9,
+          rate: 110.0,
+        },
+        {
+          s: 6,
+          big: 181.3,
+          reg: 1_000_000_000,
+          total: 181.3,
+          rate: 112.7,
+        },
+      ],
+    },
+  },
+
   {
     id: "smart-monkey-v",
     name: "スマスロ モンキーターンV",

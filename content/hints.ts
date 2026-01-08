@@ -600,6 +600,86 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-super-blackjack"] = {
+    machineId: "smart-super-blackjack",
+    helpUrl: "https://p-town.dmm.com/machines/4712",
+    groups: [
+      {
+        id: "sbj_bonus_end_sublcd",
+        title: "ボーナス終了時：サブ液晶キャラ",
+        note: "ボーナス終了時に表示。『設定◯以上』は制約として反映。偶数/高設定示唆はソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "sbj_bonus_end_tiffany", label: "ティファニー（デフォルト）", effect: { type: "none" } },
+          { id: "sbj_bonus_end_il_el", label: "イル＆エル（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          {
+            id: "sbj_bonus_end_rosa",
+            label: "ローザ（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "sbj_bonus_end_mint",
+            label: "ミント（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.08, 5: 1.12, 6: 1.15 } },
+          },
+          {
+            id: "sbj_bonus_end_rio",
+            label: "リオ（高設定示唆［中］）",
+            effect: { type: "weight", weights: { 4: 1.12, 5: 1.2, 6: 1.28 } },
+          },
+          {
+            id: "sbj_bonus_end_lina",
+            label: "リナ（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "sbj_bonus_end_rio_lina", label: "リオ＆リナ（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "sbj_bonus_end_rio_lina_mint", label: "リオ＆リナ＆ミント（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "sbj_kerot_trophy",
+        title: "ケロットトロフィー",
+        note: "ボーナス終了時などに出現。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "sbj_trophy_copper", label: "銅（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "sbj_trophy_silver", label: "銀（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "sbj_trophy_gold", label: "金（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "sbj_trophy_kerot", label: "ケロット柄（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "sbj_trophy_rainbow", label: "虹（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "sbj_11coin_trump",
+        title: "11枚役入賞時：トランプ",
+        note: "11枚役入賞時にトランプが出現。ハート=1〜3、スペード=4〜6。",
+        defaultCollapsed: true,
+        items: [
+          { id: "sbj_trump_h_a", label: "ハートA（設定1）", effect: { type: "exactSetting", exact: 1 } },
+          { id: "sbj_trump_h_7", label: "ハート7（設定2）", effect: { type: "exactSetting", exact: 2 } },
+          { id: "sbj_trump_h_k", label: "ハートK（設定3）", effect: { type: "exactSetting", exact: 3 } },
+          { id: "sbj_trump_s_a", label: "スペードA（設定4）", effect: { type: "exactSetting", exact: 4 } },
+          { id: "sbj_trump_s_7", label: "スペード7（設定5）", effect: { type: "exactSetting", exact: 5 } },
+          { id: "sbj_trump_s_k", label: "スペードK（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "sbj_hawaii_oddity",
+        title: "ハワイステージ中：違和感演出",
+        note: "違和感が発生した場合に設定を示唆。",
+        defaultCollapsed: true,
+        items: [
+          { id: "sbj_hawaii_lower_off", label: "下パネル消灯（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "sbj_hawaii_lower_flash", label: "下パネル点滅（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "sbj_hawaii_lower_off_on", label: "下パネル消灯→点灯（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "sbj_hawaii_lower_disappear", label: "下パネル消失（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
   hintConfigs["smart-god-eater-resurrection"] = {
     machineId: "smart-god-eater-resurrection",
     helpUrl: "https://p-town.dmm.com/machines/4602#anc-point",

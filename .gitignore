@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# local temp workdir
+/.tmp/
+
 # production
 /build
 
