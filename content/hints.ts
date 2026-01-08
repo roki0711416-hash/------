@@ -600,6 +600,136 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-god-eater-resurrection"] = {
+    machineId: "smart-god-eater-resurrection",
+    helpUrl: "https://p-town.dmm.com/machines/4602#anc-point",
+    groups: [
+      {
+        id: "ger_at_end_screens",
+        title: "AT終了画面",
+        note: "AT終了時に表示。『濃厚/否定』系は判別に反映。示唆［弱/強］はソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "ger_at_end_default", label: "キャラなし（デフォルト）", effect: { type: "none" } },
+          {
+            id: "ger_at_end_kouta",
+            label: "コウタ（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+          {
+            id: "ger_at_end_alisa",
+            label: "アリサ（偶数設定示唆［弱］）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "ger_at_end_yuu_excl_234",
+            label: "ユウ（設定2・3・4否定）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 2 },
+                { type: "excludeSetting", exclude: 3 },
+                { type: "excludeSetting", exclude: 4 },
+              ],
+            },
+          },
+          {
+            id: "ger_at_end_soma",
+            label: "ソーマ（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          {
+            id: "ger_at_end_sakuya",
+            label: "サクヤ（偶数設定示唆［強］）",
+            effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } },
+          },
+          { id: "ger_at_end_lindow", label: "リンドウ（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "ger_at_end_shio", label: "シオ（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          {
+            id: "ger_at_end_cafe",
+            label: "カフェ（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.25, 4: 1.25, 6: 1.25 } },
+          },
+          { id: "ger_at_end_all", label: "キャラ集合（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "ger_at_end_mini", label: "ミニキャラ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "ger_story_touch_voice",
+        title: "ストーリーパート終了時：サブ液晶タッチ（ボイス示唆）",
+        note: "ストーリーパート終了時にサブ液晶へタッチするとボイスで示唆。『濃厚/否定』系は判別に反映。示唆［弱/強］はソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "ger_story_touch_kouta_default", label: "コウタ（デフォルト）", effect: { type: "none" } },
+          { id: "ger_story_touch_alisa_default", label: "アリサ（デフォルト）", effect: { type: "none" } },
+          {
+            id: "ger_story_touch_hibari",
+            label: "ヒバリ（偶数設定示唆［弱］）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "ger_story_touch_sakuya",
+            label: "サクヤ（偶数設定示唆［強］）",
+            effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } },
+          },
+          {
+            id: "ger_story_touch_soma",
+            label: "ソーマ（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+          {
+            id: "ger_story_touch_ren",
+            label: "レン（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          {
+            id: "ger_story_touch_yuu_excl_23",
+            label: "ユウ（設定2・3否定）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 2 },
+                { type: "excludeSetting", exclude: 3 },
+              ],
+            },
+          },
+          {
+            id: "ger_story_touch_erina",
+            label: "エリナ（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.25, 4: 1.25, 6: 1.25 } },
+          },
+          { id: "ger_story_touch_lindow", label: "リンドウ（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "ger_story_touch_shio", label: "シオ（設定5以上）", effect: { type: "minSetting", min: 5 } },
+        ],
+      },
+      {
+        id: "ger_payout_display",
+        title: "獲得枚数表示（特定枚数表示）",
+        note: "AT中などの獲得枚数表示で設定を示唆。",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "ger_payout_246",
+            label: "246 OVER（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.25, 4: 1.25, 6: 1.25 } },
+          },
+          { id: "ger_payout_456", label: "456 OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "ger_payout_555", label: "555 OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "ger_payout_666", label: "666 OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "ger_yuu_timer",
+        title: "ユウタイマー演出（作戦区域）",
+        note: "作戦区域中のリール左タイマー。『6から開始→AT非当選』は設定6濃厚。",
+        defaultCollapsed: true,
+        items: [
+          { id: "ger_timer_6start_miss", label: "6スタートでAT非当選（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }
