@@ -542,6 +542,30 @@ export const machines = [
   },
 
   {
+    id: "smart-neo-planet",
+    name: "スマスロ ネオプラネット",
+    maker: "山佐",
+    series: "ネオプラネット",
+    category: "SMART",
+    inHall: true,
+    description: "スマスロ（ボーナス出現率）ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "ボーナス出現率(合算)",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 190.8, reg: 1_000_000_000, total: 190.8, rate: 97.7 },
+        { s: 2, big: 186.2, reg: 1_000_000_000, total: 186.2, rate: 99.0 },
+        { s: 4, big: 171.0, reg: 1_000_000_000, total: 171.0, rate: 104.2 },
+        { s: 5, big: 161.1, reg: 1_000_000_000, total: 161.1, rate: 107.9 },
+        { s: 6, big: 148.5, reg: 1_000_000_000, total: 148.5, rate: 114.2 },
+      ],
+    },
+  },
+
+  {
     id: "smart-super-blackjack",
     name: "スマスロ スーパーブラックジャック",
     maker: "山佐",
