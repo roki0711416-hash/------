@@ -553,6 +553,7 @@ export const machines = [
       bigLabel: "ボーナス初当り",
       regLabel: null,
       totalLabel: null,
+      extraMetrics: [{ id: "suika", label: "スイカ" }],
       suikaTrialsLabel: "スイカ回数",
       suikaCzHitsLabel: "ストックタイム直撃回数",
       suikaCzRateLabel: "スイカのストックタイム直撃当選率",
@@ -566,6 +567,7 @@ export const machines = [
           total: 241.7,
           rate: 97.8,
           suikaCzRate: 0.004,
+          extras: { suika: 99.9 },
         },
         {
           s: 2,
@@ -574,6 +576,7 @@ export const machines = [
           total: 238.8,
           rate: 98.7,
           suikaCzRate: 0.004,
+          extras: { suika: 91.1 },
         },
         {
           s: 3,
@@ -582,6 +585,7 @@ export const machines = [
           total: 235.9,
           rate: 100.1,
           suikaCzRate: 0.005,
+          extras: { suika: 87.7 },
         },
         {
           s: 4,
@@ -590,6 +594,7 @@ export const machines = [
           total: 201.8,
           rate: 105.7,
           suikaCzRate: 0.007,
+          extras: { suika: 86.7 },
         },
         {
           s: 5,
@@ -598,6 +603,7 @@ export const machines = [
           total: 194.9,
           rate: 110.0,
           suikaCzRate: 0.014,
+          extras: { suika: 85.0 },
         },
         {
           s: 6,
@@ -606,6 +612,7 @@ export const machines = [
           total: 181.3,
           rate: 112.7,
           suikaCzRate: 0.016,
+          extras: { suika: 83.9 },
         },
       ],
     },
