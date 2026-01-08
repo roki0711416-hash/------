@@ -519,6 +519,54 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
   },
 };
 
+  hintConfigs["smart-neo-planet"] = {
+    machineId: "smart-neo-planet",
+    groups: [
+      {
+        id: "neo_planet_kerot_trophy",
+        title: "ケロットトロフィー",
+        note: "ボーナス終了時などに出現。『設定◯以上』は制約として反映。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "neo_planet_trophy_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "neo_planet_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "neo_planet_trophy_kerot", label: "ケロット柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "neo_planet_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "neo_planet_bonus_end",
+        title: "ボーナス終了画面",
+        note:
+          "ボーナス終了画面に登場するキャラで示唆。偶数/高設定示唆はソフト示唆（重み付け）として反映。『設定◯以上』は制約として反映。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "neo_planet_bonus_end_default", label: "キャラなし（デフォルト）", effect: { type: "none" } },
+          {
+            id: "neo_planet_bonus_end_satellite",
+            label: "衛星（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "neo_planet_bonus_end_astronaut",
+            label: "宇宙飛行士（設定2以上濃厚 かつ 高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "minSetting", min: 2 },
+                { type: "weight", weights: { 4: 1.08, 5: 1.15, 6: 1.22 } },
+              ],
+            },
+          },
+          { id: "neo_planet_bonus_end_win", label: "ウィンちゃん（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "neo_planet_bonus_end_rocket", label: "ロケット通過（1G連濃厚）", effect: { type: "none" } },
+        ],
+      },
+    ],
+  };
+
   hintConfigs["smart-monkey-v"] = {
     machineId: "smart-monkey-v",
     helpUrl: "https://p-town.dmm.com/machines/4450",
