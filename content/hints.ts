@@ -677,6 +677,19 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "sbj_hawaii_lower_disappear", label: "下パネル消失（設定6）", effect: { type: "exactSetting", exact: 6 } },
         ],
       },
+      {
+        id: "sbj_dice_check",
+        title: "サイコロ出目ごとの示唆",
+        note: "通常時150G/450G/750G消化時などに発生するダイスチェック。2〜6のゾロ目が出た場合、示唆される『スイカ規定回数』を超えてもストックタイムが直撃しないと『設定◯以上濃厚』。\n※このツールでは『条件達成後の確定示唆』として反映します。",
+        defaultCollapsed: true,
+        items: [
+          { id: "sbj_dice_2", label: "2のゾロ目（条件達成で設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "sbj_dice_3", label: "3のゾロ目（条件達成で設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "sbj_dice_4", label: "4のゾロ目（条件達成で設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "sbj_dice_5", label: "5のゾロ目（条件達成で設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "sbj_dice_6", label: "6のゾロ目（条件達成で設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
     ],
   };
 
