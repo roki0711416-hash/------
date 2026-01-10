@@ -1002,6 +1002,123 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-bakemonogatari"] = {
+    machineId: "smart-bakemonogatari",
+    groups: [
+      {
+        id: "bake_at_end",
+        title: "AT終了画面（PUSHキャラ）",
+        note: "AT終了画面でPUSHボタンを押したときに表示されるキャラ画像で示唆。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "bake_end_araragi_default", label: "阿良々木（デフォルト）", effect: { type: "none" } },
+
+          {
+            id: "bake_end_hitagi_high_strong",
+            label: "ひたぎ（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          {
+            id: "bake_end_nadeko_high_weak",
+            label: "撫子（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+
+          {
+            id: "bake_end_mayoi_even_weak",
+            label: "真宵（偶数設定示唆［弱］）",
+            effect: { type: "weight", weights: { 2: 1.04, 4: 1.04, 6: 1.04 } },
+          },
+          {
+            id: "bake_end_tsubasa_even_strong",
+            label: "翼（偶数設定示唆［強］）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+
+          {
+            id: "bake_end_suruga_odd_and_high",
+            label: "駿河（奇数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 1: 1.04, 3: 1.04, 5: 1.04 } },
+                { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+              ],
+            },
+          },
+
+          {
+            id: "bake_end_shinobu_even",
+            label: "忍（偶数設定濃厚）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 3 },
+                { type: "excludeSetting", exclude: 5 },
+              ],
+            },
+          },
+          {
+            id: "bake_end_oshino_356",
+            label: "忍野（設定3/5/6濃厚）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 2 },
+                { type: "excludeSetting", exclude: 4 },
+              ],
+            },
+          },
+
+          {
+            id: "bake_end_first_panel_araragi_shinobu_oshino_min4",
+            label: "初代パネル：阿良々木・忍・忍野（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "bake_end_first_panel_heroine_min5",
+            label: "初代パネル：ヒロイン（設定5以上濃厚）",
+            effect: { type: "minSetting", min: 5 },
+          },
+          {
+            id: "bake_end_i_love_you_exact6",
+            label: "I LOVE YOU（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "bake_sammy_trophy",
+        title: "サミートロフィー",
+        note: "AT終了画面・エンディング終了画面でサブ液晶に出現。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "bake_trophy_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "bake_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "bake_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "bake_trophy_kirin", label: "キリン柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "bake_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "bake_fixed_payout",
+        title: "特定獲得枚数表示",
+        note: "表示された獲得枚数で示唆。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "bake_payout_174_min2", label: "174枚（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "bake_payout_543_min3", label: "543枚（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "bake_payout_331_exact6", label: "331枚（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
   hintConfigs["smart-god-eater-resurrection"] = {
     machineId: "smart-god-eater-resurrection",
     helpUrl: "https://p-town.dmm.com/machines/4602#anc-point",
