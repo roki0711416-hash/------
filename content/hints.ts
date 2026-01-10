@@ -1121,6 +1121,137 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-tokyo-revengers"] = {
+    machineId: "smart-tokyo-revengers",
+    helpUrl: "https://p-town.dmm.com/machines/4849#anc-point",
+    groups: [
+      {
+        id: "tokrev_at_end_screens",
+        title: "AT終了画面（枠）",
+        note:
+          "東卍チャンス／東卍ラッシュ終了画面で設定を示唆。エピソード（ロングフリーズ後含む）とエンディングの終了画面は固定なので設定示唆なし。※エンディング後は固定で金枠が表示されるため、示唆の金枠と混同しないよう注意。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "tokrev_at_end_red1", label: "赤枠①（デフォルト）", effect: { type: "none" } },
+          {
+            id: "tokrev_at_end_blue1",
+            label: "青枠①（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+          },
+          {
+            id: "tokrev_at_end_red2",
+            label: "赤枠②（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "tokrev_at_end_blue2",
+            label: "青枠②（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+          {
+            id: "tokrev_at_end_red3",
+            label: "赤枠③（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          { id: "tokrev_at_end_blue3", label: "青枠③（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "tokrev_at_end_yellow", label: "黄枠（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "tokrev_at_end_red4", label: "赤枠④（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tokrev_at_end_purple", label: "紫枠（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "tokrev_at_end_gold", label: "金枠（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+
+          { id: "tokrev_at_end_after_episode", label: "エピソード後（固定／示唆なし）", effect: { type: "none" } },
+          {
+            id: "tokrev_at_end_after_episode_lf",
+            label: "ロングフリーズ後のエピソード後（固定／示唆なし）",
+            effect: { type: "none" },
+          },
+          { id: "tokrev_at_end_after_ending", label: "エンディング後（固定の金枠／示唆なし）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "tokrev_sammy_trophy",
+        title: "サミートロフィー",
+        note:
+          "東卍チャンス終了時・東卍ラッシュ終了時・リベンジチャンス終了時・天上天下唯我独尊終了後の1回転目にサブ液晶へ出現する可能性あり。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "tokrev_trophy_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "tokrev_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "tokrev_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tokrev_trophy_kirin", label: "キリン柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "tokrev_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tokrev_payout_display",
+        title: "特定の獲得枚数表示",
+        note: "表示された獲得枚数で設定を示唆。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "tokrev_payout_222", label: "222 OVER（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          {
+            id: "tokrev_payout_246",
+            label: "246 OVER（偶数設定濃厚）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 3 },
+                { type: "excludeSetting", exclude: 5 },
+              ],
+            },
+          },
+          { id: "tokrev_payout_456", label: "456 OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tokrev_payout_555", label: "555 OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+        ],
+      },
+      {
+        id: "tokrev_ending_top_lamp",
+        title: "エンディング中：レア役成立時のトップランプ色",
+        note: "エンディング中にレア役成立→PUSHで筐体トップランプが点灯。奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "tokrev_lamp_white",
+            label: "白（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+          },
+          {
+            id: "tokrev_lamp_yellow",
+            label: "黄（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "tokrev_lamp_green",
+            label: "緑（奇数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+                { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+              ],
+            },
+          },
+          {
+            id: "tokrev_lamp_red",
+            label: "赤（偶数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+                { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+              ],
+            },
+          },
+          { id: "tokrev_lamp_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
   hintConfigs["smart-god-eater-resurrection"] = {
     machineId: "smart-god-eater-resurrection",
     helpUrl: "https://p-town.dmm.com/machines/4602#anc-point",
