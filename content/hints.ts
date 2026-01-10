@@ -910,6 +910,155 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-monster-hunter-rise"] = {
+    machineId: "smart-monster-hunter-rise",
+    helpUrl: "https://p-town.dmm.com/machines/4676",
+    groups: [
+      {
+        id: "mhrise_bonus_voice",
+        title: "ボーナス揃い時のボイス",
+        note: "『設定◯以上/濃厚/否定』は制約として反映。奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "mhrise_voice_default", label: "その他（デフォルト/不明）", effect: { type: "none" } },
+          { id: "mhrise_voice_entaraion", label: "紫7の1確ボイスがエンタライオン（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "mhrise_voice_utsushi", label: "仲間ボイスがウツシ（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "mhrise_voice_hinoe", label: "仲間ボイスがヒノエ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "mhrise_entara_trophy",
+        title: "エンタトロフィー",
+        note: "AT中などに出現。『設定◯以上/6濃厚』は制約として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "mhrise_trophy_none", label: "なし/不明", effect: { type: "none" } },
+          { id: "mhrise_trophy_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "mhrise_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "mhrise_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mhrise_trophy_momiji", label: "紅葉柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "mhrise_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "mhrise_bonus_confirm",
+        title: "ボーナス確定画面（キャラ）",
+        note: "ボーナス確定画面に登場するキャラで設定を示唆。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "mhrise_confirm_default", label: "その他（デフォルト/不明）", effect: { type: "none" } },
+          { id: "mhrise_confirm_wadoumaru", label: "MG-滅-ワドウ丸（奇数設定示唆）", effect: { type: "weight", weights: { 1: 1.1, 3: 1.1, 5: 1.1 } } },
+          { id: "mhrise_confirm_luke", label: "ルーク（奇数設定示唆）", effect: { type: "weight", weights: { 1: 1.1, 3: 1.1, 5: 1.1 } } },
+          { id: "mhrise_confirm_haruto", label: "HARUTO（奇数設定示唆）", effect: { type: "weight", weights: { 1: 1.1, 3: 1.1, 5: 1.1 } } },
+          { id: "mhrise_confirm_ash", label: "アッシュ（偶数設定示唆）", effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } } },
+          { id: "mhrise_confirm_mimi", label: "Mimi★chan（偶数設定示唆）", effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } } },
+          { id: "mhrise_confirm_tsubaki", label: "つばき（偶数設定示唆）", effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } } },
+          { id: "mhrise_confirm_you", label: "YOU（高設定示唆）", effect: { type: "weight", weights: { 4: 1.12, 5: 1.2, 6: 1.28 } } },
+          { id: "mhrise_confirm_lara_miranda", label: "Lara&ミランダ&隊長（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+        ],
+      },
+      {
+        id: "mhrise_bonus_end",
+        title: "ボーナス終了画面（キャラ）",
+        note: "ボーナス終了画面に登場するキャラで設定を示唆。天国系の示唆は現状は表示のみ（判別には未反映）。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "mhrise_end_default", label: "その他（デフォルト/不明）", effect: { type: "none" } },
+
+          { id: "mhrise_end_wadoumaru", label: "MG-滅-ワドウ丸（奇数設定示唆）", effect: { type: "weight", weights: { 1: 1.1, 3: 1.1, 5: 1.1 } } },
+          { id: "mhrise_end_luke", label: "ルーク（奇数設定示唆）", effect: { type: "weight", weights: { 1: 1.1, 3: 1.1, 5: 1.1 } } },
+          { id: "mhrise_end_haruto", label: "HARUTO（奇数設定示唆）", effect: { type: "weight", weights: { 1: 1.1, 3: 1.1, 5: 1.1 } } },
+
+          { id: "mhrise_end_ash", label: "アッシュ（偶数設定示唆）", effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } } },
+          { id: "mhrise_end_mimi", label: "Mimi★chan（偶数設定示唆）", effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } } },
+
+          { id: "mhrise_end_tsubaki_1456", label: "つばき（設定1・4・5・6示唆）", effect: { type: "weight", weights: { 1: 1.15, 4: 1.15, 5: 1.15, 6: 1.15 } } },
+          { id: "mhrise_end_you_otomo", label: "YOU&オトモ（高設定示唆［弱］）", effect: { type: "weight", weights: { 4: 1.08, 5: 1.12, 6: 1.15 } } },
+          { id: "mhrise_end_lara_miranda_strong", label: "Lara&ミランダ&隊長（装備有り）（高設定示唆［強］）", effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } } },
+
+          { id: "mhrise_end_ioli_yomogi", label: "イオリ&ヨモギ（設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
+          { id: "mhrise_end_utsushi_fugen", label: "ウツシ&フゲン（設定3否定）", effect: { type: "excludeSetting", exclude: 3 } },
+          { id: "mhrise_end_all", label: "全員集合（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "mhrise_end_hinoe_minoto_entaraion", label: "ヒノエ&ミノト&エンタライオン（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+
+          { id: "mhrise_end_inner_50", label: "ルーク&HARUTO&Mimi（インナー）（天国期待度約50%）", effect: { type: "none" } },
+          { id: "mhrise_end_inner_80", label: "ワドウ丸&アッシュ&つばき（インナー）（天国期待度約80%）", effect: { type: "none" } },
+          { id: "mhrise_end_inner_heaven", label: "Lara&ミランダ&隊長（インナー）（天国濃厚）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "mhrise_omikuji_color",
+        title: "おみくじの色",
+        note: "エンディング中のレア役成立時に色で示唆。『設定◯以上/6濃厚』は制約、奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "mhrise_omikuji_unknown", label: "不明/未確認", effect: { type: "none" } },
+          {
+            id: "mhrise_omikuji_blue",
+            label: "青（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.1, 3: 1.1, 5: 1.1 } },
+          },
+          {
+            id: "mhrise_omikuji_green",
+            label: "緑（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } },
+          },
+          {
+            id: "mhrise_omikuji_red",
+            label: "赤（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "mhrise_omikuji_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "mhrise_omikuji_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "mhrise_omikuji_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mhrise_omikuji_momiji", label: "紅葉柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "mhrise_omikuji_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "mhrise_bonus_direct_hit",
+        title: "ボーナス直撃当選（弱/強レア役）",
+        note:
+          "通常・非前兆中のレア役でボーナス直撃が発生した回数を入力。設定別の直撃率の比率を、ソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "mhrise_direct_weak",
+            label: "弱レア役で直撃",
+            // 比率: (設定別直撃率) / (設定1直撃率)
+            // 設定1: 0.031%, 2: 0.046%, 3: 0.076%, 4: 0.098%, 5: 0.146%, 6: 0.195%
+            effect: { type: "weight", weights: { 2: 1.48, 3: 2.45, 4: 3.16, 5: 4.71, 6: 6.29 } },
+          },
+          {
+            id: "mhrise_direct_strong",
+            label: "強レア役で直撃",
+            // 設定1: 1.56%, 2: 3.13%, 3: 3.91%, 4: 4.69%, 5: 5.47%, 6: 6.25%
+            effect: { type: "weight", weights: { 2: 2.01, 3: 2.51, 4: 3.01, 5: 3.51, 6: 4.01 } },
+          },
+        ],
+      },
+      {
+        id: "mhrise_long_freeze",
+        title: "ロングフリーズ",
+        note: "ロングフリーズが発生した場合のみ入力。設定別の発生率の比率を、ソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "mhrise_long_freeze_none", label: "未発生", effect: { type: "none" } },
+          {
+            id: "mhrise_long_freeze_hit",
+            label: "発生",
+            // 比率: (設定別発生率) / (設定1発生率) = 986413 / denom
+            // 設定1: 1/986413, 2: 1/830587, 3: 1/717259, 4: 1/631130, 5: 1/563458, 6: 1/492965
+            effect: { type: "weight", weights: { 2: 1.19, 3: 1.38, 4: 1.56, 5: 1.75, 6: 2.0 } },
+          },
+        ],
+      },
+    ],
+  };
+
   hintConfigs["smart-super-blackjack"] = {
     machineId: "smart-super-blackjack",
     helpUrl: "https://p-town.dmm.com/machines/4712",
