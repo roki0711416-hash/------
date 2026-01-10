@@ -51,9 +51,18 @@ export default function SideMenu({
   const filteredMachinesForOpenMaker = useMemo(() => {
     if (!normalizedQuery) return machinesForOpenMaker;
     return machinesForOpenMaker.filter((mc) =>
-      mc.name.replace(/\u3000/g, " ").toLowerCase().includes(normalizedQuery),
+      mc.name
+        .replace(/\u3000/g, " ")
+        .replace(/^スマスロ\s*/u, "L ")
+        .replace(/^スマスロ/u, "L")
+        .toLowerCase()
+        .includes(normalizedQuery),
     );
   }, [machinesForOpenMaker, normalizedQuery]);
+
+  function displayMachineName(name: string) {
+    return name.replace(/^スマスロ\s*/u, "L ").replace(/^スマスロ/u, "L");
+  }
 
   function buildToolUrl(nextMaker: string | null, nextMachine: string) {
     const sp = new URLSearchParams();
@@ -161,7 +170,7 @@ export default function SideMenu({
                             : "text-neutral-700"
                         }`}
                       >
-                        {mc.name}
+                        {displayMachineName(mc.name)}
                       </button>
                     );
                   })}
