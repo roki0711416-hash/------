@@ -569,7 +569,11 @@ export const machines = [
       bigLabel: "初当り",
       regLabel: null,
       totalLabel: null,
-      extraMetrics: [{ id: "at", label: "AT" }],
+      extraMetrics: [
+        { id: "at", label: "AT" },
+        { id: "commonBell", label: "共通ベル" },
+        { id: "chudanCherry", label: "中段チェリー" },
+      ],
     },
     odds: {
       settings: [
@@ -579,7 +583,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 282.4,
           rate: 97.8,
-          extras: { at: 482.2 },
+          extras: { at: 482.2, commonBell: 99.3, chudanCherry: 16384.0 },
         },
         {
           s: 2,
@@ -587,7 +591,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 279.5,
           rate: 98.8,
-          extras: { at: 474.7 },
+          extras: { at: 474.7, commonBell: 96.4, chudanCherry: 16384.0 },
         },
         {
           s: 3,
@@ -595,7 +599,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 272.2,
           rate: 101.4,
-          extras: { at: 456.9 },
+          extras: { at: 456.9, commonBell: 89.8, chudanCherry: 16384.0 },
         },
         {
           s: 4,
@@ -603,7 +607,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 255.8,
           rate: 106.3,
-          extras: { at: 414.0 },
+          extras: { at: 414.0, commonBell: 84.0, chudanCherry: 13107.2 },
         },
         {
           s: 5,
@@ -611,7 +615,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 249.1,
           rate: 111.2,
-          extras: { at: 393.8 },
+          extras: { at: 393.8, commonBell: 79.0, chudanCherry: 13107.2 },
         },
         {
           s: 6,
@@ -619,7 +623,7 @@ export const machines = [
           reg: 1_000_000_000,
           total: 240.1,
           rate: 114.9,
-          extras: { at: 373.1 },
+          extras: { at: 373.1, commonBell: 77.1, chudanCherry: 10922.7 },
         },
       ],
     },
