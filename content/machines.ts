@@ -481,6 +481,31 @@ export const machines = [
 
   // --- SAMMY スマスロ追加 ---
   {
+    id: "smart-bakemonogatari",
+    name: "スマスロ 化物語",
+    maker: "サミー",
+    series: "化物語",
+    category: "SMART",
+    inHall: true,
+    description: "スマスロ（AT初当り）ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 265.1, reg: 1_000_000_000, total: 265.1, rate: 97.9 },
+        { s: 2, big: 260.7, reg: 1_000_000_000, total: 260.7, rate: 98.9 },
+        { s: 3, big: 252.1, reg: 1_000_000_000, total: 252.1, rate: 100.9 },
+        { s: 4, big: 238.8, reg: 1_000_000_000, total: 238.8, rate: 105.0 },
+        { s: 5, big: 230.8, reg: 1_000_000_000, total: 230.8, rate: 107.8 },
+        { s: 6, big: 219.6, reg: 1_000_000_000, total: 219.6, rate: 112.1 },
+      ],
+    },
+  },
+
+  {
     id: "smart-hokuto-no-ken",
     name: "スマスロ北斗の拳",
     maker: "サミー",
