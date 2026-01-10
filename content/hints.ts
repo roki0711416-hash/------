@@ -1170,6 +1170,118 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         ],
       },
       {
+        id: "tokrev_episode_hints",
+        title: "エピソード示唆",
+        note: "エピソード種別ごとの示唆。奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。※天国濃厚など設定以外の示唆は判別に反映しません。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          {
+            id: "tokrev_episode_zero",
+            label: "Zero（奇数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+                { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+              ],
+            },
+          },
+          {
+            id: "tokrev_episode_in_those_days",
+            label: "In those days（偶数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+                { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+              ],
+            },
+          },
+          {
+            id: "tokrev_episode_man_crush_min4",
+            label: "Man-crush（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+        ],
+      },
+      {
+        id: "tokrev_at_start_screen_from_attack",
+        title: "AT開始画面（東卍アタック→東卍ラッシュ復帰時）",
+        note:
+          "開始画面で設定を示唆。示唆［弱/強］はソフト示唆（重み付け）として反映。※天国濃厚/特殊モード濃厚など設定以外の示唆は判別に反映しません。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "tokrev_at_start_from_attack_default", label: "デフォルト（設定示唆なし）", effect: { type: "none" } },
+          {
+            id: "tokrev_at_start_from_attack_all_p1",
+            label: "キャラ集合：パターン1（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+          {
+            id: "tokrev_at_start_from_attack_all_p2",
+            label: "キャラ集合：パターン2（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          {
+            id: "tokrev_at_start_from_attack_all_p3_min2",
+            label: "キャラ集合：パターン3（設定2以上濃厚）",
+            effect: { type: "minSetting", min: 2 },
+          },
+          {
+            id: "tokrev_at_start_from_attack_all_p4_exact6",
+            label: "キャラ集合：パターン4（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+          {
+            id: "tokrev_at_start_from_attack_ichitora_min4",
+            label: "一虎（緑背景）（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "tokrev_at_start_from_attack_baji_exact6",
+            label: "場地（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+          {
+            id: "tokrev_at_start_from_attack_kisaki_mode",
+            label: "稀咲（特殊モード示唆／設定示唆なし）",
+            effect: { type: "none" },
+          },
+        ],
+      },
+      {
+        id: "tokrev_at_start_screen_tenjotenge",
+        title: "AT開始画面（天上天下唯我独尊成功時）",
+        note: "開始画面で設定を示唆。示唆［弱/強］はソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "tokrev_at_start_tenjotenge_default", label: "デフォルト（設定示唆なし）", effect: { type: "none" } },
+          {
+            id: "tokrev_at_start_tenjotenge_all_p1",
+            label: "キャラ集合：パターン1（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+          {
+            id: "tokrev_at_start_tenjotenge_all_p2",
+            label: "キャラ集合：パターン2（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } },
+          },
+          {
+            id: "tokrev_at_start_tenjotenge_all_p3_min2",
+            label: "キャラ集合：パターン3（設定2以上濃厚）",
+            effect: { type: "minSetting", min: 2 },
+          },
+          {
+            id: "tokrev_at_start_tenjotenge_all_p4_exact6",
+            label: "キャラ集合：パターン4（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
         id: "tokrev_sammy_trophy",
         title: "サミートロフィー",
         note:
