@@ -597,6 +597,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
 
   "smart-darling-in-the-franxx": {
     machineId: "smart-darling-in-the-franxx",
+    helpUrl: "https://p-town.dmm.com/machines/4855",
     groups: [
       {
         id: "dinfranxx_bonus_high_end",
@@ -1004,6 +1005,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
 
   hintConfigs["smart-bakemonogatari"] = {
     machineId: "smart-bakemonogatari",
+    helpUrl: "https://p-town.dmm.com/machines/4898",
     groups: [
       {
         id: "bake_at_end",
