@@ -263,15 +263,15 @@ export const machines = [
     },
   },
 
-  // --- UNIVERSAL スマスロ追加 ---
+  // --- UNIVERSAL L追加 ---
   {
     id: "smart-magireco",
-    name: "スマスロ マギアレコード 魔法少女まどか☆マギカ外伝",
+    name: "L マギアレコード 魔法少女まどか☆マギカ外伝",
     maker: "ユニバーサル",
     series: "まどマギ",
     category: "SMART",
     inHall: true,
-    description: "スマスロ（ボーナス初当り/AT初当り）ベースの簡易判別。",
+    description: "L（ボーナス初当り/AT初当り）ベースの簡易判別。",
     metricsLabels: {
       bigLabel: "ボーナス初当り",
       regLabel: "AT初当り",
@@ -341,15 +341,15 @@ export const machines = [
     },
   },
 
-  // --- SPIKY スマスロ追加 ---
+  // --- SPIKY L追加 ---
   {
     id: "smart-tokyo-ghoul",
-    name: "スマスロ 東京喰種",
+    name: "L 東京喰種",
     maker: "スパイキー",
     series: "東京喰種",
     category: "SMART",
     inHall: true,
-    description: "スマスロ（初当り）ベースの簡易判別。",
+    description: "L（初当り）ベースの簡易判別。",
     metricsLabels: {
       bigLabel: "初当り",
       regLabel: null,
@@ -456,12 +456,12 @@ export const machines = [
 
   {
     id: "smart-darling-in-the-franxx",
-    name: "スマスロ ダーリン・イン・ザ・フランキス",
+    name: "L ダーリン・イン・ザ・フランキス",
     maker: "スパイキー",
     series: "ダーリン・イン・ザ・フランキス",
     category: "SMART",
     inHall: true,
-    description: "スマスロ（ボーナス初当り/ボーナス高確率）ベースの簡易判別。",
+    description: "L（ボーナス初当り/ボーナス高確率）ベースの簡易判別。",
     metricsLabels: {
       bigLabel: "ボーナス初当り",
       regLabel: "ボーナス高確率",
@@ -479,15 +479,15 @@ export const machines = [
     },
   },
 
-  // --- SAMMY スマスロ追加 ---
+  // --- SAMMY L追加 ---
   {
     id: "smart-bakemonogatari",
-    name: "スマスロ 化物語",
+    name: "L 化物語",
     maker: "サミー",
     series: "化物語",
     category: "SMART",
     inHall: true,
-    description: "スマスロ（AT初当り）ベースの簡易判別。",
+    description: "L（AT初当り）ベースの簡易判別。",
     metricsLabels: {
       bigLabel: "AT初当り",
       regLabel: null,
@@ -559,12 +559,12 @@ export const machines = [
 
   {
     id: "smart-tokyo-revengers",
-    name: "スマスロ 東京リベンジャーズ",
+    name: "L 東京リベンジャーズ",
     maker: "サミー",
     series: "東京リベンジャーズ",
     category: "SMART",
     inHall: true,
-    description: "スマスロ（初当り/AT）ベースの簡易判別。",
+    description: "L（初当り/AT）ベースの簡易判別。",
     metricsLabels: {
       bigLabel: "初当り",
       regLabel: null,
@@ -627,12 +627,12 @@ export const machines = [
 
   {
     id: "smart-hokuto-no-ken",
-    name: "スマスロ北斗の拳",
+    name: "L北斗の拳",
     maker: "サミー",
     series: "北斗の拳",
     category: "SMART",
     inHall: true,
-    description: "スマスロ（BB初当り）ベースの簡易判別。",
+    description: "L（BB初当り）ベースの簡易判別。",
     metricsLabels: {
       bigLabel: "BB初当り",
       regLabel: null,
@@ -715,15 +715,15 @@ export const machines = [
     },
   },
 
-  // --- YAMASA スマスロ追加 ---
+  // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",
-    name: "スマスロ ゴッドイーター リザレクション",
+    name: "L ゴッドイーター リザレクション",
     maker: "山佐",
     series: "ゴッドイーター",
     category: "SMART",
     inHall: true,
-    description: "スマスロ（初当り/CZ/AT直撃）ベースの簡易判別。",
+    description: "L（初当り/CZ/AT直撃）ベースの簡易判別。",
     metricsLabels: {
       bigLabel: "初当り",
       regLabel: null,
@@ -804,12 +804,12 @@ export const machines = [
 
   {
     id: "smart-neo-planet",
-    name: "スマスロ ネオプラネット",
+    name: "L ネオプラネット",
     maker: "山佐",
     series: "ネオプラネット",
     category: "SMART",
     inHall: true,
-    description: "スマスロ（ボーナス出現率）ベースの簡易判別。",
+    description: "L（ボーナス出現率）ベースの簡易判別。",
     metricsLabels: {
       bigLabel: "BIG+SBIG合算",
       regLabel: "REG",
@@ -828,12 +828,12 @@ export const machines = [
 
   {
     id: "smart-super-blackjack",
-    name: "スマスロ スーパーブラックジャック",
+    name: "L スーパーブラックジャック",
     maker: "山佐",
     series: "スーパーブラックジャック",
     category: "SMART",
     inHall: true,
-    description: "スマスロ（ボーナス初当り）ベースの簡易判別。",
+    description: "L（ボーナス初当り）ベースの簡易判別。",
     metricsLabels: {
       bigLabel: "ボーナス初当り",
       regLabel: null,
@@ -905,7 +905,7 @@ export const machines = [
 
   {
     id: "smart-monkey-v",
-    name: "スマスロ モンキーターンV",
+    name: "L モンキーターンV",
     maker: "山佐",
     series: "モンキーターン",
     category: "SMART",
