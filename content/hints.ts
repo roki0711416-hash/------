@@ -1110,8 +1110,8 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           },
           {
             id: "bake_bonus_confirm_shinobu_red7_min5",
-            label: "忍（赤7：設定5以上濃厚）",
-            effect: { type: "minSetting", min: 5 },
+            label: "忍（赤7：高設定濃厚!?）",
+            effect: { type: "weight", weights: { 4: 1.08, 5: 1.12, 6: 1.15 } },
           },
         ],
       },
