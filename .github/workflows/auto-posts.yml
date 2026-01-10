@@ -1,0 +1,41 @@
+name: Auto add posts for new machines
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "content/machines.ts"
+
+permissions:
+  contents: write
+
+jobs:
+  auto-posts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate posts
+        run: node scripts/auto-add-machine-posts.mjs --base "${{ github.event.before }}" --head "${{ github.sha }}"
+
+      - name: Commit and push (if changed)
+        run: |
+          if git diff --quiet -- content/posts.json; then
+            echo "No changes in content/posts.json"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/posts.json
+          git commit -m "chore: auto add posts for new machines"
+          git push
