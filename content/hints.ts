@@ -1091,6 +1091,31 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         ],
       },
       {
+        id: "bake_bonus_confirm",
+        title: "ボーナス確定画面",
+        note:
+          "ボーナス確定画面とボーナス図柄（赤7/青7）の組み合わせで示唆。忍の確定画面は青7示唆。赤7なら設定5以上濃厚。",
+        defaultCollapsed: true,
+        items: [
+          { id: "bake_bonus_confirm_heroine_default", label: "ヒロイン（デフォルト）", effect: { type: "none" } },
+          {
+            id: "bake_bonus_confirm_heroine_1pic_high",
+            label: "ヒロイン1枚絵（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.08, 5: 1.12, 6: 1.15 } },
+          },
+          {
+            id: "bake_bonus_confirm_shinobu_blue7",
+            label: "忍（青7示唆）",
+            effect: { type: "none" },
+          },
+          {
+            id: "bake_bonus_confirm_shinobu_red7_min5",
+            label: "忍（赤7：設定5以上濃厚）",
+            effect: { type: "minSetting", min: 5 },
+          },
+        ],
+      },
+      {
         id: "bake_sammy_trophy",
         title: "サミートロフィー",
         note: "AT終了画面・エンディング終了画面でサブ液晶に出現。",
