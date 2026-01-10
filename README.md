@@ -34,3 +34,14 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## 機種追加と新着情報（自動）
+
+`content/machines.ts` に新しい機種（`id` を含むオブジェクト）を追加して `main` にpushすると、GitHub Actions が差分から新規 `machineId` を検出し、`content/posts.json` に新着投稿を自動で追加します。
+
+- ワークフロー: `.github/workflows/auto-posts.yml`
+- 生成スクリプト: `scripts/auto-add-machine-posts.mjs`
+
+メモ:
+- 既に同じ `href`（`/tool?machine=<id>`）の投稿が存在する場合は追加しません。
+- `content/posts.json` のみを自動コミットするため、無限ループは起きません。
