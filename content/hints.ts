@@ -594,6 +594,190 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       },
     ],
   },
+
+  "smart-darling-in-the-franxx": {
+    machineId: "smart-darling-in-the-franxx",
+    groups: [
+      {
+        id: "dinfranxx_bonus_high_end",
+        title: "ボーナス高確終了画面",
+        note:
+          "ボーナス高確終了画面で示唆。『復活』はリザルト画面でのボーナス当選を指す想定。復活時の示唆は“復活時のみ”の項目にカウント。",
+        defaultCollapsed: true,
+        maxTotalFrom: "regCount",
+        items: [
+          { id: "dinfranxx_end_default", label: "後ろ姿（デフォルト）", effect: { type: "none" } },
+          {
+            id: "dinfranxx_end_ehon_even",
+            label: "絵本（偶数設定濃厚）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 3 },
+                { type: "excludeSetting", exclude: 5 },
+              ],
+            },
+          },
+          {
+            id: "dinfranxx_end_ehon_shima_excl_124",
+            label: "絵本の島（設定1・2・4否定）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 2 },
+                { type: "excludeSetting", exclude: 4 },
+              ],
+            },
+          },
+          {
+            id: "dinfranxx_end_child_02_min4",
+            label: "幼少期ゼロツー（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "dinfranxx_end_child_02_excl1_on_revive",
+            label: "幼少期ゼロツー（復活時のみ：設定1否定）",
+            effect: { type: "excludeSetting", exclude: 1 },
+          },
+          {
+            id: "dinfranxx_end_hiro_02_exact6",
+            label: "ヒロ＆ゼロツー（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+          {
+            id: "dinfranxx_end_hiro_02_min4_on_revive",
+            label: "ヒロ＆ゼロツー（復活時のみ：設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+        ],
+      },
+      {
+        id: "dinfranxx_nami_trophy",
+        title: "ナミちゃんトロフィー",
+        note: "ボーナス高確終了画面で出現。",
+        defaultCollapsed: true,
+        maxTotalFrom: "regCount",
+        items: [
+          {
+            id: "dinfranxx_trophy_black",
+            label: "黒（次回：銅以上が出現）",
+            effect: { type: "minSetting", min: 2 },
+          },
+          { id: "dinfranxx_trophy_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "dinfranxx_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "dinfranxx_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "dinfranxx_trophy_franxx", label: "フランクス柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "dinfranxx_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "dinfranxx_connect_chance_initial_level",
+        title: "コネクトチャンス（CZ）初期レベル",
+        note:
+          "CZ開始時の初期レベル。表の『初期レベル振り分け』をそのまま重み付けに変換して判別に反映（レベル4・5ほど高設定寄り）。",
+        defaultCollapsed: true,
+        items: [
+          {
+            id: "dinfranxx_cz_lv1",
+            label: "レベル1（白）",
+            effect: {
+              type: "weight",
+              weights: { 1: 1.028, 2: 1.028, 3: 1.028, 4: 1.002, 5: 0.978, 6: 0.937 },
+            },
+          },
+          {
+            id: "dinfranxx_cz_lv2",
+            label: "レベル2（青）",
+            effect: {
+              type: "weight",
+              weights: { 1: 0.991, 2: 0.991, 3: 0.991, 4: 0.999, 5: 1.007, 6: 1.019 },
+            },
+          },
+          {
+            id: "dinfranxx_cz_lv3",
+            label: "レベル3（黄）",
+            effect: {
+              type: "weight",
+              weights: { 1: 0.834, 2: 0.834, 3: 0.834, 4: 0.994, 5: 1.118, 6: 1.385 },
+            },
+          },
+          {
+            id: "dinfranxx_cz_lv4",
+            label: "レベル4（緑）",
+            effect: {
+              type: "weight",
+              weights: { 1: 0.667, 2: 0.667, 3: 0.667, 4: 1.0, 5: 1.25, 6: 1.75 },
+            },
+          },
+          {
+            id: "dinfranxx_cz_lv5",
+            label: "レベル5（赤）",
+            effect: {
+              type: "weight",
+              weights: { 1: 0.571, 2: 0.571, 3: 0.571, 4: 1.0, 5: 1.286, 6: 2.0 },
+            },
+          },
+        ],
+      },
+      {
+        id: "dinfranxx_bonus_hit_level",
+        title: "ボーナス当選レベル（表示のみ）",
+        note:
+          "レベルごとの当選率は『各レベルでの試行回数』が分からないと設定判別へ厳密に反映できないため、ここはメモ用途（判別に未反映）。精度優先のため反映を外しています。",
+        defaultCollapsed: true,
+        items: [
+          { id: "dinfranxx_bonus_lv1", label: "レベル1（白）", effect: { type: "none" } },
+          { id: "dinfranxx_bonus_lv2", label: "レベル2（青）", effect: { type: "none" } },
+          { id: "dinfranxx_bonus_lv3", label: "レベル3（黄）", effect: { type: "none" } },
+          { id: "dinfranxx_bonus_lv4", label: "レベル4（緑）", effect: { type: "none" } },
+          { id: "dinfranxx_bonus_lv5", label: "レベル5（赤）", effect: { type: "none" } },
+          { id: "dinfranxx_bonus_lvmax", label: "レベルMAX（虹）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "dinfranxx_ending_rare_card",
+        title: "レア役成立時：カード（エンディング中）",
+        note:
+          "エンディング中のレア役成立時にPUSHで出現するカードで設定を示唆。ゼロツー（赤）は“1回につきどちらか片方”にカウント（両方に入れない）。",
+        defaultCollapsed: true,
+        items: [
+          { id: "dinfranxx_card_ikuno_default", label: "イクノ（白：デフォルト）", effect: { type: "none" } },
+          {
+            id: "dinfranxx_card_miku_odd_weak",
+            label: "ミク（青：奇数設定示唆［弱］）",
+            effect: { type: "weight", weights: { 1: 1.06, 3: 1.06, 5: 1.06 } },
+          },
+          {
+            id: "dinfranxx_card_kokoro_high_weak",
+            label: "ココロ（黄：高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.06, 5: 1.1, 6: 1.14 } },
+          },
+          {
+            id: "dinfranxx_card_ichigo_high_mid",
+            label: "イチゴ（緑：高設定示唆［中］）",
+            effect: { type: "weight", weights: { 4: 1.12, 5: 1.2, 6: 1.28 } },
+          },
+          {
+            id: "dinfranxx_card_02_red_min2",
+            label: "ゼロツー（赤：設定2以上濃厚）※どちらか一方",
+            effect: { type: "minSetting", min: 2 },
+          },
+          {
+            id: "dinfranxx_card_02_red_even_strong",
+            label: "ゼロツー（赤：偶数設定示唆［強］）※どちらか一方",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "dinfranxx_card_strelizia_rainbow_exact6",
+            label: "ストレリチア（虹：設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+    ],
+  },
 };
 
   hintConfigs["smart-neo-planet"] = {

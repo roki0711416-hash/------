@@ -454,6 +454,31 @@ export const machines = [
     },
   },
 
+  {
+    id: "smart-darling-in-the-franxx",
+    name: "スマスロ ダーリン・イン・ザ・フランキス",
+    maker: "スパイキー",
+    series: "ダーリン・イン・ザ・フランキス",
+    category: "SMART",
+    inHall: true,
+    description: "スマスロ（ボーナス初当り/ボーナス高確率）ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "ボーナス初当り",
+      regLabel: "ボーナス高確率",
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 229.8, reg: 343.0, total: 137.6, rate: 97.8 },
+        { s: 2, big: 224.1, reg: 334.1, total: 134.1, rate: 98.9 },
+        { s: 3, big: 214.9, reg: 320.1, total: 128.6, rate: 100.6 },
+        { s: 4, big: 207.3, reg: 298.9, total: 122.4, rate: 105.4 },
+        { s: 5, big: 190.3, reg: 270.3, total: 111.7, rate: 110.5 },
+        { s: 6, big: 180.3, reg: 252.3, total: 105.2, rate: 114.5 },
+      ],
+    },
+  },
+
   // --- SAMMY スマスロ追加 ---
   {
     id: "smart-hokuto-no-ken",
