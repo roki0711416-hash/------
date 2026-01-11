@@ -25,11 +25,7 @@ export type MachineHintConfig = {
   groups: HintGroup[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function makePioneerHanahana6GoukiGroups(options: {
-  featherRainbowEffect: HintEffect;
-  featherNote: string;
-}): HintGroup[] {
+function makePioneerHanahana6GoukiGroups(): HintGroup[] {
   return [
     {
       id: "big_in",
@@ -73,10 +69,7 @@ function makePioneerHanahana6GoukiGroups(options: {
         },
       ];
     }
-    const pioneerHanahana6GoukiGroupsRainbow4Plus = makePioneerHanahana6GoukiGroups({
-  featherRainbowEffect: { type: "minSetting", min: 4 },
-  featherNote: "REG後フェザーの『設定◯以上』のみ判別に反映（虹は設定4以上として反映）",
-});
+    const pioneerHanahana6GoukiGroupsRainbow4Plus = makePioneerHanahana6GoukiGroups();
 
 export const hintConfigs: Record<string, MachineHintConfig> = {
   "s-king-hanahana-30-6gouki": {
@@ -1051,6 +1044,81 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
               type: "allOf",
               effects: [{ type: "minSetting", min: 5 }, { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } }],
             },
+          },
+        ],
+      },
+    ],
+  },
+
+  "heiwa_sengoku_otome4": {
+    machineId: "heiwa_sengoku_otome4",
+    helpUrl: "https://p-town.dmm.com/machines/4395",
+    groups: [
+      {
+        id: "sengoku_otome4_at_end_screen",
+        title: "AT終了画面（スタンプ）",
+        note: "スタンプは濃厚系として判別に反映。キャラ構成による示唆はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "sengoku_otome4_at_end_default", label: "下記以外（デフォルト）", effect: { type: "none" } },
+          {
+            id: "sengoku_otome4_at_end_s35",
+            label: "ヒデヨシ＆カンスケ＆シンゲン＆ノブナガ（設定3・5示唆）",
+            effect: { type: "weight", weights: { 3: 1.08, 5: 1.08 } },
+          },
+          {
+            id: "sengoku_otome4_at_end_s24",
+            label: "ヨシモト＆ケンシン＆ウジマサ＆イエヤス（設定2・4示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08 } },
+          },
+          {
+            id: "sengoku_otome4_at_end_high_weak",
+            label: "モトチカ＆ソウリン＆ドウセツ＆モトナリ（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "sengoku_otome4_at_end_ka_min2", label: "可スタンプ（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "sengoku_otome4_at_end_kichi_min3", label: "吉スタンプ（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "sengoku_otome4_at_end_ryo_min4", label: "良スタンプ（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "sengoku_otome4_at_end_yu_min5", label: "優スタンプ（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "sengoku_otome4_at_end_kiwami_exact6", label: "極スタンプ（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "sengoku_otome4_payout_display",
+        title: "特定の獲得枚数表示",
+        note: "獲得枚数が規定枚数を超えた際に表示。",
+        items: [
+          { id: "sengoku_otome4_payout_222_over", label: "222枚OVER（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "sengoku_otome4_payout_333_over", label: "333枚OVER（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "sengoku_otome4_payout_444_over", label: "444枚OVER（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "sengoku_otome4_payout_555_over", label: "555枚OVER（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "sengoku_otome4_payout_666_over", label: "666枚OVER（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "sengoku_otome4_episode_type",
+        title: "エピソードボーナス：エピソードの種類",
+        note: "奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "sengoku_otome4_episode_default", label: "下記以外", effect: { type: "none" } },
+          {
+            id: "sengoku_otome4_episode_kansuke_odd",
+            label: "カンスケ（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "sengoku_otome4_episode_sourin_even",
+            label: "ソウリン（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "sengoku_otome4_episode_ujimasa_high",
+            label: "ウジマサ（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "sengoku_otome4_episode_hideaki_high",
+            label: "ヒデアキ（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
           },
         ],
       },

@@ -1789,4 +1789,30 @@ export const machines = [
       ],
     },
   },
+
+  // --- 平和 L戦国乙女4 戦乱に閃く炯眼の軍師（p-town 4395）追加 ---
+  {
+    id: "heiwa_sengoku_otome4",
+    name: "L戦国乙女4 戦乱に閃く炯眼の軍師",
+    maker: "平和",
+    series: "戦国乙女",
+    inHall: true,
+    category: "SMART",
+    description: "ボーナス確率と機械割での簡易判別。数値はp-town(4395)より。",
+    metricsLabels: {
+      bigLabel: "ボーナス",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 272.7, reg: 1_000_000_000, total: 272.7, rate: 98.2 },
+        { s: 2, big: 267.3, reg: 1_000_000_000, total: 267.3, rate: 99.0 },
+        { s: 3, big: 255.3, reg: 1_000_000_000, total: 255.3, rate: 101.2 },
+        { s: 4, big: 238.2, reg: 1_000_000_000, total: 238.2, rate: 105.2 },
+        { s: 5, big: 223.2, reg: 1_000_000_000, total: 223.2, rate: 110.2 },
+        { s: 6, big: 217.1, reg: 1_000_000_000, total: 217.1, rate: 113.0 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];
