@@ -1224,6 +1224,12 @@ export const machines = [
         { id: "bonusDirectRed7", label: "ボーナス直撃(赤7)" },
         { id: "bonusDirectBlue7", label: "ボーナス直撃(青7)" },
       ],
+      suikaTrialsLabel: "刺客ゾーン(青枠) 終了回数",
+      suikaCzHitsLabel: "刺客ゾーン(青枠) AT当選回数",
+      suikaCzRateLabel: "刺客ゾーン(青枠) AT当選率",
+      uraAtTrialsLabel: "刺客ゾーン(黄枠) 終了回数",
+      uraAtHitsLabel: "刺客ゾーン(黄枠) AT当選回数",
+      uraAtRateLabel: "刺客ゾーン(黄枠) AT当選率",
     },
     odds: {
       settings: [
@@ -1233,6 +1239,8 @@ export const machines = [
           reg: 1_000_000_000,
           total: 386.9,
           rate: 97.6,
+          suikaCzRate: 0.01,
+          uraAtRate: 0.1,
           extras: {
             bonusDirectRed7: 8156.2,
             bonusDirectBlue7: 220772.4,
@@ -1244,6 +1252,8 @@ export const machines = [
           reg: 1_000_000_000,
           total: 368.5,
           rate: 98.9,
+          suikaCzRate: 0.01,
+          uraAtRate: 0.1,
           extras: {
             bonusDirectRed7: 7387.3,
             bonusDirectBlue7: 110027.0,
@@ -1255,6 +1265,8 @@ export const machines = [
           reg: 1_000_000_000,
           total: 375.8,
           rate: 101.3,
+          suikaCzRate: 0.01,
+          uraAtRate: 0.1,
           extras: {
             bonusDirectRed7: 6694.4,
             bonusDirectBlue7: 55196.3,
@@ -1266,6 +1278,8 @@ export const machines = [
           reg: 1_000_000_000,
           total: 332.4,
           rate: 106.0,
+          suikaCzRate: 0.01,
+          uraAtRate: 0.1,
           extras: {
             bonusDirectRed7: 2940.1,
             bonusDirectBlue7: 27930.0,
@@ -1277,6 +1291,8 @@ export const machines = [
           reg: 1_000_000_000,
           total: 351.6,
           rate: 112.1,
+          suikaCzRate: 0.01,
+          uraAtRate: 0.1,
           extras: {
             bonusDirectRed7: 3697.3,
             bonusDirectBlue7: 24606.5,
@@ -1288,6 +1304,8 @@ export const machines = [
           reg: 1_000_000_000,
           total: 312.1,
           rate: 114.9,
+          suikaCzRate: 0.03,
+          uraAtRate: 0.15,
           extras: {
             bonusDirectRed7: 2495.8,
             bonusDirectBlue7: 22560.5,
