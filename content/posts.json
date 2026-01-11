@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-12-005",
+    "date": "2026-01-12",
+    "title": "SHAKE BONUS TRIGGER対応",
+    "href": "/tool?machine=daito_shake_bonus_trigger",
+    "body": "SHAKE BONUS TRIGGERを追加しました。"
+  },
+  {
     "id": "2026-01-12-004",
     "date": "2026-01-12",
     "title": "L 秘宝伝対応",
