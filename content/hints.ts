@@ -1089,6 +1089,43 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         ],
       },
       {
+        id: "tekken6_at_big_end_screen_non_tc",
+        title: "AT中ビッグ終了画面（非鉄拳チャンス中）",
+        note: "鉄拳チャンス当選期待度の示唆。現状は表示のみ（判別には未反映）。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "tekken6_at_big_end_blue", label: "青背景（デフォルト）", effect: { type: "none" } },
+          { id: "tekken6_at_big_end_green_jin", label: "緑背景：仁（期待度アップ）", effect: { type: "none" } },
+          { id: "tekken6_at_big_end_red_kazuya", label: "赤背景：一八（鉄拳チャンス濃厚）", effect: { type: "none" } },
+          {
+            id: "tekken6_at_big_end_red_heihachi",
+            label: "赤背景：平八（鉄拳チャンス濃厚＋赤タイトル期待度アップ）",
+            effect: { type: "none" },
+          },
+          { id: "tekken6_at_big_end_red_kazumi", label: "赤背景：一美（赤タイトルの鉄拳チャンス濃厚）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "tekken6_first_big_end_screen_mode_point",
+        title: "初当りビッグ終了画面／鉄拳ラッシュ終了時（モード＆規定鉄拳ポイント示唆）",
+        note: "滞在モードや規定鉄拳ポイントの示唆。現状は表示のみ（判別には未反映）。",
+        defaultCollapsed: true,
+        items: [
+          { id: "tekken6_end_lars", label: "ラース", effect: { type: "none" } },
+          { id: "tekken6_end_xiaoyu", label: "シャオユウ", effect: { type: "none" } },
+          { id: "tekken6_end_king", label: "キング", effect: { type: "none" } },
+          { id: "tekken6_end_jin", label: "仁", effect: { type: "none" } },
+          { id: "tekken6_end_kazuya", label: "一八", effect: { type: "none" } },
+          { id: "tekken6_end_heihachi_green", label: "平八（緑）", effect: { type: "none" } },
+          { id: "tekken6_end_kazumi", label: "一美", effect: { type: "none" } },
+          { id: "tekken6_end_heihachi_red", label: "平八（赤）", effect: { type: "none" } },
+          { id: "tekken6_end_kazuya_heihachi", label: "一八＆平八", effect: { type: "none" } },
+          { id: "tekken6_end_devil_jin", label: "デビル仁", effect: { type: "none" } },
+          { id: "tekken6_end_devil_kazumi", label: "デビル一美", effect: { type: "none" } },
+        ],
+      },
+      {
         id: "tekken6_at_direct_hit",
         title: "AT直撃当選",
         note:
