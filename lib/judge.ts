@@ -8,6 +8,7 @@ export type MachineSettingOdds = {
   rate: number; // payout percent (display only)
   extra?: number; // optional extra metric per game (e.g., weak cherry): 1/extra
   extras?: Record<string, number>; // optional extra metrics per game: { metricId: 1/oddsDenom }
+  binomialRates?: Record<string, number>; // optional: { metricId: probability(0..1) }
   suikaCzRate?: number; // optional: probability (0..1)
   uraAtRate?: number; // optional: probability (0..1)
 };
@@ -18,6 +19,8 @@ export type JudgeInput = {
   regCount: number;
   extraCount?: number;
   extraCounts?: Record<string, number>;
+  binomialTrials?: Record<string, number>;
+  binomialHits?: Record<string, number>;
   suikaTrials?: number;
   suikaCzHits?: number;
   uraAtTrials?: number;
@@ -72,6 +75,30 @@ export function calcSettingPosteriors(
   const uraAtTrials = typeof uraAtTrialsRaw === "number" ? Math.floor(uraAtTrialsRaw) : null;
   const uraAtHits = typeof uraAtHitsRaw === "number" ? Math.floor(uraAtHitsRaw) : null;
 
+  const binomialTrialsRaw = input.binomialTrials;
+  const binomialHitsRaw = input.binomialHits;
+  const binomialPairs: Record<string, { trials: number; hits: number }> | null = (() => {
+    if (!binomialTrialsRaw && !binomialHitsRaw) return null;
+    if (!binomialTrialsRaw || !binomialHitsRaw) return null;
+    if (typeof binomialTrialsRaw !== "object" || typeof binomialHitsRaw !== "object") return null;
+
+    const out: Record<string, { trials: number; hits: number }> = {};
+    const keys = new Set<string>([
+      ...Object.keys(binomialTrialsRaw),
+      ...Object.keys(binomialHitsRaw),
+    ]);
+    for (const k of keys) {
+      const tRaw = (binomialTrialsRaw as Record<string, unknown>)[k];
+      const hRaw = (binomialHitsRaw as Record<string, unknown>)[k];
+      if (tRaw === undefined || hRaw === undefined) return null;
+      const t = typeof tRaw === "number" ? Math.floor(tRaw) : NaN;
+      const h = typeof hRaw === "number" ? Math.floor(hRaw) : NaN;
+      if (!Number.isFinite(t) || !Number.isFinite(h)) return null;
+      out[k] = { trials: t, hits: h };
+    }
+    return Object.keys(out).length > 0 ? out : null;
+  })();
+
   if (!(games > 0)) return [];
   if (bigCount < 0 || regCount < 0) return [];
   if (bigCount + regCount > games) return [];
@@ -91,6 +118,13 @@ export function calcSettingPosteriors(
   if (uraAtTrials !== null && uraAtHits !== null) {
     if (uraAtTrials < 0 || uraAtHits < 0) return [];
     if (uraAtHits > uraAtTrials) return [];
+  }
+
+  if (binomialPairs) {
+    for (const { trials, hits } of Object.values(binomialPairs)) {
+      if (trials < 0 || hits < 0) return [];
+      if (hits > trials) return [];
+    }
   }
 
   const noneCount = games - bigCount - regCount;
@@ -160,12 +194,29 @@ export function calcSettingPosteriors(
       return uraAtHits * safeLog(p) + none * safeLog(1 - p);
     })();
 
+    const binomialLogL = (() => {
+      if (!binomialPairs) return 0;
+      if (!st.binomialRates) return 0;
+
+      let sum = 0;
+      for (const [metricId, { trials, hits }] of Object.entries(binomialPairs)) {
+        if (!(trials > 0) && !(hits > 0)) continue;
+        const p = st.binomialRates[metricId];
+        if (typeof p !== "number") continue;
+        if (!(p >= 0 && p <= 1)) continue;
+        const none = trials - hits;
+        sum += hits * safeLog(p) + none * safeLog(1 - p);
+      }
+      return sum;
+    })();
+
     const logL =
       bigCount * safeLog(pBig) +
       regCount * safeLog(pReg) +
       noneCount * safeLog(pNone) +
       extraLogL +
       extrasLogL +
+      binomialLogL +
       suikaCzLogL +
       uraAtLogL;
 

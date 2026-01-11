@@ -61,6 +61,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const [regCount, setRegCount] = useState<string>("");
   const [extraCount, setExtraCount] = useState<string>("");
   const [extraCounts, setExtraCounts] = useState<Record<string, string>>({});
+  const [binomialTrials, setBinomialTrials] = useState<Record<string, string>>({});
+  const [binomialHits, setBinomialHits] = useState<Record<string, string>>({});
   const [suikaTrials, setSuikaTrials] = useState<string>("");
   const [suikaCzHits, setSuikaCzHits] = useState<string>("");
   const [uraAtTrials, setUraAtTrials] = useState<string>("");
@@ -117,11 +119,16 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const extraMetrics = machine.metricsLabels?.extraMetrics ?? null;
   const showExtraMetrics = !!extraMetrics && extraMetrics.length > 0;
 
+  const binomialMetrics = machine.metricsLabels?.binomialMetrics ?? null;
+  const showBinomialMetrics = !!binomialMetrics && binomialMetrics.length > 0;
+
   useEffect(() => {
     // Avoid carrying hint inputs across machine switches.
     setHintCounts({});
     setCollapsedHintGroups({});
     setExtraCounts({});
+    setBinomialTrials({});
+    setBinomialHits({});
     setHintMemos({});
   }, [machine.id]);
 
@@ -176,12 +183,26 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       parsedExtraCounts[k] = Number.isFinite(n) ? n : Number.NaN;
     }
 
+    const parsedBinomialTrials: Record<string, number> = {};
+    for (const [k, v] of Object.entries(binomialTrials)) {
+      const n = Number(v);
+      parsedBinomialTrials[k] = Number.isFinite(n) ? n : Number.NaN;
+    }
+
+    const parsedBinomialHits: Record<string, number> = {};
+    for (const [k, v] of Object.entries(binomialHits)) {
+      const n = Number(v);
+      parsedBinomialHits[k] = Number.isFinite(n) ? n : Number.NaN;
+    }
+
     return {
       games: Number.isFinite(g) ? g : NaN,
       bigCount: Number.isFinite(b) ? b : NaN,
       regCount: showReg ? (Number.isFinite(r) ? r : NaN) : 0,
       extraCount: Number.isFinite(x) ? x : NaN,
       extraCounts: parsedExtraCounts,
+      binomialTrials: parsedBinomialTrials,
+      binomialHits: parsedBinomialHits,
       suikaTrials: Number.isFinite(st) ? st : NaN,
       suikaCzHits: Number.isFinite(sh) ? sh : NaN,
       uraAtTrials: Number.isFinite(ut) ? ut : NaN,
@@ -193,6 +214,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     regCount,
     extraCount,
     extraCounts,
+    binomialTrials,
+    binomialHits,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -299,6 +322,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       (showReg ? regCount === "" : true) &&
       extraCount === "" &&
       Object.values(extraCounts).every((v) => v === "") &&
+      Object.values(binomialTrials).every((v) => v === "") &&
+      Object.values(binomialHits).every((v) => v === "") &&
       suikaTrials === "" &&
       suikaCzHits === "" &&
       uraAtTrials === "" &&
@@ -339,6 +364,24 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       }
     }
 
+    if (showBinomialMetrics && binomialMetrics) {
+      for (const m of binomialMetrics) {
+        const tRaw = binomialTrials[m.id] ?? "";
+        const hRaw = binomialHits[m.id] ?? "";
+        if (tRaw === "" && hRaw === "") continue;
+        if (tRaw === "" || hRaw === "")
+          return `${m.trialsLabel}と${m.hitsLabel}は両方入力してください。`;
+
+        const t = parsed.binomialTrials[m.id];
+        const h = parsed.binomialHits[m.id];
+        if (!(t >= 0) || !Number.isInteger(t))
+          return `${m.trialsLabel}は0以上の整数で入力してください。`;
+        if (!(h >= 0) || !Number.isInteger(h))
+          return `${m.hitsLabel}は0以上の整数で入力してください。`;
+        if (h > t) return `${m.hitsLabel}が${m.trialsLabel}を超えています。`;
+      }
+    }
+
     const showSuika = !!suikaTrialsLabel && !!suikaCzHitsLabel;
     if (showSuika) {
       if ((suikaTrials === "") !== (suikaCzHits === ""))
@@ -375,6 +418,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     regCount,
     extraCount,
     extraCounts,
+    binomialTrials,
+    binomialHits,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -382,6 +427,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     extraLabel,
     extraMetrics,
     showExtraMetrics,
+    binomialMetrics,
+    showBinomialMetrics,
     bigLabel,
     regLabel,
     showReg,
@@ -395,12 +442,16 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     if (error) return null;
 
     const hasAnyExtraMetricsInput = Object.values(extraCounts).some((v) => v !== "");
+    const hasAnyBinomialInput =
+      Object.values(binomialTrials).some((v) => v !== "") ||
+      Object.values(binomialHits).some((v) => v !== "");
     if (
       games === "" &&
       bigCount === "" &&
       (showReg ? regCount === "" : true) &&
       extraCount === "" &&
       !hasAnyExtraMetricsInput &&
+      !hasAnyBinomialInput &&
       suikaTrials === "" &&
       suikaCzHits === "" &&
       uraAtTrials === "" &&
@@ -421,12 +472,40 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       return Object.keys(out).length > 0 ? out : undefined;
     })();
 
+    const binomialTrialsForJudge: Record<string, number> | undefined = (() => {
+      if (!showBinomialMetrics || !binomialMetrics) return undefined;
+      const out: Record<string, number> = {};
+      for (const m of binomialMetrics) {
+        const raw = binomialTrials[m.id] ?? "";
+        if (raw === "") continue;
+        const n = parsed.binomialTrials[m.id];
+        if (!Number.isFinite(n)) continue;
+        out[m.id] = n;
+      }
+      return Object.keys(out).length > 0 ? out : undefined;
+    })();
+
+    const binomialHitsForJudge: Record<string, number> | undefined = (() => {
+      if (!showBinomialMetrics || !binomialMetrics) return undefined;
+      const out: Record<string, number> = {};
+      for (const m of binomialMetrics) {
+        const raw = binomialHits[m.id] ?? "";
+        if (raw === "") continue;
+        const n = parsed.binomialHits[m.id];
+        if (!Number.isFinite(n)) continue;
+        out[m.id] = n;
+      }
+      return Object.keys(out).length > 0 ? out : undefined;
+    })();
+
     const base = calcSettingPosteriors(machine.odds.settings, {
       games: parsed.games,
       bigCount: parsed.bigCount,
       regCount: showReg ? parsed.regCount : 0,
       extraCount: extraCount === "" ? undefined : parsed.extraCount,
       extraCounts: extraCountsForJudge,
+      binomialTrials: binomialTrialsForJudge,
+      binomialHits: binomialHitsForJudge,
       suikaTrials: suikaTrials === "" ? undefined : parsed.suikaTrials,
       suikaCzHits: suikaCzHits === "" ? undefined : parsed.suikaCzHits,
       uraAtTrials: uraAtTrials === "" ? undefined : parsed.uraAtTrials,
@@ -560,6 +639,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     regCount,
     extraCount,
     extraCounts,
+    binomialTrials,
+    binomialHits,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -569,6 +650,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     hintCounts,
     extraMetrics,
     showExtraMetrics,
+    binomialMetrics,
+    showBinomialMetrics,
   ]);
 
   const posteriors = posteriorCalc?.posteriors ?? null;
@@ -726,6 +809,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
         className={`mt-4 grid gap-3 ${
           extraLabel ||
           showExtraMetrics ||
+          showBinomialMetrics ||
           (suikaTrialsLabel && suikaCzHitsLabel) ||
           (uraAtTrialsLabel && uraAtHitsLabel)
             ? "grid-cols-2 sm:grid-cols-4"
@@ -818,6 +902,61 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                 }}
               />
             ))
+          : null}
+
+        {showBinomialMetrics && binomialMetrics
+          ? binomialMetrics.flatMap((m) => [
+              <CountField
+                key={`${m.id}:trials`}
+                label={m.trialsLabel}
+                value={binomialTrials[m.id] ?? ""}
+                onChange={(next) =>
+                  setBinomialTrials((prev) => ({
+                    ...prev,
+                    [m.id]: next,
+                  }))
+                }
+                placeholder="例: 20"
+                showStep5
+                onStep={(delta) => {
+                  const current = toIntOrZero(binomialTrials[m.id] ?? "");
+                  const next = Math.max(0, current + delta);
+                  const hits = toIntOrZero(binomialHits[m.id] ?? "");
+                  const cappedHits = Math.min(hits, next);
+                  setBinomialTrials((prev) => ({
+                    ...prev,
+                    [m.id]: String(next),
+                  }));
+                  if (cappedHits !== hits) {
+                    setBinomialHits((prev) => ({
+                      ...prev,
+                      [m.id]: String(cappedHits),
+                    }));
+                  }
+                }}
+              />,
+              <CountField
+                key={`${m.id}:hits`}
+                label={m.hitsLabel}
+                value={binomialHits[m.id] ?? ""}
+                onChange={(next) =>
+                  setBinomialHits((prev) => ({
+                    ...prev,
+                    [m.id]: next,
+                  }))
+                }
+                placeholder="例: 1"
+                onStep={(delta) => {
+                  const trials = toIntOrZero(binomialTrials[m.id] ?? "");
+                  const current = toIntOrZero(binomialHits[m.id] ?? "");
+                  const next = Math.min(Math.max(current + delta, 0), trials);
+                  setBinomialHits((prev) => ({
+                    ...prev,
+                    [m.id]: String(next),
+                  }));
+                }}
+              />,
+            ])
           : null}
 
         {suikaTrialsLabel && suikaCzHitsLabel ? (

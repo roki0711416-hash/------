@@ -6,6 +6,12 @@ export type MachineMetricsLabels = {
   totalLabel?: string | null;
   extraLabel?: string;
   extraMetrics?: { id: string; label: string }[];
+  binomialMetrics?: {
+    id: string;
+    trialsLabel: string;
+    hitsLabel: string;
+    rateLabel?: string;
+  }[];
   suikaTrialsLabel?: string;
   suikaCzHitsLabel?: string;
   suikaCzRateLabel?: string;
@@ -22,6 +28,7 @@ export type MachineOddsSetting = {
   rate: number;
   extra?: number;
   extras?: Record<string, number>;
+  binomialRates?: Record<string, number>; // { metricId: probability(0..1) }
   suikaCzRate?: number;
   uraAtRate?: number;
 };
@@ -1808,6 +1815,14 @@ export const machines = [
         { id: "normalAtDirect", label: "通常時AT直撃" },
         { id: "zoneOutBonus", label: "ゾーン外ボーナス" },
       ],
+      binomialMetrics: [
+        {
+          id: "otomeAttackDirect",
+          trialsLabel: "チャンス目/強チェリー回数",
+          hitsLabel: "乙女アタック直撃当選回数",
+          rateLabel: "乙女アタック直撃当選率",
+        },
+      ],
       suikaTrialsLabel: "OPt到達回数",
       suikaCzHitsLabel: "乙女アタック当選回数",
       suikaCzRateLabel: "乙女アタック当選率",
@@ -1825,6 +1840,9 @@ export const machines = [
           rate: 98.2,
           suikaCzRate: 0.203,
           uraAtRate: 0.249,
+          binomialRates: {
+            otomeAttackDirect: 0.012,
+          },
           extras: {
             normalAtDirect: 10922.7,
             zoneOutBonus: 24288,
@@ -1838,6 +1856,9 @@ export const machines = [
           rate: 99.0,
           suikaCzRate: 0.209,
           uraAtRate: 0.25,
+          binomialRates: {
+            otomeAttackDirect: 0.013,
+          },
           extras: {
             normalAtDirect: 9362.3,
             zoneOutBonus: 23210,
@@ -1851,6 +1872,9 @@ export const machines = [
           rate: 101.2,
           suikaCzRate: 0.218,
           uraAtRate: 0.255,
+          binomialRates: {
+            otomeAttackDirect: 0.015,
+          },
           extras: {
             normalAtDirect: 8192.0,
             zoneOutBonus: 16836,
@@ -1864,6 +1888,9 @@ export const machines = [
           rate: 105.2,
           suikaCzRate: 0.229,
           uraAtRate: 0.274,
+          binomialRates: {
+            otomeAttackDirect: 0.018,
+          },
           extras: {
             normalAtDirect: 6553.6,
             zoneOutBonus: 13666,
@@ -1877,6 +1904,9 @@ export const machines = [
           rate: 110.2,
           suikaCzRate: 0.238,
           uraAtRate: 0.307,
+          binomialRates: {
+            otomeAttackDirect: 0.021,
+          },
           extras: {
             normalAtDirect: 5957.8,
             zoneOutBonus: 12024,
@@ -1890,6 +1920,9 @@ export const machines = [
           rate: 113.0,
           suikaCzRate: 0.244,
           uraAtRate: 0.317,
+          binomialRates: {
+            otomeAttackDirect: 0.025,
+          },
           extras: {
             normalAtDirect: 5461.3,
             zoneOutBonus: 9819,
