@@ -719,6 +719,31 @@ export const machines = [
     },
   },
 
+  {
+    id: "smart-hokuto-no-ken-tensei-2",
+    name: "L北斗の拳 転生の章2",
+    maker: "サミー",
+    series: "北斗の拳",
+    category: "SMART",
+    inHall: true,
+    description: "L（AT初当り）ベースの簡易判別。50枚あたり約31.5G（独自調査値）",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 366.0, reg: 1_000_000_000, total: 366.0, rate: 97.6 },
+        { s: 2, big: 357.0, reg: 1_000_000_000, total: 357.0, rate: 98.4 },
+        { s: 3, big: 336.3, reg: 1_000_000_000, total: 336.3, rate: 100.7 },
+        { s: 4, big: 298.7, reg: 1_000_000_000, total: 298.7, rate: 106.2 },
+        { s: 5, big: 283.2, reg: 1_000_000_000, total: 283.2, rate: 111.1 },
+        { s: 6, big: 273.1, reg: 1_000_000_000, total: 273.1, rate: 114.9 },
+      ],
+    },
+  },
+
   // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",
