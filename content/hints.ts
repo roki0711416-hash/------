@@ -588,6 +588,52 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "paon_hihouden": {
+    machineId: "paon_hihouden",
+    helpUrl: "https://p-town.dmm.com/machines/4929",
+    groups: [
+      {
+        id: "hihouden_trophy",
+        title: "コパンダトロフィーの示唆",
+        note: "ボーナス終了画面で出現。色で設定を示唆（濃厚系のみ判別に反映）。",
+        items: [
+          { id: "hihouden_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "hihouden_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "hihouden_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "hihouden_trophy_inazuma", label: "稲妻柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "hihouden_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "hihouden_payout_display",
+        title: "特定の獲得枚数表示",
+        note: "獲得枚数が規定枚数を超えた際に表示。",
+        items: [
+          {
+            id: "hihouden_payout_246_over",
+            label: "246 OVER（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          { id: "hihouden_payout_456_over", label: "456 OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "hihouden_payout_666_over", label: "666 OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "hihouden_news",
+        title: "秘宝伝ニュース（時刻）",
+        note: "リール下部のニュース演出の放送開始時間で示唆。",
+        items: [
+          {
+            id: "hihouden_news_246",
+            label: "2時46分（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          { id: "hihouden_news_456", label: "4時56分（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+        ],
+      },
+    ],
+  },
+
   "smart-magireco": {
     machineId: "smart-magireco",
     helpUrl: "https://p-town.dmm.com/machines/4745#anc-point",

@@ -1395,4 +1395,74 @@ export const machines = [
       ],
     },
   },
+
+  // --- L 秘宝伝（p-town 4929）追加 ---
+  {
+    id: "paon_hihouden",
+    name: "L 秘宝伝",
+    maker: "パオン・ディーピー",
+    series: "秘宝伝",
+    inHall: true,
+    category: "SMART",
+    description:
+      "ボーナス合算（1/○○）とチェリー確率での簡易判別。数値はp-town(4929)の解析より。",
+    metricsLabels: {
+      bigLabel: "ボーナス合算",
+      regLabel: null,
+      totalLabel: null,
+      extraMetrics: [{ id: "cherry", label: "チェリー" }],
+    },
+    odds: {
+      settings: [
+        {
+          s: 1,
+          big: 292.5,
+          reg: 1_000_000_000,
+          total: 292.5,
+          rate: 97.8,
+          extras: { cherry: 54.7 },
+        },
+        {
+          s: 2,
+          big: 271.4,
+          reg: 1_000_000_000,
+          total: 271.4,
+          rate: 99.0,
+          extras: { cherry: 52.9 },
+        },
+        {
+          s: 3,
+          big: 283.6,
+          reg: 1_000_000_000,
+          total: 283.6,
+          rate: 101.5,
+          extras: { cherry: 51.1 },
+        },
+        {
+          s: 4,
+          big: 257.5,
+          reg: 1_000_000_000,
+          total: 257.5,
+          rate: 105.1,
+          extras: { cherry: 49.5 },
+        },
+        {
+          s: 5,
+          big: 264.0,
+          reg: 1_000_000_000,
+          total: 264.0,
+          rate: 110.1,
+          extras: { cherry: 48.0 },
+        },
+        {
+          s: 6,
+          big: 246.0,
+          reg: 1_000_000_000,
+          total: 246.0,
+          rate: 114.7,
+          extras: { cherry: 46.5 },
+        },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];
