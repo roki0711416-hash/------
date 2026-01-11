@@ -1102,4 +1102,30 @@ export const machines = [
       ],
     },
   },
+
+  // --- ENTERRISE DMC5 追加 --- 
+  {
+    id: "enterrise_dmc5",
+    name: "L デビル メイ クライ5",
+    maker: "エンターライズ",
+    series: "デビル メイ クライ",
+    inHall: true,
+    category: "SMART",
+    description: "L（AT初当り）ベースの簡易判別。50枚あたり約33G（独自調査値）",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 389.9, reg: 1_000_000_000, total: 389.9, rate: 97.5 },
+        { s: 2, big: 376.2, reg: 1_000_000_000, total: 376.2, rate: 98.7 },
+        { s: 3, big: 358.2, reg: 1_000_000_000, total: 358.2, rate: 100.6 },
+        { s: 4, big: 319.2, reg: 1_000_000_000, total: 319.2, rate: 105.1 },
+        { s: 5, big: 299.7, reg: 1_000_000_000, total: 299.7, rate: 110.0 },
+        { s: 6, big: 287.6, reg: 1_000_000_000, total: 287.6, rate: 114.9 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];

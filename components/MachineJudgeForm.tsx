@@ -922,14 +922,10 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
               const collapsed =
                 group.id in collapsedHintGroups
                   ? !!collapsedHintGroups[group.id]
-                  : !!group.defaultCollapsed;
+                  : false;
 
               const maxBase =
-                group.maxTotalFrom === "regCount"
-                  ? toIntOrZero(regCount)
-                  : group.maxTotalFrom === "bigCount"
-                    ? toIntOrZero(bigCount)
-                    : null;
+                null;
 
               const showWarn = typeof maxBase === "number" && maxBase > 0 && total > maxBase;
 
@@ -966,8 +962,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
                   {showWarn ? (
                     <p className="mt-2 text-xs font-medium text-red-600">
-                      合計({total})が {group.maxTotalFrom === "regCount" && showReg ? `${regLabel}回数` : `${bigLabel}回数`}
-                      ({maxBase}) を超えています。
+                      合計({total})が回数制限({maxBase})を超えています。
                     </p>
                   ) : null}
 
