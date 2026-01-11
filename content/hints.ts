@@ -381,6 +381,40 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "smart-hokuto-no-ken-tensei-2": {
+    machineId: "smart-hokuto-no-ken-tensei-2",
+    helpUrl: "https://p-town.dmm.com/machines/4909#anc-point",
+    groups: [
+      {
+        id: "lamp_b",
+        title: "100G消化ごとの筐体上部ランプB（設定示唆）",
+        note:
+          "通常時を100G消化するごとに点灯。ATの前兆中や天破の刻中に100G到達した場合は持ち越され、当該状態終了後に示唆が発生。",
+        defaultCollapsed: false,
+        items: [
+          { id: "lamp_b_white_on", label: "白点灯（設定2・4示唆）", effect: { type: "weight", weights: { 2: 1.3, 4: 1.3 } } },
+          { id: "lamp_b_white_flash", label: "白点滅（設定3・5示唆）", effect: { type: "weight", weights: { 3: 1.3, 5: 1.3 } } },
+          { id: "lamp_b_lightblue_on", label: "水色点灯（高設定示唆［弱］）", effect: { type: "weight", weights: { 4: 1.1, 5: 1.2, 6: 1.3 } } },
+          { id: "lamp_b_lightblue_flash", label: "水色点滅（高設定示唆［強］）", effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } } },
+          { id: "lamp_b_yellowgreen_on", label: "黄緑点灯（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "lamp_b_yellowgreen_flash", label: "黄緑点滅（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "lamp_b_gold_on", label: "金点灯（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "sammy_trophy",
+        title: "サミートロフィー",
+        note: "AT終了画面で出現。",
+        defaultCollapsed: true,
+        items: [
+          { id: "trophy_gold", label: "金（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "trophy_kirin", label: "キリン柄（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "trophy_rainbow", label: "虹（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "smart-tokyo-ghoul": {
     machineId: "smart-tokyo-ghoul",
     helpUrl: "https://p-town.dmm.com/machines/4742",
