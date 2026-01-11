@@ -1211,7 +1211,7 @@ export const machines = [
   {
     id: "sabohani_iza_bancho",
     name: "L いざ！番長",
-    maker: "サボハニ",
+    maker: "大都技研",
     series: "番長",
     inHall: true,
     category: "SMART",
@@ -1319,7 +1319,7 @@ export const machines = [
   {
     id: "sabohani_yoshimune",
     name: "L 吉宗",
-    maker: "サボハニ",
+    maker: "大都技研",
     series: "吉宗",
     inHall: true,
     category: "SMART",
@@ -1400,7 +1400,7 @@ export const machines = [
   {
     id: "paon_hihouden",
     name: "L 秘宝伝",
-    maker: "パオン・ディーピー",
+    maker: "大都技研",
     series: "秘宝伝",
     inHall: true,
     category: "SMART",
@@ -1621,6 +1621,32 @@ export const machines = [
             pyramid: 2048.0,
           },
         },
+      ],
+    },
+  },
+
+  // --- オリンピアエステート L ToLOVEるダークネス（p-town 4571）追加 ---
+  {
+    id: "olympia_toloveru_darkness",
+    name: "L ToLOVEるダークネス",
+    maker: "オリンピアエステート",
+    series: "ToLOVEる",
+    inHall: true,
+    category: "SMART",
+    description:
+      "初当り確率と機械割での簡易判別。数値はp-town(4571)より。実質5段階設定（設定2〜6）。",
+    metricsLabels: {
+      bigLabel: "初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 2, big: 352.0, reg: 1_000_000_000, total: 352.0, rate: 98.0 },
+        { s: 3, big: 345.7, reg: 1_000_000_000, total: 345.7, rate: 99.0 },
+        { s: 4, big: 328.4, reg: 1_000_000_000, total: 328.4, rate: 102.5 },
+        { s: 5, big: 311.3, reg: 1_000_000_000, total: 311.3, rate: 105.8 },
+        { s: 6, big: 300.6, reg: 1_000_000_000, total: 300.6, rate: 110.1 },
       ],
     },
   },
