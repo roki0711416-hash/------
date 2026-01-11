@@ -134,6 +134,12 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "hibiscus_rainbow", label: "虹", effect: { type: "minSetting", min: 4 } },
         ],
       },
+    ],
+  },
+
+  "enterrise_dmc5": {
+    machineId: "enterrise_dmc5",
+    groups: [
       {
         id: "dmc5_trophy",
         title: "エンタトロフィーの示唆",
