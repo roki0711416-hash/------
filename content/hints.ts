@@ -25,6 +25,7 @@ export type MachineHintConfig = {
   groups: HintGroup[];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function makePioneerHanahana6GoukiGroups(options: {
   featherRainbowEffect: HintEffect;
   featherNote: string;
@@ -583,6 +584,52 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "yoshi_voice_takagari_e", label: "吉宗『鷹狩りの準備は万端じゃ！』（鷹狩りモードE濃厚）", effect: { type: "none" } },
           { id: "yoshi_voice_1gren", label: "吉宗『振る舞いもう一丁！』（1G連濃厚）", effect: { type: "none" } },
           { id: "yoshi_voice_ura_takagari", label: "吉宗『鷹狩りの真髄、見せてやる!!』（裏鷹狩り濃厚）", effect: { type: "none" } },
+        ],
+      },
+    ],
+  },
+
+  "daito_shake_bonus_trigger": {
+    machineId: "daito_shake_bonus_trigger",
+    helpUrl: "https://p-town.dmm.com/machines/4893",
+    groups: [
+      {
+        id: "shake_big_end",
+        title: "BIG終了画面",
+        note: "p-town特集(4566)ではモード/天井示唆が中心。設定判別には使わない前提（表示のみ）。",
+        items: [
+          { id: "shake_big_end_blue", label: "青", effect: { type: "none" } },
+          { id: "shake_big_end_green", label: "緑", effect: { type: "none" } },
+          { id: "shake_big_end_red", label: "赤", effect: { type: "none" } },
+          { id: "shake_big_end_gold", label: "金", effect: { type: "none" } },
+          { id: "shake_big_end_black", label: "黒", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "shake_trophy",
+        title: "コパンダトロフィー",
+        note: "色で設定を示唆（濃厚系は判別に反映）。",
+        items: [
+          { id: "shake_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "shake_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "shake_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "shake_trophy_momiji", label: "紅葉柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "shake_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "shake_reg_voice",
+        title: "REG中（技術介入成功時）ボイス",
+        note: "ボイス文言が複数あるため、判別への反映は濃厚/強示唆のみ。",
+        items: [
+          { id: "shake_reg_voice_default", label: "デフォルト/不明", effect: { type: "none" } },
+          {
+            id: "shake_reg_voice_high_strong",
+            label: "高設定示唆［強］",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "shake_reg_voice_min4", label: "設定4以上濃厚", effect: { type: "minSetting", min: 4 } },
+          { id: "shake_reg_voice_exact6", label: "設定6濃厚", effect: { type: "exactSetting", exact: 6 } },
         ],
       },
     ],
@@ -1282,6 +1329,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
   },
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
   hintConfigs["smart-neo-planet"] = {
     machineId: "smart-neo-planet",
     groups: [

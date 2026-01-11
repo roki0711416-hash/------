@@ -1465,4 +1465,75 @@ export const machines = [
       ],
     },
   },
+
+  // --- 大都 SHAKE BONUS TRIGGER（p-town 4893）追加 ---
+  {
+    id: "daito_shake_bonus_trigger",
+    name: "SHAKE BONUS TRIGGER",
+    maker: "大都技研",
+    series: "SHAKE",
+    inHall: true,
+    category: "SMART",
+    description:
+      "ボーナス確率（設定1/2/5/6）＋同時当選（スイカ/ベル/特殊役I）での簡易判別。数値はp-town(4893)の解析より。機械割はbonus.jpg(OCR)から抽出（完全攻略時の列を採用）。",
+    metricsLabels: {
+      extraMetrics: [
+        { id: "suikaNadiaBig", label: "スイカ+ナディアBIG" },
+        { id: "bellReg", label: "ベル+REG" },
+        { id: "specialRoleIAnyBonus", label: "特殊役I+ボーナス" },
+      ],
+    },
+    odds: {
+      settings: [
+        {
+          s: 1,
+          big: 350.5,
+          reg: 425.6,
+          total: 192.2,
+          rate: 100.4,
+          extras: {
+            suikaNadiaBig: 16384.0,
+            bellReg: 8192.0,
+            specialRoleIAnyBonus: 3276.8,
+          },
+        },
+        {
+          s: 2,
+          big: 327.7,
+          reg: 332.7,
+          total: 165.1,
+          rate: 102.4,
+          extras: {
+            suikaNadiaBig: 16384.0,
+            bellReg: 6553.6,
+            specialRoleIAnyBonus: 2259.9,
+          },
+        },
+        {
+          s: 5,
+          big: 341.3,
+          reg: 409.6,
+          total: 186.2,
+          rate: 104.9,
+          extras: {
+            suikaNadiaBig: 8192.0,
+            bellReg: 8192.0,
+            specialRoleIAnyBonus: 3120.8,
+          },
+        },
+        {
+          s: 6,
+          big: 297.9,
+          reg: 297.9,
+          total: 148.9,
+          rate: 108.1,
+          extras: {
+            suikaNadiaBig: 5461.3,
+            bellReg: 5041.2,
+            specialRoleIAnyBonus: 1872.5,
+          },
+        },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];
