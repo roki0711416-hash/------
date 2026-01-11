@@ -1314,4 +1314,85 @@ export const machines = [
       ],
     },
   },
+
+  // --- SABOHANI 吉宗 追加 ---
+  {
+    id: "sabohani_yoshimune",
+    name: "L 吉宗",
+    maker: "サボハニ",
+    series: "吉宗",
+    inHall: true,
+    category: "SMART",
+    description: "L（初当り）ベースの簡易判別。初当り・機械割は独自調査値。",
+    metricsLabels: {
+      bigLabel: "初当り",
+      regLabel: null,
+      totalLabel: null,
+      extraMetrics: [{ id: "commonHyo", label: "共通俵" }],
+    },
+    odds: {
+      settings: [
+        {
+          s: 1,
+          big: 378.9,
+          reg: 1_000_000_000,
+          total: 378.9,
+          rate: 97.8,
+          extras: {
+            commonHyo: 819.2,
+          },
+        },
+        {
+          s: 2,
+          big: 369.6,
+          reg: 1_000_000_000,
+          total: 369.6,
+          rate: 99.1,
+          extras: {
+            commonHyo: 744.7,
+          },
+        },
+        {
+          s: 3,
+          big: 358.8,
+          reg: 1_000_000_000,
+          total: 358.8,
+          rate: 100.6,
+          extras: {
+            commonHyo: 682.7,
+          },
+        },
+        {
+          s: 4,
+          big: 335.1,
+          reg: 1_000_000_000,
+          total: 335.1,
+          rate: 104.1,
+          extras: {
+            commonHyo: 585.1,
+          },
+        },
+        {
+          s: 5,
+          big: 318.5,
+          reg: 1_000_000_000,
+          total: 318.5,
+          rate: 107.1,
+          extras: {
+            commonHyo: 512.0,
+          },
+        },
+        {
+          s: 6,
+          big: 292.4,
+          reg: 1_000_000_000,
+          total: 292.4,
+          rate: 112.0,
+          extras: {
+            commonHyo: 455.1,
+          },
+        },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];

@@ -541,6 +541,53 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "sabohani_yoshimune": {
+    machineId: "sabohani_yoshimune",
+    helpUrl: "https://p-town.dmm.com/machines/4778",
+    groups: [
+      {
+        id: "yoshimune_bonus_end_hanafuda",
+        title: "ボーナス終了画面（花札）",
+        note: "高設定示唆［弱/強］はソフト示唆（重み付け）として反映。『設定◯以上濃厚』『設定6濃厚』は制約として反映。",
+        items: [
+          { id: "yoshi_hanafuda_default", label: "なし（デフォルト）", effect: { type: "none" } },
+          {
+            id: "yoshi_hanafuda_black_blue_weak",
+            label: "黒枠（青短）（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "yoshi_hanafuda_black_red_strong",
+            label: "黒枠（赤短）（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "yoshi_hanafuda_bronze_yanagi", label: "銅枠（柳）（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "yoshi_hanafuda_silver_matsu", label: "銀枠（松）（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "yoshi_hanafuda_gold_susuki", label: "金枠（芒）（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "yoshi_hanafuda_pink_sakura", label: "ピンク枠（桜）（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "yoshi_hanafuda_rainbow_kiri", label: "虹枠（桐）（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "yoshimune_bonus_end_push_voice",
+        title: "ボーナス終了画面（PUSHボイス）",
+        note: "通常モード/鷹狩りモードなどの示唆。設定示唆ではないため現状は表示のみ（判別に未反映）。",
+        items: [
+          { id: "yoshi_voice_default", label: "吉宗『よっしゃ！』（デフォルト）", effect: { type: "none" } },
+          { id: "yoshi_voice_normalb_chance", label: "吉宗『まだまだこれからじゃ！』（通常B以上のチャンス）", effect: { type: "none" } },
+          { id: "yoshi_voice_normalb_confirm", label: "吉宗『む！？風向きが変わったぞ…！』（通常B以上濃厚）", effect: { type: "none" } },
+          { id: "yoshi_voice_heaven_chance", label: "吉宗『嵐の予感がするぞ！』（天国以上のチャンス）", effect: { type: "none" } },
+          { id: "yoshi_voice_heaven_confirm", label: "チビ姫『わくわくだぁー！！』（天国以上濃厚）", effect: { type: "none" } },
+          { id: "yoshi_voice_heavenb_bigchance", label: "チビ姫『すごく！すごぉーく楽しみだね！』（天国Bの大チャンス）", effect: { type: "none" } },
+          { id: "yoshi_voice_takagari_c_plus", label: "吉宗『鷹の鳴き声が聞こえたぞ！』（鷹狩りモードC以上濃厚）", effect: { type: "none" } },
+          { id: "yoshi_voice_takagari_e", label: "吉宗『鷹狩りの準備は万端じゃ！』（鷹狩りモードE濃厚）", effect: { type: "none" } },
+          { id: "yoshi_voice_1gren", label: "吉宗『振る舞いもう一丁！』（1G連濃厚）", effect: { type: "none" } },
+          { id: "yoshi_voice_ura_takagari", label: "吉宗『鷹狩りの真髄、見せてやる!!』（裏鷹狩り濃厚）", effect: { type: "none" } },
+        ],
+      },
+    ],
+  },
+
   "smart-magireco": {
     machineId: "smart-magireco",
     helpUrl: "https://p-town.dmm.com/machines/4745#anc-point",
