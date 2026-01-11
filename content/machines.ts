@@ -1180,4 +1180,30 @@ export const machines = [
       ],
     },
   },
+
+  // --- KYORAKU アズレン 追加 ---
+  {
+    id: "kyoraku_azuren",
+    name: "L アズールレーン THE ANIMATION",
+    maker: "京楽",
+    series: "アズールレーン",
+    inHall: true,
+    category: "SMART",
+    description: "L（初当り合算）ベースの簡易判別。初当り合算は参考値。",
+    metricsLabels: {
+      bigLabel: "初当り合算",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 167.4, reg: 1_000_000_000, total: 167.4, rate: 97.9 },
+        { s: 2, big: 166.5, reg: 1_000_000_000, total: 166.5, rate: 98.6 },
+        { s: 3, big: 164.3, reg: 1_000_000_000, total: 164.3, rate: 100.7 },
+        { s: 4, big: 161.3, reg: 1_000_000_000, total: 161.3, rate: 105.3 },
+        { s: 5, big: 158.9, reg: 1_000_000_000, total: 158.9, rate: 110.6 },
+        { s: 6, big: 156.0, reg: 1_000_000_000, total: 156.0, rate: 114.9 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];

@@ -422,6 +422,72 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "kyoraku_azuren": {
+    machineId: "kyoraku_azuren",
+    helpUrl: "https://p-town.dmm.com/machines/4847",
+    groups: [
+      {
+        id: "azuren_trophy",
+        title: "玉ちゃんトロフィー",
+        note: "AT終了画面などで出現する可能性あり。",
+        items: [
+          { id: "azuren_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "azuren_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "azuren_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "azuren_trophy_zebra", label: "ゼブラ柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "azuren_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "azuren_end_screens",
+        title: "海戦ボーナス・AT終了画面（設定示唆）",
+        note: "高設定示唆［弱/強］はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "azuren_end_default", label: "エンタープライズ/ベルファスト（デフォルト）", effect: { type: "none" } },
+          {
+            id: "azuren_end_emp_belfast_weak",
+            label: "エンタープライズ＆ベルファスト（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "azuren_end_akagi_strong",
+            label: "赤城（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "azuren_end_all_min2", label: "全員集合（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "azuren_end_kaga_akagi_min4", label: "加賀＆赤城（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "azuren_end_party_exact6", label: "パーティ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "azuren_payout",
+        title: "特定の獲得枚数表示",
+        note: "トータル獲得枚数が規定枚数を超えた際に表示。",
+        items: [
+          {
+            id: "azuren_payout_246_over",
+            label: "246 OVER（設定2・4・6濃厚）",
+            effect: { type: "weight", weights: { 2: 1.2, 4: 1.2, 6: 1.2 } },
+          },
+          { id: "azuren_payout_456_over", label: "456 OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "azuren_payout_555_over", label: "555 OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "azuren_payout_666_over", label: "666 OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "azuren_push_voice",
+        title: "PUSHボイス",
+        note: "発生したボイスをカウント。",
+        items: [
+          { id: "azuren_voice_none", label: "発生しない（自力でのAT当選）", effect: { type: "none" } },
+          { id: "azuren_voice_default", label: "『勝利だ！』（デフォルト）", effect: { type: "none" } },
+          { id: "azuren_voice_min5", label: "『たぁーのしいなぁー！』（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "azuren_voice_exact6", label: "『赤城の愛、受け止めてくださるかしら？』（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "smart-magireco": {
     machineId: "smart-magireco",
     helpUrl: "https://p-town.dmm.com/machines/4745#anc-point",
