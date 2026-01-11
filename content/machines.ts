@@ -1206,4 +1206,30 @@ export const machines = [
       ],
     },
   },
+
+  // --- SABOHANI いざ！番長 追加 ---
+  {
+    id: "sabohani_iza_bancho",
+    name: "L いざ！番長",
+    maker: "サボハニ",
+    series: "番長",
+    inHall: true,
+    category: "SMART",
+    description: "L（AT初当り）ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 386.9, reg: 1_000_000_000, total: 386.9, rate: 97.6 },
+        { s: 2, big: 368.5, reg: 1_000_000_000, total: 368.5, rate: 98.9 },
+        { s: 3, big: 375.8, reg: 1_000_000_000, total: 375.8, rate: 101.3 },
+        { s: 4, big: 332.4, reg: 1_000_000_000, total: 332.4, rate: 106.0 },
+        { s: 5, big: 351.6, reg: 1_000_000_000, total: 351.6, rate: 112.1 },
+        { s: 6, big: 312.1, reg: 1_000_000_000, total: 312.1, rate: 114.9 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];

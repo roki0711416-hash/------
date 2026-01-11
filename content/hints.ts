@@ -488,6 +488,59 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "sabohani_iza_bancho": {
+    machineId: "sabohani_iza_bancho",
+    helpUrl: "https://p-town.dmm.com/machines/4805#anc-point",
+    groups: [
+      {
+        id: "iza_at_end_screens",
+        title: "AT終了画面",
+        note: "偶数/高設定示唆はソフト示唆（重み付け）として反映。『設定◯以上濃厚』や『◯濃厚』は制約として反映。",
+        items: [
+          { id: "iza_at_end_default", label: "夕焼け（デフォルト）", effect: { type: "none" } },
+          {
+            id: "iza_at_end_even",
+            label: "子育て奮闘（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "iza_at_end_high",
+            label: "護摩行（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+          { id: "iza_at_end_min2", label: "刺客襲来（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+
+          { id: "iza_at_end_min4", label: "小太郎日記（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          {
+            id: "iza_at_end_346",
+            label: "青龍（武蔵）（設定3・4・6濃厚）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 2 },
+                { type: "excludeSetting", exclude: 5 },
+              ],
+            },
+          },
+          {
+            id: "iza_at_end_256",
+            label: "朱雀（小次郎）（設定2・5・6濃厚）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 3 },
+                { type: "excludeSetting", exclude: 4 },
+              ],
+            },
+          },
+          { id: "iza_at_end_exact6", label: "秘湯（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "smart-magireco": {
     machineId: "smart-magireco",
     helpUrl: "https://p-town.dmm.com/machines/4745#anc-point",
