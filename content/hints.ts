@@ -737,6 +737,23 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "toloveru_payout_666_over", label: "666枚OVER（設定6）", effect: { type: "exactSetting", exact: 6 } },
         ],
       },
+      {
+        id: "toloveru_harem_zone_ratio",
+        title: "［ハーレムモード中］枚数決定ゾーンの比率",
+        note: "発生したゾーンをカウント。解析の選択比率をソフト示唆（重み付け）として反映（確定系ではありません）。",
+        items: [
+          {
+            id: "toloveru_harem_zone_whisper",
+            label: "ウィスパー演出",
+            effect: { type: "weight", weights: { 2: 0.489, 3: 0.568, 4: 0.946, 5: 1.12, 6: 1.877 } },
+          },
+          {
+            id: "toloveru_harem_zone_aisupu",
+            label: "愛すぷラッシュ",
+            effect: { type: "weight", weights: { 2: 1.035, 3: 1.029, 4: 1.004, 5: 0.992, 6: 0.94 } },
+          },
+        ],
+      },
     ],
   },
 
@@ -790,6 +807,23 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "toloveru_trance_payout_456_over", label: "456枚OVER（設定4以上）", effect: { type: "minSetting", min: 4 } },
           { id: "toloveru_trance_payout_555_over", label: "555枚OVER（設定5以上）", effect: { type: "minSetting", min: 5 } },
           { id: "toloveru_trance_payout_666_over", label: "666枚OVER（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "toloveru_trance_upperst_zone_ratio",
+        title: "［上位ST中］枚数決定ゾーンの比率",
+        note: "発生したゾーンをカウント。解析の選択比率をソフト示唆（重み付け）として反映（確定系ではありません）。",
+        items: [
+          {
+            id: "toloveru_trance_upperst_zone_whisper",
+            label: "ウィスパー演出",
+            effect: { type: "weight", weights: { 2: 0.452, 3: 0.537, 4: 0.876, 5: 1.13, 6: 2.006 } },
+          },
+          {
+            id: "toloveru_trance_upperst_zone_aisupu",
+            label: "愛すぷラッシュ",
+            effect: { type: "weight", weights: { 2: 1.042, 3: 1.036, 4: 1.009, 5: 0.99, 6: 0.923 } },
+          },
         ],
       },
     ],
