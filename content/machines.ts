@@ -1220,7 +1220,10 @@ export const machines = [
       bigLabel: "AT初当り",
       regLabel: null,
       totalLabel: null,
-      extraMetrics: [{ id: "bonusDirectTotal", label: "ボーナス直撃(トータル)" }],
+      extraMetrics: [
+        { id: "bonusDirectRed7", label: "ボーナス直撃(赤7)" },
+        { id: "bonusDirectBlue7", label: "ボーナス直撃(青7)" },
+      ],
     },
     odds: {
       settings: [
@@ -1230,7 +1233,10 @@ export const machines = [
           reg: 1_000_000_000,
           total: 386.9,
           rate: 97.6,
-          extras: { bonusDirectTotal: 7865.6 },
+          extras: {
+            bonusDirectRed7: 8156.2,
+            bonusDirectBlue7: 220772.4,
+          },
         },
         {
           s: 2,
@@ -1238,7 +1244,10 @@ export const machines = [
           reg: 1_000_000_000,
           total: 368.5,
           rate: 98.9,
-          extras: { bonusDirectTotal: 6922.5 },
+          extras: {
+            bonusDirectRed7: 7387.3,
+            bonusDirectBlue7: 110027.0,
+          },
         },
         {
           s: 3,
@@ -1246,7 +1255,10 @@ export const machines = [
           reg: 1_000_000_000,
           total: 375.8,
           rate: 101.3,
-          extras: { bonusDirectTotal: 5970.3 },
+          extras: {
+            bonusDirectRed7: 6694.4,
+            bonusDirectBlue7: 55196.3,
+          },
         },
         {
           s: 4,
@@ -1254,7 +1266,10 @@ export const machines = [
           reg: 1_000_000_000,
           total: 332.4,
           rate: 106.0,
-          extras: { bonusDirectTotal: 2660.1 },
+          extras: {
+            bonusDirectRed7: 2940.1,
+            bonusDirectBlue7: 27930.0,
+          },
         },
         {
           s: 5,
@@ -1262,7 +1277,10 @@ export const machines = [
           reg: 1_000_000_000,
           total: 351.6,
           rate: 112.1,
-          extras: { bonusDirectTotal: 3214.4 },
+          extras: {
+            bonusDirectRed7: 3697.3,
+            bonusDirectBlue7: 24606.5,
+          },
         },
         {
           s: 6,
@@ -1270,7 +1288,10 @@ export const machines = [
           reg: 1_000_000_000,
           total: 312.1,
           rate: 114.9,
-          extras: { bonusDirectTotal: 2247.2 },
+          extras: {
+            bonusDirectRed7: 2495.8,
+            bonusDirectBlue7: 22560.5,
+          },
         },
       ],
     },
