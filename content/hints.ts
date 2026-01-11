@@ -635,6 +635,77 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "daito_crea_hihouden_bt": {
+    machineId: "daito_crea_hihouden_bt",
+    helpUrl: "https://p-town.dmm.com/machines/4860",
+    groups: [
+      {
+        id: "crea_big_end_stamp",
+        title: "BIG終了画面（スタンプ）",
+        note: "偶数/高設定示唆はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "crea_stamp_default", label: "なし（デフォルト）", effect: { type: "none" } },
+          {
+            id: "crea_stamp_leon_even",
+            label: "レオン（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "crea_stamp_kodomo_crea_high_weak",
+            label: "子供クレア（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "crea_stamp_sharon_high_strong",
+            label: "シャロン（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+        ],
+      },
+      {
+        id: "crea_trophy",
+        title: "コパンダトロフィーの示唆",
+        note: "BIG終了画面で出現。色で設定を示唆（濃厚系は判別に反映）。",
+        items: [
+          { id: "crea_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "crea_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "crea_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "crea_trophy_inazuma", label: "イナズマ柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "crea_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "crea_reg_card",
+        title: "REG中のカード",
+        note: "単体のカード色はソフト示唆（重み付け）として反映。濃厚パターンは制約として反映。",
+        items: [
+          { id: "crea_reg_card_bronze", label: "銅カード（デフォルト）", effect: { type: "none" } },
+          {
+            id: "crea_reg_card_silver_high_weak",
+            label: "銀カード（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "crea_reg_card_gold_high_strong",
+            label: "金カード（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "crea_reg_card_red_min4", label: "赤カード（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          {
+            id: "crea_reg_card_all_silver_gold_min4",
+            label: "オール銀・金カード（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "crea_reg_card_red_twice_exact6",
+            label: "赤カードが2回出現（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+    ],
+  },
+
   "paon_hihouden": {
     machineId: "paon_hihouden",
     helpUrl: "https://p-town.dmm.com/machines/4929",

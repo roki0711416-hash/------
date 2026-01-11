@@ -1536,4 +1536,92 @@ export const machines = [
       ],
     },
   },
+
+  // --- 大都 クレアの秘宝伝BT（p-town 4860）追加 ---
+  {
+    id: "daito_crea_hihouden_bt",
+    name: "クレアの秘宝伝 〜はじまりの扉と太陽の石〜 ボーナストリガーver.",
+    maker: "大都技研",
+    series: "クレアの秘宝伝",
+    inHall: true,
+    category: "SMART",
+    description:
+      "ボーナス確率（設定1〜6）＋確定チェリー/ピラミッド揃いでの簡易判別。数値はp-town(4860)の解析より。ボーナス確率・機械割はbonus.jpg(OCR)から抽出し、機械割は『完全攻略時』の列を採用。",
+    metricsLabels: {
+      extraMetrics: [
+        { id: "kakuteiCherry", label: "確定チェリー" },
+        { id: "pyramid", label: "ピラミッド揃い" },
+      ],
+    },
+    odds: {
+      settings: [
+        {
+          s: 1,
+          big: 299.3,
+          reg: 383.3,
+          total: 168.0,
+          rate: 99.3,
+          extras: {
+            kakuteiCherry: 21845.3,
+            pyramid: 8192.0,
+          },
+        },
+        {
+          s: 2,
+          big: 293.9,
+          reg: 376.6,
+          total: 165.1,
+          rate: 100.5,
+          extras: {
+            kakuteiCherry: 21845.3,
+            pyramid: 8192.0,
+          },
+        },
+        {
+          s: 3,
+          big: 284.9,
+          reg: 358.1,
+          total: 158.7,
+          rate: 102.5,
+          extras: {
+            kakuteiCherry: 21845.3,
+            pyramid: 5461.3,
+          },
+        },
+        {
+          s: 4,
+          big: 274.2,
+          reg: 334.4,
+          total: 150.7,
+          rate: 105.0,
+          extras: {
+            kakuteiCherry: 13107.2,
+            pyramid: 4096.0,
+          },
+        },
+        {
+          s: 5,
+          big: 262.1,
+          reg: 299.3,
+          total: 139.7,
+          rate: 108.0,
+          extras: {
+            kakuteiCherry: 13107.2,
+            pyramid: 2730.7,
+          },
+        },
+        {
+          s: 6,
+          big: 240.1,
+          reg: 247.3,
+          total: 121.8,
+          rate: 114.0,
+          extras: {
+            kakuteiCherry: 5461.3,
+            pyramid: 2048.0,
+          },
+        },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];
