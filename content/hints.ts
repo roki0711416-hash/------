@@ -1634,6 +1634,178 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-onimusha-3"] = {
+    machineId: "smart-onimusha-3",
+    helpUrl: "https://p-town.dmm.com/machines/4880#anc-point",
+    groups: [
+      {
+        id: "oni3_entara_trophy",
+        title: "エンタトロフィー（AT終了画面）",
+        note: "出現時のみ入力。『設定◯以上/濃厚』は制約として反映。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "oni3_trophy_none", label: "なし/不明", effect: { type: "none" } },
+          { id: "oni3_trophy_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "oni3_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "oni3_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "oni3_trophy_momiji", label: "紅葉柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "oni3_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "oni3_at_end_screens",
+        title: "AT終了画面",
+        note: "奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。『設定◯以上濃厚』は制約として反映。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          { id: "oni3_at_end_default", label: "デフォルト/不明", effect: { type: "none" } },
+          {
+            id: "oni3_at_end_odd",
+            label: "蒼鬼＆ロベルト＆天海（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+          },
+          {
+            id: "oni3_at_end_even",
+            label: "茜＆お初（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "oni3_at_end_high",
+            label: "阿倫＆みの吉（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+
+          { id: "oni3_at_end_min2", label: "蒼鬼＆茜（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "oni3_at_end_min3", label: "鬼武者 Way of the Sword（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "oni3_at_end_min4", label: "幻魔集合（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "oni3_at_end_min5", label: "極限覚醒鬼武者（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "oni3_at_end_exact6", label: "デフォルメキャラ集合（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "oni3_special_add",
+        title: "特殊上乗せ（+4G/+5G/+6G）",
+        note: "『設定◯以上濃厚』は制約として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "oni3_add4", label: "+4G（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "oni3_add5", label: "+5G（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "oni3_add6", label: "+6G（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "oni3_fixed_payout",
+        title: "特定獲得枚数表示",
+        note: "表示された獲得枚数で示唆。『2・5・6濃厚』などは否定（exclude）として反映。",
+        defaultCollapsed: true,
+        maxTotalFrom: "bigCount",
+        items: [
+          {
+            id: "oni3_payout_256",
+            label: "256枚OVER（設定2・5・6濃厚）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 3 },
+                { type: "excludeSetting", exclude: 4 },
+              ],
+            },
+          },
+          { id: "oni3_payout_456", label: "456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "oni3_payout_555", label: "555枚OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "oni3_payout_666", label: "666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "oni3_bonus_char_intro",
+        title: "鬼ボーナス中：キャラ紹介",
+        note: "奇数/偶数/高設定示唆はソフト示唆（重み付け）。『設定◯以上濃厚』は制約として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "oni3_intro_unknown", label: "不明/未確認", effect: { type: "none" } },
+          {
+            id: "oni3_intro_friend",
+            label: "味方キャラ（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+          },
+          {
+            id: "oni3_intro_enemy",
+            label: "敵キャラ（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "oni3_intro_910_high",
+            label: "9・10G目：阿倫＆みの吉（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+
+          { id: "oni3_intro_min2", label: "幻魔（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "oni3_intro_min3", label: "無間地獄の幻魔（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "oni3_intro_min4", label: "フォーティンブラス（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "oni3_intro_min5", label: "覚醒鬼武者（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "oni3_intro_exact6", label: "エンタライオン（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "oni3_voice",
+        title: "レア役成立時のボイス（要点のみ）",
+        note: "台詞本文は省略し、キャラ＋示唆のみ入力。『否定/濃厚』は制約、奇数/偶数/高設定示唆はソフト示唆（重み付け）。",
+        defaultCollapsed: true,
+        items: [
+          { id: "oni3_voice_unknown", label: "その他（デフォルト/不明）", effect: { type: "none" } },
+
+          { id: "oni3_voice_soki_min5", label: "蒼鬼（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          {
+            id: "oni3_voice_tenkai_odd_strong",
+            label: "天海（奇数示唆［強］）",
+            effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+          },
+          {
+            id: "oni3_voice_roberto_odd_weak",
+            label: "ロベルト（奇数示唆［弱］）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "oni3_voice_akane_even_strong",
+            label: "茜（偶数示唆［強］）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "oni3_voice_ohatsu_even_weak",
+            label: "お初（偶数示唆［弱］）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+
+          { id: "oni3_voice_minokichi_excl2", label: "みの吉（設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
+          { id: "oni3_voice_minokichi_excl3", label: "みの吉（設定3否定）", effect: { type: "excludeSetting", exclude: 3 } },
+          { id: "oni3_voice_minokichi_excl4", label: "みの吉（設定4否定）", effect: { type: "excludeSetting", exclude: 4 } },
+
+          { id: "oni3_voice_orin_min2", label: "阿倫（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "oni3_voice_orin_min3", label: "阿倫（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "oni3_voice_orin_min4", label: "阿倫（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "oni3_voice_entaraion_exact6", label: "エンタライオン（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "oni3_navi_voice",
+        title: "ナビボイス",
+        note: "高設定示唆のみソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "oni3_navi_unknown", label: "不明/未確認", effect: { type: "none" } },
+          {
+            id: "oni3_navi_allcast",
+            label: "オールキャスト（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.1, 6: 1.15 } },
+          },
+        ],
+      },
+    ],
+  };
+
   hintConfigs["smart-god-eater-resurrection"] = {
     machineId: "smart-god-eater-resurrection",
     helpUrl: "https://p-town.dmm.com/machines/4602#anc-point",
