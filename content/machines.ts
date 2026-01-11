@@ -744,6 +744,32 @@ export const machines = [
     },
   },
 
+  // --- ENTERRISE L追加 ---
+  {
+    id: "smart-onimusha-3",
+    name: "L鬼武者3",
+    maker: "エンターライズ",
+    series: "鬼武者",
+    category: "SMART",
+    inHall: true,
+    description: "L（AT初当り）ベースの簡易判別。50枚あたり約33G（独自調査値）",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 379.7, reg: 1_000_000_000, total: 379.7, rate: 97.5 },
+        { s: 2, big: 372.7, reg: 1_000_000_000, total: 372.7, rate: 98.3 },
+        { s: 3, big: 352.8, reg: 1_000_000_000, total: 352.8, rate: 100.2 },
+        { s: 4, big: 306.5, reg: 1_000_000_000, total: 306.5, rate: 105.2 },
+        { s: 5, big: 297.9, reg: 1_000_000_000, total: 297.9, rate: 109.2 },
+        { s: 6, big: 293.1, reg: 1_000_000_000, total: 293.1, rate: 113.0 },
+      ],
+    },
+  },
+
   // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",
