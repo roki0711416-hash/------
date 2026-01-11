@@ -917,10 +917,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                 0,
               );
 
-              const showHintMemo = !(
-                machine.id === "smart-onimusha-3" &&
-                (group.id === "oni3_voice" || group.id === "oni3_navi_voice")
-              );
+              const showHintMemo = machine.id !== "smart-onimusha-3";
 
               const collapsed =
                 group.id in collapsedHintGroups
