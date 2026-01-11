@@ -1676,4 +1676,66 @@ export const machines = [
       ],
     },
   },
+
+  // --- 平和 L主役は銭形5（p-town 4877）追加 ---
+  {
+    id: "heiwa_zenigata5",
+    name: "L主役は銭形5",
+    maker: "平和",
+    series: "銭形",
+    inHall: true,
+    category: "SMART",
+    description:
+      "初当り確率・機械割・通常時デカ目での簡易判別。数値はp-town(4877)より。実質5段階設定（設定2〜6）。",
+    metricsLabels: {
+      bigLabel: "初当り",
+      regLabel: null,
+      totalLabel: null,
+      extraMetrics: [{ id: "dekaMe", label: "通常時デカ目" }],
+    },
+    odds: {
+      settings: [
+        {
+          s: 2,
+          big: 424.5,
+          reg: 1_000_000_000,
+          total: 424.5,
+          rate: 97.9,
+          extras: { dekaMe: 21580.7 },
+        },
+        {
+          s: 3,
+          big: 416.4,
+          reg: 1_000_000_000,
+          total: 416.4,
+          rate: 99.0,
+          extras: { dekaMe: 19209.1 },
+        },
+        {
+          s: 4,
+          big: 388.1,
+          reg: 1_000_000_000,
+          total: 388.1,
+          rate: 103.2,
+          extras: { dekaMe: 10964.8 },
+        },
+        {
+          s: 5,
+          big: 375.9,
+          reg: 1_000_000_000,
+          total: 375.9,
+          rate: 107.1,
+          extras: { dekaMe: 7249.1 },
+        },
+        {
+          s: 6,
+          big: 300.5,
+          reg: 1_000_000_000,
+          total: 300.5,
+          rate: 112.1,
+          extras: { dekaMe: 5561.8 },
+        },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];

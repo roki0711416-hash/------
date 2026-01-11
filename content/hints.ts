@@ -829,6 +829,25 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "heiwa_zenigata5": {
+    machineId: "heiwa_zenigata5",
+    helpUrl: "https://p-town.dmm.com/machines/4877",
+    groups: [
+      {
+        id: "zenigata5_bonus_end_stamp",
+        title: "ボーナス終了画面（スタンプ）",
+        note: "吉/良/優/極スタンプで設定を示唆。濃厚系のみ判別に反映。",
+        items: [
+          { id: "zenigata5_bonus_end_default", label: "下記以外（示唆ナシ）", effect: { type: "none" } },
+          { id: "zenigata5_bonus_end_kichi_min3", label: "吉スタンプ（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "zenigata5_bonus_end_ryo_min4", label: "良スタンプ（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "zenigata5_bonus_end_yu_min5", label: "優スタンプ（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "zenigata5_bonus_end_kiwami_exact6", label: "極スタンプ（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "paon_hihouden": {
     machineId: "paon_hihouden",
     helpUrl: "https://p-town.dmm.com/machines/4929",
