@@ -917,6 +917,11 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                 0,
               );
 
+              const showHintMemo = !(
+                machine.id === "smart-onimusha-3" &&
+                (group.id === "oni3_voice" || group.id === "oni3_navi_voice")
+              );
+
               const collapsed =
                 group.id in collapsedHintGroups
                   ? !!collapsedHintGroups[group.id]
@@ -971,29 +976,31 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
                   {!collapsed ? (
                     <div id={`hint-group-${group.id}`} className="mt-3 grid gap-2">
-                      <div>
-                        <p className="text-xs font-semibold text-neutral-700">メモ（台詞など自由入力）</p>
-                        <p className="mt-1 text-xs text-neutral-500">
-                          判別には未反映。必要ならそのまま貼り付けてください。
-                        </p>
-                        <textarea
-                          value={hintMemos[group.id] ?? ""}
-                          onChange={(e) => {
-                            const next = e.target.value;
-                            setHintMemos((prev) => ({ ...prev, [group.id]: next }));
-                            try {
-                              const key = `slokasu:hintMemo:${machine.id}:${group.id}`;
-                              if (next) window.localStorage.setItem(key, next);
-                              else window.localStorage.removeItem(key);
-                            } catch {
-                              // ignore
-                            }
-                          }}
-                          placeholder="例：表示されたボイス台詞をそのまま入力"
-                          rows={3}
-                          className="mt-2 w-full rounded-md border border-neutral-200 bg-white p-2 text-xs text-neutral-900"
-                        />
-                      </div>
+                      {showHintMemo ? (
+                        <div>
+                          <p className="text-xs font-semibold text-neutral-700">メモ（台詞など自由入力）</p>
+                          <p className="mt-1 text-xs text-neutral-500">
+                            判別には未反映。必要ならそのまま貼り付けてください。
+                          </p>
+                          <textarea
+                            value={hintMemos[group.id] ?? ""}
+                            onChange={(e) => {
+                              const next = e.target.value;
+                              setHintMemos((prev) => ({ ...prev, [group.id]: next }));
+                              try {
+                                const key = `slokasu:hintMemo:${machine.id}:${group.id}`;
+                                if (next) window.localStorage.setItem(key, next);
+                                else window.localStorage.removeItem(key);
+                              } catch {
+                                // ignore
+                              }
+                            }}
+                            placeholder="例：表示されたボイス台詞をそのまま入力"
+                            rows={3}
+                            className="mt-2 w-full rounded-md border border-neutral-200 bg-white p-2 text-xs text-neutral-900"
+                          />
+                        </div>
+                      ) : null}
 
                       {group.items.map((item) => {
                         const value = hintCounts[item.id] ?? "";
