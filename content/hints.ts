@@ -1059,6 +1059,56 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-tekken-6"] = {
+    machineId: "smart-tekken-6",
+    helpUrl: "https://p-town.dmm.com/machines/4913",
+    groups: [
+      {
+        id: "tekken6_kerotto_trophy",
+        title: "ケロットトロフィー",
+        note: "出現時のみ入力。『設定◯以上/濃厚』は制約として反映。",
+        defaultCollapsed: true,
+        items: [
+          { id: "tekken6_trophy_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "tekken6_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "tekken6_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          {
+            id: "tekken6_trophy_kerotto",
+            label: "ケロット柄（設定5or6）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 1 },
+                { type: "excludeSetting", exclude: 2 },
+                { type: "excludeSetting", exclude: 3 },
+                { type: "excludeSetting", exclude: 4 },
+              ],
+            },
+          },
+          { id: "tekken6_trophy_rainbow", label: "レインボー（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tekken6_at_direct_hit",
+        title: "AT直撃当選",
+        note:
+          "通常時にAT直撃が発生した回数を入力。設定別の直撃確率の比率を、ソフト示唆（重み付け）として反映。",
+        defaultCollapsed: true,
+        maxTotalFrom: "regCount",
+        items: [
+          {
+            id: "tekken6_at_direct_hit_count",
+            label: "AT直撃",
+            // 比率: (設定別直撃率) / (設定1直撃率)
+            // 設定1: 1/12580.4, 2: 1/10774.5, 3: 1/7471.1, 4: 1/5347.4, 5: 1/3840.1, 6: 1/3565.2
+            // 比率 = 12580.4 / denom
+            effect: { type: "weight", weights: { 2: 1.17, 3: 1.68, 4: 2.35, 5: 3.28, 6: 3.53 } },
+          },
+        ],
+      },
+    ],
+  };
+
   hintConfigs["smart-super-blackjack"] = {
     machineId: "smart-super-blackjack",
     helpUrl: "https://p-town.dmm.com/machines/4712",

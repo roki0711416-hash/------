@@ -831,6 +831,31 @@ export const machines = [
   },
 
   {
+    id: "smart-tekken-6",
+    name: "L 鉄拳6",
+    maker: "山佐",
+    series: "鉄拳",
+    category: "SMART",
+    inHall: true,
+    description: "L（ボーナス/AT初当り）ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "ボーナス",
+      regLabel: "AT",
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 264.7, reg: 497.0, total: 264.7, rate: 97.9 },
+        { s: 2, big: 261.5, reg: 484.1, total: 261.5, rate: 98.9 },
+        { s: 3, big: 255.3, reg: 456.8, total: 255.3, rate: 100.5 },
+        { s: 4, big: 227.6, reg: 397.6, total: 227.6, rate: 105.2 },
+        { s: 5, big: 220.3, reg: 366.4, total: 220.3, rate: 110.3 },
+        { s: 6, big: 218.5, reg: 358.5, total: 218.5, rate: 114.9 },
+      ],
+    },
+  },
+
+  {
     id: "smart-super-blackjack",
     name: "L スーパーブラックジャック",
     maker: "山佐",
