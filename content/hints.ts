@@ -538,6 +538,16 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "iza_at_end_exact6", label: "秘湯（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
         ],
       },
+
+      {
+        id: "iza_end_screen_shutter",
+        title: "終了画面のシャッター",
+        note: "AT/青頂ズバッシュの終了画面で発生。設定示唆ではなく“決闘当選の示唆”なので、判別ロジックには影響しません（メモ用途）。",
+        items: [
+          { id: "iza_end_shutter_close", label: "シャッターが閉まる（決闘濃厚）", effect: { type: "none" } },
+          { id: "iza_end_shutter_red", label: "赤シャッター（強決闘以上濃厚）", effect: { type: "none" } },
+        ],
+      },
     ],
   },
 
