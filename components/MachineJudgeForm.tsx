@@ -86,6 +86,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const hintConfig = useMemo(() => getHintConfig(machine.id), [machine.id]);
   const [hintCounts, setHintCounts] = useState<Record<string, string>>({});
   const [collapsedHintGroups, setCollapsedHintGroups] = useState<Record<string, boolean>>({});
+  const [hintMemos, setHintMemos] = useState<Record<string, string>>({});
 
   const [ocrImageUrl, setOcrImageUrl] = useState<string | null>(null);
   const [ocrText, setOcrText] = useState<string>("");
@@ -121,7 +122,23 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     setHintCounts({});
     setCollapsedHintGroups({});
     setExtraCounts({});
+    setHintMemos({});
   }, [machine.id]);
+
+  useEffect(() => {
+    if (!hintConfig) return;
+    try {
+      const next: Record<string, string> = {};
+      for (const group of hintConfig.groups) {
+        const key = `slokasu:hintMemo:${machine.id}:${group.id}`;
+        const v = window.localStorage.getItem(key);
+        if (v) next[group.id] = v;
+      }
+      setHintMemos(next);
+    } catch {
+      // ignore (e.g. private mode / disabled storage)
+    }
+  }, [machine.id, hintConfig]);
 
   const renderNoteWithLinks = (note: string) => {
     const urlRe = /(https?:\/\/[^\s]+)/g;
@@ -954,6 +971,30 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
 
                   {!collapsed ? (
                     <div id={`hint-group-${group.id}`} className="mt-3 grid gap-2">
+                      <div>
+                        <p className="text-xs font-semibold text-neutral-700">メモ（台詞など自由入力）</p>
+                        <p className="mt-1 text-xs text-neutral-500">
+                          判別には未反映。必要ならそのまま貼り付けてください。
+                        </p>
+                        <textarea
+                          value={hintMemos[group.id] ?? ""}
+                          onChange={(e) => {
+                            const next = e.target.value;
+                            setHintMemos((prev) => ({ ...prev, [group.id]: next }));
+                            try {
+                              const key = `slokasu:hintMemo:${machine.id}:${group.id}`;
+                              if (next) window.localStorage.setItem(key, next);
+                              else window.localStorage.removeItem(key);
+                            } catch {
+                              // ignore
+                            }
+                          }}
+                          placeholder="例：表示されたボイス台詞をそのまま入力"
+                          rows={3}
+                          className="mt-2 w-full rounded-md border border-neutral-200 bg-white p-2 text-xs text-neutral-900"
+                        />
+                      </div>
+
                       {group.items.map((item) => {
                         const value = hintCounts[item.id] ?? "";
                         return (
