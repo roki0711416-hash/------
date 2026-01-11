@@ -903,6 +903,160 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "heiwa_fujiko_bt": {
+    machineId: "heiwa_fujiko_bt",
+    helpUrl: "https://p-town.dmm.com/machines/4921",
+    groups: [
+      {
+        id: "fujiko_bt_bonus_end_stamp",
+        title: "BIG・スーパーBIG終了画面（スタンプ）",
+        note: "可/良/優/極スタンプで設定を示唆。濃厚系のみ判別に反映。",
+        items: [
+          { id: "fujiko_bt_bonus_end_default", label: "デフォルト（示唆ナシ）", effect: { type: "none" } },
+          { id: "fujiko_bt_bonus_end_ka_min2", label: "可（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "fujiko_bt_bonus_end_ryo_min4", label: "良（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "fujiko_bt_bonus_end_yu_min5", label: "優（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "fujiko_bt_bonus_end_kiwami_exact6", label: "極（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "fujiko_bt_judge",
+        title: "ジャッジ演出（連続演出）",
+        note: "発生した場合は濃厚系として判別に反映。",
+        items: [
+          { id: "fujiko_bt_judge_none", label: "なし", effect: { type: "none" } },
+          { id: "fujiko_bt_judge_pachinko_8_min2", label: "パチンコジャッジ：8絵柄揃い（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "fujiko_bt_judge_card_haruruna_min4", label: "カードジャッジ：ハルルナPUSH（設定4以上）", effect: { type: "minSetting", min: 4 } },
+        ],
+      },
+      {
+        id: "fujiko_bt_adjust_voice",
+        title: "枚数調整成功時のボイス",
+        note: "ボイスの示唆内容に合わせて選択。",
+        items: [
+          { id: "fujiko_bt_adjust_voice_default", label: "ルパン『狙った獲物は逃がさねぇぜ』（示唆ナシ）", effect: { type: "none" } },
+          {
+            id: "fujiko_bt_adjust_voice_jigen_odd",
+            label: "次元『ド派手にぶっ放すぜ』（奇数示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "fujiko_bt_adjust_voice_zenigata_even",
+            label: "銭形『がっはっはっは～年貢の納め時だな～』（偶数示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "fujiko_bt_adjust_voice_goemon_high",
+            label: "五ェ門『斬鉄剣に斬れぬものはない』（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "fujiko_bt_adjust_voice_fujiko_min5", label: "不二子『さすがだわ』（設定5以上）", effect: { type: "minSetting", min: 5 } },
+        ],
+      },
+      {
+        id: "fujiko_bt_reg_scenario",
+        title: "REG中のキャラ紹介シナリオ",
+        note: "奇数/偶数/高設定示唆はソフト示唆（重み付け）。『設定◯以上』は濃厚系として判別に反映。",
+        items: [
+          { id: "fujiko_bt_reg_scenario_default", label: "下記以外", effect: { type: "none" } },
+          {
+            id: "fujiko_bt_reg_scenario_odd_basic",
+            label: "ルパン→次元→五エ門→不二子（奇数示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_even_basic",
+            label: "ルパン→銭形→五エ門→不二子（偶数示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_even_jigen_zenigata",
+            label: "ルパン→次元→銭形→不二子（偶数示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_high_weak_odd",
+            label: "ルパン→次元→五エ門→赤不二子（高設定示唆［弱］＋奇数示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+                { type: "weight", weights: { 1: 1.03, 3: 1.03, 5: 1.03 } },
+              ],
+            },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_high_weak_even_zenigata",
+            label: "ルパン→銭形→五エ門→赤不二子（高設定示唆［弱］＋偶数示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+                { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+              ],
+            },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_high_weak_even_jigen",
+            label: "ルパン→次元→銭形→赤不二子（高設定示唆［弱］＋偶数示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+                { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+              ],
+            },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_high_strong",
+            label: "赤ルパン→次元→五エ門→不二子（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_min2_odd",
+            label: "ルパン→次元→五エ門→赤3人（設定2以上＋奇数示唆）",
+            effect: {
+              type: "allOf",
+              effects: [{ type: "minSetting", min: 2 }, { type: "weight", weights: { 1: 1.03, 3: 1.03, 5: 1.03 } }],
+            },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_min2_even_zenigata",
+            label: "ルパン→銭形→五エ門→赤3人（設定2以上＋偶数示唆）",
+            effect: {
+              type: "allOf",
+              effects: [{ type: "minSetting", min: 2 }, { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } }],
+            },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_min2_even_jigen_zenigata",
+            label: "ルパン→次元→銭形→赤3人（設定2以上＋偶数示唆）",
+            effect: {
+              type: "allOf",
+              effects: [{ type: "minSetting", min: 2 }, { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } }],
+            },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_min4_odd",
+            label: "赤ルパン→次元→五エ門→赤不二子（設定4以上＋奇数示唆）",
+            effect: {
+              type: "allOf",
+              effects: [{ type: "minSetting", min: 4 }, { type: "weight", weights: { 1: 1.03, 3: 1.03, 5: 1.03 } }],
+            },
+          },
+          {
+            id: "fujiko_bt_reg_scenario_min5_even",
+            label: "赤ルパン→次元→五エ門→赤3人（設定5以上＋偶数示唆）",
+            effect: {
+              type: "allOf",
+              effects: [{ type: "minSetting", min: 5 }, { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } }],
+            },
+          },
+        ],
+      },
+    ],
+  },
+
   "paon_hihouden": {
     machineId: "paon_hihouden",
     helpUrl: "https://p-town.dmm.com/machines/4929",

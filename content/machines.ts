@@ -1764,4 +1764,29 @@ export const machines = [
       ],
     },
   },
+
+  // --- 平和 L不二子BT（p-town 4921）追加 ---
+  {
+    id: "heiwa_fujiko_bt",
+    name: "L不二子BT",
+    maker: "平和",
+    series: "ルパン三世",
+    inHall: true,
+    category: "SMART",
+    description: "ボーナス確率（合算）と機械割での簡易判別。数値はp-town(4921)より。実質5段階設定（設定1/2/4/5/6）。",
+    metricsLabels: {
+      bigLabel: "ボーナス確率",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 141.2, reg: 1_000_000_000, total: 141.2, rate: 100.2 },
+        { s: 2, big: 134.0, reg: 1_000_000_000, total: 134.0, rate: 102.4 },
+        { s: 4, big: 122.7, reg: 1_000_000_000, total: 122.7, rate: 106.2 },
+        { s: 5, big: 113.2, reg: 1_000_000_000, total: 113.2, rate: 109.0 },
+        { s: 6, big: 98.1, reg: 1_000_000_000, total: 98.1, rate: 111.2 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];
