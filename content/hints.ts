@@ -320,6 +320,108 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "newgin_mushoku_tensei": {
+    machineId: "newgin_mushoku_tensei",
+    helpUrl: "https://p-town.dmm.com/machines/4924",
+    groups: [
+      {
+        id: "mushoku_end_screens",
+        title: "ボーナス・AT終了画面",
+        note: "枠色などで設定を示唆。奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "mushoku_end_shitei_even", label: "師弟（白枠・偶数設定示唆）", effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } } },
+          { id: "mushoku_end_buena_weak", label: "ブエナ村（青枠・高設定示唆［弱］）", effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } } },
+          { id: "mushoku_end_madairiku_strong", label: "魔大陸（赤枠・高設定示唆［強］）", effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } } },
+          { id: "mushoku_end_deadend_min2", label: "デッドエンド（銅枠・設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "mushoku_end_kizuna_min4", label: "絆（銀枠・設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mushoku_end_orsted_exact6", label: "オルステッド（金枠・設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "mushoku_payout",
+        title: "特定の獲得枚数表示",
+        note: "トータル獲得枚数が規定枚数を超えた際に表示。",
+        items: [
+          { id: "mushoku_payout_222_over", label: "222枚OVER（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          {
+            id: "mushoku_payout_246_over",
+            label: "246枚OVER（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.2, 4: 1.2, 6: 1.2 } },
+          },
+          { id: "mushoku_payout_333_over", label: "333枚OVER（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "mushoku_payout_444_over", label: "444枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mushoku_payout_456_over", label: "456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mushoku_payout_555_over", label: "555枚OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "mushoku_payout_666_over", label: "666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "mushoku_cz_zorome_percent",
+        title: "無職チャンス中：ゾロ目パーセント",
+        note: "押し順ナビ演出時のパーセント表示がゾロ目なら高設定濃厚。",
+        items: [
+          { id: "mushoku_cz_44", label: "44%（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mushoku_cz_55", label: "55%（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "mushoku_cz_66", label: "66%（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "mushoku_magic_bonus_story",
+        title: "魔術ボーナス中：ストーリー紹介（背景色）",
+        note: "話数ごとの背景色で設定を示唆。色別のまとめのみ判別に反映。",
+        items: [
+          { id: "mushoku_story_white", label: "白（デフォルト）", effect: { type: "none" } },
+          { id: "mushoku_story_blue", label: "青（高設定示唆［弱］）", effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } } },
+          { id: "mushoku_story_red", label: "赤（高設定示唆［強］）", effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } } },
+          { id: "mushoku_story_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "mushoku_story_silver", label: "銀（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mushoku_story_gold", label: "金（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "mushoku_ending_chars",
+        title: "エンディング中：ヒロイン役成立時の出現キャラ",
+        note: "スペシャルエピソード中にヒロイン役成立で表示。",
+        items: [
+          {
+            id: "mushoku_ending_rudeus_odd",
+            label: "ルーデウス（白/アクアハーティア装備・奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "mushoku_ending_rudeus_even",
+            label: "ルーデウス（白/ロキシーの杖装備・偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          { id: "mushoku_ending_roxy_min2", label: "ロキシー（青・設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "mushoku_ending_sylphy_excl2", label: "シルフィ（青・設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
+          { id: "mushoku_ending_eris_excl3", label: "エリス（青・設定3否定）", effect: { type: "excludeSetting", exclude: 3 } },
+          { id: "mushoku_ending_zenith_weak", label: "ゼニス（緑・高設定示唆［弱］）", effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } } },
+          { id: "mushoku_ending_paul_strong", label: "パウロ（緑・高設定示唆［強］）", effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } } },
+          { id: "mushoku_ending_kishirika_min3", label: "キシリカ（赤・設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "mushoku_ending_hitogami_min4", label: "ヒトガミ（赤・設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mushoku_ending_man_min5", label: "無職の男（赤・設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "mushoku_ending_orsted_exact6", label: "オルステッド（虹・設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "mushoku_round_start_red",
+        title: "ラウンド開始画面（赤背景）",
+        note: "赤背景はVストックあり濃厚＋設定示唆。設定示唆部分のみ判別に反映。",
+        items: [
+          {
+            id: "mushoku_round_red_heroines_even",
+            label: "ヒロイン3人（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.2, 4: 1.2, 6: 1.2 } },
+          },
+          { id: "mushoku_round_red_hitogami_min4", label: "ヒトガミ（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mushoku_round_red_zense_man_min5", label: "前世の男（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "mushoku_round_red_orsted_exact6", label: "オルステッド（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "smart-magireco": {
     machineId: "smart-magireco",
     helpUrl: "https://p-town.dmm.com/machines/4745#anc-point",

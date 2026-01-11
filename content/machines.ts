@@ -1154,4 +1154,30 @@ export const machines = [
       ],
     },
   },
+
+  // --- NEWGIN 無職転生 追加 ---
+  {
+    id: "newgin_mushoku_tensei",
+    name: "L 無職転生～異世界行ったら本気だす～",
+    maker: "ニューギン",
+    series: "無職転生",
+    inHall: true,
+    category: "SMART",
+    description: "L（AT初当り）ベースの簡易判別。50枚あたり約33G（独自調査値）",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 416, reg: 1_000_000_000, total: 416, rate: 97.7 },
+        { s: 2, big: 406, reg: 1_000_000_000, total: 406, rate: 99.1 },
+        { s: 3, big: 394, reg: 1_000_000_000, total: 394, rate: 100.9 },
+        { s: 4, big: 361, reg: 1_000_000_000, total: 361, rate: 105.4 },
+        { s: 5, big: 327, reg: 1_000_000_000, total: 327, rate: 109.5 },
+        { s: 6, big: 292, reg: 1_000_000_000, total: 292, rate: 113.7 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];
