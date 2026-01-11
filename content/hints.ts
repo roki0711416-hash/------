@@ -1122,6 +1122,29 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           },
         ],
       },
+      {
+        id: "sengoku_otome4_otome_attack_direct",
+        title: "乙女アタック直撃（通常時）",
+        note:
+          "直撃当選率は設定差あり。ここでは『発生回数をカウント』してソフト示唆（重み付け）として反映。より厳密にやるなら“試行回数”が必要だが、現状UIでは未対応。",
+        items: [
+          { id: "sengoku_otome4_oa_direct_none", label: "直撃なし/未確認", effect: { type: "none" } },
+          {
+            id: "sengoku_otome4_oa_direct_by_chance_or_strong",
+            label: "直撃当選（チャンス目/強チェリー経由）",
+            effect: {
+              type: "weight",
+              // p-townの表（約1.2%→2.5%）の増加分を、回数ぶんの倍率として近似
+              weights: { 2: 1.08, 3: 1.25, 4: 1.5, 5: 1.75, 6: 2.08 },
+            },
+          },
+          {
+            id: "sengoku_otome4_oa_direct_reel_lock2",
+            label: "直撃（リールロック2段階）※当選率50%（設定差なし）",
+            effect: { type: "none" },
+          },
+        ],
+      },
     ],
   },
 
