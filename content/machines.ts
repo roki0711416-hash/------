@@ -1128,4 +1128,30 @@ export const machines = [
       ],
     },
   },
+
+  // --- ENTERRISE BIO5 追加 ---
+  {
+    id: "enterrise_bio5",
+    name: "L バイオハザード5",
+    maker: "エンターライズ",
+    series: "バイオハザード",
+    inHall: true,
+    category: "SMART",
+    description: "L（AT初当り）ベースの簡易判別。50枚あたり約33.0G（独自調査値）",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 325.8, reg: 1_000_000_000, total: 325.8, rate: 97.8 },
+        { s: 2, big: 314.4, reg: 1_000_000_000, total: 314.4, rate: 98.8 },
+        { s: 3, big: 298.2, reg: 1_000_000_000, total: 298.2, rate: 100.6 },
+        { s: 4, big: 271.4, reg: 1_000_000_000, total: 271.4, rate: 104.6 },
+        { s: 5, big: 249.6, reg: 1_000_000_000, total: 249.6, rate: 108.9 },
+        { s: 6, big: 236.2, reg: 1_000_000_000, total: 236.2, rate: 114.9 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];

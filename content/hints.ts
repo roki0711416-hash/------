@@ -220,6 +220,106 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "enterrise_bio5": {
+    machineId: "enterrise_bio5",
+    helpUrl: "https://p-town.dmm.com/machines/4754",
+    groups: [
+      {
+        id: "bio5_trophy",
+        title: "エンタトロフィーの示唆",
+        note: "AT終了画面で液晶右側にエンタトロフィーが出現すれば設定2以上濃厚。色でさらに上位設定を示唆。",
+        items: [
+          { id: "bio5_trophy_bronze", label: "銅（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "bio5_trophy_silver", label: "銀（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "bio5_trophy_gold", label: "金（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "bio5_trophy_momiji", label: "紅葉柄（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "bio5_trophy_rainbow", label: "虹（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "bio5_at_end_screen",
+        title: "AT終了画面",
+        note: "奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。否定・濃厚系は制約として反映。",
+        items: [
+          { id: "bio5_at_end_default", label: "キャラなし（デフォルト）", effect: { type: "none" } },
+          {
+            id: "bio5_at_end_wesker_a",
+            label: "ウェスカーA（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "bio5_at_end_wesker_b",
+            label: "ウェスカーB（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          {
+            id: "bio5_at_end_chris",
+            label: "クリス（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "bio5_at_end_sheva",
+            label: "シェバ（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          { id: "bio5_at_end_josh", label: "ジョッシュ（設定1否定）", effect: { type: "excludeSetting", exclude: 1 } },
+          { id: "bio5_at_end_irving", label: "アーヴィング（設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
+          { id: "bio5_at_end_excella", label: "エクセラ（設定3否定）", effect: { type: "excludeSetting", exclude: 3 } },
+          { id: "bio5_at_end_majini", label: "マジニ（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "bio5_at_end_chris_sheva", label: "クリス＆シェバ（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "bio5_at_end_all", label: "全員集合（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "bio5_at_end_entaraion", label: "エンタライオン（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "bio5_ending_quote",
+        title: "エンディング中：レア役成立時のセリフ",
+        note: "キャラで設定を示唆。",
+        items: [
+          { id: "bio5_ending_quote_chris", label: "クリス（デフォルト）", effect: { type: "none" } },
+          {
+            id: "bio5_ending_quote_sheva",
+            label: "シェバ（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "bio5_ending_quote_josh",
+            label: "ジョッシュ（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "bio5_ending_quote_irving",
+            label: "アーヴィング（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "bio5_ending_quote_excella",
+            label: "エクセラ（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "bio5_ending_quote_wesker", label: "ウェスカー（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "bio5_ending_quote_majini", label: "マジニ（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "bio5_ending_quote_entaraion", label: "エンタライオン（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "bio5_medals",
+        title: "特定の獲得枚数表示",
+        note: "トータル獲得枚数が規定枚数を超えた際に表示。",
+        items: [
+          {
+            id: "bio5_medals_256",
+            label: "256 MedalsOVER（設定2or5or6）",
+            effect: { type: "weight", weights: { 2: 1.2, 5: 1.2, 6: 1.2 } },
+          },
+          { id: "bio5_medals_456", label: "456 MedalsOVER（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "bio5_medals_810", label: "810 MedalsOVER（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "bio5_medals_666", label: "666 MedalsOVER（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "smart-magireco": {
     machineId: "smart-magireco",
     helpUrl: "https://p-town.dmm.com/machines/4745#anc-point",

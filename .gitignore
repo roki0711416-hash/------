@@ -19,6 +19,7 @@
 
 # local temp workdir
 /.tmp/
+scripts/.tmp/
 
 # production
 /build
