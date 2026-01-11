@@ -139,6 +139,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
 
   "enterrise_dmc5": {
     machineId: "enterrise_dmc5",
+    helpUrl: "https://p-town.dmm.com/machines/4814",
     groups: [
       {
         id: "dmc5_trophy",
@@ -151,6 +152,70 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "dmc5_trophy_momiji", label: "紅葉柄", effect: { type: "minSetting", min: 5 } },
           { id: "dmc5_trophy_rainbow", label: "虹", effect: { type: "exactSetting", exact: 6 } },
         ],
+      },
+      {
+        id: "dmc5_dante_quote",
+        title: "上位ST勝利後：ダンテのセリフ",
+        note: "セリフは『◯点リードだ！』形式。表示された回数をカウント。",
+        items: [
+          { id: "dmc5_dante_lead2", label: "2点リードだ！（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "dmc5_dante_lead3", label: "3点リードだ！（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "dmc5_dante_lead4", label: "4点リードだ！（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "dmc5_dante_lead5", label: "5点リードだ！（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "dmc5_dante_lead6", label: "6点リードだ！（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "dmc5_bonus_end_screen",
+        title: "DMCボーナス終了画面",
+        note: "奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。否定・濃厚系は制約として反映。",
+        items: [
+          { id: "dmc5_bonus_end_default", label: "ニコトレーラー内（デフォルト）", effect: { type: "none" } },
+          {
+            id: "dmc5_bonus_end_library",
+            label: "ライブラリー（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "dmc5_bonus_end_market",
+            label: "マーケット（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "dmc5_bonus_end_street",
+            label: "ストリート（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "dmc5_bonus_end_catacombs",
+            label: "カタコンベ（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "dmc5_bonus_end_bp_low", label: "ブラッディパレス（低層）（設定3否定）", effect: { type: "excludeSetting", exclude: 3 } },
+          { id: "dmc5_bonus_end_bp_mid", label: "ブラッディパレス（中層）（設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
+          { id: "dmc5_bonus_end_bp_high", label: "ブラッディパレス（上層）（設定1否定）", effect: { type: "excludeSetting", exclude: 1 } },
+          { id: "dmc5_bonus_end_makai", label: "魔界（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "dmc5_bonus_end_all", label: "全員集合（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "dmc5_bonus_end_entaraion", label: "エンタライオン（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "dmc5_bonus_end_totsu_dnc", label: "突Devils Never Cry移行演出（上位ST直行時に発生）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "dmc5_payout_display",
+        title: "特定の獲得枚数表示",
+        note: "トータル獲得枚数が規定枚数を超えた際に表示。",
+        items: [
+          { id: "dmc5_payout_222_over", label: "222枚OVER（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "dmc5_payout_456_over", label: "456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "dmc5_payout_555_over", label: "555枚OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "dmc5_payout_666_over", label: "666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "dmc5_trump",
+        title: "トランプ示唆",
+        note: "JOKERは次回ST終了時にエンタトロフィーが出現（実質 設定2以上濃厚）。",
+        items: [{ id: "dmc5_trump_joker", label: "JOKER（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } }],
       },
     ],
   },
