@@ -1629,7 +1629,7 @@ export const machines = [
   {
     id: "olympia_toloveru_darkness",
     name: "L ToLOVEるダークネス",
-    maker: "オリンピアエステート",
+    maker: "平和",
     series: "ToLOVEる",
     inHall: true,
     category: "SMART",
@@ -1647,6 +1647,32 @@ export const machines = [
         { s: 4, big: 328.4, reg: 1_000_000_000, total: 328.4, rate: 102.5 },
         { s: 5, big: 311.3, reg: 1_000_000_000, total: 311.3, rate: 105.8 },
         { s: 6, big: 300.6, reg: 1_000_000_000, total: 300.6, rate: 110.1 },
+      ],
+    },
+  },
+
+  // --- 平和 L ToLOVEるダークネス TRANCE ver.8.7（p-town 4806）追加 ---
+  {
+    id: "heiwa_toloveru_darkness_trance_v87",
+    name: "L ToLOVEるダークネス TRANCE ver.8.7",
+    maker: "平和",
+    series: "ToLOVEる",
+    inHall: true,
+    category: "SMART",
+    description:
+      "初当り確率と機械割での簡易判別。数値はp-town(4806)より。実質5段階設定（設定2〜6）。",
+    metricsLabels: {
+      bigLabel: "初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 2, big: 353.3, reg: 1_000_000_000, total: 353.3, rate: 98.0 },
+        { s: 3, big: 346.3, reg: 1_000_000_000, total: 346.3, rate: 99.0 },
+        { s: 4, big: 328.9, reg: 1_000_000_000, total: 328.9, rate: 103.1 },
+        { s: 5, big: 312.3, reg: 1_000_000_000, total: 312.3, rate: 110.3 },
+        { s: 6, big: 307.6, reg: 1_000_000_000, total: 307.6, rate: 112.0 },
       ],
     },
   },

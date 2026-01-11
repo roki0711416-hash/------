@@ -740,6 +740,61 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "heiwa_toloveru_darkness_trance_v87": {
+    machineId: "heiwa_toloveru_darkness_trance_v87",
+    helpUrl: "https://p-town.dmm.com/machines/4806",
+    groups: [
+      {
+        id: "toloveru_trance_st_end_screen",
+        title: "ST（楽園計画）終了画面",
+        note: "スタンプは濃厚/強示唆として判別に反映。『美柑』は高設定示唆としてソフト示唆（重み付け）。『メア』は設定5示唆として重み付け。",
+        items: [
+          { id: "toloveru_trance_st_end_default", label: "下記以外（示唆ナシ）", effect: { type: "none" } },
+          {
+            id: "toloveru_trance_st_end_mikan_high_weak",
+            label: "美柑（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "toloveru_trance_st_end_mea_setting5_hint",
+            label: "メア（設定5示唆）",
+            effect: { type: "weight", weights: { 5: 1.25, 6: 1.05 } },
+          },
+          {
+            id: "toloveru_trance_st_end_kichi_stamp_min3",
+            label: "吉スタンプ（設定3以上）",
+            effect: { type: "minSetting", min: 3 },
+          },
+          {
+            id: "toloveru_trance_st_end_ryo_stamp_min4",
+            label: "良スタンプ（設定4以上）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "toloveru_trance_st_end_yu_stamp_min5",
+            label: "優スタンプ（設定5以上）",
+            effect: { type: "minSetting", min: 5 },
+          },
+          {
+            id: "toloveru_trance_st_end_kiwami_stamp_exact6",
+            label: "極スタンプ（設定6）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "toloveru_trance_payout_display",
+        title: "獲得枚数表示",
+        note: "特定の獲得枚数を超えた際に表示。",
+        items: [
+          { id: "toloveru_trance_payout_456_over", label: "456枚OVER（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "toloveru_trance_payout_555_over", label: "555枚OVER（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "toloveru_trance_payout_666_over", label: "666枚OVER（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "paon_hihouden": {
     machineId: "paon_hihouden",
     helpUrl: "https://p-town.dmm.com/machines/4929",
