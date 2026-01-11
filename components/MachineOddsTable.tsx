@@ -19,7 +19,10 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
   const hasSuikaCzRate = machine.odds.settings.some((s) => typeof s.suikaCzRate === "number");
 
   const extraMetrics = machine.metricsLabels?.extraMetrics ?? [];
-  const hasExtras = extraMetrics.length > 0 && machine.odds.settings.some((s) => s.extras);
+  const extraMetricsToShow = extraMetrics.filter((em) =>
+    machine.odds.settings.some((s) => typeof s.extras?.[em.id] === "number"),
+  );
+  const hasExtras = extraMetricsToShow.length > 0;
 
   return (
     <section className="rounded-2xl border border-neutral-200 bg-white p-5">
@@ -46,9 +49,6 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
               {hasExtra ? (
                 <th className="px-3 py-2 border border-neutral-200">{extraLabel}</th>
               ) : null}
-              {hasExtras ? extraMetrics.map((em) => (
-                <th key={em.id} className="px-3 py-2 border border-neutral-200">{em.label}</th>
-              )) : null}
               {hasSuikaCzRate ? (
                 <th className="px-3 py-2 border border-neutral-200">{suikaCzRateLabel}</th>
               ) : null}
@@ -73,11 +73,6 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
                     {typeof row.extra === "number" ? `1/${fmt(row.extra)}` : "-"}
                   </td>
                 ) : null}
-                {hasExtras ? extraMetrics.map((em) => (
-                  <td key={em.id} className="px-3 py-2 border border-neutral-200">
-                    {row.extras?.[em.id] ? `1/${fmt(row.extras[em.id])}` : "-"}
-                  </td>
-                )) : null}
                 {hasSuikaCzRate ? (
                   <td className="px-3 py-2 border border-neutral-200">
                     {typeof row.suikaCzRate === "number"
@@ -91,6 +86,44 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
           </tbody>
         </table>
       </div>
+
+      {hasExtras ? (
+        <>
+          <h3 className="mt-6 text-base font-semibold text-neutral-800">小役確率</h3>
+          <p className="mt-1 text-sm text-neutral-600">設定別の 1/○○ 表記</p>
+
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full min-w-[560px] border-collapse text-sm">
+              <thead>
+                <tr className="text-left text-neutral-600">
+                  <th className="sticky left-0 z-10 bg-white px-3 py-2 border border-neutral-200">
+                    項目
+                  </th>
+                  {machine.odds.settings.map((s, idx) => (
+                    <th key={`${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
+                      設定{s.s}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {extraMetricsToShow.map((em) => (
+                  <tr key={em.id} className="text-neutral-800">
+                    <td className="sticky left-0 bg-white px-3 py-2 font-semibold border border-neutral-200">
+                      {em.label}
+                    </td>
+                    {machine.odds.settings.map((s, idx) => (
+                      <td key={`${em.id}-${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
+                        {typeof s.extras?.[em.id] === "number" ? `1/${fmt(s.extras[em.id])}` : "-"}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : null}
     </section>
   );
 }
