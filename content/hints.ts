@@ -848,6 +848,61 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "heiwa_lupin_daikoukai_hihou": {
+    machineId: "heiwa_lupin_daikoukai_hihou",
+    helpUrl: "https://p-town.dmm.com/machines/4689",
+    groups: [
+      {
+        id: "lupin_daikoukai_at_end_screen",
+        title: "AT終了画面",
+        note: "スタンプは濃厚系として判別に反映。『ルパン一味』は高設定示唆としてソフト示唆（重み付け）。",
+        items: [
+          { id: "lupin_daikoukai_at_end_default", label: "ルパン逃走（デフォルト）", effect: { type: "none" } },
+          {
+            id: "lupin_daikoukai_at_end_party_high_weak",
+            label: "ルパン一味（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "lupin_daikoukai_at_end_ka_min2", label: "可スタンプ（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "lupin_daikoukai_at_end_kichi_min3", label: "吉スタンプ（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "lupin_daikoukai_at_end_ryo_min4", label: "良スタンプ（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "lupin_daikoukai_at_end_yu_min5", label: "優スタンプ（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "lupin_daikoukai_at_end_kiwami_exact6", label: "極スタンプ（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "lupin_daikoukai_at_round_premium",
+        title: "特殊なラウンド開始画面",
+        note: "AT中にプレミアム画面が表示されると設定5以上/設定6濃厚。",
+        items: [
+          { id: "lupin_daikoukai_round_premium_none", label: "なし", effect: { type: "none" } },
+          { id: "lupin_daikoukai_round_premium_zenigata_min5", label: "主役は銭形（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "lupin_daikoukai_round_premium_fujiko2_exact6", label: "不二子2（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "lupin_daikoukai_bonus_end_voice",
+        title: "初当りボーナス終了時のボイス",
+        note: "ボーナス終了時にPUSHボタンで発生。示唆内容に合わせて選択。",
+        items: [
+          { id: "lupin_daikoukai_bonus_voice_default", label: "デフォルト", effect: { type: "none" } },
+          {
+            id: "lupin_daikoukai_bonus_voice_high_weak",
+            label: "高設定示唆［弱］",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "lupin_daikoukai_bonus_voice_high_strong",
+            label: "高設定示唆［強］",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "lupin_daikoukai_bonus_voice_min4", label: "設定4以上", effect: { type: "minSetting", min: 4 } },
+          { id: "lupin_daikoukai_bonus_voice_exact6", label: "設定6", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "paon_hihouden": {
     machineId: "paon_hihouden",
     helpUrl: "https://p-town.dmm.com/machines/4929",

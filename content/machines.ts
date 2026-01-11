@@ -1738,4 +1738,30 @@ export const machines = [
       ],
     },
   },
+
+  // --- 平和 Lルパン三世 大航海者の秘宝（p-town 4689）追加 ---
+  {
+    id: "heiwa_lupin_daikoukai_hihou",
+    name: "Lルパン三世 大航海者の秘宝",
+    maker: "平和",
+    series: "ルパン三世",
+    inHall: true,
+    category: "SMART",
+    description: "初当り確率と機械割での簡易判別。数値はp-town(4689)より。",
+    metricsLabels: {
+      bigLabel: "初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 289.1, reg: 1_000_000_000, total: 289.1, rate: 97.7 },
+        { s: 2, big: 275.6, reg: 1_000_000_000, total: 275.6, rate: 99.1 },
+        { s: 3, big: 262.6, reg: 1_000_000_000, total: 262.6, rate: 101.4 },
+        { s: 4, big: 233.9, reg: 1_000_000_000, total: 233.9, rate: 106.1 },
+        { s: 5, big: 223.6, reg: 1_000_000_000, total: 223.6, rate: 110.1 },
+        { s: 6, big: 216.3, reg: 1_000_000_000, total: 216.3, rate: 114.3 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];
