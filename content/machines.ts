@@ -1597,6 +1597,32 @@ export const machines = [
     },
   },
 
+  // --- 藤商事 L とある科学の超電磁砲2（p-town 4892）追加 ---
+  {
+    id: "fujishoji_railgun2",
+    name: "スマスロ とある科学の超電磁砲2",
+    maker: "藤商事",
+    series: "とある",
+    inHall: true,
+    category: "SMART",
+    description: "L（AT初当り）ベースの簡易判別。50枚あたり約31.8G（独自調査値）",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 317.8, reg: 1_000_000_000, total: 317.8, rate: 97.7 },
+        { s: 2, big: 311.8, reg: 1_000_000_000, total: 311.8, rate: 98.9 },
+        { s: 3, big: 304.4, reg: 1_000_000_000, total: 304.4, rate: 100.3 },
+        { s: 4, big: 272.4, reg: 1_000_000_000, total: 272.4, rate: 105.4 },
+        { s: 5, big: 248.1, reg: 1_000_000_000, total: 248.1, rate: 110.0 },
+        { s: 6, big: 235.3, reg: 1_000_000_000, total: 235.3, rate: 112.9 },
+      ],
+    },
+  },
+
   // --- SABOHANI いざ！番長 追加 ---
   {
     id: "sabohani_iza_bancho",

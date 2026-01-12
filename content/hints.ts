@@ -1260,6 +1260,78 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "fujishoji_railgun2": {
+    machineId: "fujishoji_railgun2",
+    helpUrl: "https://p-town.dmm.com/machines/4892",
+    groups: [
+      {
+        id: "railgun2_at_end_screen",
+        title: "AT終了画面",
+        note: "奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。濃厚系は制約として反映（p-town 4892）。",
+        items: [
+          { id: "railgun2_at_end_default", label: "枠なし：大切な友達A（デフォルト）", effect: { type: "none" } },
+          {
+            id: "railgun2_at_end_even",
+            label: "大切な友達B（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "railgun2_at_end_high_weak",
+            label: "御坂美琴＆食蜂操祈（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "railgun2_at_end_high_strong",
+            label: "御坂美琴＆御坂妹（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "railgun2_at_end_eternal_party", label: "白枠：大切な友達C（Eternal Party濃厚）", effect: { type: "none" } },
+          { id: "railgun2_at_end_min2", label: "赤枠：大切な友達D（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "railgun2_at_end_min3", label: "婚后一派（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "railgun2_at_end_min4", label: "紫枠：寝起き御坂美琴（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "railgun2_at_end_min5", label: "金枠：御坂美琴＆食蜂操祈（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "railgun2_at_end_exact6", label: "虹枠：御坂美琴ウエディング（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "railgun2_fujimaru_coin",
+        title: "藤丸コイン",
+        note: "AT終了画面などで出現（p-town 4892）。",
+        items: [{ id: "railgun2_fujimaru_coin_min2", label: "藤丸コイン出現（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } }],
+      },
+      {
+        id: "railgun2_payout_display",
+        title: "特定獲得枚数表示",
+        note: "トータル獲得枚数が規定枚数を超えた際に表示（p-town 4892）。",
+        items: [
+          { id: "railgun2_payout_087_over", label: "087枚OVER（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "railgun2_payout_310_over", label: "310枚OVER（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "railgun2_payout_965_over", label: "965枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "railgun2_payout_456_over", label: "456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "railgun2_payout_555_over", label: "555枚OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "railgun2_payout_666_over", label: "666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "railgun2_payout_1456_over", label: "1456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "railgun2_payout_1555_over", label: "1555枚OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "railgun2_payout_1666_over", label: "1666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "railgun2_special_cards",
+        title: "特定枚数突破時のカード（一部）",
+        note: "250枚/1000枚などの特定枚数突破時に出現（p-town 4892）。『〇〇枚OVER』の文字色が赤いと高設定期待度UP（詳細の数値は未反映）。",
+        items: [
+          { id: "railgun2_card_swimsuit_min2", label: "水着（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          {
+            id: "railgun2_card_bath_even",
+            label: "お風呂（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.2, 4: 1.2, 6: 1.2 } },
+          },
+          { id: "railgun2_card_accelerator_min4", label: "一方通行（アクセラレータ）（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+        ],
+      },
+    ],
+  },
+
   "konami_watakon": {
     machineId: "konami_watakon",
     helpUrl: "https://p-town.dmm.com/machines/4803",
