@@ -952,6 +952,30 @@ export const machines = [
     },
   },
 
+  {
+    id: "sankyo_enen",
+    name: "Lパチスロ炎炎ノ消防隊",
+    maker: "SANKYO",
+    series: "炎炎ノ消防隊",
+    category: "SMART",
+    inHall: true,
+    description: "L（初当り/ボーナス/炎炎ループ）ベースの簡易判別。50枚あたり約33.8G（独自調査値）。確率・機械割はp-town（4555）参照（bonus.jpg OCR）。",
+    metricsLabels: {
+      bigLabel: "初当り",
+      regLabel: "ボーナス",
+      totalLabel: "炎炎ループ",
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 197, reg: 291, total: 790, rate: 97.7 },
+        { s: 2, big: 194, reg: 282, total: 756, rate: 99.2 },
+        { s: 4, big: 182, reg: 257, total: 669, rate: 104.4 },
+        { s: 5, big: 173, reg: 239, total: 611, rate: 110.1 },
+        { s: 6, big: 169, reg: 230, total: 573, rate: 114.9 },
+      ],
+    },
+  },
+
   // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",

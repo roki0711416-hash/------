@@ -661,6 +661,71 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "sankyo_enen": {
+    machineId: "sankyo_enen",
+    helpUrl: "https://p-town.dmm.com/machines/4555",
+    groups: [
+      {
+        id: "enen_bonus_end",
+        title: "ボーナス終了画面",
+        note: "炎炎ボーナス（状況不問）とREG（通常時）の終了画面で設定示唆（p-town 4555）。A/Bは重み付け（ソフト示唆）、C/D/Eは濃厚系として反映。",
+        items: [
+          {
+            id: "enen_bonus_end_pattern_a_high_weak",
+            label: "パターンA（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "enen_bonus_end_pattern_b_high_strong",
+            label: "パターンB（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "enen_bonus_end_pattern_c_min4", label: "パターンC（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "enen_bonus_end_pattern_d_min5", label: "パターンD（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "enen_bonus_end_pattern_e_exact6", label: "パターンE（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "enen_axel_bonus_voice",
+        title: "アクセルボーナス終了画面のボイス",
+        note: "アクセルボーナス終了画面で特定ボイス発生で残りストック示唆（p-town 4555 / 設定示唆ではないため判別には未反映）",
+        items: [{ id: "enen_axel_bonus_voice_full_throttle", label: "『アクセル全開〜』発生（炎炎激闘の残りストック3個以上濃厚）", effect: { type: "none" } }],
+      },
+      {
+        id: "enen_enen_bonus_stock_hint",
+        title: "炎炎ボーナス終了画面の残りストック数示唆",
+        note: "炎炎激闘中に引いた炎炎ボーナス終了画面で残りストック数を示唆（p-town 4555 / 設定示唆ではないため判別には未反映）",
+        items: [
+          { id: "enen_enen_bonus_stock_a", label: "ストック示唆A（残りストック2個以上濃厚）", effect: { type: "none" } },
+          { id: "enen_enen_bonus_stock_b", label: "ストック示唆B（残りストック3個以上濃厚）", effect: { type: "none" } },
+          { id: "enen_enen_bonus_stock_c", label: "ストック示唆C（残りストック5個以上濃厚）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "enen_enen_battle_stock_hint",
+        title: "炎炎激闘ストック示唆",
+        note: "特定演出で炎炎激闘の残りストック示唆（p-town 4555 / 設定示唆ではないため判別には未反映）",
+        items: [
+          {
+            id: "enen_enen_battle_stock_10plus",
+            label: "炎炎激闘突入時にショウ画面切り裂き発生（残りストック10個以上濃厚）",
+            effect: { type: "none" },
+          },
+          {
+            id: "enen_enen_battle_stock_3plus_blue_pillarlamp",
+            label: "レバーON時に青柱ランプ発光（レア役からのボーナス当選かつ残りストック3個以上濃厚）",
+            effect: { type: "none" },
+          },
+          {
+            id: "enen_enen_battle_stock_3plus_blue_pillarlamp_3rd",
+            label: "第3停止時に青柱ランプ発光（1枚役からボーナス濃厚のバトル発展かつ残りストック3個以上濃厚）",
+            effect: { type: "none" },
+          },
+        ],
+      },
+    ],
+  },
+
   "konami_watakon": {
     machineId: "konami_watakon",
     helpUrl: "https://p-town.dmm.com/machines/4803",
