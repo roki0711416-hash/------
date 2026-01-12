@@ -1009,6 +1009,70 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "sankyo_valvrave2": {
+    machineId: "sankyo_valvrave2",
+    helpUrl: "https://p-town.dmm.com/machines/4885",
+    groups: [
+      {
+        id: "valvrave2_game_count_hint",
+        title: "ゲーム数ごとの示唆",
+        note: "AT・上位AT共通。初期ゲーム数上乗せ時のゾロ目表示で示唆（p-town 4885）。",
+        items: [
+          { id: "valvrave2_game_count_plus22_min2", label: "+22G（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "valvrave2_game_count_plus44_min4", label: "+44G（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "valvrave2_game_count_plus66_exact6", label: "+66G（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "valvrave2_magius_mark",
+        title: "マギウスマーク（周期抽選）",
+        note: "周期抽選のマップに表示されたマギウスマークの個数で示唆。『天国モード＋設定◯以上濃厚』は設定示唆として反映（p-town 4885）。",
+        items: [
+          { id: "valvrave2_magius_mark_4_min4", label: "4個（天国モード＋設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "valvrave2_magius_mark_5_min5", label: "5個（天国モード＋設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "valvrave2_magius_mark_6_exact6", label: "6個（天国モード＋設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "valvrave2_round_start_screen",
+        title: "ラウンド開始画面",
+        note: "AT・上位AT中のラウンド（セット）開始画面で示唆（p-town 4885）。高設定示唆［弱/強］はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "valvrave2_round_start_green_bg", label: "緑背景（キャラ不問）（デフォルト）", effect: { type: "none" } },
+          {
+            id: "valvrave2_round_start_marie_swimsuit_weak",
+            label: "マリエ水着（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "valvrave2_round_start_rune_leak_no1_strong",
+            label: "ルーン漏れ1号機（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "valvrave2_round_start_saki_200y_min4", label: "200年後のサキ（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "valvrave2_round_start_lieselotte_exact6", label: "リーゼロッテ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "valvrave2_mumu_premium",
+        title: "夢夢ちゃんプレミアム",
+        note: "ハラキリチャレンジ中に発生。発生時はハラキリドライブ濃厚＋設定4以上濃厚（p-town 4885）。",
+        items: [
+          {
+            id: "valvrave2_mumu_piece_min4",
+            label: "夢夢ちゃんピース（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "valvrave2_mumu_minichar_group_min4",
+            label: "ミニキャラ群（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+        ],
+      },
+    ],
+  },
+
   "konami_watakon": {
     machineId: "konami_watakon",
     helpUrl: "https://p-town.dmm.com/machines/4803",

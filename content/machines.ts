@@ -1076,6 +1076,31 @@ export const machines = [
     },
   },
 
+  {
+    id: "sankyo_valvrave2",
+    name: "Lパチスロ 革命機ヴァルヴレイヴ2",
+    maker: "SANKYO",
+    series: "革命機ヴァルヴレイヴ",
+    category: "SMART",
+    inHall: true,
+    description:
+      "L（初当り）ベースの簡易判別。確率はp-town（4885）の bonus.jpg OCR抽出（初当り（ボーナス・AT直撃の合算））。機械割はページ基本情報のレンジ（97.7%〜114.9%）のみ確認できたため、未確定の設定は '-' 表示。",
+    metricsLabels: {
+      bigLabel: "初当り（ボーナス＋AT直撃）",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 476, reg: 1_000_000_000, total: 476, rate: 97.7 },
+        { s: 2, big: 473, reg: 1_000_000_000, total: 473, rate: Number.NaN },
+        { s: 4, big: 464, reg: 1_000_000_000, total: 464, rate: Number.NaN },
+        { s: 5, big: 459, reg: 1_000_000_000, total: 459, rate: Number.NaN },
+        { s: 6, big: 456, reg: 1_000_000_000, total: 456, rate: 114.9 },
+      ],
+    },
+  },
+
   // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",
