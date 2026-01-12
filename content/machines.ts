@@ -290,6 +290,24 @@ export const machines = [
     },
   },
   {
+    id: "okidoki-black",
+    name: "沖ドキ！BLACK",
+    maker: "ユニバーサル",
+    series: "沖ドキ！",
+    category: "SMART",
+    inHall: true,
+    description: "ボーナス確率ベースの簡易判別。",
+    odds: {
+      settings: [
+        { s: 1, big: 288.7, reg: 214.1, total: 292.5, rate: 97.2 },
+        { s: 2, big: 277.9, reg: 205.6, total: 283.8, rate: 98.7 },
+        { s: 4, big: 265.8, reg: 188.5, total: 267.0, rate: 101.9 },
+        { s: 5, big: 254.1, reg: 173.3, total: 251.7, rate: 104.8 },
+        { s: 6, big: 243.1, reg: 160.8, total: 239.0, rate: 108.6 },
+      ],
+    },
+  },
+  {
     id: "smart-magireco",
     name: "L マギアレコード 魔法少女まどか☆マギカ外伝",
     maker: "ユニバーサル",
