@@ -551,6 +551,124 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "konami_watakon": {
+    machineId: "konami_watakon",
+    helpUrl: "https://p-town.dmm.com/machines/4803",
+    groups: [
+      {
+        id: "watakon_at_end",
+        title: "AT終了画面（コナミコマンド後）",
+        note: "AT終了画面でコナミコマンド入力後の画面で示唆（p-town 4803）",
+        items: [
+          { id: "watakon_at_end_spring_a", label: "春A（着物）（デフォルト）", effect: { type: "none" } },
+          {
+            id: "watakon_at_end_summer_even",
+            label: "夏（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "watakon_at_end_spring_b_high",
+            label: "春B（軍服）（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "watakon_at_end_autumn_min2", label: "秋（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "watakon_at_end_winter_min4", label: "冬（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "watakon_at_end_newyear_exact6", label: "お正月（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "watakon_bonus_end_mode",
+        title: "ボーナス終了画面（モード示唆）",
+        note: "通常モード示唆（設定示唆ではないため判別には未反映 / p-town 4803）",
+        items: [
+          { id: "watakon_bonus_end_kudo", label: "久堂家（デフォルト）", effect: { type: "none" } },
+          { id: "watakon_bonus_end_army", label: "陸軍屯所（通常B以上示唆）", effect: { type: "none" } },
+          { id: "watakon_bonus_end_usuba", label: "薄刃家（通常B以上濃厚かつ通常Cに期待）", effect: { type: "none" } },
+          { id: "watakon_bonus_end_sunset", label: "夕焼け（通常C以上濃厚）", effect: { type: "none" } },
+          { id: "watakon_bonus_end_sakura", label: "桜（天国orAT当選濃厚）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "watakon_bonus_character",
+        title: "わた婚ボーナス中：キャラ紹介",
+        note: "わた婚メドレー選択時などに発生するキャラ紹介で示唆（p-town 4803）",
+        items: [
+          { id: "watakon_char_default", label: "下記以外（デフォルト）", effect: { type: "none" } },
+          {
+            id: "watakon_char_tatsuishi_minoru_odd_high",
+            label: "辰石実（奇数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+              ],
+            },
+          },
+          {
+            id: "watakon_char_hana_odd_high",
+            label: "花（奇数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+              ],
+            },
+          },
+          {
+            id: "watakon_char_oomitobe_masayuki_odd_high",
+            label: "大海渡征（奇数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+              ],
+            },
+          },
+          {
+            id: "watakon_char_takaito_even_high",
+            label: "堯人（偶数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+              ],
+            },
+          },
+          {
+            id: "watakon_char_saimori_shinichi_even_high",
+            label: "斎森真一（偶数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+              ],
+            },
+          },
+          {
+            id: "watakon_char_usuba_sumi_even_high",
+            label: "薄刃澄美（偶数かつ高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+              ],
+            },
+          },
+          { id: "watakon_char_usuba_yoshinari", label: "薄刃義浪", effect: { type: "none" } },
+          { id: "watakon_char_kudo_kiyoka_red_min4", label: "久堂清霞（赤）（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "watakon_char_mikado_purple_min5", label: "帝（紫）（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "watakon_char_miyo_gold_exact6", label: "斎森美世（金）（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "newgin_mushoku_tensei": {
     machineId: "newgin_mushoku_tensei",
     helpUrl: "https://p-town.dmm.com/machines/4924",

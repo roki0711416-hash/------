@@ -878,6 +878,31 @@ export const machines = [
     },
   },
 
+  {
+    id: "konami_watakon",
+    name: "わたしの幸せな結婚",
+    maker: "コナミアミューズメント",
+    series: "わたしの幸せな結婚",
+    category: "SMART",
+    inHall: true,
+    description: "L（ボーナス/AT初当り）ベースの簡易判別。確率・機械割はp-town（4803）参照。",
+    metricsLabels: {
+      bigLabel: "ボーナス",
+      regLabel: "AT初当り",
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 290.8, reg: 594.3, total: 290.8, rate: 97.9 },
+        { s: 2, big: 286.5, reg: 583.4, total: 286.5, rate: 98.7 },
+        { s: 3, big: 277.3, reg: 558.8, total: 277.3, rate: 100.4 },
+        { s: 4, big: 255.3, reg: 494.7, total: 255.3, rate: 105.1 },
+        { s: 5, big: 251.4, reg: 484.3, total: 251.4, rate: 108.0 },
+        { s: 6, big: 249.4, reg: 479.4, total: 249.4, rate: 112.0 },
+      ],
+    },
+  },
+
   // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",
