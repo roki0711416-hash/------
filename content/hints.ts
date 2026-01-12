@@ -770,6 +770,41 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "sankyo_kaguya": {
+    machineId: "sankyo_kaguya",
+    helpUrl: "https://p-town.dmm.com/machines/4618",
+    groups: [
+      {
+        id: "kaguya_bonus_end_screen",
+        title: "ボーナス終了画面",
+        note: "液晶フレーム色や一部の終了画面で設定示唆（p-town 4618）。引き戻し期待度のみの画面は判別には未反映。",
+        items: [
+          { id: "kaguya_bonus_end_default", label: "フレームなし（デフォルト）", effect: { type: "none" } },
+          {
+            id: "kaguya_bonus_end_red_high",
+            label: "赤（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "kaguya_bonus_end_purple_min2", label: "紫（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "kaguya_bonus_end_silver_min4", label: "銀（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "kaguya_bonus_end_gold_exact6", label: "金（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "kaguya_bonus_end_movie", label: "動画調（白銀VS伊井野）（引き戻し期待度 約60%）", effect: { type: "none" } },
+          { id: "kaguya_bonus_end_fujiwara_kaguya", label: "藤原＆かぐや（引き戻しor1G連濃厚）", effect: { type: "none" } },
+          {
+            id: "kaguya_bonus_end_deformed_min4",
+            label: "デフォルメ（藤原・白銀・かぐや・石上）（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "kaguya_bonus_end_shirogane_kaguya",
+            label: "白銀＆かぐや（金背景）（引き戻しor1G連濃厚 / 否定で設定4以上濃厚）",
+            effect: { type: "none" },
+          },
+        ],
+      },
+    ],
+  },
+
   "konami_watakon": {
     machineId: "konami_watakon",
     helpUrl: "https://p-town.dmm.com/machines/4803",

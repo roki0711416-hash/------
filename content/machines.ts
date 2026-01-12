@@ -984,6 +984,31 @@ export const machines = [
     },
   },
 
+  {
+    id: "sankyo_kaguya",
+    name: "パチスロかぐや様は告らせたい",
+    maker: "SANKYO",
+    series: "かぐや様は告らせたい",
+    category: "SMART",
+    inHall: true,
+    description: "L（ボーナス）ベースの簡易判別。50枚あたり約31.0G（独自調査値）。確率・機械割はp-town（4618）参照（bonus.jpg OCR）。",
+    metricsLabels: {
+      bigLabel: "ボーナス",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 362, reg: 1_000_000_000, total: 362, rate: 97.7 },
+        { s: 2, big: 360, reg: 1_000_000_000, total: 360, rate: 98.8 },
+        { s: 3, big: 357, reg: 1_000_000_000, total: 357, rate: 101.2 },
+        { s: 4, big: 349, reg: 1_000_000_000, total: 349, rate: 105.8 },
+        { s: 5, big: 343, reg: 1_000_000_000, total: 343, rate: 110.8 },
+        { s: 6, big: 335, reg: 1_000_000_000, total: 335, rate: 114.9 },
+      ],
+    },
+  },
+
   // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",
