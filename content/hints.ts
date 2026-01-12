@@ -314,6 +314,25 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "olympia_mahjong_monogatari": {
+    machineId: "olympia_mahjong_monogatari",
+    helpUrl: "https://p-town.dmm.com/machines/4777",
+    groups: [
+      {
+        id: "mahjong_monogatari_at_end_screen",
+        title: "AT終了画面（スタンプ）",
+        note: "スタンプは『設定◯以上濃厚』系のみ判別に反映（p-town 4777）",
+        items: [
+          { id: "mahjong_monogatari_at_end_default", label: "三姉妹（デフォルト）", effect: { type: "none" } },
+          { id: "mahjong_monogatari_at_end_stamp_k", label: "可スタンプ（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "mahjong_monogatari_at_end_stamp_ryo", label: "良スタンプ（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "mahjong_monogatari_at_end_stamp_yu", label: "優スタンプ（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "mahjong_monogatari_at_end_stamp_kiwami", label: "極スタンプ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "newgin_mushoku_tensei": {
     machineId: "newgin_mushoku_tensei",
     helpUrl: "https://p-town.dmm.com/machines/4924",

@@ -1658,6 +1658,83 @@ export const machines = [
     },
   },
 
+  // --- オリンピアエステート L麻雀物語（p-town 4777）追加 ---
+  {
+    id: "olympia_mahjong_monogatari",
+    name: "L麻雀物語",
+    maker: "平和",
+    series: "麻雀物語",
+    inHall: true,
+    category: "SMART",
+    description:
+      "麻雀ボーナス確率と（通常時）AT直撃での簡易判別。AT直撃は通常時G数を母数にした二項（trials/hits）で反映。数値はp-town(4777)より。機械割はp-town上でレンジ表記のため、設定別は未掲載。",
+    metricsLabels: {
+      bigLabel: "麻雀ボーナス",
+      regLabel: null,
+      totalLabel: null,
+      binomialMetrics: [
+        {
+          id: "atDirect",
+          trialsLabel: "通常時ゲーム数（前兆中除く）",
+          hitsLabel: "AT直撃回数",
+          rateLabel: "AT直撃率",
+        },
+      ],
+    },
+    odds: {
+      settings: [
+        {
+          s: 1,
+          big: 433.3,
+          reg: 1_000_000_000,
+          total: 433.3,
+          rate: NaN,
+          binomialRates: { atDirect: 1 / 7945.6 },
+        },
+        {
+          s: 2,
+          big: 431.8,
+          reg: 1_000_000_000,
+          total: 431.8,
+          rate: NaN,
+          binomialRates: { atDirect: 1 / 6529.1 },
+        },
+        {
+          s: 3,
+          big: 426.6,
+          reg: 1_000_000_000,
+          total: 426.6,
+          rate: NaN,
+          binomialRates: { atDirect: 1 / 5649.1 },
+        },
+        {
+          s: 4,
+          big: 420.2,
+          reg: 1_000_000_000,
+          total: 420.2,
+          rate: NaN,
+          binomialRates: { atDirect: 1 / 4012.7 },
+        },
+        {
+          s: 5,
+          big: 417.9,
+          reg: 1_000_000_000,
+          total: 417.9,
+          rate: NaN,
+          binomialRates: { atDirect: 1 / 3859.1 },
+        },
+        {
+          s: 6,
+          big: 416.5,
+          reg: 1_000_000_000,
+          total: 416.5,
+          rate: NaN,
+          binomialRates: { atDirect: 1 / 3707.4 },
+        },
+      ],
+    },
+  },
+
   // --- 平和 L ToLOVEるダークネス TRANCE ver.8.7（p-town 4806）追加 ---
   {
     id: "heiwa_toloveru_darkness_trance_v87",

@@ -10,6 +10,7 @@ import {
 } from "../lib/judge";
 
 function fmt(n: number) {
+  if (!Number.isFinite(n)) return "-";
   return Number.isInteger(n) ? String(n) : n.toFixed(1);
 }
 
