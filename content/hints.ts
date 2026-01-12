@@ -551,6 +551,58 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "konami_magihalo8": {
+    machineId: "konami_magihalo8",
+    helpUrl: "https://p-town.dmm.com/machines/4423",
+    groups: [
+      {
+        id: "magihalo8_bonus_confirm_end",
+        title: "ボーナス確定画面＆終了画面",
+        note: "確定画面/終了画面の『アリスインワンダーランド』で示唆（p-town 4423）",
+        items: [
+          {
+            id: "magihalo8_bonus_confirm_alice_high",
+            label: "確定画面でアリスインワンダーランド（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "magihalo8_bonus_end_alice_excl1",
+            label: "終了画面でアリスインワンダーランド（設定1否定）",
+            effect: { type: "excludeSetting", exclude: 1 },
+          },
+          {
+            id: "magihalo8_bonus_both_alice_min5",
+            label: "両方でアリスインワンダーランド（設定5以上濃厚）",
+            effect: { type: "minSetting", min: 5 },
+          },
+        ],
+      },
+      {
+        id: "magihalo8_art_end",
+        title: "ART終了画面",
+        note: "人数で示唆（p-town 4423）",
+        items: [
+          { id: "magihalo8_art_end_1", label: "キャラ1人（デフォルト）", effect: { type: "none" } },
+          { id: "magihalo8_art_end_2_min2", label: "キャラ2人（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "magihalo8_art_end_4_min4", label: "キャラ4人（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "magihalo8_art_end_6_exact6", label: "キャラ6人（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "magihalo8_trophy",
+        title: "アリストロフィー",
+        note: "BIG終了画面で出現（p-town 4423）",
+        items: [
+          { id: "magihalo8_trophy_bronze", label: "銅（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "magihalo8_trophy_silver", label: "銀（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "magihalo8_trophy_gold", label: "金（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "magihalo8_trophy_clover", label: "クローバー柄（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "magihalo8_trophy_rainbow", label: "虹（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "konami_magihalo_bt": {
     machineId: "konami_magihalo_bt",
     helpUrl: "https://p-town.dmm.com/machines/4854",

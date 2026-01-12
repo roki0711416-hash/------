@@ -904,6 +904,32 @@ export const machines = [
   },
 
   {
+    id: "konami_magihalo8",
+    name: "マジカルハロウィン8",
+    maker: "コナミアミューズメント",
+    series: "マジカルハロウィン",
+    category: "SMART",
+    inHall: true,
+    description:
+      "L（ボーナス合算/ART初当り）ベースの簡易判別。確率・機械割はp-town（4423）参照（bonus.jpg OCR）。BIG内訳（赤7/白7/異色）やREG確率も掲載されているが、判別は合算系の値のみ反映。",
+    metricsLabels: {
+      bigLabel: "ボーナス合算",
+      regLabel: "ART初当り",
+      totalLabel: "BIG合算",
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 177.1, reg: 352.2, total: 334.4, rate: 97.7 },
+        { s: 2, big: 175.7, reg: 335.5, total: 332.7, rate: 98.8 },
+        { s: 3, big: 174.3, reg: 297.1, total: 331.0, rate: 101.3 },
+        { s: 4, big: 171.6, reg: 269.3, total: 327.7, rate: 105.2 },
+        { s: 5, big: 170.2, reg: 254.4, total: 326.1, rate: 107.3 },
+        { s: 6, big: 167.6, reg: 226.8, total: 322.8, rate: 109.2 },
+      ],
+    },
+  },
+
+  {
     id: "konami_magihalo_bt",
     name: "マジカルハロウィン ボーナストリガー",
     maker: "コナミアミューズメント",
