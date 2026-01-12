@@ -469,6 +469,88 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "konami_ginei_denethese": {
+    machineId: "konami_ginei_denethese",
+    helpUrl: "https://p-town.dmm.com/machines/4895",
+    groups: [
+      {
+        id: "ginei_trophy",
+        title: "アリストロフィー",
+        note: "色で設定を示唆（p-town 4895）",
+        items: [
+          { id: "ginei_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "ginei_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "ginei_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "ginei_trophy_clover", label: "クローバー柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "ginei_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "ginei_galaxy_bonus_end",
+        title: "ギャラクシーボーナス終了画面",
+        note: "表示キャラで設定を示唆（p-town 4895）。一部は特定日（誕生日/4月1日）で示唆が変わるため注意。",
+        items: [
+          { id: "ginei_end_none", label: "キャラなし（デフォルト）", effect: { type: "none" } },
+          { id: "ginei_end_other_min2", label: "ヤン・ラインハルト以外（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "ginei_end_yang_or_reinhardt_min3", label: "ヤン or ラインハルト（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "ginei_end_birthday_min4", label: "誕生日のキャラ（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "ginei_end_all_exact6", label: "キャラ集合（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "ginei_galaxy_bonus_char_alliance",
+        title: "ギャラクシーボーナス中：キャラ紹介（同盟陣営）",
+        note: "開始キャラと最後のキャラで示唆（p-town 4895）",
+        items: [
+          {
+            id: "ginei_char_alliance_yang_odd",
+            label: "ヤンからスタート（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "ginei_char_alliance_frederica_even",
+            label: "フレデリカからスタート（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          { id: "ginei_char_alliance_last_merkatz_min3", label: "最後がメルカッツ（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+        ],
+      },
+      {
+        id: "ginei_galaxy_bonus_char_empire",
+        title: "ギャラクシーボーナス中：キャラ紹介（帝国陣営）",
+        note: "開始キャラと最後のキャラで示唆（p-town 4895）",
+        items: [
+          {
+            id: "ginei_char_empire_reinhardt_odd",
+            label: "ラインハルトからスタート（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "ginei_char_empire_hildegard_even",
+            label: "ヒルデガルドからスタート（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          { id: "ginei_char_empire_last_anneliese_min3", label: "最後がアンネローゼ（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+        ],
+      },
+      {
+        id: "ginei_story_intro",
+        title: "ギャラクシーボーナス開始時：ストーリー紹介",
+        note: "シーズン/章で示唆（p-town 4895）",
+        items: [
+          {
+            id: "ginei_story_s3_ch1_weak",
+            label: "サードシーズン：第一章（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "ginei_story_s3_ch2_min2", label: "サードシーズン：第二章（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "ginei_story_s3_ch3_min3", label: "サードシーズン：第三章（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "ginei_story_s4_min4", label: "フォースシーズン（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+        ],
+      },
+    ],
+  },
+
   "newgin_mushoku_tensei": {
     machineId: "newgin_mushoku_tensei",
     helpUrl: "https://p-town.dmm.com/machines/4924",

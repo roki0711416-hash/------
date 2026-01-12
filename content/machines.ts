@@ -853,6 +853,31 @@ export const machines = [
     },
   },
 
+  {
+    id: "konami_ginei_denethese",
+    name: "パチスロ 銀河英雄伝説 Die Neue These",
+    maker: "コナミアミューズメント",
+    series: "銀河英雄伝説",
+    category: "SMART",
+    inHall: true,
+    description: "L（ボーナス/ST）ベースの簡易判別。確率・機械割はp-town（4895）参照。",
+    metricsLabels: {
+      bigLabel: "ボーナス",
+      regLabel: "ST",
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 256.8, reg: 393.7, total: 256.8, rate: 97.9 },
+        { s: 2, big: 253.6, reg: 388.5, total: 253.6, rate: 98.9 },
+        { s: 3, big: 249.0, reg: 372.8, total: 249.0, rate: 100.2 },
+        { s: 4, big: 217.8, reg: 306.2, total: 217.8, rate: 105.6 },
+        { s: 5, big: 200.4, reg: 274.2, total: 200.4, rate: 108.4 },
+        { s: 6, big: 191.9, reg: 259.9, total: 191.9, rate: 111.0 },
+      ],
+    },
+  },
+
   // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",
