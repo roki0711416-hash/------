@@ -1,5 +1,26 @@
 [
   {
+    "id": "2026-01-12-018",
+    "date": "2026-01-12",
+    "title": "kotei対応",
+    "href": "/tool?machine=kotei",
+    "body": "koteiを追加しました。"
+  },
+  {
+    "id": "2026-01-12-017",
+    "date": "2026-01-12",
+    "title": "franSleepAt対応",
+    "href": "/tool?machine=franSleepAt",
+    "body": "franSleepAtを追加しました。"
+  },
+  {
+    "id": "2026-01-12-016",
+    "date": "2026-01-12",
+    "title": "パチスロ 転生したら剣でした対応",
+    "href": "/tool?machine=konami_tenseiken",
+    "body": "パチスロ 転生したら剣でしたを追加しました。"
+  },
+  {
     "id": "2026-01-12-015",
     "date": "2026-01-12",
     "title": "atDirect対応",
