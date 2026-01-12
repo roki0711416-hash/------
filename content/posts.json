@@ -1,5 +1,26 @@
 [
   {
+    "id": "2026-01-12-029",
+    "date": "2026-01-12",
+    "title": "rev_bonus_to_rev_rush対応",
+    "href": "/tool?machine=rev_bonus_to_rev_rush",
+    "body": "rev_bonus_to_rev_rushを追加しました。"
+  },
+  {
+    "id": "2026-01-12-028",
+    "date": "2026-01-12",
+    "title": "パチスロ 革命機ヴァルヴレイヴ対応",
+    "href": "/tool?machine=sankyo_valvrave",
+    "body": "パチスロ 革命機ヴァルヴレイヴを追加しました。"
+  },
+  {
+    "id": "2026-01-12-027",
+    "date": "2026-01-12",
+    "title": "makuma_chance対応",
+    "href": "/tool?machine=makuma_chance",
+    "body": "makuma_chanceを追加しました。"
+  },
+  {
     "id": "2026-01-12-026",
     "date": "2026-01-12",
     "title": "パチスロからくりサーカス対応",
