@@ -964,14 +964,22 @@ export const machines = [
       bigLabel: "初当り",
       regLabel: "ボーナス",
       totalLabel: "炎炎ループ",
+      binomialMetrics: [
+        {
+          id: "adra_burst",
+          trialsLabel: "通常時ゲーム数（目安）",
+          hitsLabel: "アドラバースト回数",
+          rateLabel: "出現率",
+        },
+      ],
     },
     odds: {
       settings: [
-        { s: 1, big: 197, reg: 291, total: 790, rate: 97.7 },
-        { s: 2, big: 194, reg: 282, total: 756, rate: 99.2 },
-        { s: 4, big: 182, reg: 257, total: 669, rate: 104.4 },
-        { s: 5, big: 173, reg: 239, total: 611, rate: 110.1 },
-        { s: 6, big: 169, reg: 230, total: 573, rate: 114.9 },
+        { s: 1, big: 197, reg: 291, total: 790, rate: 97.7, binomialRates: { adra_burst: 1 / 15000 } },
+        { s: 2, big: 194, reg: 282, total: 756, rate: 99.2, binomialRates: { adra_burst: 1 / 14000 } },
+        { s: 4, big: 182, reg: 257, total: 669, rate: 104.4, binomialRates: { adra_burst: 1 / 12000 } },
+        { s: 5, big: 173, reg: 239, total: 611, rate: 110.1, binomialRates: { adra_burst: 1 / 10000 } },
+        { s: 6, big: 169, reg: 230, total: 573, rate: 114.9, binomialRates: { adra_burst: 1 / 9000 } },
       ],
     },
   },

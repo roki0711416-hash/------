@@ -666,6 +666,50 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     helpUrl: "https://p-town.dmm.com/machines/4555",
     groups: [
       {
+        id: "enen_jac_character",
+        title: "炎炎JACのキャラ別示唆",
+        note: "炎炎JAC中に登場するキャラで設定示唆（p-town 4555）。『濃厚』は該当設定以外を否定として反映。",
+        items: [
+          {
+            id: "enen_jac_shinra_2or5",
+            label: "シンラ（設定2・5示唆）",
+            effect: { type: "weight", weights: { 2: 1.2, 5: 1.2 } },
+          },
+          {
+            id: "enen_jac_arthur_2or5",
+            label: "アーサー（設定2・5示唆）",
+            effect: { type: "weight", weights: { 2: 1.2, 5: 1.2 } },
+          },
+          {
+            id: "enen_jac_hinawa_2or5",
+            label: "ヒナワ（設定2・5示唆）",
+            effect: { type: "weight", weights: { 2: 1.2, 5: 1.2 } },
+          },
+          {
+            id: "enen_jac_maki_1or4or6",
+            label: "マキ（設定1・4・6示唆）",
+            effect: { type: "weight", weights: { 1: 1.15, 4: 1.15, 6: 1.15 } },
+          },
+          {
+            id: "enen_jac_tamaki_1or4or6",
+            label: "タマキ（設定1・4・6示唆）",
+            effect: { type: "weight", weights: { 1: 1.15, 4: 1.15, 6: 1.15 } },
+          },
+          { id: "enen_jac_obi_min2", label: "オウビ（設定2以上示唆）", effect: { type: "minSetting", min: 2 } },
+          {
+            id: "enen_jac_joker_1or4or6_strong",
+            label: "ジョーカー（設定1・4・6濃厚）",
+            effect: { type: "allOf", effects: [
+              { type: "excludeSetting", exclude: 2 },
+              { type: "excludeSetting", exclude: 3 },
+              { type: "excludeSetting", exclude: 5 },
+            ] },
+          },
+          { id: "enen_jac_benimaru_min4", label: "紅丸（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "enen_jac_iris_min5", label: "アイリス（設定5以上）", effect: { type: "minSetting", min: 5 } },
+        ],
+      },
+      {
         id: "enen_bonus_end",
         title: "ボーナス終了画面",
         note: "炎炎ボーナス（状況不問）とREG（通常時）の終了画面で設定示唆（p-town 4555）。A/Bは重み付け（ソフト示唆）、C/D/Eは濃厚系として反映。",
