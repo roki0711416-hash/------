@@ -896,6 +896,116 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "karakuri_at_end_francine_exact6", label: "フランシーヌ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
         ],
       },
+      {
+        id: "karakuri_olympia_payout_display",
+        title: "踊れ！オリンピア：連打上乗せ時の枚数表示",
+        note: "特化ゾーン『踊れ！オリンピア』で連打上乗せ時に特定の枚数が表示されると設定示唆（p-town 4360）。",
+        items: [
+          { id: "karakuri_olympia_payout_plus20_min2", label: "+20出現（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "karakuri_olympia_payout_plus4_min4", label: "+4出現（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "karakuri_olympia_payout_plus6_exact6", label: "+6出現（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "karakuri_at_stage",
+        title: "AT中のステージ別示唆",
+        note: "AT開始時〜激情ジャッジ成功までのステージ（勝/鳴海）で奇数・偶数を示唆（p-town 4360）。",
+        items: [
+          {
+            id: "karakuri_at_stage_katsu_start_even",
+            label: "勝ステージスタート（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "karakuri_at_stage_narumi_start_odd",
+            label: "鳴海ステージスタート（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "karakuri_at_stage_katsu_to_katsu_even_strong",
+            label: "勝ステージ→勝ステージ（偶数かつ設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          },
+          {
+            id: "karakuri_at_stage_narumi_to_narumi_odd_strong",
+            label: "鳴海ステージ→鳴海ステージ（奇数かつ設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+          },
+        ],
+      },
+      {
+        id: "karakuri_ending_rare_role_lamp",
+        title: "エンディング中：レア役成立時の上部ランプ色",
+        note: "エンディング中にレア役成立時、上部ランプ色で設定示唆（p-town 4360）。",
+        items: [
+          { id: "karakuri_ending_lamp_white", label: "白（デフォルト）", effect: { type: "none" } },
+          {
+            id: "karakuri_ending_lamp_blue_odd",
+            label: "青（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "karakuri_ending_lamp_yellow_even",
+            label: "黄（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "karakuri_ending_lamp_green_high",
+            label: "緑（高設定期待度アップ）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "karakuri_ending_lamp_purple_min4", label: "紫（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "karakuri_ending_lamp_rainbow_exact6", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
+  "sankyo_valvrave": {
+    machineId: "sankyo_valvrave",
+    helpUrl: "https://p-town.dmm.com/machines/4244",
+    groups: [
+      {
+        id: "valvrave_payout_display",
+        title: "特定獲得枚数表示の示唆",
+        note: "（超）革命ラッシュ中のみ出現（p-town 4244）。",
+        items: [
+          { id: "valvrave_payout_456_over_min4", label: "456枚OVER（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "valvrave_payout_555_over_min5", label: "555枚OVER（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "valvrave_payout_666_over_exact6", label: "666枚OVER（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "valvrave_cz_bonus_end_screens",
+        title: "CZ&ボーナス終了画面",
+        note: "終了時にキャンセルしてしまうと画面を確認できないため、次ゲームのレバーONをせずに画面確認推奨（p-town 4244）。奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "valvrave_end_white_2", label: "白［2人］（デフォルト）", effect: { type: "none" } },
+          {
+            id: "valvrave_end_white_3_odd",
+            label: "白［3人］（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "valvrave_end_white_4_even",
+            label: "白［4人］（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "valvrave_end_purple_male_weak",
+            label: "紫［男性キャラ集合］（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "valvrave_end_purple_swimsuit_strong",
+            label: "紫［水着］（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "valvrave_end_red_dorssia_5_min2", label: "赤［ドルシア軍5人］（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "valvrave_end_red_dorssia_6_min4", label: "赤［ドルシア軍6人］（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "valvrave_end_gold_valvrave_pilot_exact6", label: "金［ヴァルヴレイヴ&パイロット］（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
     ],
   },
 

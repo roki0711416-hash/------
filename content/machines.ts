@@ -1016,19 +1016,62 @@ export const machines = [
     series: "からくりサーカス",
     category: "SMART",
     inHall: true,
-    description: "L（AT初当り）ベースの簡易判別。50枚あたり約33.7G（独自調査値）。確率・機械割はp-town（4360）参照（bonus.jpg OCR）。",
+    description:
+      "L（AT初当り）ベースの簡易判別。50枚あたり約33.7G（独自調査値）。確率・機械割はp-town（4360）参照（bonus.jpg OCR）。幕間チャンス当選率は binomial で加味（※設定1:約1/3000、設定6:約1/1000のみ反映）。",
     metricsLabels: {
       bigLabel: "AT初当り",
       regLabel: null,
       totalLabel: null,
+      binomialMetrics: [
+        {
+          id: "makuma_chance",
+          trialsLabel: "通常時ゲーム数（目安）",
+          hitsLabel: "幕間チャンス回数",
+          rateLabel: "当選率",
+        },
+      ],
     },
     odds: {
       settings: [
-        { s: 1, big: 564, reg: 1_000_000_000, total: 564, rate: 97.5 },
+        { s: 1, big: 564, reg: 1_000_000_000, total: 564, rate: 97.5, binomialRates: { makuma_chance: 1 / 3000 } },
         { s: 2, big: 543, reg: 1_000_000_000, total: 543, rate: 98.7 },
         { s: 4, big: 469, reg: 1_000_000_000, total: 469, rate: 103.0 },
         { s: 5, big: 451, reg: 1_000_000_000, total: 451, rate: 108.1 },
-        { s: 6, big: 447, reg: 1_000_000_000, total: 447, rate: 114.9 },
+        { s: 6, big: 447, reg: 1_000_000_000, total: 447, rate: 114.9, binomialRates: { makuma_chance: 1 / 1000 } },
+      ],
+    },
+  },
+
+  {
+    id: "sankyo_valvrave",
+    name: "パチスロ 革命機ヴァルヴレイヴ",
+    maker: "SANKYO",
+    series: "革命機ヴァルヴレイヴ",
+    category: "SMART",
+    inHall: true,
+    description:
+      "L（CZ/ボーナス初当り）ベースの簡易判別。確率・機械割はp-town（4244）参照（bonus.jpg OCR）。革命ボーナス当選時の革命ラッシュ当選率（設定差）は binomial で加味。",
+    metricsLabels: {
+      bigLabel: "ボーナス初当り",
+      regLabel: null,
+      totalLabel: "CZ",
+      binomialMetrics: [
+        {
+          id: "rev_bonus_to_rev_rush",
+          trialsLabel: "革命ボーナス回数",
+          hitsLabel: "革命ラッシュ当選回数",
+          rateLabel: "当選率",
+        },
+      ],
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 519, reg: 1_000_000_000, total: 277, rate: 97.3, binomialRates: { rev_bonus_to_rev_rush: 0.05 } },
+        { s: 2, big: 516, reg: 1_000_000_000, total: 275, rate: 98.3, binomialRates: { rev_bonus_to_rev_rush: 0.06 } },
+        { s: 3, big: 514, reg: 1_000_000_000, total: 274, rate: 100.8, binomialRates: { rev_bonus_to_rev_rush: 0.07 } },
+        { s: 4, big: 507, reg: 1_000_000_000, total: 269, rate: 103.2, binomialRates: { rev_bonus_to_rev_rush: 0.09 } },
+        { s: 5, big: 499, reg: 1_000_000_000, total: 264, rate: 107.9, binomialRates: { rev_bonus_to_rev_rush: 0.10 } },
+        { s: 6, big: 490, reg: 1_000_000_000, total: 258, rate: 114.9, binomialRates: { rev_bonus_to_rev_rush: 0.13 } },
       ],
     },
   },
