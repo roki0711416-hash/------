@@ -1009,6 +1009,30 @@ export const machines = [
     },
   },
 
+  {
+    id: "sankyo_karakuri",
+    name: "パチスロからくりサーカス",
+    maker: "SANKYO",
+    series: "からくりサーカス",
+    category: "SMART",
+    inHall: true,
+    description: "L（AT初当り）ベースの簡易判別。50枚あたり約33.7G（独自調査値）。確率・機械割はp-town（4360）参照（bonus.jpg OCR）。",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 564, reg: 1_000_000_000, total: 564, rate: 97.5 },
+        { s: 2, big: 543, reg: 1_000_000_000, total: 543, rate: 98.7 },
+        { s: 4, big: 469, reg: 1_000_000_000, total: 469, rate: 103.0 },
+        { s: 5, big: 451, reg: 1_000_000_000, total: 451, rate: 108.1 },
+        { s: 6, big: 447, reg: 1_000_000_000, total: 447, rate: 114.9 },
+      ],
+    },
+  },
+
   // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",

@@ -802,6 +802,100 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           },
         ],
       },
+
+      {
+        id: "kaguya_reg_character_story",
+        title: "REG中のキャラ紹介",
+        note: "キャラ紹介は8種類のシナリオで管理（p-town 4618）。大仏/ベッツィーはモード示唆のため判別には未反映。",
+        items: [
+          { id: "kaguya_reg_story_student_council_a", label: "生徒会A（デフォルト）", effect: { type: "none" } },
+          { id: "kaguya_reg_story_student_council_b", label: "生徒会B（デフォルト）", effect: { type: "none" } },
+          {
+            id: "kaguya_reg_story_shirogane_high_weak",
+            label: "白銀生（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "kaguya_reg_story_shirogane_papa_min4", label: "白銀パパ（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "kaguya_reg_story_hayasaka_min2", label: "早坂（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          {
+            id: "kaguya_reg_story_rainbow_min4",
+            label: "虹背景（設定4以上濃厚 + 1G連濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          { id: "kaguya_reg_story_osaragi_mode", label: "大仏（上位モード示唆）", effect: { type: "none" } },
+          { id: "kaguya_reg_story_betsy_deny_normal_a", label: "ベッツィー（通常A否定）", effect: { type: "none" } },
+        ],
+      },
+
+      {
+        id: "kaguya_mini_fujiwara_costume",
+        title: "ミニ藤原の衣装チェンジ示唆",
+        note: "CZやAT後などではなく『衣装チェンジで変化した場合のみ』が対象（p-town 4618）。",
+        items: [
+          { id: "kaguya_mini_fujiwara_love_detective_to_uniform_min2", label: "ラブ探偵→制服（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "kaguya_mini_fujiwara_gym_to_love_detective_min4", label: "体操着→ラブ探偵（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "kaguya_mini_fujiwara_gym_to_uniform_exact6", label: "体操着→制服（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+
+      {
+        id: "kaguya_ending_episode",
+        title: "エンディングエピソードごとの示唆",
+        note: "エンディング到達時のエピソードで示唆（p-town 4618）。",
+        items: [
+          { id: "kaguya_ending_ep_wind_chime", label: "風鈴ゲーム（デフォルト）", effect: { type: "none" } },
+          { id: "kaguya_ending_ep_future", label: "2人の恋の行方（デフォルト）", effect: { type: "none" } },
+          {
+            id: "kaguya_ending_ep_kaguya_even_or_high",
+            label: "かぐや（偶数設定か高設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.15, 5: 1.1, 6: 1.2 } },
+          },
+          {
+            id: "kaguya_ending_ep_shirogane_odd_or_high",
+            label: "白銀（奇数設定か高設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 4: 1.15, 5: 1.1, 6: 1.2 } },
+          },
+        ],
+      },
+
+      {
+        id: "kaguya_payout_display",
+        title: "獲得枚数表示",
+        note: "特定の獲得枚数表示で設定示唆（p-town 4618）。",
+        items: [
+          { id: "kaguya_payout_246_min2", label: "246枚over（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "kaguya_payout_456_min4", label: "456枚over（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "kaguya_payout_666_exact6", label: "666枚over（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
+  "sankyo_karakuri": {
+    machineId: "sankyo_karakuri",
+    helpUrl: "https://p-town.dmm.com/machines/4360",
+    groups: [
+      {
+        id: "karakuri_at_end_screen",
+        title: "AT終了画面",
+        note: "AT終了画面で設定示唆（p-town 4360）。",
+        items: [
+          { id: "karakuri_at_end_katsu_narumi", label: "勝＆鳴海（デフォルト）", effect: { type: "none" } },
+          {
+            id: "karakuri_at_end_maintenance_odd_or_high",
+            label: "整備部（奇数かつ高設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 4: 1.15, 5: 1.1, 6: 1.2 } },
+          },
+          {
+            id: "karakuri_at_end_heroines_even_or_high",
+            label: "ヒロイン5人（偶数かつ高設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.15, 5: 1.1, 6: 1.2 } },
+          },
+          { id: "karakuri_at_end_azahana_guy_min2", label: "阿紫花＆ギイ（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "karakuri_at_end_shirogane_katsu_narumi_min4", label: "しろがね＆勝＆鳴海（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "karakuri_at_end_francine_exact6", label: "フランシーヌ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
     ],
   },
 
