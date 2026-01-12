@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-12-024",
+    "date": "2026-01-12",
+    "title": "adra_burst対応",
+    "href": "/tool?machine=adra_burst",
+    "body": "adra_burstを追加しました。"
+  },
+  {
     "id": "2026-01-12-023",
     "date": "2026-01-12",
     "title": "Lパチスロ炎炎ノ消防隊対応",
