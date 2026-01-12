@@ -551,6 +551,64 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "konami_magihalo_bt": {
+    machineId: "konami_magihalo_bt",
+    helpUrl: "https://p-town.dmm.com/machines/4854",
+    groups: [
+      {
+        id: "magihalo_bt_trophy",
+        title: "ボーナス終了画面：アリストロフィー",
+        note: "ボーナス終了画面で出現（p-town 4854）",
+        items: [
+          { id: "magihalo_bt_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "magihalo_bt_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "magihalo_bt_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "magihalo_bt_trophy_clover", label: "クローバー柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "magihalo_bt_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "magihalo_bt_bonus_minichara",
+        title: "ボーナス中：ミニキャラのアクション（台座）",
+        note: "ミニキャラ出現時の台座色で設定示唆（p-town 4854）",
+        items: [
+          {
+            id: "magihalo_bt_minichara_white_a_odd",
+            label: "白-A（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "magihalo_bt_minichara_white_b_even",
+            label: "白-B（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "magihalo_bt_minichara_blue_a_1or6",
+            label: "青-A（設定1or6示唆）",
+            effect: { type: "weight", weights: { 1: 1.2, 6: 1.2 } },
+          },
+          {
+            id: "magihalo_bt_minichara_blue_b_2or5",
+            label: "青-B（設定2or5示唆）",
+            effect: { type: "weight", weights: { 2: 1.2, 5: 1.2 } },
+          },
+          {
+            id: "magihalo_bt_minichara_green_mid",
+            label: "緑（高設定示唆［中］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "magihalo_bt_minichara_red_strong",
+            label: "赤（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "magihalo_bt_minichara_gold_min5", label: "金（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "magihalo_bt_minichara_purple_excl1", label: "紫（キャラ瞳）（設定1否定）", effect: { type: "excludeSetting", exclude: 1 } },
+        ],
+      },
+    ],
+  },
+
   "konami_watakon": {
     machineId: "konami_watakon",
     helpUrl: "https://p-town.dmm.com/machines/4803",

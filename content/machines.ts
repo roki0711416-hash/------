@@ -903,6 +903,29 @@ export const machines = [
     },
   },
 
+  {
+    id: "konami_magihalo_bt",
+    name: "マジカルハロウィン ボーナストリガー",
+    maker: "コナミアミューズメント",
+    series: "マジカルハロウィン",
+    category: "SMART",
+    inHall: true,
+    description: "L（BIG/REG/合算）ベースの簡易判別。確率・機械割はp-town（4854）参照。ボーナス出現率（bonus.jpg）はOCR抽出。",
+    metricsLabels: {
+      bigLabel: "BIG",
+      regLabel: "REG",
+      totalLabel: "合算",
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 299.3, reg: 390.1, total: 169.9, rate: 97.5 },
+        { s: 2, big: 295.3, reg: 347.1, total: 159.9, rate: 99.3 },
+        { s: 5, big: 273.3, reg: 301.1, total: 143.1, rate: 104.2 },
+        { s: 6, big: 262.2, reg: 262.1, total: 131.0, rate: 108.1 },
+      ],
+    },
+  },
+
   // --- YAMASA L追加 ---
   {
     id: "smart-god-eater-resurrection",
