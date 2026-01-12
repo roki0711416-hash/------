@@ -1,5 +1,19 @@
 [
   {
+    "id": "2026-01-12-015",
+    "date": "2026-01-12",
+    "title": "atDirect対応",
+    "href": "/tool?machine=atDirect",
+    "body": "atDirectを追加しました。"
+  },
+  {
+    "id": "2026-01-12-014",
+    "date": "2026-01-12",
+    "title": "L麻雀物語対応",
+    "href": "/tool?machine=olympia_mahjong_monogatari",
+    "body": "L麻雀物語を追加しました。"
+  },
+  {
     "id": "2026-01-12-013",
     "date": "2026-01-12",
     "title": "otomeAttackDirect対応",
