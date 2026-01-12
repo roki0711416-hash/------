@@ -1073,6 +1073,69 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "okidoki-gold": {
+    machineId: "okidoki-gold",
+    helpUrl: "https://p-town.dmm.com/machines/4258",
+    groups: [
+      {
+        id: "okidoki_gold_smallrole_rates",
+        title: "小役確率（チェリー/確定役）",
+        note:
+          "画像の表をメモ用にカウント。現状はカウントのみ（判別には未反映）。\n" +
+          "チェリーA：1/52.5（全設定共通）\n" +
+          "チェリーB：設定1=1/168.0 / 設定2=1/152.4 / 設定3=1/145.6 / 設定5=1/136.5 / 設定6=1/128.0\n" +
+          "チェリー合算：設定1=1/40.0 / 設定2=1/39.1 / 設定3=1/38.6 / 設定5=1/37.9 / 設定6=1/37.2\n" +
+          "確定役A：1/8192.0（全設定共通）\n" +
+          "確定役B：設定1=1/16384.0 / 設定2=1/13107.2 / 設定3=1/10922.7 / 設定5=1/8192.0 / 設定6=1/6553.6\n" +
+          "確定役合算：設定1=1/5461.3 / 設定2=1/5041.2 / 設定3=1/4681.1 / 設定5=1/4096.0 / 設定6=1/3640.9",
+        items: [
+          { id: "okidoki_gold_cherry_a", label: "チェリーA", effect: { type: "none" } },
+          { id: "okidoki_gold_cherry_b", label: "チェリーB", effect: { type: "none" } },
+          { id: "okidoki_gold_kakuteiyaku_a", label: "確定役A", effect: { type: "none" } },
+          { id: "okidoki_gold_kakuteiyaku_b", label: "確定役B", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "okidoki_gold_cherry_bonus_by_mode",
+        title: "チェリー契機 ボーナス当選（モード別）",
+        note:
+          "画像の表をメモ用にカウント。現状はカウントのみ（判別には未反映）。\n" +
+          "通常AorB：設定1=1.1% / 設定2=1.1% / 設定3=1.2% / 設定5=1.2% / 設定6=1.3%\n" +
+          "引き戻し：2.0%（全設定共通）\n" +
+          "チャンス：2.5%（全設定共通）\n" +
+          "天国以上：3.0%（全設定共通）\n" +
+          "金ドキ：25.0%（全設定共通）\n" +
+          "※天国以上＝天国/ドキドキ/超ドキドキ/保証",
+        items: [
+          { id: "okidoki_gold_cherry_bonus_normal_ab", label: "通常AorBで当選", effect: { type: "none" } },
+          { id: "okidoki_gold_cherry_bonus_hikimodoshi", label: "引き戻しで当選", effect: { type: "none" } },
+          { id: "okidoki_gold_cherry_bonus_chance", label: "チャンスで当選", effect: { type: "none" } },
+          { id: "okidoki_gold_cherry_bonus_tengoku_plus", label: "天国以上で当選", effect: { type: "none" } },
+          { id: "okidoki_gold_cherry_bonus_kin_doki", label: "金ドキで当選", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "okidoki_gold_suika_bonus_by_mode",
+        title: "スイカ契機 ボーナス当選（モード別）",
+        note:
+          "画像の表をメモ用にカウント。現状はカウントのみ（判別には未反映）。\n" +
+          "通常AorB：設定1=2.8% / 設定2=2.9% / 設定3=3.4% / 設定5=3.7% / 設定6=4.0%\n" +
+          "引き戻し：設定1=7.5% / 設定2=7.8% / 設定3=8.1% / 設定5=8.4% / 設定6=8.8%\n" +
+          "チャンス：設定1=9.2% / 設定2=9.5% / 設定3=9.9% / 設定5=10.2% / 設定6=10.7%\n" +
+          "天国以上：15.0%（全設定共通）\n" +
+          "金ドキ：40.0%（全設定共通）\n" +
+          "※天国以上＝天国/ドキドキ/超ドキドキ/保証",
+        items: [
+          { id: "okidoki_gold_suika_bonus_normal_ab", label: "通常AorBで当選", effect: { type: "none" } },
+          { id: "okidoki_gold_suika_bonus_hikimodoshi", label: "引き戻しで当選", effect: { type: "none" } },
+          { id: "okidoki_gold_suika_bonus_chance", label: "チャンスで当選", effect: { type: "none" } },
+          { id: "okidoki_gold_suika_bonus_tengoku_plus", label: "天国以上で当選", effect: { type: "none" } },
+          { id: "okidoki_gold_suika_bonus_kin_doki", label: "金ドキで当選", effect: { type: "none" } },
+        ],
+      },
+    ],
+  },
+
   "okidoki-black": {
     machineId: "okidoki-black",
     helpUrl: "https://p-town.dmm.com/machines/4582",
@@ -1120,6 +1183,62 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "okidoki_black_bonus_from_cherry", label: "チェリー→ボーナス", effect: { type: "none" } },
           { id: "okidoki_black_bonus_from_special", label: "特殊役→ボーナス", effect: { type: "none" } },
           { id: "okidoki_black_bonus_from_middle_cherry", label: "中段チェリー→ボーナス", effect: { type: "none" } },
+        ],
+      },
+    ],
+  },
+
+  "okidoki-duo-encore": {
+    machineId: "okidoki-duo-encore",
+    helpUrl: "https://p-town.dmm.com/machines/4906",
+    groups: [
+      {
+        id: "okidoki_duo_cherry_rate",
+        title: "チェリー確率",
+        note:
+          "画像の表をメモ用にカウント。現状はカウントのみ（判別には未反映）。\n" +
+          "設定1=1/46.8 / 設定2=1/45.0 / 設定3=1/43.3 / 設定5=1/41.7 / 設定6=1/40.3",
+        items: [{ id: "okidoki_duo_cherry", label: "チェリー", effect: { type: "none" } }],
+      },
+      {
+        id: "okidoki_duo_bonus_odds_by_normal_mode",
+        title: "通常モードごとのボーナス確率",
+        note:
+          "画像の表をメモ用にカウント。現状はカウントのみ（判別には未反映）。\n" +
+          "通常AorB：設定1=1/251.6 / 設定2=1/241.2 / 設定3=1/225.7 / 設定5=1/200.2 / 設定6=1/188.4\n" +
+          "引き戻し：設定1=1/105.4 / 設定2=1/106.1 / 設定3=1/106.3 / 設定5=1/106.7 / 設定6=1/107.2\n" +
+          "チャンス：設定1=1/102.3 / 設定2=1/102.1 / 設定3=1/102.3 / 設定5=1/101.8 / 設定6=1/101.9",
+        items: [
+          { id: "okidoki_duo_bonus_in_normal_ab", label: "通常AorBでボーナス", effect: { type: "none" } },
+          { id: "okidoki_duo_bonus_in_hikimodoshi", label: "引き戻しでボーナス", effect: { type: "none" } },
+          { id: "okidoki_duo_bonus_in_chance", label: "チャンスでボーナス", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "okidoki_duo_bonus_tenpai_voice",
+        title: "ボーナステンパイ音（ボイス）",
+        note: "通常テンパイ音以外は天国以上濃厚。設定示唆は反映（p-town 4906）。",
+        items: [
+          { id: "okidoki_duo_tenpai_normal", label: "通常テンパイ音（示唆なし）", effect: { type: "none" } },
+          {
+            id: "okidoki_duo_tenpai_tiroriro_2or6",
+            label: "てぃろりろ（設定2・6示唆）",
+            effect: { type: "weight", weights: { 2: 1.2, 6: 1.2 } },
+          },
+          {
+            id: "okidoki_duo_tenpai_pikoon_3or5",
+            label: "ぴこーん（設定3・5示唆）",
+            effect: { type: "weight", weights: { 3: 1.2, 5: 1.2 } },
+          },
+          { id: "okidoki_duo_tenpai_kirari_min2", label: "『きらりーん』（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "okidoki_duo_tenpai_pikoon_long_min3", label: "『ぴこーーん』（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "okidoki_duo_tenpai_anauta_min5", label: "『私、あなたのことが…ずっと』（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "okidoki_duo_tenpai_3nin_exact6", label: "『今日は3人で楽しもー！』（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "okidoki_duo_tenpai_lucky", label: "ラッキー（ドキドキ以上）", effect: { type: "none" } },
+          { id: "okidoki_duo_tenpai_super_lucky", label: "超ラッキー（超ドキドキ以上）", effect: { type: "none" } },
+          { id: "okidoki_duo_tenpai_kana_song", label: "聴いてくれるかな…（カナちゃん楽曲）", effect: { type: "none" } },
+          { id: "okidoki_duo_tenpai_hana_song", label: "南野ハナ、歌いまーす（ハナちゃん楽曲）", effect: { type: "none" } },
+          { id: "okidoki_duo_tenpai_duo_song", label: "ハナ〜『おねえちゃーん、いっっ』（DUO楽曲）", effect: { type: "none" } },
         ],
       },
     ],
