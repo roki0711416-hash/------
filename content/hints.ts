@@ -333,6 +333,142 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "konami_tenseiken": {
+    machineId: "konami_tenseiken",
+    helpUrl: "https://p-town.dmm.com/machines/4843",
+    groups: [
+      {
+        id: "tenseiken_curry",
+        title: "寸胴カレー演出",
+        note: "3個揃い時の辛さで示唆（p-town 4843）",
+        items: [
+          { id: "tenseiken_curry_default", label: "中辛（デフォルト）", effect: { type: "none" } },
+          { id: "tenseiken_curry_spicy", label: "辛口（チャンスアップ）", effect: { type: "none" } },
+          { id: "tenseiken_curry_sweet_min2", label: "甘口（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+        ],
+      },
+      {
+        id: "tenseiken_at_end_screen",
+        title: "AT終了画面",
+        note: "高設定示唆はソフト示唆（重み付け）として反映。濃厚系は制約として反映（p-town 4843）",
+        items: [
+          { id: "tenseiken_at_end_default", label: "デフォルト", effect: { type: "none" } },
+          {
+            id: "tenseiken_at_end_white",
+            label: "白背景（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "tenseiken_at_end_black",
+            label: "黒背景（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "tenseiken_at_end_swimsuit_min2", label: "水着（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "tenseiken_at_end_kimono_min4", label: "和服（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tenseiken_at_end_all_exact6", label: "全員集合（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tenseiken_trophy",
+        title: "アリストロフィー",
+        note: "AT終了画面で出現（p-town 4843）",
+        items: [
+          { id: "tenseiken_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "tenseiken_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "tenseiken_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tenseiken_trophy_clover", label: "クローバー柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "tenseiken_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tenseiken_payout_display",
+        title: "特定の獲得枚数表示",
+        note: "トータル獲得枚数が規定枚数を超えた際に表示（p-town 4843）",
+        items: [
+          { id: "tenseiken_payout_456_over", label: "456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tenseiken_payout_666_over", label: "666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tenseiken_goblin_stampede_lamp",
+        title: "ゴブリンスタンピード終了画面：ランプ色",
+        note: "チャンスボタン押下時のリール左右ランプ色で示唆（p-town 4843）",
+        items: [
+          { id: "tenseiken_goblin_lamp_white", label: "白（デフォルト）", effect: { type: "none" } },
+          {
+            id: "tenseiken_goblin_lamp_blue_odd",
+            label: "青（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "tenseiken_goblin_lamp_yellow_even",
+            label: "黄（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "tenseiken_goblin_lamp_green_high",
+            label: "緑（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "tenseiken_goblin_lamp_red_min2", label: "赤（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "tenseiken_goblin_lamp_purple_min4", label: "紫（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tenseiken_goblin_lamp_rainbow_exact6", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tenseiken_x_bonus_issen",
+        title: "X転剣ボーナス：一閃乗せ時の表示ゲーム数",
+        note: "表示ゲーム数が特定なら上位設定濃厚（p-town 4843）",
+        items: [
+          { id: "tenseiken_issen_22_min2", label: "＋22G（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "tenseiken_issen_33_min3", label: "＋33G（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "tenseiken_issen_4_min4", label: "＋4G（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tenseiken_issen_5_min5", label: "＋5G（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "tenseiken_issen_6_exact6", label: "＋6G（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tenseiken_curry_eating",
+        title: "転剣ラッシュ：カレー実食演出",
+        note: "連打中の特定上乗せゲーム数で高設定濃厚（p-town 4843）",
+        items: [
+          { id: "tenseiken_curry_eat_4_min4", label: "＋4G（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tenseiken_curry_eat_5_min5", label: "＋5G（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "tenseiken_curry_eat_6_exact6", label: "＋6G（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tenseiken_fran_bonus_char",
+        title: "フランボーナス中：キャラ紹介",
+        note: "キャラ（色）で設定を示唆（p-town 4843）",
+        items: [
+          { id: "tenseiken_fran_char_default", label: "デフォルトキャラ（青）（示唆なし）", effect: { type: "none" } },
+          {
+            id: "tenseiken_fran_char_nell_weak",
+            label: "ネル（ピンク）（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "tenseiken_fran_char_amanda_strong",
+            label: "アマンダ（緑）（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "tenseiken_fran_char_urushi_min2", label: "ウルシ（赤）（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "tenseiken_fran_char_fenrir_min4", label: "フェンリル（紫）（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "tenseiken_fran_char_chaos_exact6", label: "混沌の女神（金）（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tenseiken_x_bonus_episode",
+        title: "X転剣ボーナス：話数紹介",
+        note: "特定話数で上位設定濃厚（p-town 4843）",
+        items: [
+          { id: "tenseiken_x_episode_12_min4", label: "第12話（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+        ],
+      },
+    ],
+  },
+
   "newgin_mushoku_tensei": {
     machineId: "newgin_mushoku_tensei",
     helpUrl: "https://p-town.dmm.com/machines/4924",
