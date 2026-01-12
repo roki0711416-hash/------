@@ -1329,6 +1329,50 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "railgun2_card_accelerator_min4", label: "一方通行（アクセラレータ）（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
         ],
       },
+      {
+        id: "railgun2_cz_rates",
+        title: "CZ確率・当選率（参考）",
+        note:
+          "p-town 4892。\n" +
+          "【CZ確率（1/xxx）】\n" +
+          "設定1：GIRLS JUDGE 1/179.99 / 上位CZ 1/7456.18 / トータル 1/175.75\n" +
+          "設定2：GIRLS JUDGE 1/177.69 / 上位CZ 1/6024.31 / トータル 1/172.60\n" +
+          "設定3：GIRLS JUDGE 1/173.44 / 上位CZ 1/5925.19 / トータル 1/168.51\n" +
+          "設定4：GIRLS JUDGE 1/163.19 / 上位CZ 1/3852.39 / トータル 1/156.56\n" +
+          "設定5：GIRLS JUDGE 1/153.54 / 上位CZ 1/2861.31 / トータル 1/145.72\n" +
+          "設定6：GIRLS JUDGE 1/145.25 / 上位CZ 1/2586.86 / トータル 1/137.52\n" +
+          "\n" +
+          "【CZ当選率詳細（%）】\n" +
+          "超電磁砲コイン揃い時（トータル）: 設定1=25.00% / 2=25.39% / 3=25.78% / 4=28.13% / 5=30.86% / 6=33.20%\n" +
+          "※上の%は machines 側で判別入力（試行=超電磁砲コイン揃い回数、成功=CZ当選回数）に反映。",
+        items: [
+          {
+            id: "railgun2_upper_cz_hit",
+            label: "上位CZに当選（婚后光子と知っての挑戦ですの）",
+            effect: { type: "weight", weights: { 2: 1.24, 3: 1.26, 4: 1.94, 5: 2.61, 6: 2.88 } },
+          },
+        ],
+      },
+      {
+        id: "railgun2_episode_bonus_direct",
+        title: "エピソードボーナス直撃（参考）",
+        note:
+          "p-town 4892。\n" +
+          "【エピソードボーナス直撃確率】\n" +
+          "設定1：約1/39680\n" +
+          "設定2：約1/26453\n" +
+          "設定3：約1/19921\n" +
+          "設定4：約1/13390\n" +
+          "設定5：約1/11572\n" +
+          "設定6：約1/10168",
+        items: [
+          {
+            id: "railgun2_episode_bonus_direct_hit",
+            label: "エピソードボーナス直撃を確認",
+            effect: { type: "weight", weights: { 2: 1.5, 3: 1.99, 4: 2.96, 5: 3.43, 6: 3.9 } },
+          },
+        ],
+      },
     ],
   },
 
