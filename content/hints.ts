@@ -1073,6 +1073,58 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "okidoki-black": {
+    machineId: "okidoki-black",
+    helpUrl: "https://p-town.dmm.com/machines/4582",
+    groups: [
+      {
+        id: "okidoki_black_bonus_tenpai_voice",
+        title: "ボーナステンパイ音（ボイス）",
+        note: "モード示唆（天国/ドキドキ等）。現状はカウントのみ（判別には未反映）。",
+        items: [
+          { id: "okidoki_black_tenpai_tiroriro", label: "てぃろりろ（天国以上）", effect: { type: "none" } },
+          { id: "okidoki_black_tenpai_pikoon", label: "ぴこーん（天国以上）", effect: { type: "none" } },
+          { id: "okidoki_black_tenpai_lucky", label: "ラッキー（ドキドキ以上）", effect: { type: "none" } },
+          { id: "okidoki_black_tenpai_super_lucky", label: "超ラッキー（超ドキドキ以上）", effect: { type: "none" } },
+          { id: "okidoki_black_tenpai_kana_song", label: "聴いてくれるかな…（楽曲変化＝1G連以上）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "okidoki_black_big_bgm",
+        title: "BIG中のBGM変化",
+        note: "恩恵（1G連/モード）示唆。現状はカウントのみ（判別には未反映）。",
+        items: [
+          {
+            id: "okidoki_black_bgm_version_up_black",
+            label: "私バージョンアップ! BLACKアレンジver（BIGの1G連）",
+            effect: { type: "none" },
+          },
+          {
+            id: "okidoki_black_bgm_aijou_now_update",
+            label: "愛情ナウアップデート（BIGの1G連＋ボーナス1回以上）",
+            effect: { type: "none" },
+          },
+          {
+            id: "okidoki_black_bgm_ever_lasting_love",
+            label: "EVER LASTING LOVE（BIGの1G連＋ドキドキモード以上）",
+            effect: { type: "none" },
+          },
+        ],
+      },
+      {
+        id: "okidoki_black_smallrole_bonus",
+        title: "小役契機のボーナス当選",
+        note: "現状はカウントのみ（判別には未反映）。",
+        items: [
+          { id: "okidoki_black_bonus_from_suika", label: "スイカ→ボーナス", effect: { type: "none" } },
+          { id: "okidoki_black_bonus_from_cherry", label: "チェリー→ボーナス", effect: { type: "none" } },
+          { id: "okidoki_black_bonus_from_special", label: "特殊役→ボーナス", effect: { type: "none" } },
+          { id: "okidoki_black_bonus_from_middle_cherry", label: "中段チェリー→ボーナス", effect: { type: "none" } },
+        ],
+      },
+    ],
+  },
+
   "konami_watakon": {
     machineId: "konami_watakon",
     helpUrl: "https://p-town.dmm.com/machines/4803",
