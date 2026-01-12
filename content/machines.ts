@@ -272,6 +272,24 @@ export const machines = [
 
   // --- UNIVERSAL L追加 ---
   {
+    id: "okidoki-gold",
+    name: "沖ドキ！GOLD",
+    maker: "ユニバーサル",
+    series: "沖ドキ！",
+    category: "SMART",
+    inHall: true,
+    description: "ボーナス確率ベースの簡易判別。",
+    odds: {
+      settings: [
+        { s: 1, big: 299.6, reg: 175.3, total: 368.7, rate: 97.2 },
+        { s: 2, big: 287.3, reg: 168.3, total: 346.2, rate: 98.7 },
+        { s: 4, big: 266.7, reg: 157.7, total: 324.0, rate: 101.3 },
+        { s: 5, big: 247.6, reg: 143.0, total: 297.9, rate: 104.7 },
+        { s: 6, big: 237.0, reg: 134.0, total: 276.5, rate: 108.1 },
+      ],
+    },
+  },
+  {
     id: "smart-magireco",
     name: "L マギアレコード 魔法少女まどか☆マギカ外伝",
     maker: "ユニバーサル",
