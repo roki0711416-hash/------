@@ -310,7 +310,7 @@ export const machines = [
   {
     id: "okidoki-duo-encore",
     name: "スマスロ 沖ドキ！DUOアンコール",
-    maker: "メーシー",
+    maker: "ユニバーサル",
     series: "沖ドキ！",
     category: "SMART",
     inHall: true,

@@ -1185,6 +1185,22 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "okidoki_black_bonus_from_middle_cherry", label: "中段チェリー→ボーナス", effect: { type: "none" } },
         ],
       },
+      {
+        id: "okidoki_black_smallrole_rates",
+        title: "小役確率（チェリー/特殊役）",
+        note:
+          "画像の表をメモ用にカウント。現状はカウントのみ（判別には未反映）。\n" +
+          "チェリーA：1/44.3（全設定共通）\n" +
+          "チェリーB：設定1=1/168.0 / 設定2=1/152.4 / 設定3=1/145.6 / 設定5=1/136.5 / 設定6=1/128.5\n" +
+          "特殊役A：1/8192.0（全設定共通）\n" +
+          "特殊役B：設定1=1/16384.0 / 設定2=1/13107.2 / 設定3=1/10922.7 / 設定5=1/8192.0 / 設定6=1/6553.6",
+        items: [
+          { id: "okidoki_black_cherry_a", label: "チェリーA", effect: { type: "none" } },
+          { id: "okidoki_black_cherry_b", label: "チェリーB", effect: { type: "none" } },
+          { id: "okidoki_black_tokushuyaku_a", label: "特殊役A", effect: { type: "none" } },
+          { id: "okidoki_black_tokushuyaku_b", label: "特殊役B", effect: { type: "none" } },
+        ],
+      },
     ],
   },
 
