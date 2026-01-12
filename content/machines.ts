@@ -308,6 +308,29 @@ export const machines = [
     },
   },
   {
+    id: "okidoki-duo-encore",
+    name: "スマスロ 沖ドキ！DUOアンコール",
+    maker: "メーシー",
+    series: "沖ドキ！",
+    category: "SMART",
+    inHall: true,
+    description: "ボーナス初当りベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "ボーナス初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 240.1, reg: 1_000_000_000, total: 240.1, rate: 97.2 },
+        { s: 2, big: 230.2, reg: 1_000_000_000, total: 230.2, rate: 98.6 },
+        { s: 3, big: 215.8, reg: 1_000_000_000, total: 215.8, rate: 102.4 },
+        { s: 5, big: 192.1, reg: 1_000_000_000, total: 192.1, rate: 106.8 },
+        { s: 6, big: 181.0, reg: 1_000_000_000, total: 181.0, rate: 110.0 },
+      ],
+    },
+  },
+  {
     id: "smart-magireco",
     name: "L マギアレコード 魔法少女まどか☆マギカ外伝",
     maker: "ユニバーサル",
