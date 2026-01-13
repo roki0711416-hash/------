@@ -11,13 +11,28 @@ export type MachinesData = {
   makers: Maker[];
 };
 
+function normalizeMachineName(machine: Machine): string {
+  const raw = machine.name.trim();
+  if (machine.category !== "SMART") return raw;
+
+  // Already normalized (accept both "Lxxxx" and "L xxxx")
+  if (/^L(?:\s|\u3000)?/u.test(raw)) return raw;
+
+  // Some entries use leading "スマスロ" or "パチスロ".
+  const rest = raw.replace(/^(?:スマスロ|パチスロ)\s*/u, "").trim();
+  const first = rest[0] ?? "";
+  const needsSpace = /^[A-Za-z0-9]/u.test(first);
+  return needsSpace ? `L ${rest}` : `L${rest}`;
+}
+
 export async function getAllMachines(): Promise<readonly Machine[]> {
-  return machines;
+  return machines.map((m) => ({ ...m, name: normalizeMachineName(m) }));
 }
 
 export async function getMachineById(id: string): Promise<Machine | null> {
   const found = machines.find((m) => m.id === id);
-  return found ?? null;
+  if (!found) return null;
+  return { ...found, name: normalizeMachineName(found) };
 }
 
 export async function getMachinesData(): Promise<MachinesData> {
@@ -25,7 +40,7 @@ export async function getMachinesData(): Promise<MachinesData> {
 
   for (const m of machines) {
     const list = byMaker.get(m.maker) ?? [];
-    list.push({ id: m.id, name: m.name });
+    list.push({ id: m.id, name: normalizeMachineName(m) });
     byMaker.set(m.maker, list);
   }
 
