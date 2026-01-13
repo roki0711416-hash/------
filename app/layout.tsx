@@ -16,13 +16,6 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja">
-      <head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6861979311690077"
-          crossOrigin="anonymous"
-        />
-      </head>
       <body className="min-h-screen bg-neutral-100 text-neutral-900">
         <header className="w-full border-b border-neutral-200 bg-white">
           <div className="w-full">
