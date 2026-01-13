@@ -30,20 +30,14 @@ export async function getMachinesData(): Promise<MachinesData> {
   }
 
   const pinnedMakers = ["北電子", "パイオニア"] as const;
+  const pinnedSet = new Set<string>(pinnedMakers);
 
   function makerGroup(name: string): number {
     const trimmed = name.trim();
     const first = trimmed[0] ?? "";
-
-    // カタカナ/ひらがな
-    if (/^[\u3040-\u309F\u30A0-\u30FF\u31F0-\u31FF]/u.test(first)) return 0;
-
-    // 漢字（CJK統合漢字 + 拡張A）
-    if (/^[\u3400-\u4DBF\u4E00-\u9FFF]/u.test(first)) return 1;
-
-    // ローマ字
-    if (/^[A-Za-z]/u.test(first)) return 2;
-
+    if (/^[\u30A0-\u30FF]$/u.test(first)) return 0; // カタカナ
+    if (/^[\u4E00-\u9FFF\u3400-\u4DBF\u3005]$/u.test(first)) return 1; // 漢字(々含む)
+    if (/^[A-Za-z]$/u.test(first)) return 2; // ローマ字
     return 3;
   }
 
@@ -52,8 +46,8 @@ export async function getMachinesData(): Promise<MachinesData> {
       const aIdx = pinnedMakers.indexOf(a as (typeof pinnedMakers)[number]);
       const bIdx = pinnedMakers.indexOf(b as (typeof pinnedMakers)[number]);
 
-      const aPinned = aIdx !== -1;
-      const bPinned = bIdx !== -1;
+      const aPinned = pinnedSet.has(a);
+      const bPinned = pinnedSet.has(b);
       if (aPinned && bPinned) return aIdx - bIdx;
       if (aPinned) return -1;
       if (bPinned) return 1;
@@ -61,7 +55,6 @@ export async function getMachinesData(): Promise<MachinesData> {
       const aGroup = makerGroup(a);
       const bGroup = makerGroup(b);
       if (aGroup !== bGroup) return aGroup - bGroup;
-
       return a.localeCompare(b, "ja");
     })
     .map(([name, ms]) => ({
