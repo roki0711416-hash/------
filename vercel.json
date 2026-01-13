@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "slokasukun.com"
+        }
+      ],
+      "destination": "https://www.slokasukun.com/$1",
+      "permanent": true
+    }
+  ]
+}
