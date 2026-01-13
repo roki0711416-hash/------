@@ -1824,7 +1824,7 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "ボーナス合算（1/○○）とチェリー確率での簡易判別。数値はp-town(4929)の解析より。",
+      "ボーナス合算（1/○○）とチェリー確率での簡易判別。数値はp-townの解析より。",
     metricsLabels: {
       bigLabel: "ボーナス合算",
       regLabel: null,
@@ -1894,7 +1894,7 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "ボーナス確率（設定1/2/5/6）＋同時当選（スイカ/ベル/特殊役I）での簡易判別。数値はp-town(4893)の解析より。機械割はbonus.jpg(OCR)から抽出（完全攻略時の列を採用）。",
+      "ボーナス確率（設定1/2/5/6）＋同時当選（スイカ/ベル/特殊役I）での簡易判別。数値はp-townの解析より。機械割はbonus.jpg(OCR)から抽出（完全攻略時の列を採用）。",
     metricsLabels: {
       extraMetrics: [
         { id: "suikaNadiaBig", label: "スイカ+ナディアBIG" },
@@ -1965,7 +1965,7 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "ボーナス確率（設定1〜6）＋確定チェリー/ピラミッド揃いでの簡易判別。数値はp-town(4860)の解析より。ボーナス確率・機械割はbonus.jpg(OCR)から抽出し、機械割は『完全攻略時』の列を採用。",
+      "ボーナス確率（設定1〜6）＋確定チェリー/ピラミッド揃いでの簡易判別。数値はp-townの解析より。ボーナス確率・機械割はbonus.jpg(OCR)から抽出し、機械割は『完全攻略時』の列を採用。",
     metricsLabels: {
       extraMetrics: [
         { id: "kakuteiCherry", label: "確定チェリー" },
@@ -2053,7 +2053,7 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "初当り確率と機械割での簡易判別。数値はp-town(4571)より。実質5段階設定（設定2〜6）。",
+      "初当り確率と機械割での簡易判別。数値はp-townより。実質5段階設定（設定2〜6）。",
     metricsLabels: {
       bigLabel: "初当り",
       regLabel: null,
@@ -2079,7 +2079,7 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "麻雀ボーナス確率と（通常時）AT直撃での簡易判別。AT直撃は通常時G数を母数にした二項（trials/hits）で反映。数値はp-town(4777)より。機械割はp-town上でレンジ表記のため、設定別は未掲載。",
+      "麻雀ボーナス確率と（通常時）AT直撃での簡易判別。AT直撃は通常時G数を母数にした二項（trials/hits）で反映。数値はp-townより。機械割はp-town上で98.0%〜114.6%のレンジ表記のため、設定別は未掲載。",
     metricsLabels: {
       bigLabel: "麻雀ボーナス",
       regLabel: null,
@@ -2162,7 +2162,7 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "初当り確率と機械割での簡易判別。数値はp-town(4806)より。実質5段階設定（設定2〜6）。",
+      "初当り確率と機械割での簡易判別。数値はp-townより。実質5段階設定（設定2〜6）。",
     metricsLabels: {
       bigLabel: "初当り",
       regLabel: null,
@@ -2188,7 +2188,7 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "初当り確率・機械割・通常時デカ目での簡易判別。数値はp-town(4877)より。実質5段階設定（設定2〜6）。",
+      "初当り確率・機械割・通常時デカ目での簡易判別。数値はp-townより。実質5段階設定（設定2〜6）。",
     metricsLabels: {
       bigLabel: "初当り",
       regLabel: null,
@@ -2249,7 +2249,7 @@ export const machines = [
     series: "ルパン三世",
     inHall: true,
     category: "SMART",
-    description: "初当り確率と機械割での簡易判別。数値はp-town(4689)より。",
+    description: "初当り確率と機械割での簡易判別。数値はp-townより。",
     metricsLabels: {
       bigLabel: "初当り",
       regLabel: null,
@@ -2275,7 +2275,7 @@ export const machines = [
     series: "ルパン三世",
     inHall: true,
     category: "SMART",
-    description: "BIG/REG/合算と機械割での簡易判別。数値はp-town(4921)より。実質5段階設定（設定1/2/4/5/6）。",
+    description: "BIG/REG/合算と機械割での簡易判別。数値はp-townより。実質5段階設定（設定1/2/4/5/6）。",
     metricsLabels: {
       bigLabel: "BIG",
       regLabel: "REG",
@@ -2301,7 +2301,7 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "ボーナス確率と機械割での簡易判別。追加で、AT直撃/ゾーン外ボーナス/乙女アタック当選/オウガイバトル1戦目勝率の設定差も反映。数値はp-town(4395)より。",
+      "ボーナス確率と機械割での簡易判別。追加で、AT直撃/ゾーン外ボーナス/乙女アタック当選/オウガイバトル1戦目勝率の設定差も反映。数値はp-townより。",
     metricsLabels: {
       bigLabel: "ボーナス",
       regLabel: null,

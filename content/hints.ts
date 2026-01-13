@@ -364,15 +364,73 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     helpUrl: "https://p-town.dmm.com/machines/4777",
     groups: [
       {
+        id: "mahjong_monogatari_bonus_end_screen",
+        title: "麻雀ボーナス終了画面",
+        note: "終了画面のキャラで示唆（p-town 4777）",
+        items: [
+          { id: "mahjong_monogatari_bonus_end_sayaka_default", label: "さやか（デフォルト）", effect: { type: "none" } },
+          {
+            id: "mahjong_monogatari_bonus_end_modoka_even",
+            label: "まどか（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "mahjong_monogatari_bonus_end_ayaka_odd",
+            label: "あやか（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+        ],
+      },
+      {
         id: "mahjong_monogatari_at_end_screen",
-        title: "AT終了画面（スタンプ）",
-        note: "スタンプは『設定◯以上濃厚』系のみ判別に反映（p-town 4777）",
+        title: "AT終了画面",
+        note: "終了画面で示唆（p-town 4777）。スタンプは濃厚系のみ制約として反映。",
         items: [
           { id: "mahjong_monogatari_at_end_default", label: "三姉妹（デフォルト）", effect: { type: "none" } },
+          {
+            id: "mahjong_monogatari_at_end_sayaka_dash_weak",
+            label: "さやかダッシュ（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "mahjong_monogatari_at_end_shisho_strong",
+            label: "師匠（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
           { id: "mahjong_monogatari_at_end_stamp_k", label: "可スタンプ（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
           { id: "mahjong_monogatari_at_end_stamp_ryo", label: "良スタンプ（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
           { id: "mahjong_monogatari_at_end_stamp_yu", label: "優スタンプ（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
           { id: "mahjong_monogatari_at_end_stamp_kiwami", label: "極スタンプ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "mahjong_monogatari_push_voice",
+        title: "PUSHボイス",
+        note: "ボーナス/AT終了画面でPUSH時に発生（p-town 4777）。モード/当否示唆が中心のため、ここでは重み付けは最小限。",
+        items: [
+          { id: "mahjong_monogatari_push_voice_default_ayaka", label: "こんなところなのだ（あやか）", effect: { type: "none" } },
+          { id: "mahjong_monogatari_push_voice_default_modoka", label: "見えましたわ～！（まどか）", effect: { type: "none" } },
+          { id: "mahjong_monogatari_push_voice_chance_weak_sayaka", label: "私たちに終わりはない！（さやか）［チャンス弱］", effect: { type: "none" } },
+          { id: "mahjong_monogatari_push_voice_chance_strong_mashiro", label: "上出来…（マシロ）［チャンス強］", effect: { type: "none" } },
+          { id: "mahjong_monogatari_push_voice_pat_expect", label: "ミーの出番パトー!!（パトランランチャンス当選に期待）", effect: { type: "none" } },
+        ],
+      },
+      {
+        id: "mahjong_monogatari_ending_voice",
+        title: "エンディング中のボイス",
+        note: "エンディング中にレア役成立で発生（p-town 4777）。『極み！』は強い示唆として反映。",
+        items: [
+          { id: "mahjong_monogatari_ending_voice_sayaka", label: "さやか：バーニングフェニックス！", effect: { type: "none" } },
+          { id: "mahjong_monogatari_ending_voice_modoka", label: "まどか：ゴッドストーム", effect: { type: "none" } },
+          { id: "mahjong_monogatari_ending_voice_ayaka", label: "あやか：バリバリサンダーボールド！", effect: { type: "none" } },
+          { id: "mahjong_monogatari_ending_voice_roshi", label: "老師：行くのじゃ!!", effect: { type: "none" } },
+          {
+            id: "mahjong_monogatari_ending_voice_mashiro",
+            label: "マシロ：時のらせんを凍てつかせ とこしえの静寂をもたらさん",
+            effect: { type: "none" },
+          },
+          { id: "mahjong_monogatari_ending_voice_ten_no_koe", label: "天の声：強運！", effect: { type: "none" } },
+          { id: "mahjong_monogatari_ending_voice_haruruna", label: "ハルルナ：極み！（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
         ],
       },
     ],
