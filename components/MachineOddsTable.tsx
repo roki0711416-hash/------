@@ -90,7 +90,7 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
 
       {hasExtras ? (
         <>
-          <h3 className="mt-6 text-base font-semibold text-neutral-800">小役確率</h3>
+          <h3 className="mt-6 text-base font-semibold text-neutral-800">追加確率</h3>
           <p className="mt-1 text-sm text-neutral-600">設定別の 1/○○ 表記</p>
 
           <div className="mt-3 overflow-x-auto">
