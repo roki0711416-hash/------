@@ -6,6 +6,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "スロット設定判別ツール",
   description: "スロットの設定判別を補助するWebツール",
+  verification: {
+    google: "QqbnEFPRBiH4haH8",
+  },
 };
 
 export default function RootLayout({
