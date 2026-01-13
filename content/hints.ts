@@ -34,43 +34,88 @@ function makePioneerHanahana6GoukiGroups(): HintGroup[] {
       items: [{ id: "big_in_suika", label: "スイカ", effect: { type: "none" } }],
     },
     {
-      id: "oni3_voice",
-      title: "レア役成立時のボイス",
+      id: "bonus_end_feather_big",
+      title: "BIG終了後：フェザーランプ",
+      note: "白以外は高設定ほどチャンス（ソフト示唆として反映）",
       items: [
-        { id: "oni3_voice_soki_min5", label: "蒼鬼（設定5以上）", effect: { type: "minSetting", min: 5 } },
+        { id: "feather_big_white", label: "白（デフォルト）", effect: { type: "none" } },
         {
-          id: "oni3_voice_tenkai_odd_strong",
-          label: "天海（奇数示唆［強］）",
-          effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+          id: "feather_big_blue",
+          label: "青（高設定期待度：低）",
+          effect: { type: "weight", weights: { 4: 1.05, 5: 1.06, 6: 1.07 } },
         },
         {
-          id: "oni3_voice_roberto_odd_weak",
-          label: "ロベルト（奇数示唆［弱］）",
+          id: "feather_big_yellow",
+          label: "黄",
+          effect: { type: "weight", weights: { 4: 1.06, 5: 1.08, 6: 1.1 } },
+        },
+        {
+          id: "feather_big_green",
+          label: "緑",
+          effect: { type: "weight", weights: { 4: 1.08, 5: 1.12, 6: 1.16 } },
+        },
+        {
+          id: "feather_big_red",
+          label: "赤",
+          effect: { type: "weight", weights: { 4: 1.1, 5: 1.18, 6: 1.26 } },
+        },
+        {
+          id: "feather_big_rainbow",
+          label: "虹（高設定期待度：高）",
+          effect: { type: "weight", weights: { 4: 1.15, 5: 1.3, 6: 1.45 } },
+        },
+      ],
+    },
+    {
+      id: "bonus_end_feather_reg",
+      title: "REG終了後：フェザーランプ",
+      note: "REG後は『特定設定以上確定』系を判別に反映",
+      items: [
+        { id: "feather_reg_white", label: "白（デフォルト）", effect: { type: "none" } },
+        { id: "feather_reg_blue", label: "青（設定2以上確定）", effect: { type: "minSetting", min: 2 } },
+        { id: "feather_reg_yellow", label: "黄（設定3以上確定）", effect: { type: "minSetting", min: 3 } },
+        { id: "feather_reg_green", label: "緑（設定4以上確定）", effect: { type: "minSetting", min: 4 } },
+        { id: "feather_reg_red", label: "赤（設定5以上確定）", effect: { type: "minSetting", min: 5 } },
+        { id: "feather_reg_rainbow", label: "虹（設定6確定）", effect: { type: "exactSetting", exact: 6 } },
+      ],
+    },
+    {
+      id: "reg_side_lamp",
+      title: "REG中 ビタ押しスイカ揃い時：サイドランプ",
+      note: "奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映",
+      items: [
+        {
+          id: "reg_side_blue",
+          label: "青（奇数示唆）",
           effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
         },
         {
-          id: "oni3_voice_akane_even_strong",
-          label: "茜（偶数示唆［強］）",
+          id: "reg_side_yellow",
+          label: "黄（偶数示唆）",
+          effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+        },
+        {
+          id: "reg_side_green",
+          label: "緑（奇数示唆［強］）",
+          effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+        },
+        {
+          id: "reg_side_red",
+          label: "赤（偶数示唆［強］）",
           effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
         },
-            {
-              id: "oni3_voice_ohatsu_even_weak",
-              label: "お初（偶数示唆［弱］）",
-              effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
-            },
-            { id: "oni3_voice_minokichi_excl2", label: "みの吉（設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
-            { id: "oni3_voice_minokichi_excl3", label: "みの吉（設定3否定）", effect: { type: "excludeSetting", exclude: 3 } },
-            { id: "oni3_voice_minokichi_excl4", label: "みの吉（設定4否定）", effect: { type: "excludeSetting", exclude: 4 } },
-            { id: "oni3_voice_orin_min2", label: "阿倫（設定2以上）", effect: { type: "minSetting", min: 2 } },
-            { id: "oni3_voice_orin_min3", label: "阿倫（設定3以上）", effect: { type: "minSetting", min: 3 } },
-            { id: "oni3_voice_orin_min4", label: "阿倫（設定4以上）", effect: { type: "minSetting", min: 4 } },
-            { id: "oni3_voice_entaraion_exact6", label: "エンタライオン（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
-              ],
+        {
+          id: "reg_side_rainbow",
+          label: "虹（高設定示唆）",
+          effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
         },
-      ];
-    }
-    const pioneerHanahana6GoukiGroupsRainbow4Plus = makePioneerHanahana6GoukiGroups();
+      ],
+    },
+  ];
 
+}
+
+const pioneerHanahana6GoukiGroupsRainbow4Plus = makePioneerHanahana6GoukiGroups();
 export const hintConfigs: Record<string, MachineHintConfig> = {
   "s-king-hanahana-30-6gouki": {
     machineId: "s-king-hanahana-30-6gouki",
