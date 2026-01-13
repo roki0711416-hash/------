@@ -1597,6 +1597,31 @@ export const machines = [
     },
   },
 
+  // --- オーイズミ レヴュースタァライト（p-town 4706）追加 ---
+  {
+    id: "oizumi_revue_starlight",
+    name: "L 少女☆歌劇 レヴュースタァライト -The SLOT-",
+    maker: "オーイズミ",
+    series: "レヴュースタァライト",
+    inHall: true,
+    category: "SMART",
+    description: "L（ボーナス合算・純粋確率）ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "BIG合算",
+      regLabel: "REG",
+      totalLabel: "ボーナス合算",
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 255.0, reg: 601.7, total: 179.1, rate: 97.8 },
+        { s: 2, big: 253.0, reg: 584.8, total: 176.6, rate: 98.8 },
+        { s: 4, big: 242.7, reg: 508.6, total: 164.3, rate: 104.6 },
+        { s: 5, big: 239.2, reg: 482.3, total: 159.9, rate: 106.9 },
+        { s: 6, big: 236.6, reg: 448.6, total: 154.9, rate: 110.0 },
+      ],
+    },
+  },
+
   // --- 藤商事 L とある科学の超電磁砲2（p-town 4892）追加 ---
   {
     id: "fujishoji_railgun2",
