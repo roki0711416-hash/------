@@ -2079,7 +2079,7 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "麻雀ボーナス確率と（通常時）AT直撃での簡易判別。AT直撃は通常時G数を母数にした二項（trials/hits）で反映。数値はp-townより。機械割はp-town上で98.0%〜114.6%のレンジ表記のため、設定別は未掲載。",
+      "麻雀ボーナス確率と（通常時）AT直撃での簡易判別。AT直撃は通常時G数を母数にした二項（trials/hits）で反映。数値はp-townより。50枚あたりのゲーム数は約32.0G（設定1、独自調査値）。",
     metricsLabels: {
       bigLabel: "麻雀ボーナス",
       regLabel: null,
@@ -2106,7 +2106,7 @@ export const machines = [
           big: 433.3,
           reg: 1_000_000_000,
           total: 433.3,
-          rate: NaN,
+          rate: 98.0,
           binomialRates: { atDirect: 1 / 7945.6, kotei: 1 / 891.5 },
         },
         {
@@ -2114,7 +2114,7 @@ export const machines = [
           big: 431.8,
           reg: 1_000_000_000,
           total: 431.8,
-          rate: NaN,
+          rate: 98.8,
           binomialRates: { atDirect: 1 / 6529.1, kotei: 1 / 887.0 },
         },
         {
@@ -2122,7 +2122,7 @@ export const machines = [
           big: 426.6,
           reg: 1_000_000_000,
           total: 426.6,
-          rate: NaN,
+          rate: 100.1,
           binomialRates: { atDirect: 1 / 5649.1, kotei: 1 / 868.7 },
         },
         {
@@ -2130,7 +2130,7 @@ export const machines = [
           big: 420.2,
           reg: 1_000_000_000,
           total: 420.2,
-          rate: NaN,
+          rate: 104.9,
           binomialRates: { atDirect: 1 / 4012.7, kotei: 1 / 808.1 },
         },
         {
@@ -2138,7 +2138,7 @@ export const machines = [
           big: 417.9,
           reg: 1_000_000_000,
           total: 417.9,
-          rate: NaN,
+          rate: 108.9,
           binomialRates: { atDirect: 1 / 3859.1, kotei: 1 / 754.6 },
         },
         {
@@ -2146,7 +2146,7 @@ export const machines = [
           big: 416.5,
           reg: 1_000_000_000,
           total: 416.5,
-          rate: NaN,
+          rate: 114.6,
           binomialRates: { atDirect: 1 / 3707.4, kotei: 1 / 747.9 },
         },
       ],
