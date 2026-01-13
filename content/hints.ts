@@ -1765,6 +1765,96 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "oizumi_revue_starlight": {
+    machineId: "oizumi_revue_starlight",
+    helpUrl: "https://p-town.dmm.com/machines/4706",
+    groups: [
+      {
+        id: "revue_at_end_touch_voice",
+        title: "AT終了画面：タッチボイス",
+        note: "AT終了画面で上部のセンサーをタッチ。『設定◯以上濃厚』は判別に反映（弱/強はソフト示唆として反映）。",
+        items: [
+          {
+            id: "revue_at_touch_default",
+            label: "オーディション終了します。（デフォルト）",
+            effect: { type: "none" },
+          },
+          {
+            id: "revue_at_touch_high_weak",
+            label: "そこまでキラめきが残るなんて 予測できませんでした。（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.05, 5: 1.08, 6: 1.1 } },
+          },
+          {
+            id: "revue_at_touch_high_strong",
+            label: "トップスタァになったあなたが 望む「運命の舞台」とは？（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "revue_at_touch_min2",
+            label: "あなたにもあるでしょう？ 眩しい舞台が（設定2以上濃厚）",
+            effect: { type: "minSetting", min: 2 },
+          },
+          {
+            id: "revue_at_touch_min4",
+            label: "運命の二人…ですか。 わかります。（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "revue_at_touch_exact6",
+            label: "これこそ私が観たかった舞台！ わかります！（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "revue_payout",
+        title: "特定の獲得枚数表示",
+        note: "表示が出た回数をカウント（確定系のみ判別に反映）。",
+        items: [
+          {
+            id: "revue_payout_99_over",
+            label: "99 OVER（設定5以上濃厚）",
+            effect: { type: "minSetting", min: 5 },
+          },
+          {
+            id: "revue_payout_456_over",
+            label: "456 OVER（設定4以上濃厚）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "revue_payout_666_over",
+            label: "666 OVER（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "revue_led_lamp",
+        title: "CZ終了後など：LEDランプ発光色",
+        note: "高設定ほど上位色が出現しやすい（ソフト示唆として反映）。",
+        items: [
+          { id: "revue_led_white", label: "白（デフォルト）", effect: { type: "none" } },
+          { id: "revue_led_blue", label: "青", effect: { type: "none" } },
+          {
+            id: "revue_led_green",
+            label: "緑（やや強め）",
+            effect: { type: "weight", weights: { 4: 1.03, 5: 1.05, 6: 1.07 } },
+          },
+          {
+            id: "revue_led_red",
+            label: "赤（強め）",
+            effect: { type: "weight", weights: { 4: 1.06, 5: 1.09, 6: 1.12 } },
+          },
+          {
+            id: "revue_led_purple",
+            label: "紫（最強）",
+            effect: { type: "weight", weights: { 4: 1.12, 5: 1.18, 6: 1.25 } },
+          },
+        ],
+      },
+    ],
+  },
+
   "sabohani_iza_bancho": {
     machineId: "sabohani_iza_bancho",
     helpUrl: "https://p-town.dmm.com/machines/4805#anc-point",
