@@ -1,13 +1,10 @@
 import Link from "next/link";
-import { getXConfig } from "../../lib/x";
 
 export const metadata = {
   title: "お問い合わせ | スロット設定判別ツール",
 };
 
-export default async function ContactPage() {
-  const xConfig = await getXConfig();
-
+export default function ContactPage() {
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
       <section className="rounded-2xl border border-neutral-200 bg-white p-5">
@@ -19,14 +16,12 @@ export default async function ContactPage() {
         <div className="mt-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
           <p className="text-sm font-semibold text-neutral-800">連絡先</p>
           <p className="mt-2 text-sm text-neutral-700">
-            X（旧Twitter）:
+            メール:
             <a
-              href={xConfig.profileUrl}
-              target="_blank"
-              rel="noreferrer"
+              href="mailto:slokasukun1@gmail.com"
               className="ml-1 font-medium text-neutral-900 underline underline-offset-2"
             >
-              プロフィールページ
+              slokasukun1@gmail.com
             </a>
           </p>
         </div>
