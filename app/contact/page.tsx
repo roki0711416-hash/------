@@ -13,19 +13,6 @@ export default function ContactPage() {
           ご意見・不具合報告・掲載内容の修正依頼は、下記よりご連絡ください。
         </p>
 
-        <div className="mt-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
-          <p className="text-sm font-semibold text-neutral-800">連絡先</p>
-          <p className="mt-2 text-sm text-neutral-700">
-            メール:
-            <a
-              href="mailto:slokasukun1@gmail.com"
-              className="ml-1 font-medium text-neutral-900 underline underline-offset-2"
-            >
-              slokasukun1@gmail.com
-            </a>
-          </p>
-        </div>
-
         <div className="mt-5">
           <a
             href="mailto:slokasukun1@gmail.com?subject=%E3%80%90%E3%82%B9%E3%83%AD%E3%82%AB%E3%82%B9%E3%81%8F%E3%82%93%E3%80%91%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B"
