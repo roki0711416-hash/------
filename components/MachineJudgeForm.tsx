@@ -1071,7 +1071,7 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
               const collapsed =
                 group.id in collapsedHintGroups
                   ? !!collapsedHintGroups[group.id]
-                  : false;
+                  : true;
 
               const maxBase =
                 null;
