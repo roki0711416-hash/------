@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
+import { getViewer } from "../lib/auth";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,18 +16,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const viewer = await getViewer();
+  const showAds = !viewer?.premium;
+
   return (
     <html lang="ja">
       <body className="min-h-screen bg-neutral-100 text-neutral-900">
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6861979311690077"
-          crossOrigin="anonymous"
-          strategy="beforeInteractive"
-        />
+        {showAds ? (
+          <Script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6861979311690077"
+            crossOrigin="anonymous"
+            strategy="beforeInteractive"
+          />
+        ) : null}
         <header className="w-full border-b border-neutral-200 bg-white">
           <div className="w-full">
             <Link href="/" aria-label="トップへ" className="block">
@@ -48,6 +54,22 @@ export default function RootLayout({
             className="mx-auto w-full max-w-xl px-4 py-6"
           >
             <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              <li>
+                <Link
+                  href="/account"
+                  className="text-neutral-700 underline underline-offset-2"
+                >
+                  アカウント
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/log"
+                  className="text-neutral-700 underline underline-offset-2"
+                >
+                  収支・当日データ
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/contact"

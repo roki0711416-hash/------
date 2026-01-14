@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "publish:machine": "node scripts/publish-machine-update.mjs",
-    "db:init-reviews": "node scripts/init-reviews-table.mjs"
+    "db:init-reviews": "node scripts/init-reviews-table.mjs",
+    "db:init-auth": "node scripts/init-auth-tables.mjs"
   },
   "dependencies": {
     "@vercel/postgres": "^0.10.0",
@@ -16,6 +17,8 @@
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "resend": "^6.7.0",
+    "stripe": "^20.1.2",
     "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
