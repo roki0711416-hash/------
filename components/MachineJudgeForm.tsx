@@ -686,7 +686,16 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
       0,
     );
 
-    return { overall, perSettingTop3: perSetting.slice(0, 3) };
+    const pWin = perSetting.reduce(
+      (acc, cur) => (Number.isFinite(cur.netCoins) && cur.netCoins > 0 ? acc + cur.posterior : acc),
+      0,
+    );
+    const pLose = perSetting.reduce(
+      (acc, cur) => (Number.isFinite(cur.netCoins) && cur.netCoins < 0 ? acc + cur.posterior : acc),
+      0,
+    );
+
+    return { overall, perSettingTop3: perSetting.slice(0, 3), pWin, pLose };
   }, [posteriors, machine.odds.settings]);
 
   const yenPerCoin = useMemo(() => {
@@ -1294,6 +1303,9 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
               <p className="mt-1 text-xs text-neutral-500">
                 機械割(%)と判別結果からの概算です（3枚掛け想定）。
               </p>
+              <p className="mt-2 whitespace-pre-line text-xs text-neutral-500">
+                {"※本ツールの期待値は、\n同じ条件で何度もプレイした場合の「平均的な結果」を示したものです。\n実戦では一時的に大きく勝つことも、大きく負けることもあります。\n表示される金額は「必ずそうなる結果」ではありません"}
+              </p>
 
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div className="rounded-lg border border-neutral-200 bg-white p-3">
@@ -1362,6 +1374,14 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                       )
                       .join(" / ")}
                   </p>
+                </div>
+                <div>
+                  <p className="text-xs text-neutral-500">勝率（推定）</p>
+                  <p className="font-semibold">{fmtPct(ev500.pWin)}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-neutral-500">負け確率（推定）</p>
+                  <p className="font-semibold">{fmtPct(ev500.pLose)}</p>
                 </div>
               </div>
             </div>
