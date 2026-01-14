@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import type { Machine } from "../content/machines";
 import { getHintConfig } from "../content/hints";
 import {
@@ -57,21 +56,7 @@ const BET_PER_GAME = 3; // 3枚掛け想定
 const PREDICT_GAMES = 500;
 const DEFAULT_YEN_PER_COIN = 20;
 
-function safetyFactorByGames(currentGames: number): number {
-  if (!(currentGames > 0)) return 0.4;
-  if (currentGames <= 500) return 0.4;
-  if (currentGames <= 1000) return 0.5;
-  if (currentGames <= 2000) return 0.6;
-  return 0.7;
-}
-
-export default function MachineJudgeForm({
-  machine,
-  isPremium,
-}: {
-  machine: Machine;
-  isPremium: boolean;
-}) {
+export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const [games, setGames] = useState<string>("");
   const [bigCount, setBigCount] = useState<string>("");
   const [regCount, setRegCount] = useState<string>("");
@@ -123,8 +108,6 @@ export default function MachineJudgeForm({
   const [yenPerCoinCustom, setYenPerCoinCustom] = useState<string>(
     String(DEFAULT_YEN_PER_COIN),
   );
-
-  const [futureGames, setFutureGames] = useState<string>(String(PREDICT_GAMES));
 
   const extraLabel =
     machine.metricsLabels?.extraLabel ??
@@ -703,16 +686,7 @@ export default function MachineJudgeForm({
       0,
     );
 
-    const pWin = perSetting.reduce(
-      (acc, cur) => (Number.isFinite(cur.netCoins) && cur.netCoins > 0 ? acc + cur.posterior : acc),
-      0,
-    );
-    const pLose = perSetting.reduce(
-      (acc, cur) => (Number.isFinite(cur.netCoins) && cur.netCoins < 0 ? acc + cur.posterior : acc),
-      0,
-    );
-
-    return { overall, perSettingTop3: perSetting.slice(0, 3), pWin, pLose };
+    return { overall, perSettingTop3: perSetting.slice(0, 3) };
   }, [posteriors, machine.odds.settings]);
 
   const yenPerCoin = useMemo(() => {
@@ -721,45 +695,6 @@ export default function MachineJudgeForm({
     if (!Number.isFinite(v) || v <= 0) return NaN;
     return v;
   }, [exchangeMode, yenPerCoinCustom]);
-
-  const investLimit = useMemo(() => {
-    if (!isPremium) return null;
-    if (!posteriors) return null;
-
-    const currentGames = parsed.games;
-    const planned = Number(futureGames);
-    if (!Number.isFinite(planned) || planned <= 0) return null;
-    if (!Number.isFinite(yenPerCoin) || yenPerCoin <= 0) return null;
-
-    const oddsBySetting = new Map<string, OddsRow>();
-    for (const row of machine.odds.settings) oddsBySetting.set(String(row.s), row);
-
-    let weightedRate = 0;
-    let weightedEvCoinsPerGame = 0;
-    for (const p of posteriors) {
-      const odds = oddsBySetting.get(String(p.s));
-      const rate = odds?.rate;
-      if (typeof rate !== "number") continue;
-
-      weightedRate += p.posterior * rate;
-      weightedEvCoinsPerGame += p.posterior * (BET_PER_GAME * (rate / 100 - 1));
-    }
-
-    const theoryCoins = weightedEvCoinsPerGame * planned;
-    const theoryYen = theoryCoins * yenPerCoin;
-
-    const k = safetyFactorByGames(currentGames);
-    const safeYen = theoryYen * k;
-    const limitYen = Math.max(0, safeYen * 0.8);
-
-    return {
-      weightedRate,
-      theoryYen,
-      k,
-      safeYen,
-      limitYen,
-    };
-  }, [futureGames, isPremium, machine.odds.settings, parsed.games, posteriors, yenPerCoin]);
 
   const sorted = useMemo(() => {
     if (!posteriors) return null;
@@ -1359,9 +1294,6 @@ export default function MachineJudgeForm({
               <p className="mt-1 text-xs text-neutral-500">
                 機械割(%)と判別結果からの概算です（3枚掛け想定）。
               </p>
-              <p className="mt-2 whitespace-pre-line text-xs text-neutral-500">
-                {"※本ツールの期待値は、\n同じ条件で何度もプレイした場合の「平均的な結果」を示したものです。\n実戦では一時的に大きく勝つことも、大きく負けることもあります。\n表示される金額は「必ずそうなる結果」ではありません"}
-              </p>
 
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <div className="rounded-lg border border-neutral-200 bg-white p-3">
@@ -1431,125 +1363,9 @@ export default function MachineJudgeForm({
                       .join(" / ")}
                   </p>
                 </div>
-                <div>
-                  <p className="text-xs text-neutral-500">勝率（推定）</p>
-                  <p className="font-semibold">{fmtPct(ev500.pWin)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-neutral-500">負け確率（推定）</p>
-                  <p className="font-semibold">{fmtPct(ev500.pLose)}</p>
-                </div>
               </div>
             </div>
           ) : null}
-
-          <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-            <p className="text-sm font-semibold">投資上限シミュレーター（サブスク）</p>
-            <p className="mt-1 text-xs text-neutral-500">
-              判別結果と機械割から「安全に打つための投資上限（追加投資の目安）」を計算します。
-            </p>
-
-            {!isPremium ? (
-              <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
-                <p className="text-sm font-semibold text-neutral-900">
-                  サブスク限定（プレビュー）
-                </p>
-                <p className="mt-1 text-xs text-neutral-600">
-                  加入すると、あなたの判別結果とG数から投資上限（追加）の目安が見られます。
-                </p>
-
-                <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-                  <div className="grid gap-2 text-sm text-neutral-700">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-neutral-500">想定機械割（加重平均）</span>
-                      <span className="blur-sm select-none font-semibold">102.34%</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-neutral-500">推奨投資上限（追加）</span>
-                      <span className="blur-sm select-none text-base font-semibold">12,340円</span>
-                    </div>
-                  </div>
-                </div>
-
-                <Link
-                  href="/account"
-                  className="mt-3 inline-flex rounded-xl bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
-                >
-                  購読して表示する
-                </Link>
-              </div>
-            ) : (
-              <div className="mt-3 space-y-3">
-                <div className="rounded-lg border border-neutral-200 bg-white p-3">
-                  <p className="text-xs font-semibold text-neutral-600">これから回すG数</p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {[
-                      100,
-                      200,
-                      300,
-                      500,
-                      1000,
-                    ].map((g) => (
-                      <button
-                        key={g}
-                        type="button"
-                        onClick={() => setFutureGames(String(g))}
-                        className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                          futureGames === String(g)
-                            ? "border-neutral-900 bg-neutral-900 text-white"
-                            : "border-neutral-200 bg-white text-neutral-700"
-                        }`}
-                      >
-                        {g}G
-                      </button>
-                    ))}
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-neutral-500">任意</span>
-                      <input
-                        inputMode="numeric"
-                        value={futureGames}
-                        onChange={(e) => setFutureGames(e.target.value)}
-                        className="w-24 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
-                        placeholder="例: 800"
-                      />
-                      <span className="text-xs text-neutral-500">G</span>
-                    </div>
-                  </div>
-                </div>
-
-                {investLimit ? (
-                  <div className="rounded-lg border border-neutral-200 bg-white p-3">
-                    <div className="grid gap-2 text-sm text-neutral-700">
-                      <div>
-                        <p className="text-xs text-neutral-500">想定機械割（加重平均）</p>
-                        <p className="font-semibold">{investLimit.weightedRate.toFixed(2)}%</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-neutral-500">安全係数</p>
-                        <p className="font-semibold">{investLimit.k.toFixed(2)}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-neutral-500">推奨投資上限（追加）</p>
-                        <p className="text-base font-semibold">
-                          {Math.round(investLimit.limitYen).toLocaleString()}円
-                        </p>
-                      </div>
-                      <p className="text-xs text-neutral-500">
-                        ※概算です（換算レートと入力G数に依存）。最終判断はご自身でお願いします。
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="rounded-lg border border-neutral-200 bg-white p-3">
-                    <p className="text-sm text-neutral-700">
-                      計算するには、まず判別（総G/{bigLabel}
-                      {showReg ? `/${regLabel}` : ""}）を入力してください。
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
 
           {sorted ? (
             <PosteriorOddsTable machine={machine} posteriors={sorted} />

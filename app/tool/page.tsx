@@ -4,7 +4,6 @@ import MachineOddsTable from "../../components/MachineOddsTable";
 import MachineJudgeForm from "../../components/MachineJudgeForm";
 import MachineReviewsCard from "../../components/MachineReviewsCard";
 import { getMachineById, getMachinesData } from "../../lib/machines";
-import { getViewer } from "../../lib/auth";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -19,8 +18,6 @@ export default async function ToolPage({
 }) {
   const sp = await searchParams;
   const machines = await getMachinesData();
-  const viewer = await getViewer();
-  const isPremium = !!viewer?.premium;
   const selectedMachineId = firstString(sp?.machine);
   const selectedMachine = selectedMachineId
     ? await getMachineById(selectedMachineId)
@@ -65,7 +62,7 @@ export default async function ToolPage({
           <>
             <MachineOddsTable machine={selectedMachine} />
             {selectedMachine.toolMode !== "odds-only" ? (
-              <MachineJudgeForm machine={selectedMachine} isPremium={isPremium} />
+              <MachineJudgeForm machine={selectedMachine} />
             ) : null}
             {selectedMachine.toolMode !== "odds-only" ? (
               <MachineReviewsCard machineId={selectedMachine.id} />
