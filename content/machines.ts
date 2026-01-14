@@ -276,7 +276,7 @@ export const machines = [
     name: "沖ドキ！GOLD",
     maker: "ユニバーサル",
     series: "沖ドキ！",
-    category: "SMART",
+    category: "OTHER",
     inHall: true,
     description: "ボーナス確率ベースの簡易判別。",
     odds: {
@@ -294,7 +294,7 @@ export const machines = [
     name: "沖ドキ！BLACK",
     maker: "ユニバーサル",
     series: "沖ドキ！",
-    category: "SMART",
+    category: "OTHER",
     inHall: true,
     description: "ボーナス確率ベースの簡易判別。",
     odds: {
