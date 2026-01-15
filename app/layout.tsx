@@ -90,6 +90,14 @@ export default function RootLayout({
               </li>
               <li>
                 <Link
+                  href="/faq"
+                  className="text-neutral-700 underline underline-offset-2"
+                >
+                  よくある質問（FAQ）
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/about"
                   className="text-neutral-700 underline underline-offset-2"
                 >
