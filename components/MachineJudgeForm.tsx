@@ -1425,7 +1425,7 @@ export default function MachineJudgeForm({
 
           {ev500 && showInvestLimit ? (
             <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-              <p className="text-sm font-semibold">投資上限（目安）</p>
+              <p className="text-sm font-semibold">サブスク会員限定</p>
               <p className="mt-1 text-xs text-neutral-500">
                 判別結果と機械割から、500G回す想定の「追加投資の目安」を計算します。
               </p>
