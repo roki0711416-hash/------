@@ -98,6 +98,14 @@ export default function RootLayout({
               </li>
               <li>
                 <Link
+                  href="/cancel"
+                  className="text-neutral-700 underline underline-offset-2"
+                >
+                  解約方法
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/about"
                   className="text-neutral-700 underline underline-offset-2"
                 >
