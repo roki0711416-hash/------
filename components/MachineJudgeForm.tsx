@@ -56,6 +56,14 @@ const BET_PER_GAME = 3; // 3枚掛け想定
 const PREDICT_GAMES = 500;
 const DEFAULT_YEN_PER_COIN = 20;
 
+function safetyFactorByGames(currentGames: number): number {
+  if (!(currentGames > 0)) return 0.4;
+  if (currentGames <= 500) return 0.4;
+  if (currentGames <= 1000) return 0.5;
+  if (currentGames <= 2000) return 0.6;
+  return 0.7;
+}
+
 export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const [games, setGames] = useState<string>("");
   const [bigCount, setBigCount] = useState<string>("");
@@ -704,6 +712,34 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
     if (!Number.isFinite(v) || v <= 0) return NaN;
     return v;
   }, [exchangeMode, yenPerCoinCustom]);
+
+  const investLimit500 = useMemo(() => {
+    if (!posteriors) return null;
+    if (!Number.isFinite(yenPerCoin) || yenPerCoin <= 0) return null;
+
+    const oddsBySetting = new Map<string, OddsRow>();
+    for (const row of machine.odds.settings) oddsBySetting.set(String(row.s), row);
+
+    let weightedRate = 0;
+    let weightedEvCoinsPerGame = 0;
+    for (const p of posteriors) {
+      const odds = oddsBySetting.get(String(p.s));
+      const rate = odds?.rate;
+      if (typeof rate !== "number") continue;
+
+      weightedRate += p.posterior * rate;
+      weightedEvCoinsPerGame += p.posterior * (BET_PER_GAME * (rate / 100 - 1));
+    }
+
+    const theoryCoins = weightedEvCoinsPerGame * PREDICT_GAMES;
+    const theoryYen = theoryCoins * yenPerCoin;
+
+    const k = safetyFactorByGames(parsed.games);
+    const safeYen = theoryYen * k;
+    const limitYen = Math.max(0, safeYen * 0.8);
+
+    return { weightedRate, k, theoryYen, safeYen, limitYen };
+  }, [machine.odds.settings, parsed.games, posteriors, yenPerCoin]);
 
   const sorted = useMemo(() => {
     if (!posteriors) return null;
@@ -1375,15 +1411,49 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
                       .join(" / ")}
                   </p>
                 </div>
-                <div>
-                  <p className="text-xs text-neutral-500">勝率（推定）</p>
-                  <p className="font-semibold">{fmtPct(ev500.pWin)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-neutral-500">負け確率（推定）</p>
-                  <p className="font-semibold">{fmtPct(ev500.pLose)}</p>
-                </div>
               </div>
+            </div>
+          ) : null}
+
+          {ev500 ? (
+            <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+              <p className="text-sm font-semibold">投資上限（目安）</p>
+              <p className="mt-1 text-xs text-neutral-500">
+                判別結果と機械割から、500G回す想定の「追加投資の目安」を計算します。
+              </p>
+
+              {investLimit500 ? (
+                <div className="mt-3 grid gap-2 text-sm text-neutral-700 sm:grid-cols-2">
+                  <div>
+                    <p className="text-xs text-neutral-500">推奨投資上限（追加）</p>
+                    <p className="text-base font-semibold">
+                      {Math.round(investLimit500.limitYen).toLocaleString()}円
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-neutral-500">想定機械割（加重平均）</p>
+                    <p className="font-semibold">{investLimit500.weightedRate.toFixed(2)}%</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-neutral-500">勝率（推定）</p>
+                    <p className="font-semibold">{fmtPct(ev500.pWin)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-neutral-500">負け確率（推定）</p>
+                    <p className="font-semibold">{fmtPct(ev500.pLose)}</p>
+                  </div>
+                  <p className="text-xs text-neutral-500 sm:col-span-2">
+                    ※概算です（換算レートと総Gに依存）。最終判断はご自身でお願いします。
+                  </p>
+                </div>
+              ) : (
+                <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
+                  <p className="text-sm text-neutral-700">
+                    表示するには、まず判別（総G/{bigLabel}
+                    {showReg ? `/${regLabel}` : ""}）を入力してください。
+                  </p>
+                </div>
+              )}
             </div>
           ) : null}
 
