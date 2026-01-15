@@ -67,9 +67,11 @@ function safetyFactorByGames(currentGames: number): number {
 export default function MachineJudgeForm({
   machine,
   isPremium = false,
+  onPosteriorsChange,
 }: {
   machine: Machine;
   isPremium?: boolean;
+  onPosteriorsChange?: (posteriors: SettingPosterior[] | null) => void;
 }) {
   const [games, setGames] = useState<string>("");
   const [bigCount, setBigCount] = useState<string>("");
@@ -84,6 +86,23 @@ export default function MachineJudgeForm({
   const [uraAtHits, setUraAtHits] = useState<string>("");
 
   const bigLabel = machine.metricsLabels?.bigLabel ?? "BIG";
+  const derivedBigFromExtraIds: string[] | null = (() => {
+    // Some machines don't expose a direct "BIG合算" counter on the data-counter UI.
+    // When both 赤7BIG/青7BIG are available, derive BIG合算 by summing them.
+    if (machine.metricsLabels?.bigLabel !== "BIG合算") return null;
+    const extras = machine.metricsLabels?.extraMetrics ?? [];
+    const ids = new Set(extras.map((m) => m.id));
+    if (!ids.has("aka7Big") || !ids.has("ao7Big")) return null;
+    return ["aka7Big", "ao7Big"];
+  })();
+  const showBigInput = derivedBigFromExtraIds === null;
+  const bigLabelForJudge = (() => {
+    if (!derivedBigFromExtraIds) return bigLabel;
+    const labelById = new Map(
+      (machine.metricsLabels?.extraMetrics ?? []).map((m) => [m.id, m.label] as const),
+    );
+    return derivedBigFromExtraIds.map((id) => labelById.get(id) ?? id).join("+");
+  })();
   const regLabelRaw = machine.metricsLabels?.regLabel;
   const showReg = regLabelRaw !== null;
   const regLabel = regLabelRaw ?? "REG";
@@ -186,7 +205,20 @@ export default function MachineJudgeForm({
 
   const parsed = useMemo(() => {
     const g = Number(games);
-    const b = Number(bigCount);
+    const b = showBigInput
+      ? Number(bigCount)
+      : (() => {
+          if (!derivedBigFromExtraIds) return Number(bigCount);
+          let sum = 0;
+          for (const id of derivedBigFromExtraIds) {
+            const raw = extraCounts[id] ?? "";
+            if (raw === "") return Number.NaN;
+            const n = Number(raw);
+            if (!Number.isFinite(n)) return Number.NaN;
+            sum += n;
+          }
+          return sum;
+        })();
     const r = Number(regCount);
     const x = Number(extraCount);
     const st = Number(suikaTrials);
@@ -238,6 +270,8 @@ export default function MachineJudgeForm({
     uraAtTrials,
     uraAtHits,
     showReg,
+    showBigInput,
+    derivedBigFromExtraIds,
   ]);
 
   function cleanupObjectUrl() {
@@ -328,7 +362,7 @@ export default function MachineJudgeForm({
   function applyOcrSuggestion() {
     if (!ocrSuggestion) return;
     if (typeof ocrSuggestion.games === "number") setGames(String(ocrSuggestion.games));
-    if (typeof ocrSuggestion.big === "number") setBigCount(String(ocrSuggestion.big));
+    if (showBigInput && typeof ocrSuggestion.big === "number") setBigCount(String(ocrSuggestion.big));
     if (showReg && typeof ocrSuggestion.reg === "number") setRegCount(String(ocrSuggestion.reg));
   }
 
@@ -349,16 +383,33 @@ export default function MachineJudgeForm({
       return null;
 
     if (!(parsed.games > 0)) return "総ゲーム数は1以上で入力してください。";
-    if (!(parsed.bigCount >= 0) || !Number.isInteger(parsed.bigCount))
-      return `${bigLabel}回数は0以上の整数で入力してください。`;
+
+    if (derivedBigFromExtraIds) {
+      const labelById = new Map(
+        (machine.metricsLabels?.extraMetrics ?? []).map((m) => [m.id, m.label] as const),
+      );
+      for (const id of derivedBigFromExtraIds) {
+        const label = labelById.get(id) ?? id;
+        const raw = extraCounts[id] ?? "";
+        if (raw === "") return `${label}回数を入力してください。`;
+        const n = parsed.extraCounts[id];
+        if (!(n >= 0) || !Number.isInteger(n))
+          return `${label}回数は0以上の整数で入力してください。`;
+        if (n > parsed.games) return `${label}回数が総ゲーム数を超えています。`;
+      }
+    } else {
+      if (!(parsed.bigCount >= 0) || !Number.isInteger(parsed.bigCount))
+        return `${bigLabel}回数は0以上の整数で入力してください。`;
+    }
+
     if (showReg) {
       if (!(parsed.regCount >= 0) || !Number.isInteger(parsed.regCount))
         return `${regLabel}回数は0以上の整数で入力してください。`;
       if (parsed.bigCount + parsed.regCount > parsed.games)
-        return `${bigLabel}回数 + ${regLabel}回数 が総ゲーム数を超えています。`;
+        return `${bigLabelForJudge}回数 + ${regLabel}回数 が総ゲーム数を超えています。`;
     } else {
       if (parsed.bigCount > parsed.games)
-        return `${bigLabel}回数が総ゲーム数を超えています。`;
+        return `${bigLabelForJudge}回数が総ゲーム数を超えています。`;
     }
 
     if (!showExtraMetrics && extraLabel) {
@@ -447,8 +498,11 @@ export default function MachineJudgeForm({
     binomialMetrics,
     showBinomialMetrics,
     bigLabel,
+    bigLabelForJudge,
     regLabel,
     showReg,
+    derivedBigFromExtraIds,
+    machine.metricsLabels?.extraMetrics,
     suikaTrialsLabel,
     suikaCzHitsLabel,
     uraAtTrialsLabel,
@@ -464,7 +518,7 @@ export default function MachineJudgeForm({
       Object.values(binomialHits).some((v) => v !== "");
     if (
       games === "" &&
-      bigCount === "" &&
+      (showBigInput ? bigCount === "" : true) &&
       (showReg ? regCount === "" : true) &&
       extraCount === "" &&
       !hasAnyExtraMetricsInput &&
@@ -669,10 +723,15 @@ export default function MachineJudgeForm({
     showExtraMetrics,
     binomialMetrics,
     showBinomialMetrics,
+    showBigInput,
   ]);
 
   const posteriors = posteriorCalc?.posteriors ?? null;
   const posteriorNote = posteriorCalc?.note ?? null;
+
+  useEffect(() => {
+    onPosteriorsChange?.(posteriors);
+  }, [onPosteriorsChange, posteriors]);
 
   const top3 = useMemo(() => {
     if (!posteriors) return null;
@@ -769,7 +828,7 @@ export default function MachineJudgeForm({
     <section className="rounded-2xl border border-neutral-200 bg-white p-5">
       <h2 className="text-lg font-semibold">設定判別</h2>
       <p className="mt-1 text-sm text-neutral-600">
-        総ゲーム数 / {bigLabel}
+        総ゲーム数 / {bigLabelForJudge}
         {showReg ? ` / ${regLabel}` : ""}
         を入力すると、近い設定TOP3を表示します。
       </p>
@@ -777,7 +836,7 @@ export default function MachineJudgeForm({
       <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
         <p className="text-sm font-semibold">データカウンター画像から入力</p>
         <p className="mt-1 text-xs text-neutral-500">
-          スクショを読み込んで、総G/{bigLabel}
+          スクショを読み込んで、総G/{bigLabelForJudge}
           {showReg ? `/${regLabel}` : ""}
           を自動入力します（対応していない表示もあります）。
         </p>
@@ -839,7 +898,9 @@ export default function MachineJudgeForm({
             <p className="text-xs text-neutral-600">
               推定：
               {typeof ocrSuggestion.games === "number" ? `総G ${ocrSuggestion.games} / ` : ""}
-              {typeof ocrSuggestion.big === "number" ? `${bigLabel} ${ocrSuggestion.big} / ` : ""}
+              {showBigInput && typeof ocrSuggestion.big === "number"
+                ? `${bigLabel} ${ocrSuggestion.big} / `
+                : ""}
               {showReg && typeof ocrSuggestion.reg === "number" ? `${regLabel} ${ocrSuggestion.reg}` : ""}
             </p>
           ) : null}
@@ -881,20 +942,22 @@ export default function MachineJudgeForm({
           />
         </label>
 
-        <CountField
-          label={bigLabel}
-          value={bigCount}
-          onChange={setBigCount}
-          placeholder="例: 10"
-          onStep={(delta) => {
-            const g = parsed.games;
-            const current = toIntOrZero(bigCount);
-            const reg = toIntOrZero(regCount);
-            const max = g > 0 ? Math.max(0, Math.trunc(g) - reg) : Number.POSITIVE_INFINITY;
-            const next = Math.min(Math.max(current + delta, 0), max);
-            setBigCount(String(next));
-          }}
-        />
+        {showBigInput ? (
+          <CountField
+            label={bigLabel}
+            value={bigCount}
+            onChange={setBigCount}
+            placeholder="例: 10"
+            onStep={(delta) => {
+              const g = parsed.games;
+              const current = toIntOrZero(bigCount);
+              const reg = toIntOrZero(regCount);
+              const max = g > 0 ? Math.max(0, Math.trunc(g) - reg) : Number.POSITIVE_INFINITY;
+              const next = Math.min(Math.max(current + delta, 0), max);
+              setBigCount(String(next));
+            }}
+          />
+        ) : null}
 
         {showReg ? (
           <CountField
@@ -905,7 +968,11 @@ export default function MachineJudgeForm({
             onStep={(delta) => {
               const g = parsed.games;
               const current = toIntOrZero(regCount);
-              const big = toIntOrZero(bigCount);
+              const big = showBigInput
+                ? toIntOrZero(bigCount)
+                : Number.isFinite(parsed.bigCount)
+                  ? Math.max(0, Math.trunc(parsed.bigCount))
+                  : 0;
               const max = g > 0 ? Math.max(0, Math.trunc(g) - big) : Number.POSITIVE_INFINITY;
               const next = Math.min(Math.max(current + delta, 0), max);
               setRegCount(String(next));
@@ -1083,7 +1150,7 @@ export default function MachineJudgeForm({
           <p className="text-sm font-semibold">示唆カウント</p>
           {!hideHintDescriptions ? (
             <p className="mt-1 text-xs text-neutral-500">
-              反映される示唆（設定◯以上/確定系）は、総G/{bigLabel}
+              反映される示唆（設定◯以上/確定系）は、総G/{bigLabelForJudge}
               {showReg ? `/${regLabel}` : ""}
               を入力すると判別に反映されます。
             </p>
@@ -1257,7 +1324,7 @@ export default function MachineJudgeForm({
               }`}
             >
               <div>
-                <p className="text-xs text-neutral-500">{bigLabel}</p>
+                <p className="text-xs text-neutral-500">{bigLabelForJudge}</p>
                 <p className="font-semibold">
                   {fmtOneOver(parsed.games, parsed.bigCount)}
                 </p>
@@ -1464,7 +1531,7 @@ export default function MachineJudgeForm({
               ) : (
                 <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
                   <p className="text-sm text-neutral-700">
-                    表示するには、まず判別（総G/{bigLabel}
+                    表示するには、まず判別（総G/{bigLabelForJudge}
                     {showReg ? `/${regLabel}` : ""}）を入力してください。
                   </p>
                 </div>
@@ -1561,6 +1628,14 @@ function PosteriorOddsTable({
   posteriors: SettingPosterior[];
 }) {
   const bigLabel = machine.metricsLabels?.bigLabel ?? "BIG";
+  const bigLabelForJudge = (() => {
+    if (machine.metricsLabels?.bigLabel !== "BIG合算") return bigLabel;
+    const extras = machine.metricsLabels?.extraMetrics ?? [];
+    const ids = new Set(extras.map((m) => m.id));
+    if (!ids.has("aka7Big") || !ids.has("ao7Big")) return bigLabel;
+    const labelById = new Map(extras.map((m) => [m.id, m.label] as const));
+    return ["aka7Big", "ao7Big"].map((id) => labelById.get(id) ?? id).join("+");
+  })();
   const regLabelRaw = machine.metricsLabels?.regLabel;
   const showReg = regLabelRaw !== null;
   const regLabel = regLabelRaw ?? "REG";
@@ -1589,7 +1664,7 @@ function PosteriorOddsTable({
           <tr className="text-left text-neutral-600">
             <th className="px-3 py-2 border border-neutral-200">設定</th>
             <th className="px-3 py-2 border border-neutral-200">確率</th>
-            <th className="px-3 py-2 border border-neutral-200">{bigLabel}</th>
+            <th className="px-3 py-2 border border-neutral-200">{bigLabelForJudge}</th>
             {showReg ? (
               <th className="px-3 py-2 border border-neutral-200">{regLabel}</th>
             ) : null}
