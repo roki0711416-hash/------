@@ -74,6 +74,14 @@ export default function RootLayout({
               </li>
               <li>
                 <Link
+                  href="/terms"
+                  className="text-neutral-700 underline underline-offset-2"
+                >
+                  利用規約
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/about"
                   className="text-neutral-700 underline underline-offset-2"
                 >
