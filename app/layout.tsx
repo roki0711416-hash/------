@@ -82,6 +82,14 @@ export default function RootLayout({
               </li>
               <li>
                 <Link
+                  href="/tokusho"
+                  className="text-neutral-700 underline underline-offset-2"
+                >
+                  特定商取引法に基づく表記
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/about"
                   className="text-neutral-700 underline underline-offset-2"
                 >
