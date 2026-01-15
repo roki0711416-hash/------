@@ -16,6 +16,8 @@ export default async function ToolPage({
 }: {
   searchParams?: Promise<SearchParams>;
 }) {
+  const isPremium = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
+
   const sp = await searchParams;
   const machines = await getMachinesData();
   const selectedMachineId = firstString(sp?.machine);
@@ -62,7 +64,7 @@ export default async function ToolPage({
           <>
             <MachineOddsTable machine={selectedMachine} />
             {selectedMachine.toolMode !== "odds-only" ? (
-              <MachineJudgeForm machine={selectedMachine} />
+              <MachineJudgeForm machine={selectedMachine} isPremium={isPremium} />
             ) : null}
             {selectedMachine.toolMode !== "odds-only" ? (
               <MachineReviewsCard machineId={selectedMachine.id} />

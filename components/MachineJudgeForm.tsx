@@ -64,7 +64,13 @@ function safetyFactorByGames(currentGames: number): number {
   return 0.7;
 }
 
-export default function MachineJudgeForm({ machine }: { machine: Machine }) {
+export default function MachineJudgeForm({
+  machine,
+  isPremium = false,
+}: {
+  machine: Machine;
+  isPremium?: boolean;
+}) {
   const [games, setGames] = useState<string>("");
   const [bigCount, setBigCount] = useState<string>("");
   const [regCount, setRegCount] = useState<string>("");
@@ -91,6 +97,8 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
   const uraAtTrialsLabel = machine.metricsLabels?.uraAtTrialsLabel ?? null;
   const uraAtHitsLabel = machine.metricsLabels?.uraAtHitsLabel ?? null;
   const uraAtRateLabel = machine.metricsLabels?.uraAtRateLabel ?? "裏AT直行率";
+
+  const showInvestLimit = false;
 
   const hideHintDescriptions = machine.maker === "パイオニア";
 
@@ -1415,14 +1423,21 @@ export default function MachineJudgeForm({ machine }: { machine: Machine }) {
             </div>
           ) : null}
 
-          {ev500 ? (
+          {ev500 && showInvestLimit ? (
             <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
               <p className="text-sm font-semibold">投資上限（目安）</p>
               <p className="mt-1 text-xs text-neutral-500">
                 判別結果と機械割から、500G回す想定の「追加投資の目安」を計算します。
               </p>
 
-              {investLimit500 ? (
+              {!isPremium ? (
+                <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
+                  <p className="text-sm font-semibold text-neutral-700">サブスク限定</p>
+                  <p className="mt-1 text-sm text-neutral-700">
+                    投資上限（目安）と勝率/負け確率の表示はサブスク機能です。
+                  </p>
+                </div>
+              ) : investLimit500 ? (
                 <div className="mt-3 grid gap-2 text-sm text-neutral-700 sm:grid-cols-2">
                   <div>
                     <p className="text-xs text-neutral-500">推奨投資上限（追加）</p>
