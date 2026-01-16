@@ -15,8 +15,8 @@ export type MachineSettingOdds = {
 
 export type JudgeInput = {
   games: number;
-  bigCount: number;
-  regCount: number;
+  bigCount?: number;
+  regCount?: number;
   extraCount?: number;
   extraCounts?: Record<string, number>;
   binomialTrials?: Record<string, number>;
@@ -48,8 +48,10 @@ export function calcSettingPosteriors(
   options?: JudgeOptions,
 ): SettingPosterior[] {
   const games = Math.floor(input.games);
-  const bigCount = Math.floor(input.bigCount);
-  const regCount = Math.floor(input.regCount);
+  const bigCountRaw = input.bigCount;
+  const regCountRaw = input.regCount;
+  const bigCount = typeof bigCountRaw === "number" ? Math.floor(bigCountRaw) : null;
+  const regCount = typeof regCountRaw === "number" ? Math.floor(regCountRaw) : null;
   const extraCountRaw = input.extraCount;
   const extraCount = typeof extraCountRaw === "number" ? Math.floor(extraCountRaw) : null;
 
@@ -100,8 +102,9 @@ export function calcSettingPosteriors(
   })();
 
   if (!(games > 0)) return [];
-  if (bigCount < 0 || regCount < 0) return [];
-  if (bigCount + regCount > games) return [];
+  if (bigCount !== null && (bigCount < 0 || bigCount > games)) return [];
+  if (regCount !== null && (regCount < 0 || regCount > games)) return [];
+  if (bigCount !== null && regCount !== null && bigCount + regCount > games) return [];
   if (extraCount !== null && (extraCount < 0 || extraCount > games)) return [];
   if (extraCounts) {
     for (const n of Object.values(extraCounts)) {
@@ -127,8 +130,6 @@ export function calcSettingPosteriors(
     }
   }
 
-  const noneCount = games - bigCount - regCount;
-
   const allowed = options?.allowedSettings
     ? new Set(options.allowedSettings.map((s) => String(s)))
     : null;
@@ -143,7 +144,33 @@ export function calcSettingPosteriors(
 
     const pBig = 1 / st.big;
     const pReg = 1 / st.reg;
-    const pNone = 1 - pBig - pReg;
+
+    const baseLogL = (() => {
+      // If both are provided, use multinomial model (BIG/REG/NONE).
+      if (bigCount !== null && regCount !== null) {
+        const noneCount = games - bigCount - regCount;
+        const pNone = 1 - pBig - pReg;
+        return (
+          bigCount * safeLog(pBig) +
+          regCount * safeLog(pReg) +
+          noneCount * safeLog(pNone)
+        );
+      }
+
+      // If only one is provided, treat it as a binomial over games.
+      if (bigCount !== null) {
+        const none = games - bigCount;
+        return bigCount * safeLog(pBig) + none * safeLog(1 - pBig);
+      }
+
+      if (regCount !== null) {
+        const none = games - regCount;
+        return regCount * safeLog(pReg) + none * safeLog(1 - pReg);
+      }
+
+      // If neither is provided, don't let it affect likelihood.
+      return 0;
+    })();
 
     // Optional extra metric: treat as binomial over games (independent of BIG/REG occurrences)
     // This is a simplification but works well for small-role counts like weak cherry.
@@ -163,7 +190,7 @@ export function calcSettingPosteriors(
 
       let sum = 0;
       for (const [metricId, cnt] of Object.entries(extraCounts)) {
-        if (!(cnt > 0)) continue;
+        if (!(cnt >= 0)) continue;
 
         const denom = st.extras[metricId];
         if (!denom || !(denom > 0)) continue;
@@ -210,15 +237,7 @@ export function calcSettingPosteriors(
       return sum;
     })();
 
-    const logL =
-      bigCount * safeLog(pBig) +
-      regCount * safeLog(pReg) +
-      noneCount * safeLog(pNone) +
-      extraLogL +
-      extrasLogL +
-      binomialLogL +
-      suikaCzLogL +
-      uraAtLogL;
+    const logL = baseLogL + extraLogL + extrasLogL + binomialLogL + suikaCzLogL + uraAtLogL;
 
     return {
       s: st.s,

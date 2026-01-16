@@ -206,7 +206,9 @@ export default function MachineJudgeForm({
   const parsed = useMemo(() => {
     const g = Number(games);
     const b = showBigInput
-      ? Number(bigCount)
+      ? bigCount === ""
+        ? Number.NaN
+        : Number(bigCount)
       : (() => {
           if (!derivedBigFromExtraIds) return Number(bigCount);
           let sum = 0;
@@ -219,7 +221,7 @@ export default function MachineJudgeForm({
           }
           return sum;
         })();
-    const r = Number(regCount);
+    const r = regCount === "" ? Number.NaN : Number(regCount);
     const x = Number(extraCount);
     const st = Number(suikaTrials);
     const sh = Number(suikaCzHits);
@@ -398,18 +400,26 @@ export default function MachineJudgeForm({
         if (n > parsed.games) return `${label}回数が総ゲーム数を超えています。`;
       }
     } else {
-      if (!(parsed.bigCount >= 0) || !Number.isInteger(parsed.bigCount))
-        return `${bigLabel}回数は0以上の整数で入力してください。`;
+      if (bigCount !== "") {
+        if (!(parsed.bigCount >= 0) || !Number.isInteger(parsed.bigCount))
+          return `${bigLabel}回数は0以上の整数で入力してください。`;
+      }
     }
 
     if (showReg) {
-      if (!(parsed.regCount >= 0) || !Number.isInteger(parsed.regCount))
-        return `${regLabel}回数は0以上の整数で入力してください。`;
-      if (parsed.bigCount + parsed.regCount > parsed.games)
-        return `${bigLabelForJudge}回数 + ${regLabel}回数 が総ゲーム数を超えています。`;
+      if (regCount !== "") {
+        if (!(parsed.regCount >= 0) || !Number.isInteger(parsed.regCount))
+          return `${regLabel}回数は0以上の整数で入力してください。`;
+      }
+      if (bigCount !== "" && regCount !== "") {
+        if (parsed.bigCount + parsed.regCount > parsed.games)
+          return `${bigLabelForJudge}回数 + ${regLabel}回数 が総ゲーム数を超えています。`;
+      }
     } else {
-      if (parsed.bigCount > parsed.games)
-        return `${bigLabelForJudge}回数が総ゲーム数を超えています。`;
+      if (bigCount !== "") {
+        if (parsed.bigCount > parsed.games)
+          return `${bigLabelForJudge}回数が総ゲーム数を超えています。`;
+      }
     }
 
     if (!showExtraMetrics && extraLabel) {
@@ -571,8 +581,12 @@ export default function MachineJudgeForm({
 
     const base = calcSettingPosteriors(machine.odds.settings, {
       games: parsed.games,
-      bigCount: parsed.bigCount,
-      regCount: showReg ? parsed.regCount : 0,
+      bigCount: derivedBigFromExtraIds
+        ? parsed.bigCount
+        : showBigInput && bigCount === ""
+          ? undefined
+          : parsed.bigCount,
+      regCount: showReg ? (regCount === "" ? undefined : parsed.regCount) : undefined,
       extraCount: extraCount === "" ? undefined : parsed.extraCount,
       extraCounts: extraCountsForJudge,
       binomialTrials: binomialTrialsForJudge,
@@ -717,6 +731,7 @@ export default function MachineJudgeForm({
     uraAtTrials,
     uraAtHits,
     showReg,
+    derivedBigFromExtraIds,
     hintConfig,
     hintCounts,
     extraMetrics,
