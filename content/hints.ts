@@ -29,7 +29,7 @@ function makePioneerHanahana6GoukiGroups(): HintGroup[] {
   return [
     {
       id: "big_in",
-      title: "BIG中",
+      title: "BIG中のスイカ確率",
       note: "スイカはカウントのみ（判別には未反映）",
       items: [{ id: "big_in_suika", label: "スイカ", effect: { type: "none" } }],
     },
