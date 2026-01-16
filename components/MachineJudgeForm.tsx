@@ -731,7 +731,6 @@ export default function MachineJudgeForm({
     uraAtTrials,
     uraAtHits,
     showReg,
-    derivedBigFromExtraIds,
     hintConfig,
     hintCounts,
     extraMetrics,
@@ -739,6 +738,7 @@ export default function MachineJudgeForm({
     binomialMetrics,
     showBinomialMetrics,
     showBigInput,
+    derivedBigFromExtraIds,
   ]);
 
   const posteriors = posteriorCalc?.posteriors ?? null;
