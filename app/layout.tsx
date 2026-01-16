@@ -29,8 +29,20 @@ export default function RootLayout({
         />
         <header className="w-full border-b border-neutral-200 bg-white">
           <Link href="/" aria-label="トップへ" className="block">
-            <div className="w-full py-2">
-              <div className="relative w-full overflow-hidden aspect-[1536/263] md:aspect-auto md:h-[100px]">
+            {/* スマホ：従来どおり（画像の縦横比そのまま） */}
+            <Image
+              src="/header.jpg"
+              alt="スロカスくん"
+              width={1536}
+              height={263}
+              priority
+              sizes="100vw"
+              className="h-auto w-full md:hidden"
+            />
+
+            {/* PC：ヘッダー帯サイズに収める */}
+            <div className="hidden w-full py-2 md:block">
+              <div className="relative h-[100px] w-full overflow-hidden">
                 <Image
                   src="/header.jpg"
                   alt="スロカスくん"
