@@ -1,7 +1,7 @@
 import type { Machine } from "../content/machines";
 
-function fmt(n: number) {
-  if (!Number.isFinite(n)) return "-";
+function fmt(n: number | undefined) {
+  if (typeof n !== "number" || !Number.isFinite(n)) return "-";
   return Number.isInteger(n) ? String(n) : n.toFixed(1);
 }
 

@@ -67,6 +67,10 @@ export default function PremiumMemberCard({
       oddsBySetting.set(String(row.s), rate);
     }
 
+    if (oddsBySetting.size === 0) {
+      return { error: "この機種は機械割(設定別)が未登録です。" };
+    }
+
     let weightedRate = 0;
     let pWin = 0;
     let pLose = 0;
