@@ -9,8 +9,8 @@ import {
   type SettingPosterior,
 } from "../lib/judge";
 
-function fmt(n: number) {
-  if (!Number.isFinite(n)) return "-";
+function fmt(n: number | undefined) {
+  if (typeof n !== "number" || !Number.isFinite(n)) return "-";
   return Number.isInteger(n) ? String(n) : n.toFixed(1);
 }
 
@@ -756,6 +756,8 @@ export default function MachineJudgeForm({
       })
       .sort((a, b) => b.posterior - a.posterior);
 
+    if (!perSetting.some((p) => Number.isFinite(p.netCoins))) return null;
+
     const overall = perSetting.reduce(
       (acc, cur) => (Number.isFinite(cur.netCoins) ? acc + cur.posterior * cur.netCoins : acc),
       0,
@@ -789,6 +791,7 @@ export default function MachineJudgeForm({
 
     let weightedRate = 0;
     let weightedEvCoinsPerGame = 0;
+    let usedRates = 0;
     for (const p of posteriors) {
       const odds = oddsBySetting.get(String(p.s));
       const rate = odds?.rate;
@@ -796,7 +799,10 @@ export default function MachineJudgeForm({
 
       weightedRate += p.posterior * rate;
       weightedEvCoinsPerGame += p.posterior * (BET_PER_GAME * (rate / 100 - 1));
+      usedRates += 1;
     }
+
+    if (usedRates === 0) return null;
 
     const theoryCoins = weightedEvCoinsPerGame * PREDICT_GAMES;
     const theoryYen = theoryCoins * yenPerCoin;
