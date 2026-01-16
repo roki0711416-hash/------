@@ -360,6 +360,141 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "smart-shaman-king": {
+    machineId: "smart-shaman-king",
+    helpUrl: "https://p-town.dmm.com/machines/4719",
+    groups: [
+      {
+        id: "shaman_at_end_screen",
+        title: "AT終了画面（キャラ）",
+        note: "出現した回数をカウント。確定系は判別に反映。示唆系はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "shaman_at_end_default", label: "デフォルト", effect: { type: "none" } },
+          {
+            id: "shaman_at_end_xlaws",
+            label: "X-LAWS（設定3or5示唆）",
+            effect: { type: "weight", weights: { 3: 1.15, 5: 1.15 } },
+          },
+          {
+            id: "shaman_at_end_hanagumi",
+            label: "花組（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "shaman_at_end_golem",
+            label: "ゴーレム（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "shaman_at_end_patch",
+            label: "パッチ族（設定2以上）",
+            effect: { type: "minSetting", min: 2 },
+          },
+          {
+            id: "shaman_at_end_anna_hao",
+            label: "アンナ＆葉（設定4以上）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "shaman_at_end_hao",
+            label: "ハオ（設定5以上）",
+            effect: { type: "minSetting", min: 5 },
+          },
+          {
+            id: "shaman_at_end_all",
+            label: "全員集合（設定6）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "shaman_kokkuri",
+        title: "こっくりさん（文字）",
+        note: "出現した回数をカウント。確定系は判別に反映。",
+        items: [
+          {
+            id: "shaman_kokkuri_even",
+            label: "偶数（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "shaman_kokkuri_all_day",
+            label: "終日（設定4以上）",
+            effect: { type: "minSetting", min: 4 },
+          },
+          {
+            id: "shaman_kokkuri_roku",
+            label: "ろく（設定6）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "shaman_congratulation",
+        title: "エンディング：コングラチュレーション文字色",
+        note: "出現した回数をカウント。確定系は判別に反映。",
+        items: [
+          { id: "shaman_congrats_gold", label: "金（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "shaman_congrats_hanabi", label: "花火柄（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "shaman_congrats_rainbow", label: "虹（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "shaman_sub_lcd_char",
+        title: "エンディング等：レア役成立時 サブ液晶のキャラ",
+        note: "出現した回数をカウント。『示唆［弱/強］』はソフト示唆（重み付け）として反映。",
+        items: [
+          {
+            id: "shaman_sub_lcd_tamao_anna",
+            label: "たまお＆アンナ（偶数設定示唆［強］）",
+            effect: { type: "weight", weights: { 2: 1.1, 4: 1.1, 6: 1.1 } },
+          },
+          {
+            id: "shaman_sub_lcd_ryunosuke",
+            label: "竜之介（奇数設定示唆［弱］）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "shaman_sub_lcd_ryunosuke_faust",
+            label: "竜之介＆ファウスト（奇数設定示唆［強］）",
+            effect: { type: "weight", weights: { 1: 1.1, 3: 1.1, 5: 1.1 } },
+          },
+          { id: "shaman_sub_lcd_pirika", label: "ピリカ（設定2以上示唆）", effect: { type: "minSetting", min: 2 } },
+          { id: "shaman_sub_lcd_gordoba", label: "ゴルドバ（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "shaman_sub_lcd_jeanne", label: "ジャンヌ（設定4以上示唆）", effect: { type: "minSetting", min: 4 } },
+          { id: "shaman_sub_lcd_yoh_anna", label: "葉＆アンナ（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "shaman_sub_lcd_hao", label: "ハオ（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "shaman_sub_lcd_hao_yoh", label: "ハオ＆葉（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "shaman_payout_display",
+        title: "特定の獲得枚数表示",
+        note: "獲得枚数表示で設定を示唆。複数候補のものは重み付けで反映。",
+        items: [
+          {
+            id: "shaman_payout_246_over",
+            label: "246 OVER（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.25, 4: 1.25, 6: 1.25 } },
+          },
+          {
+            id: "shaman_payout_256_over",
+            label: "256 OVER（設定2or5or6）",
+            effect: { type: "weight", weights: { 2: 1.2, 5: 1.2, 6: 1.2 } },
+          },
+          {
+            id: "shaman_payout_356_over",
+            label: "356 OVER（設定3or5or6）",
+            effect: { type: "weight", weights: { 3: 1.2, 5: 1.2, 6: 1.2 } },
+          },
+          { id: "shaman_payout_456_over", label: "456 OVER（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "shaman_payout_555_over", label: "555 OVER（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "shaman_payout_666_over", label: "666 OVER（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  },
+
   "olympia_mahjong_monogatari": {
     machineId: "olympia_mahjong_monogatari",
     helpUrl: "https://p-town.dmm.com/machines/4777",

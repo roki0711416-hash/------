@@ -25,7 +25,7 @@ export type MachineOddsSetting = {
   big: number;
   reg: number;
   total: number;
-  rate: number;
+  rate?: number;
   extra?: number;
   extras?: Record<string, number>;
   binomialRates?: Record<string, number>; // { metricId: probability(0..1) }
@@ -403,6 +403,32 @@ export const machines = [
           extra: 50.0,
           suikaCzRate: 0.336,
         },
+      ],
+    },
+  },
+
+  // --- ELECO L追加 ---
+  {
+    id: "smart-shaman-king",
+    name: "スマスロ シャーマンキング（パチスロ）",
+    maker: "ユニバーサル",
+    series: "シャーマンキング",
+    category: "SMART",
+    inHall: true,
+    description: "（エレコ）共通ベルA確率ベースの簡易判別（機械割は未登録）。",
+    metricsLabels: {
+      bigLabel: "共通ベルA",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 48.0, reg: 1_000_000_000, total: 48.0 },
+        { s: 2, big: 47.2, reg: 1_000_000_000, total: 47.2 },
+        { s: 3, big: 44.8, reg: 1_000_000_000, total: 44.8 },
+        { s: 4, big: 40.7, reg: 1_000_000_000, total: 40.7 },
+        { s: 5, big: 38.1, reg: 1_000_000_000, total: 38.1 },
+        { s: 6, big: 31.8, reg: 1_000_000_000, total: 31.8 },
       ],
     },
   },

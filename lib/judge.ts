@@ -5,7 +5,7 @@ export type MachineSettingOdds = {
   big: number; // 1/big
   reg: number; // 1/reg
   total: number; // 1/total (display only)
-  rate: number; // payout percent (display only)
+  rate?: number; // payout percent (display only)
   extra?: number; // optional extra metric per game (e.g., weak cherry): 1/extra
   extras?: Record<string, number>; // optional extra metrics per game: { metricId: 1/oddsDenom }
   binomialRates?: Record<string, number>; // optional: { metricId: probability(0..1) }
