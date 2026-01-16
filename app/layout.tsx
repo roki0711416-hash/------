@@ -28,18 +28,20 @@ export default function RootLayout({
           strategy="beforeInteractive"
         />
         <header className="w-full border-b border-neutral-200 bg-white">
-          <div className="w-full">
-            <Link href="/" aria-label="トップへ" className="block">
-              <Image
-                src="/header.jpg"
-                alt="スロカスくん"
-                width={1536}
-                height={263}
-                priority
-                className="h-auto w-full"
-              />
-            </Link>
-          </div>
+          <Link href="/" aria-label="トップへ" className="block">
+            <div className="w-full py-2">
+              <div className="relative w-full overflow-hidden aspect-[1536/263] md:aspect-auto md:h-[100px]">
+                <Image
+                  src="/header.jpg"
+                  alt="スロカスくん"
+                  fill
+                  priority
+                  sizes="100vw"
+                  className="object-contain"
+                />
+              </div>
+            </div>
+          </Link>
         </header>
         {children}
         <footer className="mt-auto w-full border-t border-neutral-200 bg-white">
