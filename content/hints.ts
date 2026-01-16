@@ -136,10 +136,11 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
 
   "new-king-hanahana-v-bt": {
     machineId: "new-king-hanahana-v-bt",
+    helpUrl: "https://p-town.dmm.com/machines/4912",
     groups: [
       {
         id: "bonus_in",
-        title: "ボーナス中",
+        title: "ボーナス中のスイカ確率",
         note: "スイカはカウントのみ（判別には未反映）",
         items: [
           {
