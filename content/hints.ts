@@ -444,7 +444,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenseiken_curry",
         title: "寸胴カレー演出",
-        note: "3個揃い時の辛さで示唆（p-town 4843）",
+        note: "3個揃い時の辛さで示唆",
         items: [
           { id: "tenseiken_curry_default", label: "中辛（デフォルト）", effect: { type: "none" } },
           { id: "tenseiken_curry_spicy", label: "辛口（チャンスアップ）", effect: { type: "none" } },
@@ -454,7 +454,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenseiken_at_end_screen",
         title: "AT終了画面",
-        note: "高設定示唆はソフト示唆（重み付け）として反映。濃厚系は制約として反映（p-town 4843）",
+        note: "高設定示唆はソフト示唆（重み付け）として反映。濃厚系は制約として反映",
         items: [
           { id: "tenseiken_at_end_default", label: "デフォルト", effect: { type: "none" } },
           {
@@ -475,7 +475,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenseiken_trophy",
         title: "アリストロフィー",
-        note: "AT終了画面で出現（p-town 4843）",
+        note: "AT終了画面で出現",
         items: [
           { id: "tenseiken_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
           { id: "tenseiken_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
@@ -487,7 +487,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenseiken_payout_display",
         title: "特定の獲得枚数表示",
-        note: "トータル獲得枚数が規定枚数を超えた際に表示（p-town 4843）",
+        note: "トータル獲得枚数が規定枚数を超えた際に表示",
         items: [
           { id: "tenseiken_payout_456_over", label: "456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
           { id: "tenseiken_payout_666_over", label: "666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
@@ -496,7 +496,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenseiken_goblin_stampede_lamp",
         title: "ゴブリンスタンピード終了画面：ランプ色",
-        note: "チャンスボタン押下時のリール左右ランプ色で示唆（p-town 4843）",
+        note: "チャンスボタン押下時のリール左右ランプ色で示唆",
         items: [
           { id: "tenseiken_goblin_lamp_white", label: "白（デフォルト）", effect: { type: "none" } },
           {
@@ -522,7 +522,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenseiken_x_bonus_issen",
         title: "X転剣ボーナス：一閃乗せ時の表示ゲーム数",
-        note: "表示ゲーム数が特定なら上位設定濃厚（p-town 4843）",
+        note: "表示ゲーム数が特定なら上位設定濃厚",
         items: [
           { id: "tenseiken_issen_22_min2", label: "＋22G（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
           { id: "tenseiken_issen_33_min3", label: "＋33G（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
@@ -534,7 +534,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenseiken_curry_eating",
         title: "転剣ラッシュ：カレー実食演出",
-        note: "連打中の特定上乗せゲーム数で高設定濃厚（p-town 4843）",
+        note: "連打中の特定上乗せゲーム数で高設定濃厚",
         items: [
           { id: "tenseiken_curry_eat_4_min4", label: "＋4G（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
           { id: "tenseiken_curry_eat_5_min5", label: "＋5G（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
@@ -544,7 +544,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenseiken_fran_bonus_char",
         title: "フランボーナス中：キャラ紹介",
-        note: "キャラ（色）で設定を示唆（p-town 4843）",
+        note: "キャラ（色）で設定を示唆",
         items: [
           { id: "tenseiken_fran_char_default", label: "デフォルトキャラ（青）（示唆なし）", effect: { type: "none" } },
           {
@@ -565,7 +565,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenseiken_x_bonus_episode",
         title: "X転剣ボーナス：話数紹介",
-        note: "特定話数で上位設定濃厚（p-town 4843）",
+        note: "特定話数で上位設定濃厚",
         items: [
           { id: "tenseiken_x_episode_12_min4", label: "第12話（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
         ],
@@ -580,7 +580,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "ginei_trophy",
         title: "アリストロフィー",
-        note: "色で設定を示唆（p-town 4895）",
+        note: "色で設定を示唆",
         items: [
           { id: "ginei_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
           { id: "ginei_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
@@ -592,7 +592,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "ginei_galaxy_bonus_end",
         title: "ギャラクシーボーナス終了画面",
-        note: "表示キャラで設定を示唆（p-town 4895）。一部は特定日（誕生日/4月1日）で示唆が変わるため注意。",
+        note: "表示キャラで設定を示唆。一部は特定日（誕生日/4月1日）で示唆が変わるため注意。",
         items: [
           { id: "ginei_end_none", label: "キャラなし（デフォルト）", effect: { type: "none" } },
           { id: "ginei_end_other_min2", label: "ヤン・ラインハルト以外（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
@@ -604,7 +604,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "ginei_galaxy_bonus_char_alliance",
         title: "ギャラクシーボーナス中：キャラ紹介（同盟陣営）",
-        note: "開始キャラと最後のキャラで示唆（p-town 4895）",
+        note: "開始キャラと最後のキャラで示唆",
         items: [
           {
             id: "ginei_char_alliance_yang_odd",
@@ -622,7 +622,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "ginei_galaxy_bonus_char_empire",
         title: "ギャラクシーボーナス中：キャラ紹介（帝国陣営）",
-        note: "開始キャラと最後のキャラで示唆（p-town 4895）",
+        note: "開始キャラと最後のキャラで示唆",
         items: [
           {
             id: "ginei_char_empire_reinhardt_odd",
@@ -640,7 +640,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "ginei_story_intro",
         title: "ギャラクシーボーナス開始時：ストーリー紹介",
-        note: "シーズン/章で示唆（p-town 4895）",
+        note: "シーズン/章で示唆",
         items: [
           {
             id: "ginei_story_s3_ch1_weak",
@@ -662,7 +662,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "magihalo8_bonus_confirm_end",
         title: "ボーナス確定画面＆終了画面",
-        note: "確定画面/終了画面の『アリスインワンダーランド』で示唆（p-town 4423）",
+        note: "確定画面/終了画面の『アリスインワンダーランド』で示唆",
         items: [
           {
             id: "magihalo8_bonus_confirm_alice_high",
@@ -684,7 +684,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "magihalo8_art_end",
         title: "ART終了画面",
-        note: "人数で示唆（p-town 4423）",
+        note: "人数で示唆",
         items: [
           { id: "magihalo8_art_end_1", label: "キャラ1人（デフォルト）", effect: { type: "none" } },
           { id: "magihalo8_art_end_2_min2", label: "キャラ2人（設定2以上）", effect: { type: "minSetting", min: 2 } },
@@ -695,7 +695,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "magihalo8_trophy",
         title: "アリストロフィー",
-        note: "BIG終了画面で出現（p-town 4423）",
+        note: "BIG終了画面で出現",
         items: [
           { id: "magihalo8_trophy_bronze", label: "銅（設定2以上）", effect: { type: "minSetting", min: 2 } },
           { id: "magihalo8_trophy_silver", label: "銀（設定3以上）", effect: { type: "minSetting", min: 3 } },
@@ -714,7 +714,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "magihalo_bt_trophy",
         title: "ボーナス終了画面：アリストロフィー",
-        note: "ボーナス終了画面で出現（p-town 4854）",
+        note: "ボーナス終了画面で出現",
         items: [
           { id: "magihalo_bt_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
           { id: "magihalo_bt_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
@@ -726,7 +726,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "magihalo_bt_bonus_minichara",
         title: "ボーナス中：ミニキャラのアクション（台座）",
-        note: "ミニキャラ出現時の台座色で設定示唆（p-town 4854）",
+        note: "ミニキャラ出現時の台座色で設定示唆",
         items: [
           {
             id: "magihalo_bt_minichara_white_a_odd",
@@ -1472,7 +1472,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "watakon_at_end",
         title: "AT終了画面（コナミコマンド後）",
-        note: "AT終了画面でコナミコマンド入力後の画面で示唆（p-town 4803）",
+        note: "AT終了画面でコナミコマンド入力後の画面で示唆",
         items: [
           { id: "watakon_at_end_spring_a", label: "春A（着物）（デフォルト）", effect: { type: "none" } },
           {
@@ -1493,7 +1493,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "watakon_bonus_end_mode",
         title: "ボーナス終了画面（モード示唆）",
-        note: "通常モード示唆（設定示唆ではないため判別には未反映 / p-town 4803）",
+        note: "通常モード示唆（設定示唆ではないため判別には未反映）",
         items: [
           { id: "watakon_bonus_end_kudo", label: "久堂家（デフォルト）", effect: { type: "none" } },
           { id: "watakon_bonus_end_army", label: "陸軍屯所（通常B以上示唆）", effect: { type: "none" } },
@@ -1505,7 +1505,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "watakon_bonus_character",
         title: "わた婚ボーナス中：キャラ紹介",
-        note: "わた婚メドレー選択時などに発生するキャラ紹介で示唆（p-town 4803）",
+        note: "わた婚メドレー選択時などに発生するキャラ紹介で示唆",
         items: [
           { id: "watakon_char_default", label: "下記以外（デフォルト）", effect: { type: "none" } },
           {
