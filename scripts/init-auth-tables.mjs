@@ -70,6 +70,15 @@ async function main() {
     );
   `;
 
+  // Stripe webhook email idempotency
+  await db.sql`
+    CREATE TABLE IF NOT EXISTS stripe_webhook_email_events (
+      stripe_event_id text PRIMARY KEY,
+      event_type text NOT NULL,
+      created_at timestamptz NOT NULL DEFAULT now()
+    );
+  `;
+
   console.log("OK: auth/subscription tables are ready");
 }
 
