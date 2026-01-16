@@ -92,7 +92,7 @@ export default function AccountActions({
           >
             {loading === "checkout"
               ? "Checkoutへ..."
-              : "月額で登録する（税込680円/月・7日間無料トライアル）"}
+              : "7日間無料で始める"}
           </button>
 
           {showYearly ? (
