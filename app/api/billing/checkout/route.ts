@@ -54,6 +54,21 @@ function toStripeConfigErrorMessage(e: ReturnType<typeof asStripeLikeError>) {
     "Stripeの認証に失敗しました。STRIPE_SECRET_KEY を省略せずに設定してください（sk_test_... / sk_live_...）。";
 
   if (e.type === "StripeAuthenticationError" || e.statusCode === 401) return hint;
+
+  // Common Stripe configuration mistakes
+  if (e.code === "resource_missing" && e.message?.toLowerCase().includes("no such price")) {
+    return "StripeにPrice IDが見つかりませんでした。STRIPE_PRICE_ID_MONTHLY（または STRIPE_PRICE_ID）が本番用（sk_live と同じモード）の price_... になっているか確認してください。";
+  }
+
+  if (
+    e.message?.toLowerCase().includes("success_url") ||
+    e.message?.toLowerCase().includes("cancel_url") ||
+    e.message?.toLowerCase().includes("return_url") ||
+    e.message?.toLowerCase().includes("invalid url")
+  ) {
+    return "StripeのURL設定が不正です。Vercelの環境変数 NEXT_PUBLIC_SITE_URL を 'https://slokasumikun.com' の形式で設定して再デプロイしてください。";
+  }
+
   return "Stripeリクエストに失敗しました。環境変数（STRIPE_SECRET_KEY / Price ID）を確認してください。";
 }
 
@@ -160,10 +175,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ url: session.url });
   } catch (err) {
     const e = asStripeLikeError(err);
+
+    // Keep a server-side trace even in production.
+    console.error("[billing/checkout] failed", {
+      type: e.type,
+      code: e.code,
+      statusCode: e.statusCode,
+      message: e.message,
+    });
+
+    const debugEnabled = process.env.SLOKASU_STRIPE_DEBUG === "1";
     return NextResponse.json(
       {
         error: toStripeConfigErrorMessage(e),
-        ...(process.env.NODE_ENV !== "production"
+        ...(process.env.NODE_ENV !== "production" || debugEnabled
           ? { debug: { type: e.type, code: e.code, statusCode: e.statusCode } }
           : null),
       },
