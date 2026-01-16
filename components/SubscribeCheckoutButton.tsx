@@ -51,7 +51,7 @@ export default function SubscribeCheckoutButton({
         disabled={loading}
         className="w-full rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
       >
-        {loading ? "Checkoutへ..." : "月額で登録する（税込680円/月・7日間無料トライアル）"}
+        {loading ? "Checkoutへ..." : "7日間無料で始める"}
       </button>
 
       {showYearly ? (
