@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-17-002",
+    "date": "2026-01-17",
+    "title": "episodeBonus対応",
+    "href": "/tool?machine=episodeBonus",
+    "body": "episodeBonusを追加しました。"
+  },
+  {
     "id": "2026-01-17-001",
     "date": "2026-01-17",
     "title": "スマスロ シャーマンキング（パチスロ）対応",
