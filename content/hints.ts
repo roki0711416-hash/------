@@ -3215,6 +3215,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   hintConfigs["smart-neo-planet"] = {
     machineId: "smart-neo-planet",
+    helpUrl: "https://p-town.dmm.com/machines/4873",
     groups: [
       {
         id: "neo_planet_kerot_trophy",
