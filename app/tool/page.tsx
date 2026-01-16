@@ -1,9 +1,9 @@
 import Link from "next/link";
 import SideMenu from "../../components/SideMenu";
 import MachineOddsTable from "../../components/MachineOddsTable";
-import MachineJudgeForm from "../../components/MachineJudgeForm";
-import MachineReviewsCard from "../../components/MachineReviewsCard";
+import ToolJudgeAndReviews from "../../components/ToolJudgeAndReviews";
 import { getMachineById, getMachinesData } from "../../lib/machines";
+import { getIsPremiumFromCookies } from "../../lib/premium";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -16,7 +16,8 @@ export default async function ToolPage({
 }: {
   searchParams?: Promise<SearchParams>;
 }) {
-  const isPremium = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
+  const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
+  const isPremium = isPremiumPreview || (await getIsPremiumFromCookies());
 
   const sp = await searchParams;
   const machines = await getMachinesData();
@@ -64,10 +65,7 @@ export default async function ToolPage({
           <>
             <MachineOddsTable machine={selectedMachine} />
             {selectedMachine.toolMode !== "odds-only" ? (
-              <MachineJudgeForm machine={selectedMachine} isPremium={isPremium} />
-            ) : null}
-            {selectedMachine.toolMode !== "odds-only" ? (
-              <MachineReviewsCard machineId={selectedMachine.id} />
+              <ToolJudgeAndReviews machine={selectedMachine} isPremium={isPremium} />
             ) : null}
           </>
         ) : null}
@@ -90,6 +88,22 @@ export default async function ToolPage({
                   ・総ゲーム数/BIG/REG (機種によっては小役)を入力して、近い設定を表示します。
                   <br />
                   ・現状のグラフを読み取り500G先の期待値をAI予想します。
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
+                <p className="text-base font-semibold">③ サブスク会員限定</p>
+                <p className="mt-2 text-sm text-neutral-700">
+                  サブスク会員になると、会員限定の機能（コミュニティ/広告の非表示 など）が使えます。
+                  <br />
+                  登録は <Link href="/subscribe" className="underline underline-offset-2">/subscribe</Link> から。
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
+                <p className="text-base font-semibold">④ ユーザー口コミ</p>
+                <p className="mt-2 text-sm text-neutral-700">
+                  機種を選ぶと、下にユーザー口コミが表示されます（投稿にはユーザーネーム設定が必要です）。
                 </p>
               </div>
             </div>

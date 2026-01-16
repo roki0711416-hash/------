@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { createPool } from "@vercel/postgres";
+import { getDb } from "../../../lib/db";
+import { getCurrentUserFromCookies } from "../../../lib/auth";
+
+export const runtime = "nodejs";
 
 function jsonError(status: number, message: string) {
   return NextResponse.json({ error: message }, { status });
@@ -10,27 +13,8 @@ function clampInt(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, Math.trunc(n)));
 }
 
-function getConnectionString(): string | null {
-  return (
-    process.env.POSTGRES_URL ||
-    process.env.POSTGRES_PRISMA_URL ||
-    process.env.POSTGRES_URL_NON_POOLING ||
-    process.env.DATABASE_URL ||
-    process.env.NEON_DATABASE_URL ||
-    null
-  );
-}
-
-let pool: ReturnType<typeof createPool> | null = null;
-
 function getPool() {
-  const connectionString = getConnectionString();
-  if (!connectionString) return null;
-
-  if (!pool) {
-    pool = createPool({ connectionString });
-  }
-  return pool;
+  return getDb();
 }
 
 export async function GET(req: Request) {
@@ -50,7 +34,7 @@ export async function GET(req: Request) {
 
   try {
     const { rows } = await db.sql`
-      SELECT id, machine_id, date, rating, author, body
+      SELECT id, machine_id, date, rating, user_id, author, body
       FROM reviews
       WHERE machine_id = ${machineId}
       ORDER BY date DESC, id DESC
@@ -86,9 +70,13 @@ export async function POST(req: Request) {
     return jsonError(400, "Invalid payload");
   }
 
+  const user = await getCurrentUserFromCookies();
+  if (!user) {
+    return jsonError(401, "口コミ投稿にはログイン（ユーザー登録）が必要です。");
+  }
+
   const payload = bodyJson as Record<string, unknown>;
   const machineId = typeof payload.machineId === "string" ? payload.machineId.trim() : "";
-  const author = typeof payload.author === "string" ? payload.author.trim() : "";
   const reviewBody = typeof payload.body === "string" ? payload.body.trim() : "";
   const ratingRaw = typeof payload.rating === "number" ? payload.rating : Number(payload.rating);
   const rating = clampInt(ratingRaw, 1, 5);
@@ -96,7 +84,6 @@ export async function POST(req: Request) {
   if (!machineId) return jsonError(400, "machineId is required");
   if (!reviewBody) return jsonError(400, "body is required");
   if (reviewBody.length > 500) return jsonError(400, "body must be <= 500 chars");
-  if (author.length > 20) return jsonError(400, "author must be <= 20 chars");
 
   // YYYY-MM-DD in JST
   const now = new Date();
@@ -111,10 +98,26 @@ export async function POST(req: Request) {
     ? globalThis.crypto.randomUUID()
     : `r-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
+  const userId = user.id;
+
+  // 投稿にはユーザーネーム設定が必須
+  let author: string | null = null;
+  try {
+    const { rows } = await db.sql`SELECT username FROM users WHERE id = ${userId} LIMIT 1`;
+    const row = rows[0] as { username: string | null } | undefined;
+    const username = (row?.username ?? "").trim();
+    if (!username) {
+      return jsonError(409, "口コミ投稿にはユーザーネーム設定が必要です。/account から設定してください。");
+    }
+    author = username;
+  } catch {
+    return jsonError(500, "ユーザーネームの取得に失敗しました。");
+  }
+
   try {
     await db.sql`
-      INSERT INTO reviews (id, machine_id, date, rating, author, body)
-      VALUES (${id}, ${machineId}, ${date}, ${rating}, ${author || null}, ${reviewBody})
+      INSERT INTO reviews (id, machine_id, date, rating, user_id, author, body)
+      VALUES (${id}, ${machineId}, ${date}, ${rating}, ${userId}, ${author}, ${reviewBody})
     `;
 
     return NextResponse.json({ ok: true, id });

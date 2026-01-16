@@ -102,14 +102,39 @@ export default function MachineReviewsCard({
   const [isLoading, setIsLoading] = useState(false);
 
   const [rating, setRating] = useState<ReviewRating>(5);
-  const [author, setAuthor] = useState<string>("");
   const [body, setBody] = useState<string>("");
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
+  const [viewer, setViewer] = useState<{
+    loaded: boolean;
+    loggedIn: boolean;
+    username: string | null;
+  }>({ loaded: false, loggedIn: false, username: null });
+
   useEffect(() => {
     // localStorage から初回ロード（クライアントのみ）
     setLocalReviewsAll(safeParseLocalReviews(localStorage.getItem(STORAGE_KEY)));
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/account/me", { credentials: "include" });
+        const json = (await res.json().catch(() => null)) as
+          | { loggedIn: boolean; username: string | null }
+          | { error: string }
+          | null;
+
+        if (res.ok && json && "loggedIn" in json) {
+          setViewer({ loaded: true, loggedIn: json.loggedIn, username: json.username });
+        } else {
+          setViewer({ loaded: true, loggedIn: false, username: null });
+        }
+      } catch {
+        setViewer({ loaded: true, loggedIn: false, username: null });
+      }
+    })();
   }, []);
 
   async function load() {
@@ -206,7 +231,19 @@ export default function MachineReviewsCard({
     setSubmitError(null);
 
     const trimmedBody = body.trim();
-    const trimmedAuthor = author.trim();
+
+    if (!viewer.loaded) {
+      setSubmitError("ログイン状態を確認中です。少し待ってからもう一度お試しください。");
+      return;
+    }
+    if (!viewer.loggedIn) {
+      setSubmitError("口コミ投稿にはログイン（ユーザー登録）が必要です。");
+      return;
+    }
+    if (!viewer.username) {
+      setSubmitError("口コミ投稿にはユーザーネーム設定が必要です。/account から設定してください。");
+      return;
+    }
 
     if (trimmedBody.length === 0) {
       setSubmitError("口コミ本文を入力してください。");
@@ -216,20 +253,18 @@ export default function MachineReviewsCard({
       setSubmitError("口コミ本文は500文字以内で入力してください。");
       return;
     }
-    if (trimmedAuthor.length > 20) {
-      setSubmitError("名前は20文字以内で入力してください。");
-      return;
-    }
 
     try {
       if (mode === "local") {
         const id = `local-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+        const authorForLocal = viewer.username ?? undefined;
         const review: ReviewItem = {
           id,
           machineId,
           date: todayJstYmd(),
           rating,
-          author: trimmedAuthor || undefined,
+          author: authorForLocal,
           body: trimmedBody,
         };
         const nextAll = [review, ...localReviewsAll];
@@ -246,22 +281,31 @@ export default function MachineReviewsCard({
         body: JSON.stringify({
           machineId,
           rating,
-          author: trimmedAuthor || undefined,
           body: trimmedBody,
         }),
       });
       const json = (await res.json()) as unknown;
       if (!res.ok) {
+        if (res.status === 401) {
+          setSubmitError("口コミ投稿にはログイン（ユーザー登録）が必要です。");
+          return;
+        }
+        if (res.status === 409) {
+          setSubmitError("口コミ投稿にはユーザーネーム設定が必要です。/account から設定してください。");
+          return;
+        }
         if (res.status === 503) {
           // 共有DB未設定ならその場でローカル保存に切り替える
           setMode("local");
           const id = `local-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+          const authorForLocal = viewer.username ?? undefined;
           const review: ReviewItem = {
             id,
             machineId,
             date: todayJstYmd(),
             rating,
-            author: trimmedAuthor || undefined,
+            author: authorForLocal,
             body: trimmedBody,
           };
           const nextAll = [review, ...localReviewsAll];
@@ -287,12 +331,14 @@ export default function MachineReviewsCard({
       // ネットワーク不調時も投稿自体は端末内で成立させる
       setMode("local");
       const id = `local-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+      const authorForLocal = viewer.username ?? undefined;
       const review: ReviewItem = {
         id,
         machineId,
         date: todayJstYmd(),
         rating,
-        author: trimmedAuthor || undefined,
+        author: authorForLocal,
         body: trimmedBody,
       };
       const nextAll = [review, ...localReviewsAll];
@@ -359,57 +405,99 @@ export default function MachineReviewsCard({
           </p>
         )}
 
-        <div className="mt-3 grid gap-3">
-          <label className="block">
-            <span className="text-xs font-semibold text-neutral-600">評価</span>
-            <select
-              className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
-              value={rating}
-              onChange={(e) => setRating(Number(e.target.value) as ReviewRating)}
+        {!viewer.loaded ? (
+          <div className="mt-3">
+            <p className="text-sm text-neutral-600">ログイン状態を確認中…</p>
+          </div>
+        ) : !viewer.loggedIn ? (
+          <div className="mt-3 rounded-xl border border-neutral-200 bg-white p-4">
+            <p className="text-sm font-semibold text-neutral-800">
+              口コミ投稿にはログイン（ユーザー登録）が必要です
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <a
+                href="/signup"
+                className="rounded-xl bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
+              >
+                ユーザー登録
+              </a>
+              <a
+                href="/login"
+                className="rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-900"
+              >
+                ログイン
+              </a>
+            </div>
+          </div>
+        ) : !viewer.username ? (
+          <div className="mt-3 rounded-xl border border-neutral-200 bg-white p-4">
+            <p className="text-sm font-semibold text-neutral-800">
+              口コミ投稿にはユーザーネーム設定が必要です
+            </p>
+            <p className="mt-1 text-xs text-neutral-500">
+              /account からユーザーネームを設定すると投稿できます。
+            </p>
+            <div className="mt-3">
+              <a
+                href="/account"
+                className="inline-block rounded-xl bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
+              >
+                アカウント画面へ
+              </a>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-3 grid gap-3">
+            <div className="block">
+              <span className="text-xs font-semibold text-neutral-600">投稿者</span>
+              <div className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm">
+                {viewer.username}
+              </div>
+              <p className="mt-1 text-xs text-neutral-500">ユーザーネームで投稿されます。</p>
+            </div>
+
+            <label className="block">
+              <span className="text-xs font-semibold text-neutral-600">評価</span>
+              <select
+                className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                value={rating}
+                onChange={(e) => setRating(Number(e.target.value) as ReviewRating)}
+              >
+                <option value={5}>5（最高）</option>
+                <option value={4}>4</option>
+                <option value={3}>3</option>
+                <option value={2}>2</option>
+                <option value={1}>1（最低）</option>
+              </select>
+            </label>
+
+            <label className="block">
+              <span className="text-xs font-semibold text-neutral-600">口コミ</span>
+              <textarea
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                className="mt-1 min-h-24 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                placeholder="例: 右上がりだったので6を期待したが…"
+                maxLength={500}
+              />
+            </label>
+
+            {submitError ? (
+              <p className="text-sm font-medium text-red-600">{submitError}</p>
+            ) : null}
+            {submitted ? (
+              <p className="text-sm font-medium text-neutral-700">投稿しました。</p>
+            ) : null}
+
+            <button
+              type="button"
+              onClick={submit}
+              className="rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white"
             >
-              <option value={5}>5（最高）</option>
-              <option value={4}>4</option>
-              <option value={3}>3</option>
-              <option value={2}>2</option>
-              <option value={1}>1（最低）</option>
-            </select>
-          </label>
-
-          <label className="block">
-            <span className="text-xs font-semibold text-neutral-600">名前（任意）</span>
-            <input
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
-              placeholder="例: 匿名"
-            />
-          </label>
-
-          <label className="block">
-            <span className="text-xs font-semibold text-neutral-600">口コミ</span>
-            <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              className="mt-1 min-h-24 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
-              placeholder="例: 右上がりだったので6を期待したが…"
-            />
-          </label>
-
-          {submitError ? (
-            <p className="text-sm font-medium text-red-600">{submitError}</p>
-          ) : null}
-          {submitted ? (
-            <p className="text-sm font-medium text-neutral-700">投稿しました。</p>
-          ) : null}
-
-          <button
-            type="button"
-            onClick={submit}
-            className="rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white"
-          >
-            投稿する
-          </button>
-        </div>
+              投稿する
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -3,19 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --hostname 0.0.0.0",
+    "dev:local": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "publish:machine": "node scripts/publish-machine-update.mjs",
-    "db:init-reviews": "node scripts/init-reviews-table.mjs"
+    "db:init-reviews": "node scripts/init-reviews-table.mjs",
+    "db:init-auth": "node scripts/init-auth-tables.mjs",
+    "db:init-community": "node scripts/init-community-table.mjs"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^5.4.1",
+    "@stripe/stripe-js": "^8.6.1",
     "@vercel/postgres": "^0.10.0",
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "resend": "^6.7.0",
+    "stripe": "^18.5.0",
     "tesseract.js": "^7.0.0"
   },
   "devDependencies": {

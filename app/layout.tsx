@@ -5,8 +5,8 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "スロット設定判別ツール",
-  description: "スロットの設定判別を補助するWebツール",
+  title: "スロカスくん | スロット設定判別ツール",
+  description: "スロカスくん（スロット設定判別ツール）：スロットの設定判別を補助するWebツール",
   verification: {
     google: "QqbnEFPRBiH4haH8",
   },
