@@ -141,8 +141,10 @@ export default async function AccountPage({
 
             <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
               <p className="text-sm font-semibold text-neutral-800">会員状態</p>
-              <p className="mt-1 text-sm text-neutral-700">
-                {isPremium ? "有料会員" : "無料会員"}
+              <p className="mt-1 whitespace-pre-line text-sm text-neutral-700">
+                {isPremium
+                  ? "サブスク会員です。\n判別ツールの全機能と、会員限定の機能をご利用いただけます。"
+                  : "現在は無料会員です。\n月額会員に登録すると、判別ツールの精度向上機能や限定機能がすべて使えるようになります。"}
               </p>
               {sub?.trial_end ? (
                 <p className="mt-1 text-xs text-neutral-600">
@@ -163,11 +165,7 @@ export default async function AccountPage({
                   >
                     有料会員限定コミュニティへ
                   </Link>
-                ) : (
-                  <p className="text-xs text-neutral-600">
-                    ※有料会員になると「有料会員限定コミュニティ」が利用できます。（有料会員様限定コミュニティと機能）
-                  </p>
-                )}
+                ) : null}
               </div>
             </div>
 
