@@ -23,6 +23,30 @@ async function resolveUserIdFromSubscription(sub: Stripe.Subscription) {
   return row?.id ?? null;
 }
 
+function resolveUserIdFromCheckoutSession(session: Stripe.Checkout.Session): string | null {
+  // Our checkout endpoint sets client_reference_id = user.id.
+  if (typeof session.client_reference_id === "string" && session.client_reference_id.trim()) {
+    return session.client_reference_id.trim();
+  }
+
+  const metaUserId = session.metadata?.userId;
+  if (typeof metaUserId === "string" && metaUserId.trim()) return metaUserId.trim();
+
+  return null;
+}
+
+async function ensureUserStripeCustomerId(userId: string, customerId: string) {
+  const db = getDb();
+  if (!db) return;
+
+  // Only fill when missing to avoid unintended overwrites.
+  await db.sql`
+    UPDATE users
+    SET stripe_customer_id = COALESCE(stripe_customer_id, ${customerId})
+    WHERE id = ${userId}
+  `;
+}
+
 export async function POST(req: Request) {
   const stripe = getStripe();
   if (!stripe) {
@@ -73,7 +97,34 @@ export async function POST(req: Request) {
       break;
     }
     case "checkout.session.completed": {
-      // subscription.updated で同期するので、ここでは特に必須の処理はしない
+      // Speed up sync right after checkout completion.
+      const sessionLite = event.data.object as Stripe.Checkout.Session;
+
+      // Only handle subscriptions.
+      if (sessionLite.mode !== "subscription") break;
+
+      // Fetch expanded objects (webhook payload isn't expanded).
+      const session = (await stripe.checkout.sessions.retrieve(sessionLite.id, {
+        expand: ["subscription", "customer"],
+      })) as Stripe.Checkout.Session;
+
+      const userId = resolveUserIdFromCheckoutSession(session);
+      const customerId =
+        typeof session.customer === "string"
+          ? session.customer
+          : session.customer?.id ?? null;
+
+      if (userId && customerId) {
+        await ensureUserStripeCustomerId(userId, customerId);
+      }
+
+      const sub = session.subscription;
+      if (sub && typeof sub !== "string") {
+        const resolvedUserId = userId ?? (await resolveUserIdFromSubscription(sub));
+        if (resolvedUserId) {
+          await upsertSubscription(resolvedUserId, sub);
+        }
+      }
       break;
     }
     default:
