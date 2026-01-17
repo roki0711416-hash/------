@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SubscribeCheckoutButton from "../../components/SubscribeCheckoutButton";
 import { getCurrentUserFromCookies } from "../../lib/auth";
-import { getSubscriptionForUserId, isPremiumStatus } from "../../lib/premium";
+import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../../lib/premium";
 
 export const dynamic = "force-dynamic";
 
@@ -49,7 +49,7 @@ export default async function SubscribePage() {
 
   const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
   const sub = await getSubscriptionForUserId(user.id);
-  const isPremium = isPremiumPreview || isPremiumStatus(sub?.status ?? null);
+  const isPremium = isPremiumPreview || isPremiumForUserAndSubscription(user, sub);
   const hasYearly = Boolean(process.env.STRIPE_PRICE_ID_YEARLY?.trim());
   const stripeKey = process.env.STRIPE_SECRET_KEY?.trim() ?? "";
   const hasStripeKey = Boolean(stripeKey) && !stripeKey.includes("...");

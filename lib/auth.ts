@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { cookies } from "next/headers";
+import { unstable_noStore as noStore } from "next/cache";
 import { NextResponse } from "next/server";
 import { getDb } from "./db";
 import { randomId, randomToken, sha256Hex } from "./crypto";
@@ -20,6 +21,7 @@ export type CurrentUser = {
   id: string;
   email: string;
   stripeCustomerId: string | null;
+  role: string | null;
 };
 
 export async function hashPassword(password: string) {
@@ -90,39 +92,77 @@ export async function createSessionForUser(userId: string) {
 }
 
 export async function getCurrentUserFromCookies(): Promise<CurrentUser | null> {
+  // This function is used by Server Components and API routes.
+  // Ensure role/session changes are reflected immediately (no static caching).
+  noStore();
+
+  const authDebug = process.env.SLOKASU_AUTH_DEBUG === "1";
+
   const db = getDb();
   if (!db) return null;
 
   const token = (await cookies()).get(COOKIE_NAME)?.value;
   if (!token) return null;
 
+  if (authDebug) {
+    // Never log full tokens. Use a short prefix only for troubleshooting.
+    const tokenPrefix = token.slice(0, 8);
+    console.log("[auth] cookie token prefix:", tokenPrefix);
+  }
+
   const tokenHash = sha256Hex(token);
 
-  const { rows } = await db.sql`
-    SELECT u.id, u.email, u.stripe_customer_id, u.active_session_id, s.id as session_id
+  if (authDebug) {
+    console.log("[auth] cookie token hash prefix:", tokenHash.slice(0, 12));
+  }
+
+  // 1) Resolve session -> userId (do not embed role in the session)
+  const sessionResult = await db.sql`
+    SELECT s.id as session_id, s.user_id
     FROM sessions s
-    JOIN users u ON u.id = s.user_id
     WHERE s.token_hash = ${tokenHash}
       AND s.revoked_at IS NULL
     LIMIT 1
   `;
 
-  const row = rows[0] as
+  const sessionRow = sessionResult.rows[0] as
+    | { session_id: string; user_id: string }
+    | undefined;
+  if (!sessionRow) return null;
+
+  if (authDebug) {
+    console.log("[auth] sessions.id:", sessionRow.session_id, "user_id:", sessionRow.user_id);
+  }
+
+  // 2) Always fetch current user info (including role) from users table
+  const userResult = await db.sql`
+    SELECT id, email, role, stripe_customer_id, active_session_id
+    FROM users
+    WHERE id = ${sessionRow.user_id}
+    LIMIT 1
+  `;
+
+  const userRow = userResult.rows[0] as
     | {
         id: string;
         email: string;
+        role: string | null;
         stripe_customer_id: string | null;
         active_session_id: string | null;
-        session_id: string;
       }
     | undefined;
-  if (!row) return null;
-  if (!row.active_session_id || row.active_session_id !== row.session_id) return null;
+  if (!userRow) return null;
+
+  if (authDebug) {
+    console.log("[auth] users.active_session_id:", userRow.active_session_id);
+  }
+  if (!userRow.active_session_id || userRow.active_session_id !== sessionRow.session_id) return null;
 
   return {
-    id: row.id,
-    email: row.email,
-    stripeCustomerId: row.stripe_customer_id,
+    id: userRow.id,
+    email: userRow.email,
+    stripeCustomerId: userRow.stripe_customer_id,
+    role: userRow.role ?? null,
   };
 }
 

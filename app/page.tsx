@@ -2,7 +2,7 @@ import Link from "next/link";
 import LatestXCard from "../components/LatestXCard";
 import SubscribeCheckoutButton from "../components/SubscribeCheckoutButton";
 import { getCurrentUserFromCookies } from "../lib/auth";
-import { getSubscriptionForUserId, isPremiumStatus } from "../lib/premium";
+import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../lib/premium";
 import { getRecentPosts } from "../lib/posts";
 import { getXConfig } from "../lib/x";
 
@@ -14,7 +14,7 @@ export default async function Home() {
   const user = await getCurrentUserFromCookies();
   const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
   const sub = user ? await getSubscriptionForUserId(user.id) : null;
-  const isPremium = Boolean(user) && (isPremiumPreview || isPremiumStatus(sub?.status ?? null));
+  const isPremium = Boolean(user) && (isPremiumPreview || isPremiumForUserAndSubscription(user, sub));
   const hasYearly = Boolean(process.env.STRIPE_PRICE_ID_YEARLY?.trim());
   const stripeKey = process.env.STRIPE_SECRET_KEY?.trim() ?? "";
   const hasStripeKey = Boolean(stripeKey) && !stripeKey.includes("...");

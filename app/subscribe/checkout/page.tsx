@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getCurrentUserFromCookies } from "../../../lib/auth";
-import { getSubscriptionForUserId, isPremiumStatus } from "../../../lib/premium";
+import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../../../lib/premium";
 import CheckoutClient from "./CheckoutClient";
 
 export const dynamic = "force-dynamic";
@@ -49,7 +49,8 @@ export default async function SubscribeCheckoutPage() {
   }
 
   const sub = await getSubscriptionForUserId(user.id);
-  const isPremium = isPremiumStatus(sub?.status ?? null);
+  const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
+  const isPremium = isPremiumPreview || isPremiumForUserAndSubscription(user, sub);
   const hasYearly = Boolean(process.env.STRIPE_PRICE_ID_YEARLY?.trim());
 
   return (

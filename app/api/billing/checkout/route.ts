@@ -3,7 +3,8 @@ import { getDb } from "../../../../lib/db";
 import { requireCurrentUserOrJsonError } from "../../../../lib/auth";
 import { getStripe } from "../../../../lib/stripe";
 import { getBaseUrl } from "../../../../lib/baseUrl";
-import { getSubscriptionForUserId, isPremiumStatus } from "../../../../lib/premium";
+import { getSubscriptionForUserId, hasAnyActiveishSubscription } from "../../../../lib/premium";
+import { isAdminRole } from "../../../../lib/roles";
 
 export const runtime = "nodejs";
 
@@ -76,6 +77,11 @@ export async function POST(req: Request) {
   const auth = await requireCurrentUserOrJsonError();
   if (!auth.ok) return auth.response;
 
+  // 管理者は課金不要（会員機能はroleで常時解放）
+  if (isAdminRole(auth.user.role)) {
+    return NextResponse.json({ error: "管理者アカウントは課金不要です" }, { status: 409 });
+  }
+
   const db = getDb();
   if (!db) {
     return NextResponse.json(
@@ -117,11 +123,7 @@ export async function POST(req: Request) {
     // Double-charge prevention: if a subscription already exists for this user,
     // send them to Stripe Billing Portal instead of creating another subscription.
     const existingSub = await getSubscriptionForUserId(auth.user.id);
-    const hasAnyActiveishSub =
-      isPremiumStatus(existingSub?.status ?? null) ||
-      (Boolean(existingSub?.stripe_subscription_id) &&
-        existingSub?.status !== "canceled" &&
-        existingSub?.status !== "incomplete_expired");
+    const hasAnyActiveishSub = hasAnyActiveishSubscription(existingSub);
 
     if (hasAnyActiveishSub) {
       if (!customerId) {

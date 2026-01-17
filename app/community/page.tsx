@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentUserFromCookies } from "../../lib/auth";
 import { BOARDS } from "../../lib/community";
-import { getSubscriptionForUserId, isPremiumStatus } from "../../lib/premium";
+import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../../lib/premium";
 
 export const dynamic = "force-dynamic";
 
@@ -49,7 +49,7 @@ export default async function CommunityIndexPage() {
   }
 
   const sub = await getSubscriptionForUserId(user.id);
-  const isPremium = isPremiumPreview || isPremiumStatus(sub?.status ?? null);
+  const isPremium = isPremiumPreview || isPremiumForUserAndSubscription(user, sub);
 
   if (!isPremium) {
     return (

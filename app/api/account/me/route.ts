@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDb } from "../../../../lib/db";
 import { getCurrentUserFromCookies } from "../../../../lib/auth";
-import { getSubscriptionForUserId, isPremiumStatus } from "../../../../lib/premium";
+import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../../../../lib/premium";
 
 export const runtime = "nodejs";
 
@@ -28,7 +28,8 @@ export async function GET() {
   const username = row?.username ?? null;
 
   const sub = await getSubscriptionForUserId(user.id);
-  const isPremium = isPremiumStatus(sub?.status ?? null);
+  const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
+  const isPremium = isPremiumPreview || isPremiumForUserAndSubscription(user, sub);
 
   return NextResponse.json({ loggedIn: true, username, isPremium });
 }

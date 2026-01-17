@@ -1,5 +1,6 @@
 import { getDb } from "./db";
 import { getCurrentUserFromCookies } from "./auth";
+import { isAdminRole, shouldBeAdminFromEnv } from "./roles";
 
 export type SubscriptionRow = {
   user_id: string;
@@ -13,6 +14,26 @@ export type SubscriptionRow = {
 
 export function isPremiumStatus(status: string | null) {
   return status === "active" || status === "trialing";
+}
+
+export function isPremiumForUserAndSubscription(
+  user: { id: string; email: string; role?: string | null } | null,
+  sub: { status: string | null } | null,
+) {
+  if (!user) return false;
+  if (isAdminRole(user.role) || shouldBeAdminFromEnv({ userId: user.id, email: user.email })) {
+    return true;
+  }
+  return isPremiumStatus(sub?.status ?? null);
+}
+
+export function hasAnyActiveishSubscription(sub: SubscriptionRow | null) {
+  return (
+    isPremiumStatus(sub?.status ?? null) ||
+    (Boolean(sub?.stripe_subscription_id) &&
+      sub?.status !== "canceled" &&
+      sub?.status !== "incomplete_expired")
+  );
 }
 
 export async function getSubscriptionForUserId(userId: string) {
@@ -32,6 +53,10 @@ export async function getSubscriptionForUserId(userId: string) {
 export async function getIsPremiumFromCookies() {
   const user = await getCurrentUserFromCookies();
   if (!user) return false;
+
+  if (isAdminRole(user.role) || shouldBeAdminFromEnv({ userId: user.id, email: user.email })) {
+    return true;
+  }
 
   const sub = await getSubscriptionForUserId(user.id);
   return isPremiumStatus(sub?.status ?? null);

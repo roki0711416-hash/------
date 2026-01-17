@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCurrentUserFromCookies } from "../../../../../lib/auth";
 import { getDb } from "../../../../../lib/db";
-import { getSubscriptionForUserId, isPremiumStatus } from "../../../../../lib/premium";
+import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../../../../../lib/premium";
 import {
   boardLabel,
   isBoardId,
@@ -77,7 +77,7 @@ export default async function CommunityPrefecturePage({
   }
 
   const sub = await getSubscriptionForUserId(user.id);
-  const isPremium = isPremiumPreview || isPremiumStatus(sub?.status ?? null);
+  const isPremium = isPremiumPreview || isPremiumForUserAndSubscription(user, sub);
 
   if (!isPremium) {
     return (

@@ -2,7 +2,8 @@ import Link from "next/link";
 import type Stripe from "stripe";
 import { getCurrentUserFromCookies } from "../../../lib/auth";
 import { getStripe } from "../../../lib/stripe";
-import { getSubscriptionForUserId, isPremiumStatus } from "../../../lib/premium";
+import { getSubscriptionForUserId, hasAnyActiveishSubscription } from "../../../lib/premium";
+import { isAdminRole } from "../../../lib/roles";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -126,13 +127,32 @@ export default async function SubscribeSuccessPage({
     );
   }
 
+  // 管理者は課金不要（roleで会員機能を解放）
+  if (isAdminRole(user.role)) {
+    return (
+      <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
+        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+          <h1 className="text-lg font-semibold">決済</h1>
+          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
+            <p className="text-sm font-semibold text-neutral-800">管理者アカウントは課金不要です</p>
+            <p className="mt-1 text-sm text-neutral-700">アカウント画面へ戻ってください。</p>
+            <div className="mt-3">
+              <Link
+                href="/account"
+                className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+              >
+                アカウントへ
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   // すでにサブスクが存在する場合は二重作成しない
   const existingSub = await getSubscriptionForUserId(user.id);
-  const hasAnyActiveishSub =
-    isPremiumStatus(existingSub?.status ?? null) ||
-    (Boolean(existingSub?.stripe_subscription_id) &&
-      existingSub?.status !== "canceled" &&
-      existingSub?.status !== "incomplete_expired");
+  const hasAnyActiveishSub = hasAnyActiveishSubscription(existingSub);
 
   let createdSubscription: Stripe.Subscription | null = null;
 

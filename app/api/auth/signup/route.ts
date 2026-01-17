@@ -7,6 +7,7 @@ import {
   setSessionCookie,
 } from "../../../../lib/auth";
 import { randomId } from "../../../../lib/crypto";
+import { shouldBeAdminFromEnv } from "../../../../lib/roles";
 
 export const runtime = "nodejs";
 
@@ -56,11 +57,12 @@ export async function POST(req: Request) {
 
   const passwordHash = await hashPassword(password);
   const userId = randomId("u_");
+  const role = shouldBeAdminFromEnv({ userId, email }) ? "admin" : null;
 
   try {
     await db.sql`
-      INSERT INTO users (id, email, password_hash)
-      VALUES (${userId}, ${email}, ${passwordHash})
+      INSERT INTO users (id, email, password_hash, role)
+      VALUES (${userId}, ${email}, ${passwordHash}, ${role})
     `;
   } catch (e) {
     const code =

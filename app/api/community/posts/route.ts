@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDb } from "../../../../lib/db";
 import { getCurrentUserFromCookies } from "../../../../lib/auth";
-import { getSubscriptionForUserId, isPremiumStatus } from "../../../../lib/premium";
+import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../../../../lib/premium";
 
 export const runtime = "nodejs";
 
@@ -30,7 +30,7 @@ async function requirePremiumUser() {
 
   if (!isPremiumPreview) {
     const sub = await getSubscriptionForUserId(user.id);
-    if (!isPremiumStatus(sub?.status ?? null)) {
+    if (!isPremiumForUserAndSubscription(user, sub)) {
       return { ok: false as const, status: 403 as const, message: "有料会員限定です。" };
     }
   }

@@ -1,15 +1,19 @@
 import Link from "next/link";
 import AccountActions from "../../components/AccountActions";
+import AdminRoleForm from "../../components/AdminRoleForm";
 import UsernameForm from "../../components/UsernameForm";
 import { getCurrentUserFromCookies } from "../../lib/auth";
 import { getDb } from "../../lib/db";
 import {
   getSubscriptionForUserId,
-  isPremiumStatus,
+  isPremiumForUserAndSubscription,
   type SubscriptionRow,
 } from "../../lib/premium";
+import { isAdminRole } from "../../lib/roles";
 
 import CheckoutSync from "./sync/CheckoutSync";
+
+export const dynamic = "force-dynamic";
 
 function fmtDate(d: string | null) {
   if (!d) return null;
@@ -45,8 +49,10 @@ export default async function AccountPage({
   let sub: SubscriptionRow | null = null;
   if (user) sub = await getSubscriptionForUserId(user.id);
 
-  const isPremium = isPremiumStatus(sub?.status ?? null);
+  const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
+  const isPremium = user ? (isPremiumPreview || isPremiumForUserAndSubscription(user, sub)) : false;
   const hasYearly = Boolean(process.env.STRIPE_PRICE_ID_YEARLY?.trim());
+  const isAdmin = user ? isAdminRole(user.role) : false;
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
@@ -174,6 +180,16 @@ export default async function AccountPage({
               isPremium={isPremium}
               showYearly={hasYearly}
             />
+
+            {isAdmin ? (
+              <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
+                <p className="text-sm font-semibold text-neutral-800">管理者</p>
+                <p className="mt-1 text-xs text-neutral-600">
+                  admin は課金状態より優先して会員機能が解放されます。
+                </p>
+                <AdminRoleForm />
+              </div>
+            ) : null}
 
             <p className="mt-4 text-xs text-neutral-500">
               ※端末共有NG: ログインは常に最後の1台のみ有効です。

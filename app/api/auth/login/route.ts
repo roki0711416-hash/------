@@ -6,6 +6,7 @@ import {
   setSessionCookie,
   verifyPassword,
 } from "../../../../lib/auth";
+import { shouldBeAdminFromEnv } from "../../../../lib/roles";
 
 export const runtime = "nodejs";
 
@@ -81,6 +82,20 @@ export async function POST(req: Request) {
       { error: "メールアドレスまたはパスワードが違います" },
       { status: 401 },
     );
+  }
+
+  // Envで管理者指定されているユーザーは、DB上もadminに寄せる（課金判定より優先）
+  if (shouldBeAdminFromEnv({ userId: user.id, email })) {
+    try {
+      await db.sql`
+        UPDATE users
+        SET role = 'admin'
+        WHERE id = ${user.id}
+          AND (role IS NULL OR role <> 'admin')
+      `;
+    } catch {
+      // ログインは続行（role更新失敗は致命的ではない）
+    }
   }
 
   const session = await createSessionForUser(user.id);

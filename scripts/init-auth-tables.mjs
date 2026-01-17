@@ -32,6 +32,7 @@ async function main() {
       id text PRIMARY KEY,
       email text NOT NULL UNIQUE,
       username text NULL,
+      role text NULL,
       password_hash text NOT NULL,
       stripe_customer_id text NULL,
       active_session_id text NULL,
@@ -41,6 +42,7 @@ async function main() {
 
   // 既存DB向け（後方互換）
   await db.sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS username text NULL;`;
+  await db.sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS role text NULL;`;
 
   await db.sql`CREATE INDEX IF NOT EXISTS users_email_idx ON users (email);`;
   await db.sql`CREATE INDEX IF NOT EXISTS users_stripe_customer_idx ON users (stripe_customer_id);`;
