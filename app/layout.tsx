@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import "./globals.css";
+import HeaderMachineSearchBox from "../components/HeaderMachineSearchBox";
 
 export const metadata: Metadata = {
   title: "スロカスくん | スロット設定判別ツール",
@@ -28,8 +29,8 @@ export default function RootLayout({
           strategy="beforeInteractive"
         />
         <header className="w-full border-b border-neutral-200 bg-white">
-          <Link href="/" aria-label="トップへ" className="block">
-            {/* スマホ：従来どおり（画像の縦横比そのまま） */}
+          {/* SP: 現状維持 */}
+          <Link href="/" aria-label="トップへ" className="block lg:hidden">
             <Image
               src="/header.jpg"
               alt="スロカスくん"
@@ -40,8 +41,8 @@ export default function RootLayout({
               className="h-auto w-full md:hidden"
             />
 
-            {/* PC：ヘッダー帯サイズに収める */}
-            <div className="hidden w-full py-2 md:block">
+            {/* タブレット：従来のPCヘッダー画像 */}
+            <div className="hidden w-full py-2 md:block lg:hidden">
               <div className="relative h-[100px] w-full overflow-hidden">
                 <Image
                   src="/header.jpg"
@@ -54,6 +55,55 @@ export default function RootLayout({
               </div>
             </div>
           </Link>
+
+          {/* PC(min-width:1024px): 新ヘッダー */}
+          <div className="hidden lg:block">
+            <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center gap-4 px-4">
+              <Link href="/" aria-label="トップへ" className="flex shrink-0 items-center gap-2">
+                <Image
+                  src="/icon.png"
+                  alt="スロカスくん"
+                  width={36}
+                  height={36}
+                  priority
+                />
+                <span className="text-base font-semibold text-neutral-900">スロカスくん</span>
+              </Link>
+
+              <div className="flex-1">
+                <HeaderMachineSearchBox />
+              </div>
+
+              <nav aria-label="ヘッダー" className="shrink-0">
+                <ul className="flex items-center justify-end gap-5 text-sm font-medium">
+                  <li>
+                    <Link
+                      href="/login"
+                      className="text-neutral-700 underline underline-offset-2"
+                    >
+                      ログイン
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/about"
+                      className="text-neutral-700 underline underline-offset-2"
+                    >
+                      運営情報
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/terms"
+                      className="text-neutral-700 underline underline-offset-2"
+                    >
+                      利用規約
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </header>
         {children}
         <footer className="mt-auto w-full border-t border-neutral-200 bg-white">
