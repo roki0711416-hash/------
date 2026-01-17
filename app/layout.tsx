@@ -5,6 +5,7 @@ import Script from "next/script";
 import "./globals.css";
 import HeaderMachineSearchBox from "../components/HeaderMachineSearchBox";
 import ThemeSettings from "../components/ThemeSettings";
+import GmoSiteSeal from "../components/GmoSiteSeal";
 
 export const metadata: Metadata = {
   title: "スロカスくん | スロット設定判別ツール",
@@ -294,6 +295,8 @@ export default function RootLayout({
             </p>
 
             <ThemeSettings />
+
+            <GmoSiteSeal />
           </nav>
         </footer>
       </body>
