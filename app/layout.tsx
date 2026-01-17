@@ -56,6 +56,7 @@ export default function RootLayout({
                     height={32}
                     priority
                   />
+                  <span className="text-base font-semibold text-neutral-900">スロカスくん</span>
                 </Link>
 
                 <div className="flex shrink-0 items-center gap-3">
@@ -112,6 +113,7 @@ export default function RootLayout({
                   height={36}
                   priority
                 />
+                <span className="text-base font-semibold text-neutral-900">スロカスくん</span>
               </Link>
 
               <div className="flex-1">
