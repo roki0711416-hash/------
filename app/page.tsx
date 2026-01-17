@@ -28,6 +28,25 @@ export default async function Home() {
         <h1 className="sr-only">スロカスくん</h1>
       </header>
 
+      {/* PCのみ：ヘッダー直下のメイン導線 */}
+      <section className="mt-4 hidden lg:block">
+        <div className="rounded-2xl border border-neutral-200 bg-gradient-to-b from-neutral-50 to-neutral-100 px-6 py-6">
+          <div className="flex items-center justify-between gap-6">
+            <div>
+              <p className="text-lg font-semibold text-neutral-900">今日の設定判別はここから</p>
+              <p className="mt-1 text-sm text-neutral-700">機種と実測データを入れるだけ</p>
+            </div>
+
+            <Link
+              href="/judge"
+              className="shrink-0 rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white"
+            >
+              設定判別を始める
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="mt-5 rounded-2xl border border-neutral-200 bg-white p-5">
         <h2 className="text-lg font-semibold">主要メニュー</h2>
 
