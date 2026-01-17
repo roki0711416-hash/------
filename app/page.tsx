@@ -133,6 +133,10 @@ export default async function Home() {
         <section className="rounded-2xl border border-neutral-200 bg-white p-5">
           <h2 className="text-lg font-semibold">サブスク会員</h2>
           <p className="mt-2 text-sm text-neutral-600">
+            月額680円（税込）でご利用いただけます。
+            <br />
+            初回は7日間の無料トライアル付きです。
+            <br />
             サブスク会員に登録すると、会員限定の機能が使えます。
           </p>
 
