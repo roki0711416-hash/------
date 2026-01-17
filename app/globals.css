@@ -1,9 +1,76 @@
 @import "tailwindcss";
 
-:root {
+html[data-theme="light"] {
+  --bg: #f2f6f3;
+  --card: #fafafa;
+  --border: #e5e7eb;
+  --text-rgb: 34 34 34;
   color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --bg: #0f1115;
+  --card: #161a22;
+  --border: #232836;
+  --text-rgb: 230 232 238;
+  color-scheme: dark;
+}
+
+/* Fallback (before JS runs): treat as system */
+:root {
+  --bg: #f2f6f3;
+  --card: #fafafa;
+  --border: #e5e7eb;
+  --text-rgb: 34 34 34;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115;
+    --card: #161a22;
+    --border: #232836;
+    --text-rgb: 230 232 238;
+    color-scheme: dark;
+  }
 }
 
 body {
   min-height: 100vh;
+  background-color: var(--bg);
+  color: rgb(var(--text-rgb));
+}
+
+/* Map existing Tailwind utility usage to theme tokens (no UI/layout changes) */
+.bg-neutral-100 {
+  background-color: var(--bg);
+}
+
+.bg-white,
+.bg-neutral-50 {
+  background-color: var(--card);
+}
+
+.border-neutral-200 {
+  border-color: var(--border);
+}
+
+.text-neutral-900 {
+  color: rgb(var(--text-rgb));
+}
+
+.text-neutral-800 {
+  color: rgb(var(--text-rgb) / 0.92);
+}
+
+.text-neutral-700 {
+  color: rgb(var(--text-rgb) / 0.84);
+}
+
+.text-neutral-600 {
+  color: rgb(var(--text-rgb) / 0.76);
+}
+
+.text-neutral-500 {
+  color: rgb(var(--text-rgb) / 0.68);
 }

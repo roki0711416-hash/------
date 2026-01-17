@@ -4,6 +4,7 @@ import Link from "next/link";
 import Script from "next/script";
 import "./globals.css";
 import HeaderMachineSearchBox from "../components/HeaderMachineSearchBox";
+import ThemeSettings from "../components/ThemeSettings";
 
 export const metadata: Metadata = {
   title: "スロカスくん | スロット設定判別ツール",
@@ -22,6 +23,16 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className="min-h-screen bg-neutral-100 text-neutral-900">
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`(function(){
+  try {
+    var choice = localStorage.getItem('slokasu_theme') || 'system';
+    var mql = window.matchMedia('(prefers-color-scheme: dark)');
+    var applied = (choice === 'system') ? (mql.matches ? 'dark' : 'light') : choice;
+    document.documentElement.dataset.theme = applied;
+  } catch (e) {}
+})();`}
+        </Script>
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6861979311690077"
@@ -45,7 +56,6 @@ export default function RootLayout({
                     height={32}
                     priority
                   />
-                  <span className="text-base font-semibold text-neutral-900">スロカスくん</span>
                 </Link>
 
                 <div className="flex shrink-0 items-center gap-3">
@@ -102,7 +112,6 @@ export default function RootLayout({
                   height={36}
                   priority
                 />
-                <span className="text-base font-semibold text-neutral-900">スロカスくん</span>
               </Link>
 
               <div className="flex-1">
@@ -281,6 +290,8 @@ export default function RootLayout({
             <p className="mt-4 text-xs text-neutral-500">
               © {new Date().getFullYear()} スロット設定判別ツール
             </p>
+
+            <ThemeSettings />
           </nav>
         </footer>
       </body>
