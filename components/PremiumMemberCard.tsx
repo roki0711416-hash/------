@@ -120,7 +120,16 @@ export default function PremiumMemberCard({
     <section className="rounded-2xl border border-neutral-200 bg-white p-5">
       <h2 className="text-lg font-semibold">サブスク会員限定</h2>
       <p className="mt-2 text-sm text-neutral-700">
-        AIが現状の状況を自動で計算して、機械割、勝率・負け確率などを予想します。またユーザー様が任意で将来のG数を選択すると、その期待値も自動で計算して出してくれます。
+        入力された数値をもとに、
+        <br />
+        AIが統計的な観点から状況を整理し、
+        <br />
+        参考となる指標を算出します。
+        <br />
+        <br />
+        任意の回転数を設定することで、
+        <br />
+        条件変更時のシミュレーション結果を確認できます。
       </p>
 
       {!isPremium ? (
