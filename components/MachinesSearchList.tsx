@@ -19,6 +19,7 @@ type MachineWithMaker = MachineListItem & {
 
 type Props = {
   makers: Maker[];
+  initialQuery?: string;
 };
 
 function normalizeQuery(input: string): string {
@@ -33,8 +34,8 @@ function normalizeMachineNameForSearch(name: string): string {
     .toLowerCase();
 }
 
-export default function MachinesSearchList({ makers }: Props) {
-  const [query, setQuery] = useState("");
+export default function MachinesSearchList({ makers, initialQuery }: Props) {
+  const [query, setQuery] = useState(initialQuery ?? "");
 
   const normalizedQuery = useMemo(() => normalizeQuery(query), [query]);
 

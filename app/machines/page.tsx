@@ -6,7 +6,15 @@ export const metadata = {
   title: "機種一覧 | スロカスくん",
 };
 
-export default async function MachinesPage() {
+export default async function MachinesPage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const sp = (await searchParams) ?? {};
+  const qRaw = sp.q;
+  const q = typeof qRaw === "string" ? qRaw : Array.isArray(qRaw) ? qRaw[0] : "";
+
   const machines = await getMachinesData();
 
   return (
@@ -36,7 +44,7 @@ export default async function MachinesPage() {
         <h2 className="text-base font-semibold">メーカー別</h2>
 
         <div className="mt-4">
-          <MachinesSearchList makers={machines.makers} />
+          <MachinesSearchList makers={machines.makers} initialQuery={q} />
         </div>
       </section>
     </main>
