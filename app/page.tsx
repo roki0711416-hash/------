@@ -25,7 +25,7 @@ export default async function Home() {
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
       <header className="space-y-2">
-        <h1 className="text-xl font-bold">スロカスくん</h1>
+        <h1 className="sr-only">スロカスくん</h1>
       </header>
 
       <section className="mt-5 rounded-2xl border border-neutral-200 bg-white p-5">
