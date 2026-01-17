@@ -29,32 +29,67 @@ export default function RootLayout({
           strategy="beforeInteractive"
         />
         <header className="w-full border-b border-neutral-200 bg-white">
-          {/* SP: 現状維持 */}
-          <Link href="/" aria-label="トップへ" className="block lg:hidden">
-            <Image
-              src="/header.jpg"
-              alt="スロカスくん"
-              width={1536}
-              height={263}
-              priority
-              sizes="100vw"
-              className="h-auto w-full md:hidden"
-            />
+          {/* SP/タブレット（〜1023px）：2段ヘッダー */}
+          <div className="lg:hidden">
+            <div className="mx-auto w-full max-w-xl px-4 py-3">
+              <div className="flex items-center justify-between gap-3">
+                <Link
+                  href="/"
+                  aria-label="トップへ"
+                  className="flex shrink-0 items-center gap-2"
+                >
+                  <Image
+                    src="/icon.png"
+                    alt="スロカスくん"
+                    width={32}
+                    height={32}
+                    priority
+                  />
+                  <span className="text-base font-semibold text-neutral-900">スロカスくん</span>
+                </Link>
 
-            {/* タブレット：従来のPCヘッダー画像 */}
-            <div className="hidden w-full py-2 md:block lg:hidden">
-              <div className="relative h-[100px] w-full overflow-hidden">
-                <Image
-                  src="/header.jpg"
-                  alt="スロカスくん"
-                  fill
-                  priority
-                  sizes="100vw"
-                  className="object-contain"
-                />
+                <div className="flex shrink-0 items-center gap-3">
+                  <Link
+                    href="/login"
+                    className="text-sm font-semibold text-neutral-700 underline underline-offset-2"
+                  >
+                    ログイン
+                  </Link>
+
+                  <details className="relative">
+                    <summary className="list-none rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-neutral-900">
+                      <span className="sr-only">メニュー</span>
+                      <span aria-hidden>≡</span>
+                    </summary>
+                    <div className="absolute right-0 z-50 mt-2 w-44 rounded-xl border border-neutral-200 bg-white p-2">
+                      <ul className="space-y-1 text-sm">
+                        <li>
+                          <Link
+                            href="/about"
+                            className="block rounded-lg px-3 py-2 text-neutral-700 hover:bg-neutral-50"
+                          >
+                            運営情報
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="/terms"
+                            className="block rounded-lg px-3 py-2 text-neutral-700 hover:bg-neutral-50"
+                          >
+                            利用規約
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </details>
+                </div>
+              </div>
+
+              <div className="mt-3">
+                <HeaderMachineSearchBox />
               </div>
             </div>
-          </Link>
+          </div>
 
           {/* PC(min-width:1024px): 新ヘッダー */}
           <div className="hidden lg:block">
