@@ -1484,6 +1484,47 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   },
 
+  "smart-guilty-crown-2": {
+    machineId: "smart-guilty-crown-2",
+    helpUrl: "https://p-town.dmm.com/machines/4790",
+    groups: [
+      {
+        id: "gc2_at_end_screen",
+        title: "AT終了画面",
+        note: "AT終了時に表示。",
+        items: [
+          { id: "gc2_at_end_default", label: "集（デフォルト）", effect: { type: "none" } },
+          {
+            id: "gc2_at_end_ayase_tsugumi",
+            label: "綾瀬＆ツグミ（設定2以上濃厚）",
+            effect: { type: "minSetting", min: 2 },
+          },
+          { id: "gc2_at_end_hanetsuki", label: "羽根つき（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "gc2_at_end_live", label: "ライブ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "gc2_swimsuit_screen",
+        title: "水着確定画面",
+        note: "設定2・3否定＋高設定期待度アップとして反映。",
+        items: [
+          {
+            id: "gc2_swimsuit",
+            label: "水着（設定2・3否定＋高設定示唆）",
+            effect: {
+              type: "allOf",
+              effects: [
+                { type: "excludeSetting", exclude: 2 },
+                { type: "excludeSetting", exclude: 3 },
+                { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+
   "fujishoji_railgun2": {
     machineId: "fujishoji_railgun2",
     helpUrl: "https://p-town.dmm.com/machines/4892",
