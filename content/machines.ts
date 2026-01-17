@@ -331,6 +331,30 @@ export const machines = [
     },
   },
   {
+    id: "smart-guilty-crown-2",
+    name: "スマスロ ギルティクラウン2",
+    maker: "ユニバーサル",
+    series: "ギルティクラウン",
+    category: "SMART",
+    inHall: true,
+    description: "ボーナス/AT/合算確率ベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "ボーナス",
+      regLabel: "AT",
+      totalLabel: "ボーナス&AT合算",
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 315.1, reg: 596.4, total: 206.2, rate: 97.9 },
+        { s: 2, big: 312.1, reg: 571.6, total: 201.9, rate: 98.9 },
+        { s: 3, big: 309.1, reg: 528.8, total: 195.1, rate: 101.4 },
+        { s: 4, big: 297.9, reg: 447.0, total: 178.8, rate: 105.4 },
+        { s: 5, big: 284.9, reg: 410.5, total: 168.2, rate: 110.0 },
+        { s: 6, big: 273.1, reg: 375.5, total: 158.1, rate: 113.6 },
+      ],
+    },
+  },
+  {
     id: "smart-magireco",
     name: "L マギアレコード 魔法少女まどか☆マギカ外伝",
     maker: "ユニバーサル",
