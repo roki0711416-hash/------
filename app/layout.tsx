@@ -105,7 +105,73 @@ export default function RootLayout({
             </div>
           </div>
         </header>
-        {children}
+        <div className="mx-auto w-full max-w-[1440px] px-0 lg:px-6">
+          <div className="lg:flex lg:gap-6">
+            {/* 左：広告（狭いPCでは非表示） */}
+            <aside className="hidden shrink-0 2xl:block w-[300px]">
+              <div className="sticky top-4">
+                <div className="min-h-[600px] rounded-2xl border border-neutral-200 bg-white p-3">
+                  <p className="text-xs font-semibold text-neutral-500">広告</p>
+                  <div className="mt-2 min-h-[560px] rounded-xl bg-neutral-50" />
+                </div>
+              </div>
+            </aside>
+
+            {/* 中：メイン */}
+            <div className="min-w-0 flex-1">
+              <div className="w-full xl:max-w-[900px] 2xl:max-w-[960px]">
+                {children}
+              </div>
+            </div>
+
+            {/* 右：情報（狭いPCでは非表示） */}
+            <aside className="hidden shrink-0 xl:block w-[280px]">
+              <div className="sticky top-4 space-y-4">
+                <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+                  <h2 className="text-sm font-semibold text-neutral-900">ショートカット</h2>
+                  <ul className="mt-3 space-y-2 text-sm">
+                    <li>
+                      <Link href="/judge" className="text-neutral-700 underline underline-offset-2">
+                        設定判別ツールへ
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/machines" className="text-neutral-700 underline underline-offset-2">
+                        機種一覧へ
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/guide" className="text-neutral-700 underline underline-offset-2">
+                        使い方
+                      </Link>
+                    </li>
+                  </ul>
+                </section>
+
+                <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+                  <h2 className="text-sm font-semibold text-neutral-900">情報</h2>
+                  <ul className="mt-3 space-y-2 text-sm">
+                    <li>
+                      <Link href="/" className="text-neutral-700 underline underline-offset-2">
+                        新着情報を見る
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/account" className="text-neutral-700 underline underline-offset-2">
+                        アカウント
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/community" className="text-neutral-700 underline underline-offset-2">
+                        コミュニティ
+                      </Link>
+                    </li>
+                  </ul>
+                </section>
+              </div>
+            </aside>
+          </div>
+        </div>
         <footer className="mt-auto w-full border-t border-neutral-200 bg-white">
           <nav
             aria-label="フッター"
