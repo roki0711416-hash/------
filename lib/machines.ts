@@ -11,6 +11,30 @@ export type MachinesData = {
   makers: Maker[];
 };
 
+const machineNameCollator = new Intl.Collator("ja", {
+  usage: "sort",
+  sensitivity: "base",
+  numeric: true,
+});
+
+function normalizeMachineNameForKanaSort(name: string): string {
+  return name
+    .replace(/\u3000/g, " ")
+    .trim()
+    .replace(/^(?:スマスロ|パチスロ)\s*/u, "")
+    // Ignore type/prefix markers that should not affect gojūon ordering.
+    .replace(/^(?:S|L|P)(?:\s|\u3000)?/u, "")
+    .trim();
+}
+
+function compareMachineNamesJa(a: string, b: string): number {
+  const aKey = normalizeMachineNameForKanaSort(a);
+  const bKey = normalizeMachineNameForKanaSort(b);
+  const primary = machineNameCollator.compare(aKey, bKey);
+  if (primary !== 0) return primary;
+  return machineNameCollator.compare(a, b);
+}
+
 function normalizeMachineName(machine: Machine): string {
   const raw = machine.name.trim();
   if (machine.category !== "SMART") return raw;
@@ -74,7 +98,7 @@ export async function getMachinesData(): Promise<MachinesData> {
     })
     .map(([name, ms]) => ({
       name,
-      machines: ms.sort((a, b) => a.name.localeCompare(b.name, "ja")),
+      machines: ms.sort((a, b) => compareMachineNamesJa(a.name, b.name)),
     }));
 
   return { makers };

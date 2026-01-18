@@ -22,6 +22,29 @@ type Props = {
   initialQuery?: string;
 };
 
+const machineNameCollator = new Intl.Collator("ja", {
+  usage: "sort",
+  sensitivity: "base",
+  numeric: true,
+});
+
+function normalizeMachineNameForKanaSort(name: string): string {
+  return name
+    .replace(/\u3000/g, " ")
+    .trim()
+    .replace(/^(?:スマスロ|パチスロ)\s*/u, "")
+    .replace(/^(?:S|L|P)(?:\s|\u3000)?/u, "")
+    .trim();
+}
+
+function compareMachineNamesJa(a: string, b: string): number {
+  const aKey = normalizeMachineNameForKanaSort(a);
+  const bKey = normalizeMachineNameForKanaSort(b);
+  const primary = machineNameCollator.compare(aKey, bKey);
+  if (primary !== 0) return primary;
+  return machineNameCollator.compare(a, b);
+}
+
 function normalizeQuery(input: string): string {
   return input.replace(/\u3000/g, " ").trim().toLowerCase();
 }
@@ -45,9 +68,9 @@ export default function MachinesSearchList({ makers, initialQuery }: Props) {
 
   const filteredMachines = useMemo(() => {
     if (!normalizedQuery) return [];
-    return allMachines.filter((mc) =>
-      normalizeMachineNameForSearch(mc.name).includes(normalizedQuery),
-    );
+    return allMachines
+      .filter((mc) => normalizeMachineNameForSearch(mc.name).includes(normalizedQuery))
+      .sort((a, b) => compareMachineNamesJa(a.name, b.name));
   }, [allMachines, normalizedQuery]);
 
   return (
@@ -110,7 +133,7 @@ export default function MachinesSearchList({ makers, initialQuery }: Props) {
               </summary>
 
               <ul className="mt-3 grid gap-2">
-                {mk.machines.map((mc) => {
+                {[...mk.machines].sort((a, b) => compareMachineNamesJa(a.name, b.name)).map((mc) => {
                   const sp = new URLSearchParams();
                   sp.set("maker", mk.name);
                   sp.set("machine", mc.id);
