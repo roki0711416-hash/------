@@ -1,37 +1,58 @@
 @import "tailwindcss";
 
 html[data-theme="light"] {
-  --bg: #f2f6f3;
-  --card: #fafafa;
-  --border: #e5e7eb;
-  --text-rgb: 34 34 34;
+  /* Design system tokens (light) */
+  --color-cta: #FF7A00;
+  --color-cta-hover: #FF8F26;
+  --color-cta-rgb: 255 122 0;
+  --color-main: #0F172A;
+  --color-sub: #10B981;
+  --color-danger: #EF4444;
+  --bg: #F8FAFC;
+  --card: #FFFFFF;
+  --border: #E5E7EB;
+  --text-rgb: 15 23 42;
   color-scheme: light;
 }
 
 html[data-theme="dark"] {
-  --bg: #0f1115;
-  --card: #161a22;
-  --border: #232836;
-  --text-rgb: 230 232 238;
-  color-scheme: dark;
+  /* Temporarily keep the site palette consistent in production (same as light). */
+  --color-cta: #FF7A00;
+  --color-cta-hover: #FF8F26;
+  --color-cta-rgb: 255 122 0;
+  --color-main: #0F172A;
+  --color-sub: #10B981;
+  --color-danger: #EF4444;
+  --bg: #F8FAFC;
+  --card: #FFFFFF;
+  --border: #E5E7EB;
+  --text-rgb: 15 23 42;
+  color-scheme: light;
 }
 
 /* Fallback (before JS runs): treat as system */
 :root {
-  --bg: #f2f6f3;
-  --card: #fafafa;
-  --border: #e5e7eb;
-  --text-rgb: 34 34 34;
+  --color-cta: #FF7A00;
+  --color-cta-hover: #FF8F26;
+  --color-cta-rgb: 255 122 0;
+  --color-main: #0F172A;
+  --color-sub: #10B981;
+  --color-danger: #EF4444;
+  --bg: #F8FAFC;
+  --card: #FFFFFF;
+  --border: #E5E7EB;
+  --text-rgb: 15 23 42;
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1115;
-    --card: #161a22;
-    --border: #232836;
-    --text-rgb: 230 232 238;
-    color-scheme: dark;
+    /* Keep the palette consistent regardless of system theme. */
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --border: #E5E7EB;
+    --text-rgb: 15 23 42;
+    color-scheme: light;
   }
 }
 
@@ -53,6 +74,25 @@ body {
 
 .border-neutral-200 {
   border-color: var(--border);
+}
+
+/* Primary CTA buttons: map existing bg-neutral-900 usage to CTA tokens */
+.bg-neutral-900 {
+  background-color: var(--color-cta);
+}
+
+.bg-neutral-900:hover {
+  background-color: var(--color-cta-hover);
+}
+
+.bg-neutral-900:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(var(--color-cta-rgb) / 0.35);
+}
+
+/* Danger (use sparingly) */
+.text-red-600 {
+  color: var(--color-danger);
 }
 
 .text-neutral-900 {
