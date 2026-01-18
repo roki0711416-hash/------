@@ -55,7 +55,7 @@ function settingKeyToNumber(key: number | string): number {
 type OddsRow = Machine["odds"]["settings"][number];
 
 const BET_PER_GAME = 3; // 3枚掛け想定
-const PREDICT_GAMES = 500;
+const DEFAULT_PREDICT_GAMES = 500;
 const DEFAULT_YEN_PER_COIN = 20;
 
 const SLUMP_POSTERIOR_K = 0.3;
@@ -253,6 +253,7 @@ export default function MachineJudgeForm({
   const [yBottomValue, setYBottomValue] = useState<string>("");
   const lastObjectUrlRef = useRef<string | null>(null);
 
+  const [predictGames, setPredictGames] = useState<string>(String(DEFAULT_PREDICT_GAMES));
   const [exchangeMode, setExchangeMode] = useState<"equal" | "custom">("equal");
   const [yenPerCoinCustom, setYenPerCoinCustom] = useState<string>(
     String(DEFAULT_YEN_PER_COIN),
@@ -977,7 +978,14 @@ export default function MachineJudgeForm({
     return topNSettings(posteriors, 3);
   }, [posteriors]);
 
-  const ev500 = useMemo(() => {
+  const predictGamesInfo = useMemo(() => {
+    const raw = Number(predictGames);
+    const isValid = Number.isFinite(raw) && raw > 0;
+    const value = isValid ? Math.max(1, Math.trunc(raw)) : DEFAULT_PREDICT_GAMES;
+    return { isValid, value };
+  }, [predictGames]);
+
+  const evPredict = useMemo(() => {
     if (!posteriors) return null;
 
     const oddsBySetting = new Map<string, OddsRow>();
@@ -989,7 +997,7 @@ export default function MachineJudgeForm({
         const rate = odds?.rate;
         const netCoins =
           typeof rate === "number"
-            ? PREDICT_GAMES * BET_PER_GAME * (rate / 100 - 1)
+            ? predictGamesInfo.value * BET_PER_GAME * (rate / 100 - 1)
             : NaN;
         return { s: p.s, posterior: p.posterior, netCoins };
       })
@@ -1012,7 +1020,7 @@ export default function MachineJudgeForm({
     );
 
     return { overall, perSettingTop3: perSetting.slice(0, 3), pWin, pLose };
-  }, [posteriors, machine.odds.settings]);
+  }, [posteriors, machine.odds.settings, predictGamesInfo.value]);
 
   const yenPerCoin = useMemo(() => {
     if (exchangeMode === "equal") return DEFAULT_YEN_PER_COIN;
@@ -1021,7 +1029,7 @@ export default function MachineJudgeForm({
     return v;
   }, [exchangeMode, yenPerCoinCustom]);
 
-  const investLimit500 = useMemo(() => {
+  const investLimitPredict = useMemo(() => {
     if (!posteriors) return null;
     if (!Number.isFinite(yenPerCoin) || yenPerCoin <= 0) return null;
 
@@ -1043,7 +1051,7 @@ export default function MachineJudgeForm({
 
     if (usedRates === 0) return null;
 
-    const theoryCoins = weightedEvCoinsPerGame * PREDICT_GAMES;
+  const theoryCoins = weightedEvCoinsPerGame * predictGamesInfo.value;
     const theoryYen = theoryCoins * yenPerCoin;
 
     const k = safetyFactorByGames(parsed.games);
@@ -1051,7 +1059,7 @@ export default function MachineJudgeForm({
     const limitYen = Math.max(0, safeYen * 0.8);
 
     return { weightedRate, k, theoryYen, safeYen, limitYen };
-  }, [machine.odds.settings, parsed.games, posteriors, yenPerCoin]);
+  }, [machine.odds.settings, parsed.games, posteriors, predictGamesInfo.value, yenPerCoin]);
 
   const sorted = useMemo(() => {
     if (!posteriors) return null;
@@ -1756,14 +1764,30 @@ export default function MachineJudgeForm({
             </div>
           ) : null}
 
-          {ev500 ? (
+          {evPredict ? (
             <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-              <p className="text-sm font-semibold">
-                500G先 期待差枚（推定）
-              </p>
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-sm font-semibold">{predictGamesInfo.value}G先 期待差枚（推定）</p>
+                <label className="flex items-center gap-2 text-xs text-neutral-600">
+                  <span className="font-semibold text-neutral-600">G数</span>
+                  <input
+                    inputMode="numeric"
+                    value={predictGames}
+                    onChange={(e) => setPredictGames(e.target.value)}
+                    className="w-20 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
+                    placeholder={String(DEFAULT_PREDICT_GAMES)}
+                  />
+                  <span className="text-neutral-500">G</span>
+                </label>
+              </div>
               <p className="mt-1 text-xs text-neutral-500">
                 機械割(%)と判別結果からの概算です（3枚掛け想定）。
               </p>
+              {!predictGamesInfo.isValid ? (
+                <p className="mt-2 text-xs font-medium text-red-600">
+                  G数は1以上の数字で入力してください（未入力/不正な場合は{DEFAULT_PREDICT_GAMES}Gとして計算します）。
+                </p>
+              ) : null}
               <p className="mt-2 whitespace-pre-line text-xs text-neutral-500">
                 {"※本ツールの期待値は、\n同じ条件で何度もプレイした場合の「平均的な結果」を示したものです。\n実戦では一時的に大きく勝つことも、大きく負けることもあります。\n表示される金額は「必ずそうなる結果」ではありません"}
               </p>
@@ -1817,10 +1841,10 @@ export default function MachineJudgeForm({
                 <div>
                   <p className="text-xs text-neutral-500">全体（期待値）</p>
                   <p className="font-semibold">
-                    {fmtSigned(ev500.overall)}枚
+                    {fmtSigned(evPredict.overall)}枚
                     {Number.isFinite(yenPerCoin) ? (
                       <span className="text-neutral-500">
-                        {" "}（{fmtYenSigned(ev500.overall * yenPerCoin)}）
+                        {" "}（{fmtYenSigned(evPredict.overall * yenPerCoin)}）
                       </span>
                     ) : null}
                   </p>
@@ -1828,7 +1852,7 @@ export default function MachineJudgeForm({
                 <div>
                   <p className="text-xs text-neutral-500">TOP3内訳</p>
                   <p className="font-semibold">
-                    {ev500.perSettingTop3
+                    {evPredict.perSettingTop3
                       .map(
                         (t) =>
                           `${t.s}: ${fmtSigned(t.netCoins)}枚$${Number.isFinite(yenPerCoin) ? `（${fmtYenSigned(t.netCoins * yenPerCoin)}）` : ""}（${fmtPct(t.posterior)}）`,
@@ -1840,11 +1864,11 @@ export default function MachineJudgeForm({
             </div>
           ) : null}
 
-          {ev500 && showInvestLimit ? (
+          {evPredict && showInvestLimit ? (
             <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
               <p className="text-sm font-semibold">サブスク会員限定</p>
               <p className="mt-1 text-xs text-neutral-500">
-                判別結果と機械割から、500G回す想定の「追加投資の目安」を計算します。
+                判別結果と機械割から、{predictGamesInfo.value}G回す想定の「追加投資の目安」を計算します。
               </p>
 
               {!isPremium ? (
@@ -1854,25 +1878,25 @@ export default function MachineJudgeForm({
                     投資上限（目安）と勝率/負け確率の表示はサブスク機能です。
                   </p>
                 </div>
-              ) : investLimit500 ? (
+              ) : investLimitPredict ? (
                 <div className="mt-3 grid gap-2 text-sm text-neutral-700 sm:grid-cols-2">
                   <div>
                     <p className="text-xs text-neutral-500">推奨投資上限（追加）</p>
                     <p className="text-base font-semibold">
-                      {Math.round(investLimit500.limitYen).toLocaleString()}円
+                      {Math.round(investLimitPredict.limitYen).toLocaleString()}円
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-neutral-500">想定機械割（加重平均）</p>
-                    <p className="font-semibold">{investLimit500.weightedRate.toFixed(2)}%</p>
+                    <p className="font-semibold">{investLimitPredict.weightedRate.toFixed(2)}%</p>
                   </div>
                   <div>
                     <p className="text-xs text-neutral-500">勝率（推定）</p>
-                    <p className="font-semibold">{fmtPct(ev500.pWin)}</p>
+                    <p className="font-semibold">{fmtPct(evPredict.pWin)}</p>
                   </div>
                   <div>
                     <p className="text-xs text-neutral-500">負け確率（推定）</p>
-                    <p className="font-semibold">{fmtPct(ev500.pLose)}</p>
+                    <p className="font-semibold">{fmtPct(evPredict.pLose)}</p>
                   </div>
                   <p className="text-xs text-neutral-500 sm:col-span-2">
                     ※概算です（換算レートと総Gに依存）。最終判断はご自身でお願いします。
