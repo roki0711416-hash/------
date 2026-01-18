@@ -87,7 +87,6 @@ export default async function ToolPage({
                 <p className="mt-2 text-sm text-neutral-700">
                   ・総ゲーム数/BIG/REG (機種によっては小役)を入力して、近い設定を表示します。
                   <br />
-                  ・現状のグラフを読み取り500G先の期待値をAI予想します。
                 </p>
               </div>
 
