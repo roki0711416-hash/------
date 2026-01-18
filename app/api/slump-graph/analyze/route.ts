@@ -5,6 +5,15 @@ import { parseMachineType } from "../../../../utils/slumpTypes";
 
 export const runtime = "nodejs";
 
+function isSlumpCorrectionEnabled() {
+  // Temporarily keep this feature non-public in production.
+  // Allow manual override via env when needed.
+  return (
+    process.env.NODE_ENV !== "production" ||
+    process.env.SLOKASU_ENABLE_SLUMP_CORRECTION === "1"
+  );
+}
+
 function jsonError(status: number, message: string) {
   return NextResponse.json({ error: message }, { status });
 }
@@ -14,6 +23,10 @@ function isObject(v: unknown): v is Record<string, unknown> {
 }
 
 export async function POST(req: Request) {
+  if (!isSlumpCorrectionEnabled()) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   // MVP: accept multipart/form-data (optionally includes image), but analyze based on tap inputs.
   let payloadRaw: unknown;
 

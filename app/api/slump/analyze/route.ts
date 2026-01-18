@@ -3,11 +3,24 @@ import { parseSlumpAnalyzePayload, runSlumpAnalyze } from "../../../../utils/slu
 
 export const runtime = "nodejs";
 
+function isSlumpCorrectionEnabled() {
+  // Temporarily keep this feature non-public in production.
+  // Allow manual override via env when needed.
+  return (
+    process.env.NODE_ENV !== "production" ||
+    process.env.SLOKASU_ENABLE_SLUMP_CORRECTION === "1"
+  );
+}
+
 function jsonError(status: number, message: string) {
   return NextResponse.json({ error: message }, { status });
 }
 
 export async function POST(req: Request) {
+  if (!isSlumpCorrectionEnabled()) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   let payload: unknown;
   try {
     payload = await req.json();

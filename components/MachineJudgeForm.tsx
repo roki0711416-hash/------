@@ -1078,126 +1078,130 @@ export default function MachineJudgeForm({
         を入力すると、近い設定TOP3を表示します。
       </p>
 
-      <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-        <p className="text-sm font-semibold">スランプグラフ画像から補正</p>
-        <p className="mt-1 text-xs text-neutral-500">
-          画像から「上振れ/下振れ」の補正値を算出します（設定断定には使いません）。
-          MVPでは自動認識は行わず、開始点/終了点/縦軸上限/縦軸下限のタップ補助が前提です。
-        </p>
+      {IS_DEV ? (
+        <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+          <p className="text-sm font-semibold">スランプグラフ画像から補正</p>
+          <p className="mt-1 text-xs text-neutral-500">
+            画像から「上振れ/下振れ」の補正値を算出します（設定断定には使いません）。
+            MVPでは自動認識は行わず、開始点/終了点/縦軸上限/縦軸下限のタップ補助が前提です。
+          </p>
 
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          <label className="block">
-            <span className="text-xs font-semibold text-neutral-600">画像</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="mt-1 block w-full text-sm"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (!f) return;
-                cleanupObjectUrl();
-                const url = URL.createObjectURL(f);
-                lastObjectUrlRef.current = url;
-                setGraphImageFile(f);
-                setGraphImageUrl(url);
-                resetGraphInputs();
-              }}
-            />
-          </label>
-
-          {graphImageUrl ? (
-            <div className="rounded-lg border border-neutral-200 bg-white p-2">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={graphImageUrl}
-                alt="スランプグラフ画像"
-                className="h-28 w-full cursor-crosshair rounded-md object-contain"
-                onClick={handleGraphImageClick}
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <label className="block">
+              <span className="text-xs font-semibold text-neutral-600">画像</span>
+              <input
+                type="file"
+                accept="image/*"
+                className="mt-1 block w-full text-sm"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (!f) return;
+                  cleanupObjectUrl();
+                  const url = URL.createObjectURL(f);
+                  lastObjectUrlRef.current = url;
+                  setGraphImageFile(f);
+                  setGraphImageUrl(url);
+                  resetGraphInputs();
+                }}
               />
-            </div>
-          ) : null}
-        </div>
+            </label>
 
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-lg border border-neutral-200 bg-white p-3">
-            <p className="text-xs font-semibold text-neutral-600">タップ補助</p>
-            <p className="mt-1 text-xs text-neutral-500">
-              画像をタップして順に指定：
-              開始点 → 終了点 → 縦軸上限位置 → 縦軸下限位置
-            </p>
-            <p className="mt-2 text-xs text-neutral-700">
-              次にタップ：
-              <span className="font-semibold">
-                {tapStep === "start"
-                  ? "開始点"
-                  : tapStep === "end"
-                    ? "終了点"
-                    : tapStep === "yTop"
-                      ? "縦軸上限"
-                      : "縦軸下限"}
-              </span>
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-600">
-              <span>開始: {tapStart ? `(${tapStart.x},${tapStart.y})` : "-"}</span>
-              <span>終了: {tapEnd ? `(${tapEnd.x},${tapEnd.y})` : "-"}</span>
-              <span>上限: {tapYTop ? `y=${tapYTop.y}` : "-"}</span>
-              <span>下限: {tapYBottom ? `y=${tapYBottom.y}` : "-"}</span>
+            {graphImageUrl ? (
+              <div className="rounded-lg border border-neutral-200 bg-white p-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={graphImageUrl}
+                  alt="スランプグラフ画像"
+                  className="h-28 w-full cursor-crosshair rounded-md object-contain"
+                  onClick={handleGraphImageClick}
+                />
+              </div>
+            ) : null}
+          </div>
+
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg border border-neutral-200 bg-white p-3">
+              <p className="text-xs font-semibold text-neutral-600">タップ補助</p>
+              <p className="mt-1 text-xs text-neutral-500">
+                画像をタップして順に指定：
+                開始点 → 終了点 → 縦軸上限位置 → 縦軸下限位置
+              </p>
+              <p className="mt-2 text-xs text-neutral-700">
+                次にタップ：
+                <span className="font-semibold">
+                  {tapStep === "start"
+                    ? "開始点"
+                    : tapStep === "end"
+                      ? "終了点"
+                      : tapStep === "yTop"
+                        ? "縦軸上限"
+                        : "縦軸下限"}
+                </span>
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-600">
+                <span>開始: {tapStart ? `(${tapStart.x},${tapStart.y})` : "-"}</span>
+                <span>終了: {tapEnd ? `(${tapEnd.x},${tapEnd.y})` : "-"}</span>
+                <span>上限: {tapYTop ? `y=${tapYTop.y}` : "-"}</span>
+                <span>下限: {tapYBottom ? `y=${tapYBottom.y}` : "-"}</span>
+              </div>
+              <button
+                type="button"
+                onClick={resetGraphInputs}
+                className="mt-3 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              >
+                指定をリセット
+              </button>
             </div>
+
+            <div className="rounded-lg border border-neutral-200 bg-white p-3">
+              <p className="text-xs font-semibold text-neutral-600">縦軸（差枚）</p>
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <label className="block">
+                  <span className="text-xs text-neutral-500">上限</span>
+                  <input
+                    inputMode="numeric"
+                    value={yTopValue}
+                    onChange={(e) => setYTopValue(e.target.value)}
+                    placeholder="例: 3000"
+                    className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                  />
+                </label>
+                <label className="block">
+                  <span className="text-xs text-neutral-500">下限</span>
+                  <input
+                    inputMode="numeric"
+                    value={yBottomValue}
+                    onChange={(e) => setYBottomValue(e.target.value)}
+                    placeholder="例: -3000"
+                    className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3 flex flex-wrap items-center gap-2">
             <button
               type="button"
-              onClick={resetGraphInputs}
-              className="mt-3 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              onClick={analyzeGraph}
+              disabled={!graphImageUrl || graphStatus === "running"}
+              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium disabled:opacity-40"
             >
-              指定をリセット
+              {graphStatus === "running" ? "解析中…" : "解析する"}
             </button>
+
+            {graphBiasZ !== null && graphConfidence !== null ? (
+              <p className="text-xs text-neutral-600">
+                解析結果：biasZ {graphBiasZ.toFixed(2)} / confidence {graphConfidence.toFixed(2)}
+              </p>
+            ) : null}
           </div>
 
-          <div className="rounded-lg border border-neutral-200 bg-white p-3">
-            <p className="text-xs font-semibold text-neutral-600">縦軸（差枚）</p>
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <label className="block">
-                <span className="text-xs text-neutral-500">上限</span>
-                <input
-                  inputMode="numeric"
-                  value={yTopValue}
-                  onChange={(e) => setYTopValue(e.target.value)}
-                  placeholder="例: 3000"
-                  className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
-                />
-              </label>
-              <label className="block">
-                <span className="text-xs text-neutral-500">下限</span>
-                <input
-                  inputMode="numeric"
-                  value={yBottomValue}
-                  onChange={(e) => setYBottomValue(e.target.value)}
-                  placeholder="例: -3000"
-                  className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
-                />
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={analyzeGraph}
-            disabled={!graphImageUrl || graphStatus === "running"}
-            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium disabled:opacity-40"
-          >
-            {graphStatus === "running" ? "解析中…" : "解析する"}
-          </button>
-
-          {graphBiasZ !== null && graphConfidence !== null ? (
-            <p className="text-xs text-neutral-600">
-              解析結果：biasZ {graphBiasZ.toFixed(2)} / confidence {graphConfidence.toFixed(2)}
-            </p>
+          {graphError ? (
+            <p className="mt-2 text-sm font-medium text-red-600">{graphError}</p>
           ) : null}
         </div>
-
-        {graphError ? <p className="mt-2 text-sm font-medium text-red-600">{graphError}</p> : null}
-      </div>
+      ) : null}
 
       <form
         className={`mt-4 grid gap-3 ${
