@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import type { Machine } from "../content/machines";
 import { getHintConfig } from "../content/hints";
 import {
@@ -8,6 +8,8 @@ import {
   topNSettings,
   type SettingPosterior,
 } from "../lib/judge";
+
+type TapPoint = { x: number; y: number };
 
 function fmt(n: number | undefined) {
   if (typeof n !== "number" || !Number.isFinite(n)) return "-";
@@ -55,6 +57,112 @@ type OddsRow = Machine["odds"]["settings"][number];
 const BET_PER_GAME = 3; // 3枚掛け想定
 const PREDICT_GAMES = 500;
 const DEFAULT_YEN_PER_COIN = 20;
+
+const SLUMP_POSTERIOR_K = 0.3;
+const IS_DEV = process.env.NODE_ENV !== "production";
+
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
+}
+
+function calcSlumpPosteriorStrength(args: {
+  machineCategory: Machine["category"];
+  graphBiasZ: number | null;
+  graphConfidence: number | null;
+}) {
+  const { machineCategory, graphBiasZ, graphConfidence } = args;
+  const typeFactor = machineCategory === "JUG" || machineCategory === "HANAHANA" ? 1 : 0.3;
+  const strengthRaw =
+    typeof graphBiasZ === "number" &&
+    Number.isFinite(graphBiasZ) &&
+    typeof graphConfidence === "number" &&
+    Number.isFinite(graphConfidence)
+      ? graphConfidence * graphBiasZ * SLUMP_POSTERIOR_K * typeFactor
+      : NaN;
+  const strength = Number.isFinite(strengthRaw) ? clamp(strengthRaw, -0.15, 0.15) : 0;
+  return { typeFactor, strengthRaw, strength };
+}
+
+function sumPosterior(xs: SettingPosterior[] | null | undefined): number {
+  if (!xs) return NaN;
+  const sum = xs.reduce((acc, cur) => acc + cur.posterior, 0);
+  return Number.isFinite(sum) ? sum : NaN;
+}
+
+function applySlumpCorrectionToPosteriors(args: {
+  posteriors: SettingPosterior[];
+  machineCategory: Machine["category"];
+  graphBiasZ: number | null;
+  graphConfidence: number | null;
+}): SettingPosterior[] {
+  const { posteriors, machineCategory, graphBiasZ, graphConfidence } = args;
+
+  if (!posteriors || posteriors.length === 0) return posteriors;
+  if (typeof graphBiasZ !== "number" || !Number.isFinite(graphBiasZ)) return posteriors;
+  if (typeof graphConfidence !== "number" || !Number.isFinite(graphConfidence)) return posteriors;
+  if (!(graphConfidence > 0)) return posteriors;
+
+  // A-type (juggler/hanahana): K
+  // smartAT: K*0.3 (further weakened)
+  // Scalar shift strength in log-space.
+  // Safety clamp: keep the effect small even when biasZ/confidence are near their max.
+  const { strength } = calcSlumpPosteriorStrength({
+    machineCategory,
+    graphBiasZ,
+    graphConfidence,
+  });
+  if (strength === 0) return posteriors;
+
+  // Determine high/low settings by numeric setting number.
+  const numeric = posteriors
+    .map((p) => ({ p, n: settingKeyToNumber(p.s) }))
+    .filter((x) => Number.isFinite(x.n) && x.p.posterior > 0);
+  if (numeric.length < 2) return posteriors;
+
+  const minN = Math.min(...numeric.map((x) => x.n));
+  const maxN = Math.max(...numeric.map((x) => x.n));
+  const span = maxN - minN;
+  if (!(span > 0)) return posteriors;
+
+  // Preserve hard zeros: only re-softmax over positive-probability settings.
+  const activeIdxs: number[] = [];
+  const scores: number[] = [];
+  const deltasByIdx = new Map<number, number>();
+
+  for (let i = 0; i < posteriors.length; i += 1) {
+    const p = posteriors[i];
+    if (!(p.posterior > 0) || !Number.isFinite(p.posterior)) continue;
+
+    const n = settingKeyToNumber(p.s);
+    const highness01 = Number.isFinite(n) ? (n - minN) / span : 0.5;
+    const center = highness01 * 2 - 1; // low:-1 ... high:+1
+
+    // biasZ>0: increase high-setting, decrease low-setting.
+    // biasZ<0: the reverse.
+    const delta = strength * center;
+    deltasByIdx.set(i, delta);
+
+    activeIdxs.push(i);
+    scores.push(Math.log(p.posterior) + delta);
+  }
+
+  if (activeIdxs.length < 2) return posteriors;
+  const maxScore = Math.max(...scores);
+  if (!Number.isFinite(maxScore)) return posteriors;
+
+  const weights = scores.map((s) => Math.exp(s - maxScore));
+  const sum = weights.reduce((a, b) => a + b, 0);
+  if (!(sum > 0) || !Number.isFinite(sum)) return posteriors;
+
+  const out = posteriors.map((p) => ({ ...p }));
+  for (let j = 0; j < activeIdxs.length; j += 1) {
+    const idx = activeIdxs[j];
+    out[idx].posterior = weights[j] / sum;
+    const delta = deltasByIdx.get(idx) ?? 0;
+    if (Number.isFinite(delta)) out[idx].logLikelihood = out[idx].logLikelihood + delta;
+  }
+  return out;
+}
 
 function safetyFactorByGames(currentGames: number): number {
   if (!(currentGames > 0)) return 0.4;
@@ -126,17 +234,23 @@ export default function MachineJudgeForm({
   const [collapsedHintGroups, setCollapsedHintGroups] = useState<Record<string, boolean>>({});
   const [hintMemos, setHintMemos] = useState<Record<string, string>>({});
 
-  const [ocrImageUrl, setOcrImageUrl] = useState<string | null>(null);
-  const [ocrText, setOcrText] = useState<string>("");
-  const [ocrStatus, setOcrStatus] = useState<"idle" | "running" | "done" | "error">(
+  const [graphImageFile, setGraphImageFile] = useState<File | null>(null);
+  const [graphImageUrl, setGraphImageUrl] = useState<string | null>(null);
+  const [graphStatus, setGraphStatus] = useState<"idle" | "running" | "done" | "error">(
     "idle",
   );
-  const [ocrError, setOcrError] = useState<string | null>(null);
-  const [ocrSuggestion, setOcrSuggestion] = useState<{
-    games?: number;
-    big?: number;
-    reg?: number;
-  } | null>(null);
+  const [graphError, setGraphError] = useState<string | null>(null);
+  const [graphBiasZ, setGraphBiasZ] = useState<number | null>(null);
+  const [graphConfidence, setGraphConfidence] = useState<number | null>(null);
+  const [showSlumpPosteriorDebug, setShowSlumpPosteriorDebug] = useState(false);
+
+  const [tapStep, setTapStep] = useState<"start" | "end" | "yTop" | "yBottom">("start");
+  const [tapStart, setTapStart] = useState<TapPoint | null>(null);
+  const [tapEnd, setTapEnd] = useState<TapPoint | null>(null);
+  const [tapYTop, setTapYTop] = useState<TapPoint | null>(null);
+  const [tapYBottom, setTapYBottom] = useState<TapPoint | null>(null);
+  const [yTopValue, setYTopValue] = useState<string>("");
+  const [yBottomValue, setYBottomValue] = useState<string>("");
   const lastObjectUrlRef = useRef<string | null>(null);
 
   const [exchangeMode, setExchangeMode] = useState<"equal" | "custom">("equal");
@@ -289,83 +403,121 @@ export default function MachineJudgeForm({
     };
   }, []);
 
-  function parseOcr(text: string) {
-    const normalized = text
-      .replace(/\u3000/g, " ")
-      .replace(/[\r\t]+/g, " ")
-      .replace(/ +/g, " ")
-      .replace(/\n+/g, "\n")
-      .trim();
-
-    const pickInt = (v?: string) => {
-      if (!v) return undefined;
-      const n = Number(v.replace(/,/g, ""));
-      if (!Number.isFinite(n)) return undefined;
-      return Math.max(0, Math.trunc(n));
-    };
-
-    const find = (re: RegExp) => {
-      const m = normalized.match(re);
-      return m?.[1];
-    };
-
-    // Labels differ by data-counter, so keep this flexible.
-    const big = pickInt(
-      find(/\b(?:BIG|BB|BONUS)\b\s*[:：]?\s*(\d{1,4})/i) ??
-        find(/ボーナス\s*[:：]?\s*(\d{1,4})/i),
-    );
-    const reg = pickInt(find(/\b(?:REG|RB|AT)\b\s*[:：]?\s*(\d{1,4})/i));
-
-    // Games often appears as "G" or "GAME" or "TOTAL" or "回転".
-    const gamesByLabel = pickInt(
-      find(/\b(?:GAMES?|GAME|TOTAL|START)\b\s*[:：]?\s*(\d{1,6})/i),
-    );
-    const gamesBySuffix = (() => {
-      const all = Array.from(normalized.matchAll(/(\d{2,6})\s*G\b/gi)).map(
-        (m) => pickInt(m[1]) ?? 0,
-      );
-      if (all.length === 0) return undefined;
-      return Math.max(...all);
-    })();
-
-    const games = gamesByLabel ?? gamesBySuffix;
-    return { games, big, reg };
+  function getGraphKind(): "jugg" | "hanahana" | "smart-at" {
+    if (machine.category === "JUG") return "jugg";
+    if (machine.category === "HANAHANA") return "hanahana";
+    return "smart-at";
   }
 
-  async function runOcr() {
-    if (!ocrImageUrl) return;
-    setOcrStatus("running");
-    setOcrError(null);
-    setOcrText("");
-    setOcrSuggestion(null);
+  function resetGraphInputs() {
+    setTapStep("start");
+    setTapStart(null);
+    setTapEnd(null);
+    setTapYTop(null);
+    setTapYBottom(null);
+    setYTopValue("");
+    setYBottomValue("");
+    setGraphBiasZ(null);
+    setGraphConfidence(null);
+    setGraphError(null);
+    setGraphStatus("idle");
+  }
+
+  function handleGraphImageClick(e: MouseEvent<HTMLImageElement>) {
+    const img = e.currentTarget;
+    const rect = img.getBoundingClientRect();
+    if (!(rect.width > 0) || !(rect.height > 0)) return;
+
+    // Convert displayed coordinates to natural image pixels.
+    const x = (e.clientX - rect.left) * (img.naturalWidth / rect.width);
+    const y = (e.clientY - rect.top) * (img.naturalHeight / rect.height);
+    const p: TapPoint = { x: Math.max(0, Math.round(x)), y: Math.max(0, Math.round(y)) };
+
+    if (tapStep === "start") {
+      setTapStart(p);
+      setTapStep("end");
+      return;
+    }
+    if (tapStep === "end") {
+      setTapEnd(p);
+      setTapStep("yTop");
+      return;
+    }
+    if (tapStep === "yTop") {
+      setTapYTop(p);
+      setTapStep("yBottom");
+      return;
+    }
+
+    setTapYBottom(p);
+  }
+
+  async function analyzeGraph() {
+    if (!graphImageFile) return;
+    if (!tapStart || !tapEnd || !tapYTop || !tapYBottom) {
+      setGraphError("開始点/終了点/縦軸上限/縦軸下限をタップしてください。");
+      return;
+    }
+
+    const top = Number(yTopValue);
+    const bottom = Number(yBottomValue);
+    if (!Number.isFinite(top) || !Number.isFinite(bottom) || top === bottom) {
+      setGraphError("縦軸の上限/下限（差枚）を数値で入力してください。");
+      return;
+    }
+
+    setGraphStatus("running");
+    setGraphError(null);
+    setGraphBiasZ(null);
+    setGraphConfidence(null);
 
     try {
-      const { createWorker } = await import("tesseract.js");
-      const worker = await createWorker("eng");
+      const fd = new FormData();
+      fd.set("image", graphImageFile);
+      fd.set(
+        "payload",
+        JSON.stringify({
+          kind: getGraphKind(),
+          start: tapStart,
+          end: tapEnd,
+          yTop: { y: tapYTop.y, value: top },
+          yBottom: { y: tapYBottom.y, value: bottom },
+          ...(Number.isFinite(parsed.games) && parsed.games > 0 ? { spins: parsed.games } : {}),
+        }),
+      );
 
-      await worker.setParameters({
-        tessedit_char_whitelist: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz:\\n ",
-      });
+      const res = await fetch("/api/slump-graph/analyze", { method: "POST", body: fd });
+      const data = (await res.json()) as unknown;
+      if (!res.ok) {
+        const msg =
+          typeof data === "object" && data && "error" in data
+            ? String((data as { error?: unknown }).error ?? "")
+            : "解析に失敗しました。";
+        throw new Error(msg || "解析に失敗しました。");
+      }
 
-      const res = await worker.recognize(ocrImageUrl);
-      const text = res.data.text ?? "";
-      await worker.terminate();
+      if (
+        typeof data !== "object" ||
+        data === null ||
+        !("biasZ" in data) ||
+        !("graphConfidence" in data)
+      ) {
+        throw new Error("Invalid response");
+      }
 
-      setOcrText(text);
-      const sug = parseOcr(text);
-      setOcrSuggestion(sug);
-      setOcrStatus("done");
+      const biasZ = Number((data as { biasZ: unknown }).biasZ);
+      const graphConfidence = Number((data as { graphConfidence: unknown }).graphConfidence);
+      if (!Number.isFinite(biasZ) || !Number.isFinite(graphConfidence)) {
+        throw new Error("Invalid response");
+      }
+
+      setGraphBiasZ(biasZ);
+      setGraphConfidence(graphConfidence);
+      setGraphStatus("done");
     } catch (e) {
-      setOcrStatus("error");
-      setOcrError(e instanceof Error ? e.message : "OCRに失敗しました。");
+      setGraphStatus("error");
+      setGraphError(e instanceof Error ? e.message : "解析に失敗しました。");
     }
-  }
-
-  function applyOcrSuggestion() {
-    if (!ocrSuggestion) return;
-    if (typeof ocrSuggestion.games === "number") setGames(String(ocrSuggestion.games));
-    if (showBigInput && typeof ocrSuggestion.big === "number") setBigCount(String(ocrSuggestion.big));
-    if (showReg && typeof ocrSuggestion.reg === "number") setRegCount(String(ocrSuggestion.reg));
   }
 
   const error = useMemo(() => {
@@ -522,6 +674,28 @@ export default function MachineJudgeForm({
   const posteriorCalc = useMemo(() => {
     if (error) return null;
 
+    const applySlump = (xs: SettingPosterior[]) =>
+      applySlumpCorrectionToPosteriors({
+        posteriors: xs,
+        machineCategory: machine.category,
+        graphBiasZ,
+        graphConfidence,
+      });
+
+    const withSlumpDebug = (preCorrection: SettingPosterior[], note: string | null) => {
+      const postCorrection = applySlump(preCorrection);
+      return {
+        posteriors: postCorrection,
+        note,
+        debug: IS_DEV
+          ? {
+              before: preCorrection,
+              after: postCorrection,
+            }
+          : null,
+      };
+    };
+
     const hasAnyExtraMetricsInput = Object.values(extraCounts).some((v) => v !== "");
     const hasAnyBinomialInput =
       Object.values(binomialTrials).some((v) => v !== "") ||
@@ -597,7 +771,7 @@ export default function MachineJudgeForm({
       uraAtHits: uraAtHits === "" ? undefined : parsed.uraAtHits,
     });
 
-    if (!hintConfig) return { posteriors: base, note: null };
+    if (!hintConfig) return withSlumpDebug(base, null);
 
   // Apply hint effects on the posterior distribution directly.
   // - Deterministic constraints: minSetting / exactSetting / excludeSetting
@@ -648,12 +822,12 @@ export default function MachineJudgeForm({
       }
     }
 
-    if (!hasConstraint && !hasWeight) return { posteriors: base, note: null };
+    if (!hasConstraint && !hasWeight) return withSlumpDebug(base, null);
     if (contradiction) {
-      return {
-        posteriors: base,
-        note: "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
-      };
+      return withSlumpDebug(
+        base,
+        "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
+      );
     }
 
     const numericSettings = machine.odds.settings
@@ -670,10 +844,10 @@ export default function MachineJudgeForm({
             .map((x) => x.num);
 
     if (hasConstraint && allowedNums.length === 0) {
-      return {
-        posteriors: base,
-        note: "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
-      };
+      return withSlumpDebug(
+        base,
+        "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
+      );
     }
 
     const allowedSet = new Set<number>(allowedNums);
@@ -694,10 +868,10 @@ export default function MachineJudgeForm({
 
     const sum = adjusted.reduce((acc, cur) => acc + cur.posterior, 0);
     if (!(sum > 0)) {
-      return {
-        posteriors: base,
-        note: "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
-      };
+      return withSlumpDebug(
+        base,
+        "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
+      );
     }
 
     const normalized = adjusted.map((p) => ({ ...p, posterior: p.posterior / sum }));
@@ -714,7 +888,7 @@ export default function MachineJudgeForm({
     if (hasWeight) noteParts.push("ソフト示唆");
 
     const note = noteParts.length > 0 ? `示唆を反映：${noteParts.join(" / ")}` : null;
-    return { posteriors: normalized, note };
+    return withSlumpDebug(normalized, note);
   }, [
     machine.odds.settings,
     parsed,
@@ -739,10 +913,60 @@ export default function MachineJudgeForm({
     showBinomialMetrics,
     showBigInput,
     derivedBigFromExtraIds,
+    graphBiasZ,
+    graphConfidence,
+    machine.category,
   ]);
 
   const posteriors = posteriorCalc?.posteriors ?? null;
   const posteriorNote = posteriorCalc?.note ?? null;
+  const posteriorDebug = posteriorCalc?.debug ?? null;
+
+  const slumpStrength = useMemo(() => {
+    return calcSlumpPosteriorStrength({
+      machineCategory: machine.category,
+      graphBiasZ,
+      graphConfidence,
+    });
+  }, [machine.category, graphBiasZ, graphConfidence]);
+
+  const slumpDebugRows = useMemo(() => {
+    if (!posteriorDebug) return null;
+    const beforeByKey = new Map<string, number>();
+    const afterByKey = new Map<string, number>();
+    for (const p of posteriorDebug.before) beforeByKey.set(String(p.s), p.posterior);
+    for (const p of posteriorDebug.after) afterByKey.set(String(p.s), p.posterior);
+    const keys = Array.from(new Set([...beforeByKey.keys(), ...afterByKey.keys()]));
+    keys.sort((aKey, bKey) => {
+      const aNum = Number(aKey);
+      const bNum = Number(bKey);
+      const aIsNum = Number.isFinite(aNum);
+      const bIsNum = Number.isFinite(bNum);
+      if (aIsNum && bIsNum) return aNum - bNum;
+      if (aIsNum) return -1;
+      if (bIsNum) return 1;
+      return aKey.localeCompare(bKey);
+    });
+
+    const rows = keys.map((k) => {
+      const before = beforeByKey.get(k) ?? 0;
+      const after = afterByKey.get(k) ?? 0;
+      return { s: k, before, after, delta: after - before };
+    });
+    const revived = rows.filter((r) => r.before === 0 && r.after > 0).length;
+    const killed = rows.filter((r) => r.before > 0 && r.after === 0).length;
+    const zerosBefore = rows.filter((r) => r.before === 0).length;
+    const zerosAfter = rows.filter((r) => r.after === 0).length;
+    return {
+      rows,
+      revived,
+      killed,
+      zerosBefore,
+      zerosAfter,
+      sumBefore: sumPosterior(posteriorDebug.before),
+      sumAfter: sumPosterior(posteriorDebug.after),
+    };
+  }, [posteriorDebug]);
 
   useEffect(() => {
     onPosteriorsChange?.(posteriors);
@@ -855,11 +1079,10 @@ export default function MachineJudgeForm({
       </p>
 
       <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-        <p className="text-sm font-semibold">データカウンター画像から入力</p>
+        <p className="text-sm font-semibold">スランプグラフ画像から補正</p>
         <p className="mt-1 text-xs text-neutral-500">
-          スクショを読み込んで、総G/{bigLabelForJudge}
-          {showReg ? `/${regLabel}` : ""}
-          を自動入力します（対応していない表示もあります）。
+          画像から「上振れ/下振れ」の補正値を算出します（設定断定には使いません）。
+          MVPでは自動認識は行わず、開始点/終了点/縦軸上限/縦軸下限のタップ補助が前提です。
         </p>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -875,70 +1098,105 @@ export default function MachineJudgeForm({
                 cleanupObjectUrl();
                 const url = URL.createObjectURL(f);
                 lastObjectUrlRef.current = url;
-                setOcrImageUrl(url);
-                setOcrStatus("idle");
-                setOcrError(null);
-                setOcrText("");
-                setOcrSuggestion(null);
+                setGraphImageFile(f);
+                setGraphImageUrl(url);
+                resetGraphInputs();
               }}
             />
           </label>
 
-          {ocrImageUrl ? (
+          {graphImageUrl ? (
             <div className="rounded-lg border border-neutral-200 bg-white p-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={ocrImageUrl}
-                alt="データカウンター画像"
-                className="h-28 w-full rounded-md object-contain"
+                src={graphImageUrl}
+                alt="スランプグラフ画像"
+                className="h-28 w-full cursor-crosshair rounded-md object-contain"
+                onClick={handleGraphImageClick}
               />
             </div>
           ) : null}
         </div>
 
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-lg border border-neutral-200 bg-white p-3">
+            <p className="text-xs font-semibold text-neutral-600">タップ補助</p>
+            <p className="mt-1 text-xs text-neutral-500">
+              画像をタップして順に指定：
+              開始点 → 終了点 → 縦軸上限位置 → 縦軸下限位置
+            </p>
+            <p className="mt-2 text-xs text-neutral-700">
+              次にタップ：
+              <span className="font-semibold">
+                {tapStep === "start"
+                  ? "開始点"
+                  : tapStep === "end"
+                    ? "終了点"
+                    : tapStep === "yTop"
+                      ? "縦軸上限"
+                      : "縦軸下限"}
+              </span>
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-600">
+              <span>開始: {tapStart ? `(${tapStart.x},${tapStart.y})` : "-"}</span>
+              <span>終了: {tapEnd ? `(${tapEnd.x},${tapEnd.y})` : "-"}</span>
+              <span>上限: {tapYTop ? `y=${tapYTop.y}` : "-"}</span>
+              <span>下限: {tapYBottom ? `y=${tapYBottom.y}` : "-"}</span>
+            </div>
+            <button
+              type="button"
+              onClick={resetGraphInputs}
+              className="mt-3 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+            >
+              指定をリセット
+            </button>
+          </div>
+
+          <div className="rounded-lg border border-neutral-200 bg-white p-3">
+            <p className="text-xs font-semibold text-neutral-600">縦軸（差枚）</p>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <label className="block">
+                <span className="text-xs text-neutral-500">上限</span>
+                <input
+                  inputMode="numeric"
+                  value={yTopValue}
+                  onChange={(e) => setYTopValue(e.target.value)}
+                  placeholder="例: 3000"
+                  className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                />
+              </label>
+              <label className="block">
+                <span className="text-xs text-neutral-500">下限</span>
+                <input
+                  inputMode="numeric"
+                  value={yBottomValue}
+                  onChange={(e) => setYBottomValue(e.target.value)}
+                  placeholder="例: -3000"
+                  className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <button
             type="button"
-            onClick={runOcr}
-            disabled={!ocrImageUrl || ocrStatus === "running"}
+            onClick={analyzeGraph}
+            disabled={!graphImageUrl || graphStatus === "running"}
             className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium disabled:opacity-40"
           >
-            {ocrStatus === "running" ? "読み取り中…" : "画像を読み取る"}
+            {graphStatus === "running" ? "解析中…" : "解析する"}
           </button>
 
-          <button
-            type="button"
-            onClick={applyOcrSuggestion}
-            disabled={!ocrSuggestion}
-            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium disabled:opacity-40"
-          >
-            反映する
-          </button>
-
-          {ocrSuggestion ? (
+          {graphBiasZ !== null && graphConfidence !== null ? (
             <p className="text-xs text-neutral-600">
-              推定：
-              {typeof ocrSuggestion.games === "number" ? `総G ${ocrSuggestion.games} / ` : ""}
-              {showBigInput && typeof ocrSuggestion.big === "number"
-                ? `${bigLabel} ${ocrSuggestion.big} / `
-                : ""}
-              {showReg && typeof ocrSuggestion.reg === "number" ? `${regLabel} ${ocrSuggestion.reg}` : ""}
+              解析結果：biasZ {graphBiasZ.toFixed(2)} / confidence {graphConfidence.toFixed(2)}
             </p>
           ) : null}
         </div>
 
-        {ocrError ? <p className="mt-2 text-sm font-medium text-red-600">{ocrError}</p> : null}
-
-        {ocrText ? (
-          <details className="mt-3">
-            <summary className="cursor-pointer text-xs font-semibold text-neutral-600">
-              読み取り結果（テキスト）
-            </summary>
-            <pre className="mt-2 max-h-40 overflow-auto rounded-lg border border-neutral-200 bg-white p-3 text-xs text-neutral-700">
-{ocrText}
-            </pre>
-          </details>
-        ) : null}
+        {graphError ? <p className="mt-2 text-sm font-medium text-red-600">{graphError}</p> : null}
       </div>
 
       <form
@@ -1424,6 +1682,73 @@ export default function MachineJudgeForm({
               <p className="mt-2 text-sm text-neutral-700">
                 {top3.map((t) => `${t.s}（${fmtPct(t.posterior)}）`).join(" / ")}
               </p>
+            </div>
+          ) : null}
+
+          {IS_DEV && slumpDebugRows ? (
+            <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold">DEV: スランプ補正の影響確認</p>
+                <button
+                  type="button"
+                  className="rounded-lg border border-neutral-200 bg-white px-3 py-1 text-xs font-semibold text-neutral-700 hover:bg-neutral-50"
+                  onClick={() => setShowSlumpPosteriorDebug((v) => !v)}
+                >
+                  {showSlumpPosteriorDebug ? "閉じる" : "開く"}
+                </button>
+              </div>
+
+              {showSlumpPosteriorDebug ? (
+                <>
+                  <p className="mt-1 text-xs text-neutral-500">
+                    biasZ={fmtSigned(graphBiasZ ?? NaN)} / conf={fmt(graphConfidence ?? NaN)} / 
+                    typeFactor={fmt(slumpStrength.typeFactor)} / strengthRaw={fmtSigned(
+                      slumpStrength.strengthRaw,
+                    )} / strength={fmtSigned(slumpStrength.strength)}
+                  </p>
+
+                  <div className="mt-2 grid gap-2 text-xs text-neutral-700 sm:grid-cols-2">
+                    <div>
+                      合計：補正前 {fmt(slumpDebugRows.sumBefore)} / 補正後 {fmt(slumpDebugRows.sumAfter)}
+                    </div>
+                    <div>
+                      hard zero：前 {slumpDebugRows.zerosBefore} / 後 {slumpDebugRows.zerosAfter}（0→&gt;0:
+                      {slumpDebugRows.revived} / &gt;0→0: {slumpDebugRows.killed}）
+                    </div>
+                  </div>
+
+                  <div className="mt-3 overflow-x-auto">
+                    <table className="w-full min-w-[520px] border-collapse text-xs">
+                      <thead>
+                        <tr className="text-left text-neutral-600">
+                          <th className="px-3 py-2 border border-neutral-200">設定</th>
+                          <th className="px-3 py-2 border border-neutral-200">補正前</th>
+                          <th className="px-3 py-2 border border-neutral-200">補正後</th>
+                          <th className="px-3 py-2 border border-neutral-200">差分(pp)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {slumpDebugRows.rows.map((r) => (
+                          <tr key={r.s} className="text-neutral-800">
+                            <td className="px-3 py-2 font-semibold border border-neutral-200">
+                              {r.s}
+                            </td>
+                            <td className="px-3 py-2 border border-neutral-200">
+                              {fmtPct(r.before)}
+                            </td>
+                            <td className="px-3 py-2 border border-neutral-200">
+                              {fmtPct(r.after)}
+                            </td>
+                            <td className="px-3 py-2 border border-neutral-200">
+                              {fmtSigned(r.delta * 100)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              ) : null}
             </div>
           ) : null}
 

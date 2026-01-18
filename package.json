@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "verify:slump-proxy": "node scripts/verify-slump-proxy.mjs",
     "publish:machine": "node scripts/publish-machine-update.mjs",
     "db:init-reviews": "node scripts/init-reviews-table.mjs",
     "db:init-auth": "node scripts/init-auth-tables.mjs",
