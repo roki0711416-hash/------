@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDb } from "../../../../../lib/db";
-import { requireCurrentUserOrJsonError } from "../../../../../lib/auth";
-import { isAdminRole, shouldBeAdminFromEnv } from "../../../../../lib/roles";
+import { requireAdmin } from "../../../../../lib/requireAdmin";
 
 export const runtime = "nodejs";
 
@@ -23,13 +22,8 @@ function parseRole(v: unknown): "admin" | "dev" | null {
 }
 
 export async function POST(req: Request) {
-  const auth = await requireCurrentUserOrJsonError();
-  if (!auth.ok) return auth.response;
-
-  const isAdmin =
-    isAdminRole(auth.user.role) ||
-    shouldBeAdminFromEnv({ userId: auth.user.id, email: auth.user.email });
-  if (!isAdmin) return jsonError(403, "管理者のみ実行できます。");
+  const auth = await requireAdmin();
+  if ("forbiddenResponse" in auth) return auth.forbiddenResponse;
 
   const db = getDb();
   if (!db) {

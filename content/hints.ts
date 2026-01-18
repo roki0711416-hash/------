@@ -152,7 +152,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       },
       {
         id: "big_side",
-        title: "BIG中 ビタ押しスイカ揃い時：サイドランプ",
+        title: "BIG中ビタ押しスイカ揃い時：ランプ",
         note: "現状は表示のみ（判別に反映するには設定別の出現率が必要）",
         items: [
           { id: "big_side_blue", label: "青（奇数）", effect: { type: "none" } },
@@ -1526,7 +1526,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         id: "gc2_big_end_sub_lcd_touch",
         title: "BIG終了後：サブ液晶タッチ",
         note:
-          "BIG終了画面でサブ液晶をタッチすると設定示唆画面が表示（p-town 4790）。GC黒/白は出現傾向示唆のため判別には未反映。",
+          "BIG終了画面でサブ液晶をタッチすると設定示唆画面が表示。GC黒/白は出現傾向示唆のため判別には未反映。",
         items: [
           { id: "gc2_big_end_sub_gc_black", label: "GC黒", effect: { type: "none" } },
           { id: "gc2_big_end_sub_gc_white", label: "GC白", effect: { type: "none" } },
@@ -1538,7 +1538,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         id: "gc2_resonance_navi_push_voice",
         title: "レゾナンスナビ：PUSHボイス",
         note:
-          "レゾナンスナビで「NEXT」→「CHANCE」時にPUSHで発生。VCモード示唆のため設定判別には未反映（p-town 4790）。",
+          "レゾナンスナビで「NEXT」→「CHANCE」時にPUSHで発生。VCモード示唆のため設定判別には未反映。",
         items: [
           { id: "gc2_voice_souta", label: "颯太（デフォルト）", effect: { type: "none" } },
           { id: "gc2_voice_kanon", label: "花音（デフォルト）", effect: { type: "none" } },

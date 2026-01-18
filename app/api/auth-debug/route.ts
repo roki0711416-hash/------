@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
-import { getCurrentUserFromCookies } from "../../../lib/auth";
+import { requireAdmin } from "../../../lib/requireAdmin";
 
 export const runtime = "nodejs";
 
 export async function GET() {
-  const user = await getCurrentUserFromCookies();
+  const auth = await requireAdmin();
+  if ("forbiddenResponse" in auth) return auth.forbiddenResponse;
+
+  const user = auth.user;
   console.log("[auth-debug]", user?.role, user?.id);
 
   return NextResponse.json({
