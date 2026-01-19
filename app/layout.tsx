@@ -22,6 +22,7 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const user = await getCurrentUserFromCookies();
+  const isLoggedIn = !!user;
 
   return (
     <html lang="ja">
@@ -63,7 +64,7 @@ export default async function RootLayout({
                 </Link>
 
                 <div className="flex shrink-0 items-center gap-3">
-                  {user ? (
+                  {isLoggedIn ? (
                     <span className="text-sm font-semibold text-neutral-700">ログイン中</span>
                   ) : (
                     <Link
@@ -119,7 +120,7 @@ export default async function RootLayout({
                     </Link>
                   </li>
                   <li>
-                    {user ? (
+                    {isLoggedIn ? (
                       <span className="text-neutral-700">ログイン中</span>
                     ) : (
                       <Link
