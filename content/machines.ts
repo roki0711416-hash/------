@@ -937,6 +937,33 @@ export const machines = [
     },
   },
 
+  // --- SAMMY 追加（p-town 4160） ---
+  {
+    id: "kabaneri-of-the-iron-fortress",
+    name: "パチスロ甲鉄城のカバネリ",
+    maker: "サミー",
+    series: "甲鉄城のカバネリ",
+    category: "OTHER",
+    inHall: true,
+    description:
+      "ボーナス合算/ST合算ベースの簡易判別。確率・機械割はp-town（4160）参照。50枚あたり約33G（独自調査値）。",
+    metricsLabels: {
+      bigLabel: "ボーナス合算",
+      regLabel: "ST合算",
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 237.0, reg: 407.9, total: 237.0, rate: 97.8 },
+        { s: 2, big: 230.7, reg: 393.2, total: 230.7, rate: 98.8 },
+        { s: 3, big: 214.0, reg: 372.4, total: 214.0, rate: 100.7 },
+        { s: 4, big: 186.5, reg: 327.2, total: 186.5, rate: 105.9 },
+        { s: 5, big: 171.3, reg: 307.3, total: 171.3, rate: 108.4 },
+        { s: 6, big: 151.3, reg: 290.6, total: 151.3, rate: 110.0 },
+      ],
+    },
+  },
+
   // --- ENTERRISE L追加 ---
   {
     id: "smart-onimusha-3",
