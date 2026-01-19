@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-20-003",
+    "date": "2026-01-20",
+    "title": "commonBell6対応",
+    "href": "/tool?machine=commonBell6",
+    "body": "commonBell6を追加しました。"
+  },
+  {
     "id": "2026-01-20-002",
     "date": "2026-01-20",
     "title": "パチスロ甲鉄城のカバネリ対応",
