@@ -963,6 +963,41 @@ export const machines = [
     },
   },
 
+  // --- Daiichi L追加 ---
+  {
+    id: "smart-shin-ikkitousen",
+    name: "L 真・一騎当千",
+    maker: "Daiichi",
+    series: "一騎当千",
+    category: "SMART",
+    inHall: true,
+    description:
+      "L（AT初当り）ベースの簡易判別。確率・機械割はp-town（4650）参照（bonus.jpg OCR）。",
+    metricsLabels: {
+      bigLabel: "AT初当り",
+      regLabel: null,
+      totalLabel: null,
+      binomialMetrics: [
+        {
+          id: "bell",
+          trialsLabel: "通常時ゲーム数",
+          hitsLabel: "1枚or11枚ベル回数",
+          rateLabel: "1枚or11枚ベル確率",
+        },
+      ],
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 321.3, reg: 1_000_000_000, total: 321.3, rate: 97.6, binomialRates: { bell: 1 / 5.12 } },
+        { s: 2, big: 310.8, reg: 1_000_000_000, total: 310.8, rate: 99.0, binomialRates: { bell: 1 / 5.08 } },
+        { s: 3, big: 291.6, reg: 1_000_000_000, total: 291.6, rate: 101.0, binomialRates: { bell: 1 / 5.04 } },
+        { s: 4, big: 245.7, reg: 1_000_000_000, total: 245.7, rate: 105.8, binomialRates: { bell: 1 / 4.99 } },
+        { s: 5, big: 232.3, reg: 1_000_000_000, total: 232.3, rate: 109.5, binomialRates: { bell: 1 / 4.94 } },
+        { s: 6, big: 222.1, reg: 1_000_000_000, total: 222.1, rate: 112.0, binomialRates: { bell: 1 / 4.89 } },
+      ],
+    },
+  },
+
   // --- KONAMI L追加 ---
   {
     id: "konami_tenseiken",

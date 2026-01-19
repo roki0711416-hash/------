@@ -4490,6 +4490,109 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-shin-ikkitousen"] = {
+    machineId: "smart-shin-ikkitousen",
+    helpUrl: "https://p-town.dmm.com/machines/4650",
+    groups: [
+      {
+        id: "ikkitousen_at_end_screen",
+        title: "AT終了画面",
+        note: "キャラで設定を示唆。確定系は判別に反映。示唆系はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "ikkitousen_at_end_sonsaku", label: "孫策（デフォルト）", effect: { type: "none" } },
+          {
+            id: "ikkitousen_at_end_ryubi",
+            label: "劉備（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          },
+          {
+            id: "ikkitousen_at_end_sousou",
+            label: "曹操（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          },
+          {
+            id: "ikkitousen_at_end_choun",
+            label: "趙雲（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "ikkitousen_at_end_kanu",
+            label: "関羽（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          {
+            id: "ikkitousen_at_end_kanu_sonsaku",
+            label: "関羽＆孫策（偶数設定濃厚）",
+            effect: { type: "weight", weights: { 2: 1.25, 4: 1.25, 6: 1.25 } },
+          },
+          { id: "ikkitousen_at_end_koumei", label: "孔明（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "ikkitousen_at_end_ryofu", label: "呂布（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "ikkitousen_at_end_chengdu", label: "成都学園（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "ikkitousen_at_end_vs_yamato", label: "VS大和学院（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "ikkitousen_at_end_wedding", label: "ウェディング（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "ikkitousen_at_bonus_intro",
+        title: "AT中ボーナス：キャラ紹介演出",
+        note: "キャラで設定を示唆。否定系は判別に反映。",
+        items: [
+          { id: "ikkitousen_intro_sonsaku", label: "孫策（設定2否定）", effect: { type: "excludeSetting", exclude: 2 } },
+          { id: "ikkitousen_intro_ryomou", label: "呂蒙（設定3否定）", effect: { type: "excludeSetting", exclude: 3 } },
+          { id: "ikkitousen_intro_chouhi", label: "張飛（設定4否定）", effect: { type: "excludeSetting", exclude: 4 } },
+          { id: "ikkitousen_intro_choun", label: "趙雲（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          {
+            id: "ikkitousen_intro_kanu",
+            label: "関羽（設定1or4or6濃厚）",
+            effect: { type: "allOf", effects: [
+              { type: "excludeSetting", exclude: 2 },
+              { type: "excludeSetting", exclude: 3 },
+              { type: "excludeSetting", exclude: 5 },
+            ] },
+          },
+        ],
+      },
+      {
+        id: "ikkitousen_payout_display",
+        title: "獲得枚数表示（特定枚数表示）",
+        note: "獲得枚数が規定枚数を超えた際に表示（確定系のみ反映）。",
+        items: [
+          { id: "ikkitousen_payout_222", label: "222over（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "ikkitousen_payout_333", label: "333over（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "ikkitousen_payout_444", label: "444over（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "ikkitousen_payout_456", label: "456over（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "ikkitousen_payout_555", label: "555over（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+        ],
+      },
+      {
+        id: "ikkitousen_magutama",
+        title: "勾玉の導き：継続ゲーム数",
+        note: "継続G数で設定を示唆（確定系のみ反映）。",
+        items: [
+          { id: "ikkitousen_magutama_30plus", label: "30G以上継続（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "ikkitousen_magutama_40", label: "40G継続（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "ikkitousen_magutama_50", label: "50G継続（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "ikkitousen_magutama_60", label: "60G継続（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "ikkitousen_specific_damage",
+        title: "特定ダメージ（特定の数値）",
+        note: "攻撃で与えるダメージが特定数値なら設定を示唆（確定系のみ反映）。",
+        items: [
+          { id: "ikkitousen_damage_234", label: "234（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "ikkitousen_damage_1234", label: "1234（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "ikkitousen_damage_456", label: "456（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "ikkitousen_damage_1456", label: "1456（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "ikkitousen_damage_555", label: "555（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "ikkitousen_damage_1555", label: "1555（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "ikkitousen_damage_666", label: "666（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "ikkitousen_damage_1666", label: "1666（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }
