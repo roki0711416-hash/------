@@ -386,10 +386,20 @@ export const machines = [
       bigLabel: "ボーナス初当り",
       regLabel: "AT初当り",
       totalLabel: null,
-      extraLabel: "弱チェリー",
-      suikaTrialsLabel: "スイカ回数",
-      suikaCzHitsLabel: "CZ当選(スイカ)",
-      suikaCzRateLabel: "スイカCZ当選率",
+      binomialMetrics: [
+        {
+          id: "weakCherry",
+          trialsLabel: "総ゲーム数",
+          hitsLabel: "弱チェリー回数",
+          rateLabel: "弱チェリー",
+        },
+        {
+          id: "suikaCz",
+          trialsLabel: "スイカ回数",
+          hitsLabel: "CZ当選(スイカ)",
+          rateLabel: "スイカCZ当選率",
+        },
+      ],
     },
     odds: {
       settings: [
@@ -399,8 +409,7 @@ export const machines = [
           reg: 654.6,
           total: 175.9,
           rate: 97.6,
-          extra: 60.0,
-          suikaCzRate: 0.203,
+          binomialRates: { weakCherry: 1 / 60.0, suikaCz: 0.203 },
         },
         {
           s: 2,
@@ -408,8 +417,7 @@ export const machines = [
           reg: 633.4,
           total: 172.0,
           rate: 98.9,
-          extra: 57.7,
-          suikaCzRate: 0.227,
+          binomialRates: { weakCherry: 1 / 57.7, suikaCz: 0.227 },
         },
         {
           s: 3,
@@ -417,8 +425,7 @@ export const machines = [
           reg: 571.8,
           total: 160.3,
           rate: 102.0,
-          extra: 55.5,
-          suikaCzRate: 0.25,
+          binomialRates: { weakCherry: 1 / 55.5, suikaCz: 0.25 },
         },
         {
           s: 4,
@@ -426,8 +433,7 @@ export const machines = [
           reg: 516.6,
           total: 148.5,
           rate: 106.0,
-          extra: 53.5,
-          suikaCzRate: 0.281,
+          binomialRates: { weakCherry: 1 / 53.5, suikaCz: 0.281 },
         },
         {
           s: 5,
@@ -435,8 +441,7 @@ export const machines = [
           reg: 456.5,
           total: 136.7,
           rate: 110.4,
-          extra: 51.7,
-          suikaCzRate: 0.309,
+          binomialRates: { weakCherry: 1 / 51.7, suikaCz: 0.309 },
         },
         {
           s: 6,
@@ -444,8 +449,7 @@ export const machines = [
           reg: 416.7,
           total: 127.8,
           rate: 114.9,
-          extra: 50.0,
-          suikaCzRate: 0.336,
+          binomialRates: { weakCherry: 1 / 50.0, suikaCz: 0.336 },
         },
       ],
     },
