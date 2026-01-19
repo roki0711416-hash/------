@@ -1041,7 +1041,7 @@ export const machines = [
     category: "SMART",
     inHall: true,
     description:
-      "ボーナス/AT初当りベースの簡易判別。確率・機械割はp-town（4903）参照。ボーナス直撃は（直撃確率：日曜日以外）を二項で反映。",
+      "ボーナス/AT初当りベースの簡易判別。確率・機械割はp-town（4903）参照。ボーナス直撃は（日曜日/日曜日以外）を別カウントとして二項で反映。",
     metricsLabels: {
       bigLabel: "ボーナス",
       regLabel: "AT",
@@ -1049,9 +1049,15 @@ export const machines = [
       binomialMetrics: [
         {
           id: "bonusDirect",
-          trialsLabel: "通常時ゲーム数",
+          trialsLabel: "通常時ゲーム数（日曜日以外）",
           hitsLabel: "ボーナス直撃回数",
-          rateLabel: "ボーナス直撃率",
+          rateLabel: "ボーナス直撃確率（日曜日以外）",
+        },
+        {
+          id: "bonusDirectSunday",
+          trialsLabel: "通常時ゲーム数（日曜日）",
+          hitsLabel: "ボーナス直撃回数",
+          rateLabel: "ボーナス直撃確率（日曜日）",
         },
       ],
     },
@@ -1063,7 +1069,7 @@ export const machines = [
           reg: 543.0,
           total: 270.0,
           rate: 97.2,
-          binomialRates: { bonusDirect: 1 / 5738.6 },
+          binomialRates: { bonusDirect: 1 / 5738.6, bonusDirectSunday: 1 / 897.1 },
         },
         {
           s: 2,
@@ -1071,7 +1077,7 @@ export const machines = [
           reg: 501.0,
           total: 261.0,
           rate: 98.6,
-          binomialRates: { bonusDirect: 1 / 4456.9 },
+          binomialRates: { bonusDirect: 1 / 4456.9, bonusDirectSunday: 1 / 809.8 },
         },
         {
           s: 3,
@@ -1079,7 +1085,7 @@ export const machines = [
           reg: 450.0,
           total: 254.0,
           rate: 100.6,
-          binomialRates: { bonusDirect: 1 / 3872.6 },
+          binomialRates: { bonusDirect: 1 / 3872.6, bonusDirectSunday: 1 / 795.0 },
         },
         {
           s: 4,
@@ -1087,7 +1093,7 @@ export const machines = [
           reg: 357.0,
           total: 241.0,
           rate: 105.8,
-          binomialRates: { bonusDirect: 1 / 3328.6 },
+          binomialRates: { bonusDirect: 1 / 3328.6, bonusDirectSunday: 1 / 586.3 },
         },
         {
           s: 5,
@@ -1095,7 +1101,7 @@ export const machines = [
           reg: 304.0,
           total: 231.0,
           rate: 109.0,
-          binomialRates: { bonusDirect: 1 / 2819.5 },
+          binomialRates: { bonusDirect: 1 / 2819.5, bonusDirectSunday: 1 / 495.4 },
         },
         {
           s: 6,
@@ -1103,7 +1109,7 @@ export const machines = [
           reg: 266.0,
           total: 225.0,
           rate: 112.5,
-          binomialRates: { bonusDirect: 1 / 1921.2 },
+          binomialRates: { bonusDirect: 1 / 1921.2, bonusDirectSunday: 1 / 369.8 },
         },
       ],
     },
