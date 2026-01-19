@@ -1,5 +1,19 @@
 [
   {
+    "id": "2026-01-19-003",
+    "date": "2026-01-19",
+    "title": "bell対応",
+    "href": "/tool?machine=bell",
+    "body": "bellを追加しました。"
+  },
+  {
+    "id": "2026-01-19-002",
+    "date": "2026-01-19",
+    "title": "L 真・一騎当千対応",
+    "href": "/tool?machine=smart-shin-ikkitousen",
+    "body": "L 真・一騎当千を追加しました。"
+  },
+  {
     "id": "2026-01-19-001",
     "date": "2026-01-19",
     "title": "ゴーゴージャグラー3対応",
