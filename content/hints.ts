@@ -4671,6 +4671,73 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["kabaneri-of-the-iron-fortress"] = {
+    machineId: "kabaneri-of-the-iron-fortress",
+    helpUrl: "https://p-town.dmm.com/machines/4160",
+    groups: [
+      {
+        id: "kabaneri_sammy_trophy",
+        title: "サミートロフィーの示唆",
+        note: "色で設定を示唆（確定系として反映）。",
+        items: [
+          { id: "kabaneri_trophy_default", label: "出現なし/その他", effect: { type: "none" } },
+          { id: "kabaneri_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "kabaneri_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "kabaneri_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "kabaneri_trophy_kirin", label: "キリン柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "kabaneri_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "kabaneri_omikuji",
+        title: "おみくじ",
+        note: "結果で設定を示唆（確定系として反映）。",
+        items: [
+          { id: "kabaneri_omikuji_default", label: "出現なし/その他", effect: { type: "none" } },
+          { id: "kabaneri_omikuji_shokichi", label: "小吉（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "kabaneri_omikuji_chukichi", label: "中吉（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "kabaneri_omikuji_daikichi", label: "大吉（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "kabaneri_payout",
+        title: "獲得枚数表示",
+        note: "特定枚数OVERの示唆（確定系として反映）。",
+        items: [
+          { id: "kabaneri_payout_default", label: "出現なし/その他", effect: { type: "none" } },
+          { id: "kabaneri_payout_456", label: "456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "kabaneri_payout_666", label: "666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "kabaneri_kabaneri_attack_add",
+        title: "カバネリアタック：特定の上乗せ枚数",
+        note: "特定の上乗せ枚数で設定を示唆（確定系として反映）。",
+        items: [
+          { id: "kabaneri_add_default", label: "該当なし/その他", effect: { type: "none" } },
+          { id: "kabaneri_add_44", label: "+44枚（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "kabaneri_add_55", label: "+55枚（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "kabaneri_add_66", label: "+66枚（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "kabaneri_add_77", label: "+77枚（設定6濃厚 ※条件付きの可能性あり）", effect: { type: "exactSetting", exact: 6 } },
+          { id: "kabaneri_add_331", label: "+331枚（設定6濃厚 ※条件付きの可能性あり）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "kabaneri_st_end_screen",
+        title: "ST終了画面",
+        note: "高設定ほど出やすい画面はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "kabaneri_st_end_default", label: "デフォルト", effect: { type: "none" } },
+          {
+            id: "kabaneri_st_end_shobu",
+            label: "菖蒲（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.08, 5: 1.12, 6: 1.16 } },
+          },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }
