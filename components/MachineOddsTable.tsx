@@ -94,45 +94,45 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
             </tbody>
           </table>
         </div>
+      </section>
 
-        {hasExtras ? (
-          <>
-            <h3 className="mt-6 text-base font-semibold text-neutral-800">追加確率</h3>
-            <p className="mt-1 text-sm text-neutral-600">設定別の 1/○○ 表記</p>
+      {hasExtras ? (
+        <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5">
+          <h2 className="text-lg font-semibold">追加確率</h2>
+          <p className="mt-1 text-sm text-neutral-600">設定別の 1/○○ 表記</p>
 
-            <div className="mt-3 overflow-x-auto">
-              <table className="w-full min-w-[560px] border-collapse text-sm">
-                <thead>
-                  <tr className="text-left text-neutral-600">
-                    <th className="sticky left-0 z-10 bg-white px-3 py-2 border border-neutral-200">
-                      項目
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full min-w-[560px] border-collapse text-sm">
+              <thead>
+                <tr className="text-left text-neutral-600">
+                  <th className="sticky left-0 z-10 bg-white px-3 py-2 border border-neutral-200">
+                    項目
+                  </th>
+                  {machine.odds.settings.map((s, idx) => (
+                    <th key={`${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
+                      設定{s.s}
                     </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {extraMetricsToShow.map((em) => (
+                  <tr key={em.id} className="text-neutral-800">
+                    <td className="sticky left-0 bg-white px-3 py-2 font-semibold border border-neutral-200">
+                      {em.label}
+                    </td>
                     {machine.odds.settings.map((s, idx) => (
-                      <th key={`${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
-                        設定{s.s}
-                      </th>
+                      <td key={`${em.id}-${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
+                        {typeof s.extras?.[em.id] === "number" ? `1/${fmt(s.extras[em.id])}` : "-"}
+                      </td>
                     ))}
                   </tr>
-                </thead>
-                <tbody>
-                  {extraMetricsToShow.map((em) => (
-                    <tr key={em.id} className="text-neutral-800">
-                      <td className="sticky left-0 bg-white px-3 py-2 font-semibold border border-neutral-200">
-                        {em.label}
-                      </td>
-                      {machine.odds.settings.map((s, idx) => (
-                        <td key={`${em.id}-${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
-                          {typeof s.extras?.[em.id] === "number" ? `1/${fmt(s.extras[em.id])}` : "-"}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        ) : null}
-      </section>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
 
       {hasBinomial ? (
         <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5">
