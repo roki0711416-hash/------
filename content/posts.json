@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-20-001",
+    "date": "2026-01-20",
+    "title": "bonusDirect対応",
+    "href": "/tool?machine=bonusDirect",
+    "body": "bonusDirectを追加しました。"
+  },
+  {
     "id": "2026-01-19-004",
     "date": "2026-01-19",
     "title": "L 絶対衝激Ⅳ対応",
