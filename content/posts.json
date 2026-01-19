@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-20-004",
+    "date": "2026-01-20",
+    "title": "bonusDirectSunday対応",
+    "href": "/tool?machine=bonusDirectSunday",
+    "body": "bonusDirectSundayを追加しました。"
+  },
+  {
     "id": "2026-01-20-003",
     "date": "2026-01-20",
     "title": "commonBell6対応",
