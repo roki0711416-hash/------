@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import type { Machine } from "../content/machines";
 import { getHintConfig } from "../content/hints";
@@ -27,12 +26,6 @@ function fmtSigned(n: number) {
   return `${sign}${fmt(n)}`;
 }
 
-function fmtYenSigned(n: number) {
-  if (!Number.isFinite(n)) return "-";
-  const sign = n > 0 ? "+" : "";
-  return `${sign}${Math.round(n).toLocaleString()}円`;
-}
-
 function fmtOneOver(games: number, count: number) {
   if (!(games > 0) || !(count > 0)) return "-";
   return `1/${fmt(games / count)}`;
@@ -54,10 +47,6 @@ function settingKeyToNumber(key: number | string): number {
 }
 
 type OddsRow = Machine["odds"]["settings"][number];
-
-const BET_PER_GAME = 3; // 3枚掛け想定
-const DEFAULT_PREDICT_GAMES = 500;
-const DEFAULT_YEN_PER_COIN = 20;
 
 const SLUMP_POSTERIOR_K = 0.3;
 const IS_DEV = process.env.NODE_ENV !== "production";
@@ -165,21 +154,11 @@ function applySlumpCorrectionToPosteriors(args: {
   return out;
 }
 
-function safetyFactorByGames(currentGames: number): number {
-  if (!(currentGames > 0)) return 0.4;
-  if (currentGames <= 500) return 0.4;
-  if (currentGames <= 1000) return 0.5;
-  if (currentGames <= 2000) return 0.6;
-  return 0.7;
-}
-
 export default function MachineJudgeForm({
   machine,
-  isPremium = false,
   onPosteriorsChange,
 }: {
   machine: Machine;
-  isPremium?: boolean;
   onPosteriorsChange?: (posteriors: SettingPosterior[] | null) => void;
 }) {
   const [games, setGames] = useState<string>("");
@@ -226,8 +205,6 @@ export default function MachineJudgeForm({
   const uraAtHitsLabel = machine.metricsLabels?.uraAtHitsLabel ?? null;
   const uraAtRateLabel = machine.metricsLabels?.uraAtRateLabel ?? "裏AT直行率";
 
-  const showInvestLimit = false;
-
   const hideHintDescriptions = machine.maker === "パイオニア";
 
   const hintConfig = useMemo(() => getHintConfig(machine.id), [machine.id]);
@@ -253,12 +230,6 @@ export default function MachineJudgeForm({
   const [yTopValue, setYTopValue] = useState<string>("");
   const [yBottomValue, setYBottomValue] = useState<string>("");
   const lastObjectUrlRef = useRef<string | null>(null);
-
-  const [predictGames, setPredictGames] = useState<string>(String(DEFAULT_PREDICT_GAMES));
-  const [exchangeMode, setExchangeMode] = useState<"equal" | "custom">("equal");
-  const [yenPerCoinCustom, setYenPerCoinCustom] = useState<string>(
-    String(DEFAULT_YEN_PER_COIN),
-  );
 
   const extraLabel =
     machine.metricsLabels?.extraLabel ??
@@ -979,89 +950,6 @@ export default function MachineJudgeForm({
     return topNSettings(posteriors, 3);
   }, [posteriors]);
 
-  const predictGamesInfo = useMemo(() => {
-    const raw = Number(predictGames);
-    const isValid = Number.isFinite(raw) && raw > 0;
-    const value = isValid ? Math.max(1, Math.trunc(raw)) : DEFAULT_PREDICT_GAMES;
-    return { isValid, value };
-  }, [predictGames]);
-
-  const evPredict = useMemo(() => {
-    if (!posteriors) return null;
-
-    const oddsBySetting = new Map<string, OddsRow>();
-    for (const row of machine.odds.settings) oddsBySetting.set(String(row.s), row);
-
-    const perSetting = posteriors
-      .map((p) => {
-        const odds = oddsBySetting.get(String(p.s));
-        const rate = odds?.rate;
-        const netCoins =
-          typeof rate === "number"
-            ? predictGamesInfo.value * BET_PER_GAME * (rate / 100 - 1)
-            : NaN;
-        return { s: p.s, posterior: p.posterior, netCoins };
-      })
-      .sort((a, b) => b.posterior - a.posterior);
-
-    if (!perSetting.some((p) => Number.isFinite(p.netCoins))) return null;
-
-    const overall = perSetting.reduce(
-      (acc, cur) => (Number.isFinite(cur.netCoins) ? acc + cur.posterior * cur.netCoins : acc),
-      0,
-    );
-
-    const pWin = perSetting.reduce(
-      (acc, cur) => (Number.isFinite(cur.netCoins) && cur.netCoins > 0 ? acc + cur.posterior : acc),
-      0,
-    );
-    const pLose = perSetting.reduce(
-      (acc, cur) => (Number.isFinite(cur.netCoins) && cur.netCoins < 0 ? acc + cur.posterior : acc),
-      0,
-    );
-
-    return { overall, perSettingTop3: perSetting.slice(0, 3), pWin, pLose };
-  }, [posteriors, machine.odds.settings, predictGamesInfo.value]);
-
-  const yenPerCoin = useMemo(() => {
-    if (exchangeMode === "equal") return DEFAULT_YEN_PER_COIN;
-    const v = Number(yenPerCoinCustom);
-    if (!Number.isFinite(v) || v <= 0) return NaN;
-    return v;
-  }, [exchangeMode, yenPerCoinCustom]);
-
-  const investLimitPredict = useMemo(() => {
-    if (!posteriors) return null;
-    if (!Number.isFinite(yenPerCoin) || yenPerCoin <= 0) return null;
-
-    const oddsBySetting = new Map<string, OddsRow>();
-    for (const row of machine.odds.settings) oddsBySetting.set(String(row.s), row);
-
-    let weightedRate = 0;
-    let weightedEvCoinsPerGame = 0;
-    let usedRates = 0;
-    for (const p of posteriors) {
-      const odds = oddsBySetting.get(String(p.s));
-      const rate = odds?.rate;
-      if (typeof rate !== "number") continue;
-
-      weightedRate += p.posterior * rate;
-      weightedEvCoinsPerGame += p.posterior * (BET_PER_GAME * (rate / 100 - 1));
-      usedRates += 1;
-    }
-
-    if (usedRates === 0) return null;
-
-  const theoryCoins = weightedEvCoinsPerGame * predictGamesInfo.value;
-    const theoryYen = theoryCoins * yenPerCoin;
-
-    const k = safetyFactorByGames(parsed.games);
-    const safeYen = theoryYen * k;
-    const limitYen = Math.max(0, safeYen * 0.8);
-
-    return { weightedRate, k, theoryYen, safeYen, limitYen };
-  }, [machine.odds.settings, parsed.games, posteriors, predictGamesInfo.value, yenPerCoin]);
-
   const sorted = useMemo(() => {
     if (!posteriors) return null;
     return [...posteriors].sort((a, b) => {
@@ -1762,175 +1650,6 @@ export default function MachineJudgeForm({
                   </div>
                 </>
               ) : null}
-            </div>
-          ) : null}
-
-          {evPredict ? (
-            <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-              <p className="text-sm font-semibold">サブスク会員限定</p>
-              <p className="mt-1 text-xs text-neutral-500">
-                機械割(%)と判別結果から、任意G数の期待差枚を概算します（3枚掛け想定）。
-              </p>
-
-              {!isPremium ? (
-                <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
-                  <p className="text-sm font-semibold text-neutral-700">
-                    {predictGamesInfo.value}G先 期待差枚（推定）
-                  </p>
-                  <p className="mt-1 text-sm text-neutral-700">サブスク会員限定の機能です。</p>
-                  <Link
-                    href="/account"
-                    className="mt-2 inline-block text-sm font-semibold text-neutral-900 underline underline-offset-2"
-                  >
-                    サブスク登録・ログインはこちら
-                  </Link>
-                </div>
-              ) : (
-                <>
-                  <div className="mt-3 flex items-start justify-between gap-3">
-                    <p className="text-sm font-semibold">{predictGamesInfo.value}G先 期待差枚（推定）</p>
-                    <label className="flex items-center gap-2 text-xs text-neutral-600">
-                      <span className="font-semibold text-neutral-600">G数</span>
-                      <input
-                        inputMode="numeric"
-                        value={predictGames}
-                        onChange={(e) => setPredictGames(e.target.value)}
-                        className="w-20 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
-                        placeholder={String(DEFAULT_PREDICT_GAMES)}
-                      />
-                      <span className="text-neutral-500">G</span>
-                    </label>
-                  </div>
-
-                  {!predictGamesInfo.isValid ? (
-                    <p className="mt-2 text-xs font-medium text-red-600">
-                      G数は1以上の数字で入力してください（未入力/不正な場合は{DEFAULT_PREDICT_GAMES}Gとして計算します）。
-                    </p>
-                  ) : null}
-                  <p className="mt-2 whitespace-pre-line text-xs text-neutral-500">
-                    {"※本ツールの期待値は、\n同じ条件で何度もプレイした場合の「平均的な結果」を示したものです。\n実戦では一時的に大きく勝つことも、大きく負けることもあります。\n表示される金額は「必ずそうなる結果」ではありません"}
-                  </p>
-
-                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-lg border border-neutral-200 bg-white p-3">
-                      <p className="text-xs font-semibold text-neutral-600">換算</p>
-                      <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <label className="flex items-center gap-2 text-sm text-neutral-700">
-                          <input
-                            type="radio"
-                            name="exchangeMode"
-                            value="equal"
-                            checked={exchangeMode === "equal"}
-                            onChange={() => setExchangeMode("equal")}
-                          />
-                          等価（1枚=20円）
-                        </label>
-                        <label className="flex items-center gap-2 text-sm text-neutral-700">
-                          <input
-                            type="radio"
-                            name="exchangeMode"
-                            value="custom"
-                            checked={exchangeMode === "custom"}
-                            onChange={() => setExchangeMode("custom")}
-                          />
-                          非等価
-                        </label>
-                        {exchangeMode === "custom" ? (
-                          <div className="flex items-center gap-2 text-sm text-neutral-700">
-                            <span className="text-xs text-neutral-500">1枚=</span>
-                            <input
-                              inputMode="decimal"
-                              value={yenPerCoinCustom}
-                              onChange={(e) => setYenPerCoinCustom(e.target.value)}
-                              className="w-20 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
-                            />
-                            <span className="text-xs text-neutral-500">円</span>
-                          </div>
-                        ) : null}
-                      </div>
-                      {exchangeMode === "custom" && !Number.isFinite(yenPerCoin) ? (
-                        <p className="mt-2 text-xs font-medium text-red-600">
-                          換算レートは0より大きい数で入力してください。
-                        </p>
-                      ) : null}
-                    </div>
-                  </div>
-
-                  <div className="mt-3 grid gap-2 text-sm text-neutral-700 sm:grid-cols-2">
-                    <div>
-                      <p className="text-xs text-neutral-500">全体（期待値）</p>
-                      <p className="font-semibold">
-                        {fmtSigned(evPredict.overall)}枚
-                        {Number.isFinite(yenPerCoin) ? (
-                          <span className="text-neutral-500">
-                            {" "}（{fmtYenSigned(evPredict.overall * yenPerCoin)}）
-                          </span>
-                        ) : null}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-neutral-500">TOP3内訳</p>
-                      <p className="font-semibold">
-                        {evPredict.perSettingTop3
-                          .map(
-                            (t) =>
-                              `${t.s}: ${fmtSigned(t.netCoins)}枚$${Number.isFinite(yenPerCoin) ? `（${fmtYenSigned(t.netCoins * yenPerCoin)}）` : ""}（${fmtPct(t.posterior)}）`,
-                          )
-                          .join(" / ")}
-                      </p>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          ) : null}
-
-          {evPredict && showInvestLimit ? (
-            <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-              <p className="text-sm font-semibold">サブスク会員限定</p>
-              <p className="mt-1 text-xs text-neutral-500">
-                判別結果と機械割から、{predictGamesInfo.value}G回す想定の「追加投資の目安」を計算します。
-              </p>
-
-              {!isPremium ? (
-                <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
-                  <p className="text-sm font-semibold text-neutral-700">サブスク限定</p>
-                  <p className="mt-1 text-sm text-neutral-700">
-                    投資上限（目安）と勝率/負け確率の表示はサブスク機能です。
-                  </p>
-                </div>
-              ) : investLimitPredict ? (
-                <div className="mt-3 grid gap-2 text-sm text-neutral-700 sm:grid-cols-2">
-                  <div>
-                    <p className="text-xs text-neutral-500">推奨投資上限（追加）</p>
-                    <p className="text-base font-semibold">
-                      {Math.round(investLimitPredict.limitYen).toLocaleString()}円
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-neutral-500">想定機械割（加重平均）</p>
-                    <p className="font-semibold">{investLimitPredict.weightedRate.toFixed(2)}%</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-neutral-500">勝率（推定）</p>
-                    <p className="font-semibold">{fmtPct(evPredict.pWin)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-neutral-500">負け確率（推定）</p>
-                    <p className="font-semibold">{fmtPct(evPredict.pLose)}</p>
-                  </div>
-                  <p className="text-xs text-neutral-500 sm:col-span-2">
-                    ※概算です（換算レートと総Gに依存）。最終判断はご自身でお願いします。
-                  </p>
-                </div>
-              ) : (
-                <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
-                  <p className="text-sm text-neutral-700">
-                    表示するには、まず判別（総G/{bigLabelForJudge}
-                    {showReg ? `/${regLabel}` : ""}）を入力してください。
-                  </p>
-                </div>
-              )}
             </div>
           ) : null}
 

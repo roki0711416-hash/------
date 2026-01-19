@@ -20,7 +20,6 @@ export default function ToolJudgeAndReviews({
     <>
       <MachineJudgeForm
         machine={machine}
-        isPremium={isPremium}
         onPosteriorsChange={setPosteriors}
       />
       <PremiumMemberCard machine={machine} isPremium={isPremium} posteriors={posteriors} />
