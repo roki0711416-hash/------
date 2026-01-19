@@ -245,6 +245,17 @@ export default function MachineJudgeForm({
   const binomialMetrics = machine.metricsLabels?.binomialMetrics ?? null;
   const showBinomialMetrics = !!binomialMetrics && binomialMetrics.length > 0;
 
+  const autoBinomialTrialsFromGamesMetricIds = useMemo(() => {
+    const ids: string[] = [];
+    if (!binomialMetrics) return ids;
+    for (const m of binomialMetrics) {
+      // For some metrics, trials are simply the total games already input above.
+      // Example: Kabaneri common bell probability.
+      if (m.trialsLabel.includes("総ゲーム数")) ids.push(m.id);
+    }
+    return ids;
+  }, [binomialMetrics]);
+
   useEffect(() => {
     // Avoid carrying hint inputs across machine switches.
     setHintCounts({});
@@ -333,6 +344,14 @@ export default function MachineJudgeForm({
       parsedBinomialHits[k] = Number.isFinite(n) ? n : Number.NaN;
     }
 
+    // Auto-fill trials from total games for selected metrics.
+    if (autoBinomialTrialsFromGamesMetricIds.length > 0) {
+      const gg = Number.isFinite(g) ? g : Number.NaN;
+      for (const id of autoBinomialTrialsFromGamesMetricIds) {
+        parsedBinomialTrials[id] = gg;
+      }
+    }
+
     return {
       games: Number.isFinite(g) ? g : NaN,
       bigCount: Number.isFinite(b) ? b : NaN,
@@ -354,6 +373,7 @@ export default function MachineJudgeForm({
     extraCounts,
     binomialTrials,
     binomialHits,
+    autoBinomialTrialsFromGamesMetricIds,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -569,11 +589,19 @@ export default function MachineJudgeForm({
 
     if (showBinomialMetrics && binomialMetrics) {
       for (const m of binomialMetrics) {
+        const isAutoTrials = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
         const tRaw = binomialTrials[m.id] ?? "";
         const hRaw = binomialHits[m.id] ?? "";
-        if (tRaw === "" && hRaw === "") continue;
-        if (tRaw === "" || hRaw === "")
-          return `${m.trialsLabel}と${m.hitsLabel}は両方入力してください。`;
+
+        if (isAutoTrials) {
+          if (hRaw === "") continue;
+          if (!(parsed.games >= 0) || !Number.isInteger(parsed.games))
+            return `${m.trialsLabel}は総ゲーム数から自動入力されます。総ゲーム数を0以上の整数で入力してください。`;
+        } else {
+          if (tRaw === "" && hRaw === "") continue;
+          if (tRaw === "" || hRaw === "")
+            return `${m.trialsLabel}と${m.hitsLabel}は両方入力してください。`;
+        }
 
         const t = parsed.binomialTrials[m.id];
         const h = parsed.binomialHits[m.id];
@@ -623,6 +651,7 @@ export default function MachineJudgeForm({
     extraCounts,
     binomialTrials,
     binomialHits,
+    autoBinomialTrialsFromGamesMetricIds,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -704,6 +733,17 @@ export default function MachineJudgeForm({
       if (!showBinomialMetrics || !binomialMetrics) return undefined;
       const out: Record<string, number> = {};
       for (const m of binomialMetrics) {
+        const hitsRaw = binomialHits[m.id] ?? "";
+        if (hitsRaw === "") continue;
+
+        const isAutoTrials = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
+        if (isAutoTrials) {
+          const n = parsed.games;
+          if (!Number.isFinite(n)) continue;
+          out[m.id] = n;
+          continue;
+        }
+
         const raw = binomialTrials[m.id] ?? "";
         if (raw === "") continue;
         const n = parsed.binomialTrials[m.id];
@@ -873,6 +913,7 @@ export default function MachineJudgeForm({
     extraCounts,
     binomialTrials,
     binomialHits,
+    autoBinomialTrialsFromGamesMetricIds,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -1206,58 +1247,96 @@ export default function MachineJudgeForm({
           : null}
 
         {showBinomialMetrics && binomialMetrics
-          ? binomialMetrics.flatMap((m) => [
-              <CountField
-                key={`${m.id}:trials`}
-                label={m.trialsLabel}
-                value={binomialTrials[m.id] ?? ""}
-                onChange={(next) =>
-                  setBinomialTrials((prev) => ({
-                    ...prev,
-                    [m.id]: next,
-                  }))
-                }
-                placeholder="例: 20"
-                showStep5
-                onStep={(delta) => {
-                  const current = toIntOrZero(binomialTrials[m.id] ?? "");
-                  const next = Math.max(0, current + delta);
-                  const hits = toIntOrZero(binomialHits[m.id] ?? "");
-                  const cappedHits = Math.min(hits, next);
-                  setBinomialTrials((prev) => ({
-                    ...prev,
-                    [m.id]: String(next),
-                  }));
-                  if (cappedHits !== hits) {
+          ? binomialMetrics.flatMap((m) => {
+              const isAutoTrials = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
+              const trialsCap =
+                Number.isFinite(parsed.games) && parsed.games >= 0
+                  ? Math.max(0, Math.trunc(parsed.games))
+                  : Number.POSITIVE_INFINITY;
+
+              if (isAutoTrials) {
+                return [
+                  <CountField
+                    key={`${m.id}:hits`}
+                    label={m.hitsLabel}
+                    value={binomialHits[m.id] ?? ""}
+                    onChange={(next) => {
+                      const n = Number(next);
+                      const capped =
+                        next === "" || !Number.isFinite(n)
+                          ? next
+                          : String(Math.min(Math.max(0, Math.trunc(n)), trialsCap));
+                      setBinomialHits((prev) => ({
+                        ...prev,
+                        [m.id]: capped,
+                      }));
+                    }}
+                    placeholder="例: 1"
+                    onStep={(delta) => {
+                      const current = toIntOrZero(binomialHits[m.id] ?? "");
+                      const next = Math.min(Math.max(current + delta, 0), trialsCap);
+                      setBinomialHits((prev) => ({
+                        ...prev,
+                        [m.id]: String(next),
+                      }));
+                    }}
+                  />,
+                ];
+              }
+
+              return [
+                <CountField
+                  key={`${m.id}:trials`}
+                  label={m.trialsLabel}
+                  value={binomialTrials[m.id] ?? ""}
+                  onChange={(next) =>
+                    setBinomialTrials((prev) => ({
+                      ...prev,
+                      [m.id]: next,
+                    }))
+                  }
+                  placeholder="例: 20"
+                  showStep5
+                  onStep={(delta) => {
+                    const current = toIntOrZero(binomialTrials[m.id] ?? "");
+                    const next = Math.max(0, current + delta);
+                    const hits = toIntOrZero(binomialHits[m.id] ?? "");
+                    const cappedHits = Math.min(hits, next);
+                    setBinomialTrials((prev) => ({
+                      ...prev,
+                      [m.id]: String(next),
+                    }));
+                    if (cappedHits !== hits) {
+                      setBinomialHits((prev) => ({
+                        ...prev,
+                        [m.id]: String(cappedHits),
+                      }));
+                    }
+                  }}
+                />,
+                <CountField
+                  key={`${m.id}:hits`}
+                  label={m.hitsLabel}
+                  value={binomialHits[m.id] ?? ""}
+                  onChange={(next) =>
                     setBinomialHits((prev) => ({
                       ...prev,
-                      [m.id]: String(cappedHits),
-                    }));
+                      [m.id]: next,
+                    }))
                   }
-                }}
-              />,
-              <CountField
-                key={`${m.id}:hits`}
-                label={m.hitsLabel}
-                value={binomialHits[m.id] ?? ""}
-                onChange={(next) =>
-                  setBinomialHits((prev) => ({
-                    ...prev,
-                    [m.id]: next,
-                  }))
-                }
-                placeholder="例: 1"
-                onStep={(delta) => {
-                  const trials = toIntOrZero(binomialTrials[m.id] ?? "");
-                  const current = toIntOrZero(binomialHits[m.id] ?? "");
-                  const next = Math.min(Math.max(current + delta, 0), trials);
-                  setBinomialHits((prev) => ({
-                    ...prev,
-                    [m.id]: String(next),
-                  }));
-                }}
-              />,
-            ])
+                  placeholder="例: 1"
+                  onStep={(delta) => {
+                    const trials = toIntOrZero(binomialTrials[m.id] ?? "");
+                    const current = toIntOrZero(binomialHits[m.id] ?? "");
+                    const next = Math.min(Math.max(current + delta, 0), trials);
+                    setBinomialHits((prev) => ({
+                      ...prev,
+                      [m.id]: String(next),
+                    }));
+                  }}
+                />,
+              ];
+            })
           : null}
 
         {suikaTrialsLabel && suikaCzHitsLabel ? (
