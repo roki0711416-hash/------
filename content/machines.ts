@@ -172,6 +172,26 @@ export const machines = [
   },
 
   {
+    id: "gogo-juggler-3",
+    name: "ゴーゴージャグラー3",
+    maker: "北電子",
+    series: "ジャグラー",
+    inHall: true,
+    category: "JUG",
+    description: "ゴーゴージャグラーシリーズ第3弾。",
+    odds: {
+      settings: [
+        { s: 1, big: 259.0, reg: 354.2, total: 149.6, rate: 97.2 },
+        { s: 2, big: 258.0, reg: 332.7, total: 145.3, rate: 98.2 },
+        { s: 3, big: 257.0, reg: 306.2, total: 139.7, rate: 99.4 },
+        { s: 4, big: 254.0, reg: 268.6, total: 130.5, rate: 101.6 },
+        { s: 5, big: 247.3, reg: 247.3, total: 123.7, rate: 103.8 },
+        { s: 6, big: 234.9, reg: 234.9, total: 117.4, rate: 106.5 },
+      ],
+    },
+  },
+
+  {
     id: "new-king-hanahana-v-bt",
     name: "ニューキングハナハナV（BT）",
     maker: "パイオニア",
