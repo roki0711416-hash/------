@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import type { Machine } from "../content/machines";
 import { getHintConfig } from "../content/hints";
@@ -1766,101 +1767,121 @@ export default function MachineJudgeForm({
 
           {evPredict ? (
             <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-              <div className="flex items-start justify-between gap-3">
-                <p className="text-sm font-semibold">{predictGamesInfo.value}G先 期待差枚（推定）</p>
-                <label className="flex items-center gap-2 text-xs text-neutral-600">
-                  <span className="font-semibold text-neutral-600">G数</span>
-                  <input
-                    inputMode="numeric"
-                    value={predictGames}
-                    onChange={(e) => setPredictGames(e.target.value)}
-                    className="w-20 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
-                    placeholder={String(DEFAULT_PREDICT_GAMES)}
-                  />
-                  <span className="text-neutral-500">G</span>
-                </label>
-              </div>
+              <p className="text-sm font-semibold">サブスク会員限定</p>
               <p className="mt-1 text-xs text-neutral-500">
-                機械割(%)と判別結果からの概算です（3枚掛け想定）。
-              </p>
-              {!predictGamesInfo.isValid ? (
-                <p className="mt-2 text-xs font-medium text-red-600">
-                  G数は1以上の数字で入力してください（未入力/不正な場合は{DEFAULT_PREDICT_GAMES}Gとして計算します）。
-                </p>
-              ) : null}
-              <p className="mt-2 whitespace-pre-line text-xs text-neutral-500">
-                {"※本ツールの期待値は、\n同じ条件で何度もプレイした場合の「平均的な結果」を示したものです。\n実戦では一時的に大きく勝つことも、大きく負けることもあります。\n表示される金額は「必ずそうなる結果」ではありません"}
+                機械割(%)と判別結果から、任意G数の期待差枚を概算します（3枚掛け想定）。
               </p>
 
-              <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-lg border border-neutral-200 bg-white p-3">
-                  <p className="text-xs font-semibold text-neutral-600">換算</p>
-                  <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <label className="flex items-center gap-2 text-sm text-neutral-700">
+              {!isPremium ? (
+                <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
+                  <p className="text-sm font-semibold text-neutral-700">
+                    {predictGamesInfo.value}G先 期待差枚（推定）
+                  </p>
+                  <p className="mt-1 text-sm text-neutral-700">サブスク会員限定の機能です。</p>
+                  <Link
+                    href="/account"
+                    className="mt-2 inline-block text-sm font-semibold text-neutral-900 underline underline-offset-2"
+                  >
+                    サブスク登録・ログインはこちら
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <div className="mt-3 flex items-start justify-between gap-3">
+                    <p className="text-sm font-semibold">{predictGamesInfo.value}G先 期待差枚（推定）</p>
+                    <label className="flex items-center gap-2 text-xs text-neutral-600">
+                      <span className="font-semibold text-neutral-600">G数</span>
                       <input
-                        type="radio"
-                        name="exchangeMode"
-                        value="equal"
-                        checked={exchangeMode === "equal"}
-                        onChange={() => setExchangeMode("equal")}
+                        inputMode="numeric"
+                        value={predictGames}
+                        onChange={(e) => setPredictGames(e.target.value)}
+                        className="w-20 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
+                        placeholder={String(DEFAULT_PREDICT_GAMES)}
                       />
-                      等価（1枚=20円）
+                      <span className="text-neutral-500">G</span>
                     </label>
-                    <label className="flex items-center gap-2 text-sm text-neutral-700">
-                      <input
-                        type="radio"
-                        name="exchangeMode"
-                        value="custom"
-                        checked={exchangeMode === "custom"}
-                        onChange={() => setExchangeMode("custom")}
-                      />
-                      非等価
-                    </label>
-                    {exchangeMode === "custom" ? (
-                      <div className="flex items-center gap-2 text-sm text-neutral-700">
-                        <span className="text-xs text-neutral-500">1枚=</span>
-                        <input
-                          inputMode="decimal"
-                          value={yenPerCoinCustom}
-                          onChange={(e) => setYenPerCoinCustom(e.target.value)}
-                          className="w-20 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
-                        />
-                        <span className="text-xs text-neutral-500">円</span>
-                      </div>
-                    ) : null}
                   </div>
-                  {exchangeMode === "custom" && !Number.isFinite(yenPerCoin) ? (
+
+                  {!predictGamesInfo.isValid ? (
                     <p className="mt-2 text-xs font-medium text-red-600">
-                      換算レートは0より大きい数で入力してください。
+                      G数は1以上の数字で入力してください（未入力/不正な場合は{DEFAULT_PREDICT_GAMES}Gとして計算します）。
                     </p>
                   ) : null}
-                </div>
-              </div>
+                  <p className="mt-2 whitespace-pre-line text-xs text-neutral-500">
+                    {"※本ツールの期待値は、\n同じ条件で何度もプレイした場合の「平均的な結果」を示したものです。\n実戦では一時的に大きく勝つことも、大きく負けることもあります。\n表示される金額は「必ずそうなる結果」ではありません"}
+                  </p>
 
-              <div className="mt-3 grid gap-2 text-sm text-neutral-700 sm:grid-cols-2">
-                <div>
-                  <p className="text-xs text-neutral-500">全体（期待値）</p>
-                  <p className="font-semibold">
-                    {fmtSigned(evPredict.overall)}枚
-                    {Number.isFinite(yenPerCoin) ? (
-                      <span className="text-neutral-500">
-                        {" "}（{fmtYenSigned(evPredict.overall * yenPerCoin)}）
-                      </span>
-                    ) : null}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-neutral-500">TOP3内訳</p>
-                  <p className="font-semibold">
-                    {evPredict.perSettingTop3
-                      .map(
-                        (t) =>
-                          `${t.s}: ${fmtSigned(t.netCoins)}枚$${Number.isFinite(yenPerCoin) ? `（${fmtYenSigned(t.netCoins * yenPerCoin)}）` : ""}（${fmtPct(t.posterior)}）`,
-                      )
-                      .join(" / ")}
-                  </p>
-                </div>
-              </div>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-lg border border-neutral-200 bg-white p-3">
+                      <p className="text-xs font-semibold text-neutral-600">換算</p>
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <label className="flex items-center gap-2 text-sm text-neutral-700">
+                          <input
+                            type="radio"
+                            name="exchangeMode"
+                            value="equal"
+                            checked={exchangeMode === "equal"}
+                            onChange={() => setExchangeMode("equal")}
+                          />
+                          等価（1枚=20円）
+                        </label>
+                        <label className="flex items-center gap-2 text-sm text-neutral-700">
+                          <input
+                            type="radio"
+                            name="exchangeMode"
+                            value="custom"
+                            checked={exchangeMode === "custom"}
+                            onChange={() => setExchangeMode("custom")}
+                          />
+                          非等価
+                        </label>
+                        {exchangeMode === "custom" ? (
+                          <div className="flex items-center gap-2 text-sm text-neutral-700">
+                            <span className="text-xs text-neutral-500">1枚=</span>
+                            <input
+                              inputMode="decimal"
+                              value={yenPerCoinCustom}
+                              onChange={(e) => setYenPerCoinCustom(e.target.value)}
+                              className="w-20 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
+                            />
+                            <span className="text-xs text-neutral-500">円</span>
+                          </div>
+                        ) : null}
+                      </div>
+                      {exchangeMode === "custom" && !Number.isFinite(yenPerCoin) ? (
+                        <p className="mt-2 text-xs font-medium text-red-600">
+                          換算レートは0より大きい数で入力してください。
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="mt-3 grid gap-2 text-sm text-neutral-700 sm:grid-cols-2">
+                    <div>
+                      <p className="text-xs text-neutral-500">全体（期待値）</p>
+                      <p className="font-semibold">
+                        {fmtSigned(evPredict.overall)}枚
+                        {Number.isFinite(yenPerCoin) ? (
+                          <span className="text-neutral-500">
+                            {" "}（{fmtYenSigned(evPredict.overall * yenPerCoin)}）
+                          </span>
+                        ) : null}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-neutral-500">TOP3内訳</p>
+                      <p className="font-semibold">
+                        {evPredict.perSettingTop3
+                          .map(
+                            (t) =>
+                              `${t.s}: ${fmtSigned(t.netCoins)}枚$${Number.isFinite(yenPerCoin) ? `（${fmtYenSigned(t.netCoins * yenPerCoin)}）` : ""}（${fmtPct(t.posterior)}）`,
+                          )
+                          .join(" / ")}
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           ) : null}
 
