@@ -151,15 +151,35 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         ],
       },
       {
-        id: "big_side",
-        title: "BIG中ビタ押しスイカ揃い時：ランプ",
-        note: "現状は表示のみ（判別に反映するには設定別の出現率が必要）",
+        id: "big_late_suika_flash",
+        title: "BIG後半中 スイカ揃い時のフラッシュ",
+        note: "色による奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映（強すぎないよう控えめ）",
         items: [
-          { id: "big_side_blue", label: "青（奇数）", effect: { type: "none" } },
-          { id: "big_side_yellow", label: "黄（偶数）", effect: { type: "none" } },
-          { id: "big_side_green", label: "緑（奇数 強）", effect: { type: "none" } },
-          { id: "big_side_purple", label: "紫（偶数 強）", effect: { type: "none" } },
-          { id: "big_side_rainbow", label: "虹（高設定示唆）", effect: { type: "none" } },
+          {
+            id: "big_late_flash_blue",
+            label: "青（奇数設定示唆［弱］）",
+            effect: { type: "weight", weights: { 1: 1.015, 3: 1.015, 5: 1.015 } },
+          },
+          {
+            id: "big_late_flash_yellow",
+            label: "黄（偶数設定示唆［弱］）",
+            effect: { type: "weight", weights: { 2: 1.015, 4: 1.015, 6: 1.015 } },
+          },
+          {
+            id: "big_late_flash_green",
+            label: "緑（奇数設定示唆［強］）",
+            effect: { type: "weight", weights: { 1: 1.025, 3: 1.025, 5: 1.025 } },
+          },
+          {
+            id: "big_late_flash_red",
+            label: "赤（偶数設定示唆［強］）",
+            effect: { type: "weight", weights: { 2: 1.025, 4: 1.025, 6: 1.025 } },
+          },
+          {
+            id: "big_late_flash_rainbow",
+            label: "虹（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.04, 5: 1.06, 6: 1.08 } },
+          },
         ],
       },
       {
