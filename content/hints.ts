@@ -4655,45 +4655,17 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "zettai4_pb_end_at_no1", label: "ユーアーナンバーワン♡（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
         ],
       },
-
       {
         id: "zettai4_dynamite_trophy",
         title: "ダイナマイトトロフィーの示唆",
-        note: "トロフィーが出現した回数をカウント。確定系は判別に反映。",
+        note: "終了時などに出現するトロフィーの色で設定を示唆。",
         items: [
-          { id: "zettai4_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "zettai4_trophy_default", label: "出現なし/その他", effect: { type: "none" } },
+          { id: "zettai4_trophy_copper", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
           { id: "zettai4_trophy_silver", label: "銀（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
           { id: "zettai4_trophy_gold", label: "金（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
-          { id: "zettai4_trophy_tentoumushi", label: "テントウムシ柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "zettai4_trophy_ladybug", label: "テントウムシ柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
           { id: "zettai4_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
-        ],
-      },
-
-      {
-        id: "zettai4_payout_display",
-        title: "特定の獲得枚数表示",
-        note: "トータル獲得枚数が規定枚数を超えた際に表示（確定系のみ反映。カスタム条件は未考慮）。",
-        items: [
-          { id: "zettai4_payout_130_over", label: "130 OVER（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
-          { id: "zettai4_payout_325_over", label: "325 OVER（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
-          { id: "zettai4_payout_1225_over", label: "1225 OVER（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
-          { id: "zettai4_payout_444_over", label: "444 OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
-          { id: "zettai4_payout_555_over", label: "555 OVER（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
-          { id: "zettai4_payout_666_over", label: "666 OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
-        ],
-      },
-
-      {
-        id: "zettai4_bonus_direct",
-        title: "ボーナス直撃当選（契機役）",
-        note: "通常時の直撃当選は日曜日と日曜日以外で示唆が変化。表にある『濃厚/確定』系のみ反映。",
-        items: [
-          { id: "zettai4_direct_not_sun_miss_bell", label: "日曜日以外：ハズレ目（ハズレor押し順ベル）（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
-          { id: "zettai4_direct_not_sun_rep_bell", label: "日曜日以外：リプレイ・ベル（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
-          { id: "zettai4_direct_not_sun_weakcherry_rin1", label: "日曜日以外：弱チェリー・倫役1個（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
-          { id: "zettai4_direct_sun_weakcherry_rin1", label: "日曜日：弱チェリー・倫役1個（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
-          { id: "zettai4_direct_not_sun_weaksuika", label: "日曜日以外：弱スイカ（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
-          { id: "zettai4_direct_not_sun_strongcherry", label: "日曜日以外：強チェリー（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
         ],
       },
     ],
