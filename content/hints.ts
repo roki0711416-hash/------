@@ -87,27 +87,27 @@ function makePioneerHanahana6GoukiGroups(): HintGroup[] {
         {
           id: "reg_side_blue",
           label: "青（奇数示唆）",
-          effect: { type: "weight", weights: { 1: 1.05, 3: 1.05, 5: 1.05 } },
+          effect: { type: "weight", weights: { 1: 1.02, 3: 1.02, 5: 1.02 } },
         },
         {
           id: "reg_side_yellow",
           label: "黄（偶数示唆）",
-          effect: { type: "weight", weights: { 2: 1.05, 4: 1.05, 6: 1.05 } },
+          effect: { type: "weight", weights: { 2: 1.02, 4: 1.02, 6: 1.02 } },
         },
         {
           id: "reg_side_green",
           label: "緑（奇数示唆［強］）",
-          effect: { type: "weight", weights: { 1: 1.08, 3: 1.08, 5: 1.08 } },
+          effect: { type: "weight", weights: { 1: 1.03, 3: 1.03, 5: 1.03 } },
         },
         {
           id: "reg_side_red",
           label: "赤（偶数示唆［強］）",
-          effect: { type: "weight", weights: { 2: 1.08, 4: 1.08, 6: 1.08 } },
+          effect: { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
         },
         {
           id: "reg_side_rainbow",
           label: "虹（高設定示唆）",
-          effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          effect: { type: "weight", weights: { 4: 1.06, 5: 1.08, 6: 1.1 } },
         },
       ],
     },
