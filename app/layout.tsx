@@ -5,6 +5,7 @@ import Script from "next/script";
 import "./globals.css";
 import HeaderMachineSearchBox from "../components/HeaderMachineSearchBox";
 import GmoSiteSeal from "../components/GmoSiteSeal";
+import { getCurrentUserFromCookies } from "../lib/auth";
 
 export const metadata: Metadata = {
   title: "スロカスくん | スロット設定判別ツール",
@@ -17,9 +18,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const user = await getCurrentUserFromCookies();
+
   return (
     <html lang="ja">
       <body className="min-h-screen bg-neutral-100 text-neutral-900">
@@ -39,7 +42,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="beforeInteractive"
         />
-        <header className="w-full border-b border-neutral-200 bg-white">
+        <header className="w-full border-b border-neutral-200 bg-white bg-orange-500">
           {/* SP/タブレット（〜1023px）：2段ヘッダー */}
           <div className="lg:hidden">
             <div className="mx-auto w-full max-w-xl px-4 py-3">
@@ -60,39 +63,16 @@ export default function RootLayout({
                 </Link>
 
                 <div className="flex shrink-0 items-center gap-3">
-                  <Link
-                    href="/login"
-                    className="text-sm font-semibold text-neutral-700 underline underline-offset-2"
-                  >
-                    ログイン
-                  </Link>
-
-                  <details className="relative">
-                    <summary className="list-none rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-neutral-900">
-                      <span className="sr-only">メニュー</span>
-                      <span aria-hidden>≡</span>
-                    </summary>
-                    <div className="absolute right-0 z-50 mt-2 w-44 rounded-xl border border-neutral-200 bg-white p-2">
-                      <ul className="space-y-1 text-sm">
-                        <li>
-                          <Link
-                            href="/about"
-                            className="block rounded-lg px-3 py-2 text-neutral-700 hover:bg-neutral-50"
-                          >
-                            運営情報
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="/terms"
-                            className="block rounded-lg px-3 py-2 text-neutral-700 hover:bg-neutral-50"
-                          >
-                            利用規約
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </details>
+                  {user ? (
+                    <span className="text-sm font-semibold text-neutral-700">ログイン中</span>
+                  ) : (
+                    <Link
+                      href="/login"
+                      className="text-sm font-semibold text-neutral-700 underline underline-offset-2"
+                    >
+                      ログイン
+                    </Link>
+                  )}
                 </div>
               </div>
 
@@ -124,14 +104,6 @@ export default function RootLayout({
                 <ul className="flex items-center justify-end gap-5 text-sm font-medium">
                   <li>
                     <Link
-                      href="/login"
-                      className="text-neutral-700 underline underline-offset-2"
-                    >
-                      ログイン
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
                       href="/about"
                       className="text-neutral-700 underline underline-offset-2"
                     >
@@ -145,6 +117,18 @@ export default function RootLayout({
                     >
                       利用規約
                     </Link>
+                  </li>
+                  <li>
+                    {user ? (
+                      <span className="text-neutral-700">ログイン中</span>
+                    ) : (
+                      <Link
+                        href="/login"
+                        className="text-neutral-700 underline underline-offset-2"
+                      >
+                        ログイン
+                      </Link>
+                    )}
                   </li>
                 </ul>
               </nav>
