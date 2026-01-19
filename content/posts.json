@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-20-002",
+    "date": "2026-01-20",
+    "title": "パチスロ甲鉄城のカバネリ対応",
+    "href": "/tool?machine=kabaneri-of-the-iron-fortress",
+    "body": "パチスロ甲鉄城のカバネリを追加しました。"
+  },
+  {
     "id": "2026-01-20-001",
     "date": "2026-01-20",
     "title": "bonusDirect対応",
