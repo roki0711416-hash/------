@@ -1,5 +1,19 @@
 [
   {
+    "id": "2026-01-20-006",
+    "date": "2026-01-20",
+    "title": "suikaCz対応",
+    "href": "/tool?machine=suikaCz",
+    "body": "suikaCzを追加しました。"
+  },
+  {
+    "id": "2026-01-20-005",
+    "date": "2026-01-20",
+    "title": "weakCherry対応",
+    "href": "/tool?machine=weakCherry",
+    "body": "weakCherryを追加しました。"
+  },
+  {
     "id": "2026-01-20-004",
     "date": "2026-01-20",
     "title": "bonusDirectSunday対応",
