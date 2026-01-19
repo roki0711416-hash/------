@@ -23,13 +23,35 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
   const extraMetricsToShow = extraMetrics.filter((em) =>
     machine.odds.settings.some((s) => typeof s.extras?.[em.id] === "number"),
   );
-  const hasExtras = extraMetricsToShow.length > 0;
 
   const binomialMetrics = machine.metricsLabels?.binomialMetrics ?? [];
   const binomialMetricsToShow = binomialMetrics.filter((bm) =>
     machine.odds.settings.some((s) => typeof s.binomialRates?.[bm.id] === "number"),
   );
-  const hasBinomial = binomialMetricsToShow.length > 0;
+
+  const countRows: Array<{
+    key: string;
+    label: string;
+    denomBySetting: (s: (typeof machine.odds.settings)[number]) => number | null;
+  }> = [
+    ...extraMetricsToShow.map((em) => ({
+      key: `extra:${em.id}`,
+      label: em.label,
+      denomBySetting: (s: (typeof machine.odds.settings)[number]) => {
+        const denom = s.extras?.[em.id];
+        return typeof denom === "number" && Number.isFinite(denom) && denom > 0 ? denom : null;
+      },
+    })),
+    ...binomialMetricsToShow.map((bm) => ({
+      key: `binomial:${bm.id}`,
+      label: bm.rateLabel ?? bm.id,
+      denomBySetting: (s: (typeof machine.odds.settings)[number]) => {
+        const p = s.binomialRates?.[bm.id];
+        return typeof p === "number" && Number.isFinite(p) && p > 0 ? 1 / p : null;
+      },
+    })),
+  ];
+  const hasCountOdds = countRows.length > 0;
 
   return (
     <>
@@ -96,9 +118,9 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
         </div>
       </section>
 
-      {hasExtras ? (
+      {hasCountOdds ? (
         <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5">
-          <h2 className="text-lg font-semibold">追加確率</h2>
+          <h2 className="text-lg font-semibold">カウント系確率</h2>
           <p className="mt-1 text-sm text-neutral-600">設定別の 1/○○ 表記</p>
 
           <div className="mt-4 overflow-x-auto">
@@ -116,54 +138,16 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
                 </tr>
               </thead>
               <tbody>
-                {extraMetricsToShow.map((em) => (
-                  <tr key={em.id} className="text-neutral-800">
+                {countRows.map((row) => (
+                  <tr key={row.key} className="text-neutral-800">
                     <td className="sticky left-0 bg-white px-3 py-2 font-semibold border border-neutral-200">
-                      {em.label}
-                    </td>
-                    {machine.odds.settings.map((s, idx) => (
-                      <td key={`${em.id}-${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
-                        {typeof s.extras?.[em.id] === "number" ? `1/${fmt(s.extras[em.id])}` : "-"}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      ) : null}
-
-      {hasBinomial ? (
-        <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5">
-          <h2 className="text-lg font-semibold">カウント系確率</h2>
-          <p className="mt-1 text-sm text-neutral-600">設定別の 1/○○ 表記（カウント方式）</p>
-
-          <div className="mt-4 overflow-x-auto">
-            <table className="w-full min-w-[560px] border-collapse text-sm">
-              <thead>
-                <tr className="text-left text-neutral-600">
-                  <th className="sticky left-0 z-10 bg-white px-3 py-2 border border-neutral-200">
-                    項目
-                  </th>
-                  {machine.odds.settings.map((s, idx) => (
-                    <th key={`${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
-                      設定{s.s}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {binomialMetricsToShow.map((bm) => (
-                  <tr key={bm.id} className="text-neutral-800">
-                    <td className="sticky left-0 bg-white px-3 py-2 font-semibold border border-neutral-200">
-                      {bm.rateLabel ?? bm.id}
+                      {row.label}
                     </td>
                     {machine.odds.settings.map((s, idx) => {
-                      const p = s.binomialRates?.[bm.id];
+                      const denom = row.denomBySetting(s);
                       return (
-                        <td key={`${bm.id}-${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
-                          {typeof p === "number" && Number.isFinite(p) && p > 0 ? `1/${fmt(1 / p)}` : "-"}
+                        <td key={`${row.key}-${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
+                          {typeof denom === "number" ? `1/${fmt(denom)}` : "-"}
                         </td>
                       );
                     })}
