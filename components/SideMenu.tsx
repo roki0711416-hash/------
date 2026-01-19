@@ -209,11 +209,6 @@ export default function SideMenu({
               </div>
             </div>
 
-            <div className="border-t border-neutral-200 p-4">
-              <p className="text-xs text-neutral-500">
-                データは content/machines.ts を編集して追加します。
-              </p>
-            </div>
           </div>
         </div>
       ) : null}
