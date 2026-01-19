@@ -4593,6 +4593,71 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-zettai-shogeki-4"] = {
+    machineId: "smart-zettai-shogeki-4",
+    helpUrl: "https://p-town.dmm.com/machines/4903",
+    groups: [
+      {
+        id: "zettai4_special_move",
+        title: "必殺技ごとの示唆",
+        note: "絶対領域の“最終ゲーム”勝利時の必殺技で設定を示唆。",
+        items: [
+          { id: "zettai4_move_default", label: "絶対衝激波（デフォルト）", effect: { type: "none" } },
+          { id: "zettai4_move_2plus", label: "湊汰品消滅波（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "zettai4_move_4plus", label: "覚・明火・陽光（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "zettai4_move_5plus", label: "千年56史（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          {
+            id: "zettai4_move_6",
+            label: "Iseshima's special move 6th sense（設定6濃厚）",
+            effect: { type: "exactSetting", exact: 6 },
+          },
+        ],
+      },
+      {
+        id: "zettai4_pb_end_screen_normal",
+        title: "プラトニックボーナス終了画面（初当り時/通常時）",
+        note: "通常時の初当り時は主にモード示唆が中心。設定示唆（否定/濃厚）系のみ判別に反映。",
+        items: [
+          { id: "zettai4_pb_end_n_4nin", label: "4人（デフォルト）", effect: { type: "none" } },
+          { id: "zettai4_pb_end_n_aya1", label: "綾①（通常B以上示唆）", effect: { type: "none" } },
+          { id: "zettai4_pb_end_n_aya2", label: "綾②（通常B以上濃厚）", effect: { type: "none" } },
+          { id: "zettai4_pb_end_n_aya_natsume", label: "綾と棗（通常D濃厚）", effect: { type: "none" } },
+          { id: "zettai4_pb_end_n_santa", label: "サンタコス（設定1否定濃厚）", effect: { type: "excludeSetting", exclude: 1 } },
+          { id: "zettai4_pb_end_n_maid", label: "メイドコス（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "zettai4_pb_end_n_valentine", label: "バレンタイン綾（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "zettai4_pb_end_n_no1", label: "ユーアーナンバーワン♡（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "zettai4_pb_end_screen_at",
+        title: "プラトニックボーナス終了画面（AT中）",
+        note: "AT中は高設定示唆（弱/中/強）はソフト示唆（重み付け）として反映。否定・濃厚系は制約として反映。",
+        items: [
+          { id: "zettai4_pb_end_at_4nin", label: "4人（デフォルト）", effect: { type: "none" } },
+          {
+            id: "zettai4_pb_end_at_aya1",
+            label: "綾①（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "zettai4_pb_end_at_aya2",
+            label: "綾②（高設定示唆［中］）",
+            effect: { type: "weight", weights: { 4: 1.15, 5: 1.25, 6: 1.35 } },
+          },
+          {
+            id: "zettai4_pb_end_at_aya_natsume",
+            label: "綾と棗（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.2, 5: 1.35, 6: 1.5 } },
+          },
+          { id: "zettai4_pb_end_at_santa", label: "サンタコス（設定1否定濃厚）", effect: { type: "excludeSetting", exclude: 1 } },
+          { id: "zettai4_pb_end_at_maid", label: "メイドコス（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "zettai4_pb_end_at_valentine", label: "バレンタイン綾（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "zettai4_pb_end_at_no1", label: "ユーアーナンバーワン♡（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }

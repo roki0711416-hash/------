@@ -998,6 +998,31 @@ export const machines = [
     },
   },
 
+  {
+    id: "smart-zettai-shogeki-4",
+    name: "L 絶対衝激Ⅳ",
+    maker: "Daiichi",
+    series: "絶対衝激",
+    category: "SMART",
+    inHall: true,
+    description: "ボーナス/AT初当りベースの簡易判別。確率・機械割はp-town（4903）参照。",
+    metricsLabels: {
+      bigLabel: "ボーナス",
+      regLabel: "AT",
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 270.0, reg: 543.0, total: 270.0, rate: 97.2 },
+        { s: 2, big: 261.0, reg: 501.0, total: 261.0, rate: 98.6 },
+        { s: 3, big: 254.0, reg: 450.0, total: 254.0, rate: 100.6 },
+        { s: 4, big: 241.0, reg: 357.0, total: 241.0, rate: 105.8 },
+        { s: 5, big: 231.0, reg: 304.0, total: 231.0, rate: 109.0 },
+        { s: 6, big: 225.0, reg: 266.0, total: 225.0, rate: 112.5 },
+      ],
+    },
+  },
+
   // --- KONAMI L追加 ---
   {
     id: "konami_tenseiken",
