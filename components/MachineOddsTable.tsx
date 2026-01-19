@@ -25,6 +25,12 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
   );
   const hasExtras = extraMetricsToShow.length > 0;
 
+  const binomialMetrics = machine.metricsLabels?.binomialMetrics ?? [];
+  const binomialMetricsToShow = binomialMetrics.filter((bm) =>
+    machine.odds.settings.some((s) => typeof s.binomialRates?.[bm.id] === "number"),
+  );
+  const hasBinomial = binomialMetricsToShow.length > 0;
+
   return (
     <section className="rounded-2xl border border-neutral-200 bg-white p-5">
       <h2 className="text-lg font-semibold">確率・機械割</h2>
@@ -118,6 +124,49 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
                         {typeof s.extras?.[em.id] === "number" ? `1/${fmt(s.extras[em.id])}` : "-"}
                       </td>
                     ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : null}
+
+      {hasBinomial ? (
+        <>
+          <h3 className="mt-6 text-base font-semibold text-neutral-800">カウント系確率</h3>
+          <p className="mt-1 text-sm text-neutral-600">
+            設定別の 1/○○ 表記（通常時などのカウントで使用）
+          </p>
+
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full min-w-[560px] border-collapse text-sm">
+              <thead>
+                <tr className="text-left text-neutral-600">
+                  <th className="sticky left-0 z-10 bg-white px-3 py-2 border border-neutral-200">
+                    項目
+                  </th>
+                  {machine.odds.settings.map((s, idx) => (
+                    <th key={`${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
+                      設定{s.s}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {binomialMetricsToShow.map((bm) => (
+                  <tr key={bm.id} className="text-neutral-800">
+                    <td className="sticky left-0 bg-white px-3 py-2 font-semibold border border-neutral-200">
+                      {bm.rateLabel ?? bm.id}
+                    </td>
+                    {machine.odds.settings.map((s, idx) => {
+                      const p = s.binomialRates?.[bm.id];
+                      return (
+                        <td key={`${bm.id}-${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
+                          {typeof p === "number" && Number.isFinite(p) && p > 0 ? `1/${fmt(1 / p)}` : "-"}
+                        </td>
+                      );
+                    })}
                   </tr>
                 ))}
               </tbody>
