@@ -256,6 +256,23 @@ export default function MachineJudgeForm({
     return ids;
   }, [binomialMetrics]);
 
+  const autoBinomialTrialsFromBigRegMetricIds = useMemo(() => {
+    const ids: string[] = [];
+    if (!binomialMetrics) return ids;
+    if (!showReg) return ids;
+    for (const m of binomialMetrics) {
+      // For some metrics, trials are the total bonus count (BIG+REG).
+      if (
+        m.trialsLabel.includes("BIG+REG") ||
+        m.trialsLabel.includes("BIG回数+REG回数") ||
+        m.trialsLabel.includes("ボーナス回数")
+      ) {
+        ids.push(m.id);
+      }
+    }
+    return ids;
+  }, [binomialMetrics, showReg]);
+
   useEffect(() => {
     // Avoid carrying hint inputs across machine switches.
     setHintCounts({});
@@ -352,6 +369,16 @@ export default function MachineJudgeForm({
       }
     }
 
+    // Auto-fill trials from BIG+REG counts for selected metrics.
+    if (autoBinomialTrialsFromBigRegMetricIds.length > 0) {
+      const bb = Number.isFinite(b) ? b : Number.NaN;
+      const rr = showReg && Number.isFinite(r) ? r : Number.NaN;
+      const bonus = Number.isFinite(bb) && Number.isFinite(rr) ? bb + rr : Number.NaN;
+      for (const id of autoBinomialTrialsFromBigRegMetricIds) {
+        parsedBinomialTrials[id] = bonus;
+      }
+    }
+
     return {
       games: Number.isFinite(g) ? g : NaN,
       bigCount: Number.isFinite(b) ? b : NaN,
@@ -374,6 +401,7 @@ export default function MachineJudgeForm({
     binomialTrials,
     binomialHits,
     autoBinomialTrialsFromGamesMetricIds,
+    autoBinomialTrialsFromBigRegMetricIds,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -589,14 +617,21 @@ export default function MachineJudgeForm({
 
     if (showBinomialMetrics && binomialMetrics) {
       for (const m of binomialMetrics) {
-        const isAutoTrials = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
+        const isAutoTrialsFromGames = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
+        const isAutoTrialsFromBigReg = autoBinomialTrialsFromBigRegMetricIds.includes(m.id);
         const tRaw = binomialTrials[m.id] ?? "";
         const hRaw = binomialHits[m.id] ?? "";
 
-        if (isAutoTrials) {
+        if (isAutoTrialsFromGames) {
           if (hRaw === "") continue;
           if (!(parsed.games >= 0) || !Number.isInteger(parsed.games))
             return `${m.trialsLabel}は総ゲーム数から自動入力されます。総ゲーム数を0以上の整数で入力してください。`;
+        } else if (isAutoTrialsFromBigReg) {
+          if (hRaw === "") continue;
+          if (!(parsed.bigCount >= 0) || !Number.isInteger(parsed.bigCount))
+            return `${m.trialsLabel}はBIG/REG回数から自動入力されます。${bigLabelForJudge}回数を0以上の整数で入力してください。`;
+          if (!(parsed.regCount >= 0) || !Number.isInteger(parsed.regCount))
+            return `${m.trialsLabel}はBIG/REG回数から自動入力されます。${regLabel}回数を0以上の整数で入力してください。`;
         } else {
           if (tRaw === "" && hRaw === "") continue;
           if (tRaw === "" || hRaw === "")
@@ -652,6 +687,7 @@ export default function MachineJudgeForm({
     binomialTrials,
     binomialHits,
     autoBinomialTrialsFromGamesMetricIds,
+    autoBinomialTrialsFromBigRegMetricIds,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -736,11 +772,20 @@ export default function MachineJudgeForm({
         const hitsRaw = binomialHits[m.id] ?? "";
         if (hitsRaw === "") continue;
 
-        const isAutoTrials = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
-        if (isAutoTrials) {
+        const isAutoTrialsFromGames = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
+        const isAutoTrialsFromBigReg = autoBinomialTrialsFromBigRegMetricIds.includes(m.id);
+        if (isAutoTrialsFromGames) {
           const n = parsed.games;
           if (!Number.isFinite(n)) continue;
           out[m.id] = n;
+          continue;
+        }
+
+        if (isAutoTrialsFromBigReg) {
+          const b = parsed.bigCount;
+          const r = parsed.regCount;
+          if (!Number.isFinite(b) || !Number.isFinite(r)) continue;
+          out[m.id] = b + r;
           continue;
         }
 
@@ -914,6 +959,7 @@ export default function MachineJudgeForm({
     binomialTrials,
     binomialHits,
     autoBinomialTrialsFromGamesMetricIds,
+    autoBinomialTrialsFromBigRegMetricIds,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -1248,11 +1294,26 @@ export default function MachineJudgeForm({
 
         {showBinomialMetrics && binomialMetrics
           ? binomialMetrics.flatMap((m) => {
-              const isAutoTrials = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
-              const trialsCap =
-                Number.isFinite(parsed.games) && parsed.games >= 0
-                  ? Math.max(0, Math.trunc(parsed.games))
-                  : Number.POSITIVE_INFINITY;
+              const isAutoTrialsFromGames = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
+              const isAutoTrialsFromBigReg = autoBinomialTrialsFromBigRegMetricIds.includes(m.id);
+              const isAutoTrials = isAutoTrialsFromGames || isAutoTrialsFromBigReg;
+
+              const trialsCap = (() => {
+                if (isAutoTrialsFromGames) {
+                  return Number.isFinite(parsed.games) && parsed.games >= 0
+                    ? Math.max(0, Math.trunc(parsed.games))
+                    : Number.POSITIVE_INFINITY;
+                }
+                if (isAutoTrialsFromBigReg) {
+                  const b = parsed.bigCount;
+                  const r = parsed.regCount;
+                  const t = Number.isFinite(b) && Number.isFinite(r) ? b + r : NaN;
+                  return Number.isFinite(t) && t >= 0
+                    ? Math.max(0, Math.trunc(t))
+                    : Number.POSITIVE_INFINITY;
+                }
+                return Number.POSITIVE_INFINITY;
+              })();
 
               if (isAutoTrials) {
                 return [
@@ -1550,6 +1611,7 @@ export default function MachineJudgeForm({
         (showReg ? regCount !== "" : false) ||
         extraCount !== "" ||
         Object.values(extraCounts).some((v) => v !== "") ||
+        Object.values(binomialHits).some((v) => v !== "") ||
         suikaTrials !== "" ||
         suikaCzHits !== "" ||
         uraAtTrials !== "" ||
@@ -1563,6 +1625,10 @@ export default function MachineJudgeForm({
                   const showSuika = !!suikaTrialsLabel && !!suikaCzHitsLabel && suikaTrials !== "";
                   const showUraAt =
                     !!uraAtTrialsLabel && !!uraAtHitsLabel && uraAtTrials !== "";
+                  const shownBinomialCount =
+                    showBinomialMetrics && binomialMetrics
+                      ? binomialMetrics.filter((m) => (binomialHits[m.id] ?? "") !== "").length
+                      : 0;
                   const baseCols = showReg ? 2 : 1;
                   const extraCols = showExtraMetrics && extraMetrics
                     ? extraMetrics.length
@@ -1574,7 +1640,8 @@ export default function MachineJudgeForm({
                     (showTotal ? 1 : 0) +
                     (showSuika ? 1 : 0) +
                     (showUraAt ? 1 : 0) +
-                    extraCols;
+                    extraCols +
+                    shownBinomialCount;
                   if (cols <= 2) return "grid-cols-2";
                   if (cols === 3) return "grid-cols-3";
                   if (cols === 4) return "grid-cols-2 sm:grid-cols-4";
@@ -1649,6 +1716,23 @@ export default function MachineJudgeForm({
                       </p>
                     </div>
                   ))
+                : null}
+
+              {showBinomialMetrics && binomialMetrics
+                ? binomialMetrics
+                    .filter((m) => (binomialHits[m.id] ?? "") !== "")
+                    .map((m) => (
+                      <div key={m.id}>
+                        <p className="text-xs text-neutral-500">{m.rateLabel ?? m.id}</p>
+                        <p className="font-semibold">
+                          {(() => {
+                            const t = parsed.binomialTrials[m.id];
+                            const h = parsed.binomialHits[m.id];
+                            return fmtOneOver(t, h);
+                          })()}
+                        </p>
+                      </div>
+                    ))
                 : null}
             </div>
           </div>

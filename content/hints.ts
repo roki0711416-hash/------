@@ -139,18 +139,6 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     helpUrl: "https://p-town.dmm.com/machines/4912",
     groups: [
       {
-        id: "bonus_in",
-        title: "ボーナス中のスイカ確率",
-        note: "スイカはカウントのみ（判別には未反映）",
-        items: [
-          {
-            id: "bonus_in_suika",
-            label: "スイカ",
-            effect: { type: "none" },
-          },
-        ],
-      },
-      {
         id: "big_late_suika_flash",
         title: "BIG後半中 スイカ揃い時のフラッシュ",
         note: "色による奇数/偶数/高設定示唆はソフト示唆（重み付け）として反映（強すぎないよう控えめ）",

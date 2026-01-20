@@ -199,6 +199,16 @@ export const machines = [
     category: "HANAHANA",
     inHall: true,
     description: "BT搭載のニューキングハナハナV。",
+    metricsLabels: {
+      binomialMetrics: [
+        {
+          id: "bonusInSuika",
+          trialsLabel: "BIG+REG回数",
+          hitsLabel: "スイカ回数(ボーナス中)",
+          rateLabel: "ボーナス中のスイカ確率",
+        },
+      ],
+    },
     // image: "/machines/new-king-hanahana-v-bt.jpg",
     odds: {
       settings: [
