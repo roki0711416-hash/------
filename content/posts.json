@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-21-001",
+    "date": "2026-01-21",
+    "title": "picoAttack対応",
+    "href": "/tool?machine=picoAttack",
+    "body": "picoAttackを追加しました。"
+  },
+  {
     "id": "2026-01-20-008",
     "date": "2026-01-20",
     "title": "Lバンドリ！対応",
