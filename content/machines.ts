@@ -230,6 +230,16 @@ export const machines = [
     category: "HANAHANA",
     inHall: true,
     description: "6号機ハナハナシリーズ。",
+    metricsLabels: {
+      binomialMetrics: [
+        {
+          id: "bonusInSuika",
+          trialsLabel: "BIG+REG回数",
+          hitsLabel: "スイカ回数(ボーナス中)",
+          rateLabel: "ボーナス中のスイカ確率",
+        },
+      ],
+    },
     odds: {
       settings: [
         { s: 1, big: 270, reg: 387, total: 159, rate: 97 },
@@ -249,6 +259,16 @@ export const machines = [
     category: "HANAHANA",
     inHall: true,
     description: "6号機ハナハナシリーズ。",
+    metricsLabels: {
+      binomialMetrics: [
+        {
+          id: "bonusInSuika",
+          trialsLabel: "BIG+REG回数",
+          hitsLabel: "スイカ回数(ボーナス中)",
+          rateLabel: "ボーナス中のスイカ確率",
+        },
+      ],
+    },
     odds: {
       settings: [
         { s: 1, big: 256, reg: 642, total: 183, rate: 97 },
@@ -269,6 +289,16 @@ export const machines = [
     category: "HANAHANA",
     inHall: true,
     description: "6号機ハナハナシリーズ。",
+    metricsLabels: {
+      binomialMetrics: [
+        {
+          id: "bonusInSuika",
+          trialsLabel: "BIG+REG回数",
+          hitsLabel: "スイカ回数(ボーナス中)",
+          rateLabel: "ボーナス中のスイカ確率",
+        },
+      ],
+    },
     odds: {
       settings: [
         { s: 1, big: 292, reg: 489, total: 183, rate: 97 },
@@ -288,6 +318,16 @@ export const machines = [
     category: "HANAHANA",
     inHall: true,
     description: "6号機ハナハナシリーズ。",
+    metricsLabels: {
+      binomialMetrics: [
+        {
+          id: "bonusInSuika",
+          trialsLabel: "BIG+REG回数",
+          hitsLabel: "スイカ回数(ボーナス中)",
+          rateLabel: "ボーナス中のスイカ確率",
+        },
+      ],
+    },
     odds: {
       settings: [
         { s: 1, big: 297, reg: 496, total: 186, rate: 97 },
