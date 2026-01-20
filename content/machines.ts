@@ -2833,19 +2833,27 @@ export const machines = [
     inHall: true,
     category: "SMART",
     description:
-      "初当り確率と機械割での簡易判別。数値はp-townより。実質5段階設定（設定2〜6）。50枚あたりのゲーム数は約32.7G（独自調査値）。",
+      "初当り確率と機械割での簡易判別。追加で、ST終了時のピコアタック当選率も反映。数値はp-townより。実質5段階設定（設定2〜6）。50枚あたりのゲーム数は約32.7G（独自調査値）。",
     metricsLabels: {
       bigLabel: "初当り",
       regLabel: null,
       totalLabel: null,
+      binomialMetrics: [
+        {
+          id: "picoAttack",
+          trialsLabel: "ST終了回数",
+          hitsLabel: "ピコアタック当選回数",
+          rateLabel: "ピコアタック当選率",
+        },
+      ],
     },
     odds: {
       settings: [
-        { s: 2, big: 328.6, reg: 1_000_000_000, total: 328.6, rate: 97.6 },
-        { s: 3, big: 326.9, reg: 1_000_000_000, total: 326.9, rate: 98.9 },
-        { s: 4, big: 304.4, reg: 1_000_000_000, total: 304.4, rate: 105.2 },
-        { s: 5, big: 291.5, reg: 1_000_000_000, total: 291.5, rate: 110.0 },
-        { s: 6, big: 271.9, reg: 1_000_000_000, total: 271.9, rate: 112.5 },
+        { s: 2, big: 328.6, reg: 1_000_000_000, total: 328.6, rate: 97.6, binomialRates: { picoAttack: 0.077 } },
+        { s: 3, big: 326.9, reg: 1_000_000_000, total: 326.9, rate: 98.9, binomialRates: { picoAttack: 0.081 } },
+        { s: 4, big: 304.4, reg: 1_000_000_000, total: 304.4, rate: 105.2, binomialRates: { picoAttack: 0.13 } },
+        { s: 5, big: 291.5, reg: 1_000_000_000, total: 291.5, rate: 110.0, binomialRates: { picoAttack: 0.146 } },
+        { s: 6, big: 271.9, reg: 1_000_000_000, total: 271.9, rate: 112.5, binomialRates: { picoAttack: 0.149 } },
       ],
     },
   },
