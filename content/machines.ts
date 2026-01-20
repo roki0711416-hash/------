@@ -2857,4 +2857,24 @@ export const machines = [
       ],
     },
   },
+
+  // --- サミー A-SLOT+ ディスクアップ ULTRAREMIX（p-town 4702）追加 ---
+  {
+    id: "smart-diskup-ultraremix",
+    name: "A-SLOT+ ディスクアップ ULTRAREMIX",
+    maker: "サミー",
+    series: "ディスクアップ",
+    inHall: true,
+    category: "SMART",
+    description:
+      "ボーナス確率（設定1/2/5/6）＋機械割での簡易判別。数値はp-town（4702）より。機械割は『完全攻略時』の列を採用。50枚あたり約32.2G（設定1、独自調査値）。",
+    odds: {
+      settings: [
+        { s: 1, big: 287.2, reg: 495.3, total: 181.8, rate: 103.0 },
+        { s: 2, big: 284.3, reg: 477.2, total: 178.2, rate: 103.8 },
+        { s: 5, big: 273.8, reg: 398.6, total: 162.3, rate: 107.2 },
+        { s: 6, big: 260.9, reg: 334.1, total: 146.5, rate: 111.5 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];
