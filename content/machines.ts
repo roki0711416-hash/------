@@ -2823,4 +2823,30 @@ export const machines = [
       ],
     },
   },
+
+  // --- オリンピアエステート Lバンドリ！（p-town 4641）追加 ---
+  {
+    id: "olympia_bandori",
+    name: "Lバンドリ！",
+    maker: "平和",
+    series: "バンドリ！",
+    inHall: true,
+    category: "SMART",
+    description:
+      "初当り確率と機械割での簡易判別。数値はp-townより。実質5段階設定（設定2〜6）。50枚あたりのゲーム数は約32.7G（独自調査値）。",
+    metricsLabels: {
+      bigLabel: "初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 2, big: 328.6, reg: 1_000_000_000, total: 328.6, rate: 97.6 },
+        { s: 3, big: 326.9, reg: 1_000_000_000, total: 326.9, rate: 98.9 },
+        { s: 4, big: 304.4, reg: 1_000_000_000, total: 304.4, rate: 105.2 },
+        { s: 5, big: 291.5, reg: 1_000_000_000, total: 291.5, rate: 110.0 },
+        { s: 6, big: 271.9, reg: 1_000_000_000, total: 271.9, rate: 112.5 },
+      ],
+    },
+  },
 ] satisfies readonly Machine[];

@@ -4720,6 +4720,34 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["olympia_bandori"] = {
+    machineId: "olympia_bandori",
+    helpUrl: "https://p-town.dmm.com/machines/4641",
+    groups: [
+      {
+        id: "bandori_st_end_stamp",
+        title: "ST終了画面：スタンプ",
+        note: "確定系として反映。出現した回数をカウント。",
+        items: [
+          { id: "bandori_stamp_default", label: "出現なし/その他", effect: { type: "none" } },
+          { id: "bandori_stamp_good", label: "良（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "bandori_stamp_excellent", label: "優（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "bandori_stamp_extreme", label: "極（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "bandori_payout",
+        title: "特定の獲得枚数表示",
+        note: "トータル獲得枚数が規定枚数を超えた際に表示（確定系として反映）。",
+        items: [
+          { id: "bandori_payout_default", label: "出現なし/その他", effect: { type: "none" } },
+          { id: "bandori_payout_456", label: "456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "bandori_payout_666", label: "666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }
