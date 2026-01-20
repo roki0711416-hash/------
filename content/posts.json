@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-20-007",
+    "date": "2026-01-20",
+    "title": "bonusInSuika対応",
+    "href": "/tool?machine=bonusInSuika",
+    "body": "bonusInSuikaを追加しました。"
+  },
+  {
     "id": "2026-01-20-006",
     "date": "2026-01-20",
     "title": "suikaCz対応",
