@@ -4748,6 +4748,76 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-diskup-ultraremix"] = {
+    machineId: "smart-diskup-ultraremix",
+    helpUrl: "https://p-town.dmm.com/machines/4702",
+    groups: [
+      {
+        id: "diskupur_sammy_trophy",
+        title: "サミートロフィー",
+        note: "出現すれば設定2以上濃厚。色でさらに上位設定を示唆。",
+        items: [
+          { id: "diskupur_trophy_default", label: "出現なし/その他", effect: { type: "none" } },
+          { id: "diskupur_trophy_bronze", label: "銅（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "diskupur_trophy_kirin", label: "キリン柄（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "diskupur_trophy_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "diskupur_reg_remix_all",
+        title: "REG中（リミックスモード）：ALLキャラ",
+        note: "ALLキャラ（全員同キャラ）が出れば確定系として反映。出現した回数をカウント。",
+        items: [
+          { id: "diskupur_reg_remix_all_default", label: "該当なし/その他", effect: { type: "none" } },
+          { id: "diskupur_reg_remix_all_mia", label: "ALLミア（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "diskupur_reg_remix_all_campbell", label: "ALLキャンベル（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "diskupur_reg_remix_all_cindy", label: "ALLシンディ（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "diskupur_reg_remix_5th",
+        title: "REG中（リミックスモード）：5人目キャラ",
+        note: "奇数/偶数示唆はソフト示唆（重み付け）として反映。濃厚系は確定系として反映。",
+        items: [
+          { id: "diskupur_reg_remix_5th_default", label: "該当なし/その他", effect: { type: "none" } },
+          {
+            id: "diskupur_reg_remix_5th_mia",
+            label: "ミア（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.03, 3: 1.03, 5: 1.03 } },
+          },
+          {
+            id: "diskupur_reg_remix_5th_reezento",
+            label: "リーゼントマン（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+          },
+          { id: "diskupur_reg_remix_5th_afro_lady", label: "アフロレディ（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "diskupur_reg_remix_5th_cindy", label: "シンディ（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+        ],
+      },
+      {
+        id: "diskupur_reg_classic_dwarfs",
+        title: "REG中（クラシックモード）：小人パターン",
+        note: "奇数/偶数示唆はソフト示唆（重み付け）として反映。濃厚系は確定系として反映。",
+        items: [
+          { id: "diskupur_reg_classic_default", label: "該当なし/その他", effect: { type: "none" } },
+          {
+            id: "diskupur_reg_classic_afro_1or3",
+            label: "アフロ小人×1 or ×3（奇数設定示唆）",
+            effect: { type: "weight", weights: { 1: 1.03, 3: 1.03, 5: 1.03 } },
+          },
+          {
+            id: "diskupur_reg_classic_afro_2or4",
+            label: "アフロ小人×2 or ×4（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+          },
+          { id: "diskupur_reg_classic_all_normal", label: "ALL通常の小人（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "diskupur_reg_classic_afro_5", label: "アフロ小人×5（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "diskupur_reg_classic_all_afro", label: "ALLアフロ小人（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }
