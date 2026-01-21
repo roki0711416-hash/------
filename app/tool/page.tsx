@@ -61,6 +61,19 @@ export default async function ToolPage({
       </header>
 
       <div className="space-y-4">
+        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+          <h1 className="text-lg font-semibold">設定判別ツールについて</h1>
+          <p className="mt-2 text-sm text-neutral-700">
+            スロカスくんは、パチスロの設定判別をサポートする分析ツールです。
+          </p>
+          <p className="mt-2 text-sm text-neutral-700">
+            基本的な設定判別は無料で利用でき、総ゲーム数やBIG/REGなどの入力から設定傾向を確認できます。
+          </p>
+          <p className="mt-2 text-sm text-neutral-700">
+            サブスク会員向けには、スランプグラフ解析や詳細データを用いた、より踏み込んだ設定判別・分析機能を提供しています。
+          </p>
+        </section>
+
         {selectedMachine ? (
           <>
             <MachineOddsTable machine={selectedMachine} />
@@ -93,9 +106,9 @@ export default async function ToolPage({
               <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
                 <p className="text-base font-semibold">③ サブスク会員限定</p>
                 <p className="mt-2 text-sm text-neutral-700">
-                  サブスク会員になると、会員限定の機能（コミュニティ/広告の非表示 など）が使えます。
+                  ・無料：基本的な設定判別（総ゲーム数 / BIG / REG など）を利用できます
                   <br />
-                  登録は <Link href="/subscribe" className="underline underline-offset-2">/subscribe</Link> から。
+                  ・サブスク：スランプグラフ解析や詳細データを使った、より踏み込んだ設定判別が可能です
                 </p>
               </div>
 
