@@ -27,7 +27,7 @@ export default function AboutPage() {
 
           <div>
             <h2 className="font-semibold">運営者</h2>
-            <p className="mt-2">個人運営</p>
+            <p className="mt-2">三日坊主</p>
           </div>
 
           <div>
