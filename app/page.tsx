@@ -28,6 +28,24 @@ export default async function Home() {
         <h1 className="sr-only">スロカスくん</h1>
       </header>
 
+      <section className="mt-4 rounded-2xl border border-neutral-200 bg-white p-5">
+        <h2 className="text-lg font-semibold">パチスロの設定判別をサポートする分析ツール</h2>
+        <p className="mt-2 text-sm text-neutral-700">
+          スロカスくんは、パチスロの設定判別をサポートする分析ツールです。
+          実戦データの入力・整理を通じて、設定傾向を分かりやすく可視化し、情報提供・分析補助を行います。
+        </p>
+
+        <p className="mt-3 text-sm text-neutral-700">
+          <span className="font-semibold text-neutral-900">無料</span>
+          で使える基本的な設定判別に加え、<span className="font-semibold text-neutral-900">サブスク</span>
+          会員向けにはスランプグラフ解析や詳細データを用いた、より踏み込んだ設定判別・分析ツールを提供しています。
+        </p>
+
+        <p className="mt-3 text-sm text-neutral-700">
+          ジャグラー・ハナハナなどの主要機種に対応し、データに基づく判断をサポートします（結果を保証するものではありません）。
+        </p>
+      </section>
+
       {/* PCのみ：ヘッダー直下のメイン導線 */}
       <section className="mt-4 hidden lg:block">
         <div className="rounded-2xl border border-neutral-200 bg-gradient-to-b from-neutral-50 to-neutral-100 px-6 py-6">
