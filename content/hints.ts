@@ -5019,7 +5019,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "prismnana_touchvoice_song_distribution",
         title: "タッチボイス：楽曲（出現割合）",
-        note: "DMMの出現割合を元に、各楽曲の出現が起きやすい設定へ重み付け（平均比）で反映。出現した回数をカウント。",
+        note: "各楽曲の出現が起きやすい設定へ重み付け（平均比）で反映。出現した回数をカウント。",
         items: [
           {
             id: "prismnana_touchvoice_song_your_prism",
