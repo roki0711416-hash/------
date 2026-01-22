@@ -109,7 +109,7 @@ export async function POST(req: Request) {
     await db.sql`UPDATE users SET stripe_customer_id = ${customerId} WHERE id = ${auth.user.id};`;
   }
 
-  // 7日トライアルでもカード登録は必須にしたいので、SetupIntentで支払い方法を先に登録する
+  // トライアルでもカード登録は必須にしたいので、SetupIntentで支払い方法を先に登録する
   const setupIntent = await stripe.setupIntents.create({
     customer: customerId,
     payment_method_types: ["card"],

@@ -153,7 +153,9 @@ export default async function Home() {
           <p className="mt-2 text-sm text-neutral-600">
             月額680円（税込）でご利用いただけます。
             <br />
-            初回48時間、全機能解放です。
+            初回48時間、全機能解放
+            <br />
+            設定判別・続行判断をすべて体験できます
             <br />
             ※初回のみ。48時間終了後は月額¥680で自動更新されます
             <br />
@@ -181,9 +183,12 @@ export default async function Home() {
               <p className="text-sm font-semibold text-neutral-800">登録はこちら</p>
               <p className="mt-1 text-sm text-neutral-700">
                 {hasYearly
-                  ? "月額：税込680円/月、年額：税込6,800円/年・どちらも初回48時間、全機能解放です。"
-                  : "月額：税込680円/月・初回48時間、全機能解放です。"}
+                  ? "月額：税込680円/月、年額：税込6,800円/年"
+                  : "月額：税込680円/月"}
               </p>
+              <p className="mt-1 text-sm text-neutral-700">初回48時間、全機能解放</p>
+              <p className="mt-1 text-sm text-neutral-700">設定判別・続行判断をすべて体験できます</p>
+              <p className="mt-1 text-xs text-neutral-500">※初回のみ。48時間終了後は月額¥680で自動更新されます</p>
               {canCheckout ? (
                 <SubscribeCheckoutButton showYearly={hasYearly} />
               ) : (

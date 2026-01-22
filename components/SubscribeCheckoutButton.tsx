@@ -51,7 +51,7 @@ export default function SubscribeCheckoutButton({
         disabled={loading}
         className="w-full rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
       >
-        {loading ? "Checkoutへ..." : "初回48時間、全機能解放で始める"}
+        {loading ? "Checkoutへ..." : "初回48時間、全機能解放"}
       </button>
 
       {showYearly ? (
@@ -61,7 +61,7 @@ export default function SubscribeCheckoutButton({
           disabled={loading}
           className="w-full rounded-xl border border-neutral-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 disabled:opacity-60"
         >
-          {loading ? "Checkoutへ..." : "初回48時間、全機能解放で年額登録する（税込6,800円/年）"}
+          {loading ? "Checkoutへ..." : "年額で登録する（税込6,800円/年）"}
         </button>
       ) : null}
 

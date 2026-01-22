@@ -95,7 +95,7 @@ npm run db:init-auth
 
 - `/signup`: 会員登録
 - `/login`: ログイン（端末共有NG: 最後の1台のみ有効）
-- `/account`: サブスク登録（7日無料）/ 解約・プラン管理
+- `/account`: サブスク登録（初回48時間、全機能解放）/ 解約・プラン管理
 
 ### ローカルデモ手順
 
@@ -180,5 +180,5 @@ Webhook URL:
 
 #### 4) トライアル中でもカード必須
 
-トライアルは7日で、かつカード登録必須です。これはCheckout作成時にアプリ側で `payment_method_collection: always` を指定して担保しています。
+トライアルはStripe側の設定に従い、かつカード登録必須です。これはCheckout作成時にアプリ側で `payment_method_collection: always` を指定して担保しています。
 
