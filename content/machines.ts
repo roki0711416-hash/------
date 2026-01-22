@@ -237,14 +237,17 @@ export const machines = [
     inHall: true,
     category: "JUG",
     description: "ミラクル系の新しめ機種。",
+    metricsLabels: {
+      extraMetrics: [{ id: "grape", label: "ブドウ" }],
+    },
     odds: {
       settings: [
-        { s: 1, big: 267.5, reg: 425.6, total: 164.3, rate: 97.0 },
-        { s: 2, big: 261.1, reg: 402.1, total: 158.3, rate: 98.1 },
-        { s: 3, big: 256.0, reg: 350.5, total: 147.9, rate: 99.8 },
-        { s: 4, big: 242.7, reg: 322.8, total: 138.6, rate: 102.1 },
-        { s: 5, big: 233.2, reg: 297.9, total: 130.8, rate: 104.5 },
-        { s: 6, big: 216.3, reg: 277.7, total: 121.6, rate: 108.1 },
+        { s: 1, big: 267.5, reg: 425.6, total: 164.3, rate: 97.0, extras: { grape: 5.93 } },
+        { s: 2, big: 261.1, reg: 402.1, total: 158.3, rate: 98.1, extras: { grape: 5.93 } },
+        { s: 3, big: 256.0, reg: 350.5, total: 147.9, rate: 99.8, extras: { grape: 5.93 } },
+        { s: 4, big: 242.7, reg: 322.8, total: 138.6, rate: 102.1, extras: { grape: 5.93 } },
+        { s: 5, big: 233.2, reg: 297.9, total: 130.8, rate: 104.5, extras: { grape: 5.87 } },
+        { s: 6, big: 216.3, reg: 277.7, total: 121.6, rate: 108.1, extras: { grape: 5.81 } },
       ],
     },
   },
