@@ -56,12 +56,21 @@ html[data-theme="dark"] {
   }
 }
 
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
 body {
   min-height: 100vh;
   background-color: var(--bg);
   color: rgb(var(--text-rgb));
   position: relative;
   isolation: isolate;
+}
+
+footer {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Global background image (all pages) */
