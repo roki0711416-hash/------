@@ -68,29 +68,37 @@ body {
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: -2;
   background-image: url("/slot-bg.jpg");
-  background-attachment: fixed;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   pointer-events: none;
+  transform: translateZ(0);
 }
 
 /* Dark overlay for readability (behind content) */
 body::after {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: -1;
   background: rgb(var(--text-rgb) / 0.55);
   pointer-events: none;
+  transform: translateZ(0);
 }
 
-@supports (-webkit-touch-callout: none) {
-  body::before {
-    background-attachment: scroll;
+@supports (height: 100lvh) {
+  body::before,
+  body::after {
+    height: 100lvh;
   }
 }
 
