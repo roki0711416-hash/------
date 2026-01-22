@@ -117,6 +117,7 @@ export default async function SubscribePage() {
             <p className="mt-1 text-sm text-neutral-700">初回48時間、全機能解放</p>
             <p className="mt-1 text-sm text-neutral-700">設定判別・続行判断をすべて体験できます</p>
             <p className="mt-1 text-xs text-neutral-500">※初回のみ。48時間終了後は月額¥680で自動更新されます</p>
+            <p className="mt-1 text-xs text-neutral-500">クレカ登録のみ・すぐ解約OK</p>
             {canCheckout ? (
               <SubscribeCheckoutButton showYearly={hasYearly} />
             ) : (

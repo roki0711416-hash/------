@@ -110,6 +110,8 @@ function InnerForm({ plan }: { plan: Plan }) {
         <p className="text-sm font-semibold text-neutral-900">お支払い情報</p>
         <p className="mt-1 text-xs text-neutral-600">
           ※初回のみ。48時間終了後は月額¥680で自動更新されます
+          <br />
+          クレカ登録のみ・すぐ解約OK
         </p>
         <div className="mt-3">
           <PaymentElement />
