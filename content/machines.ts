@@ -303,6 +303,29 @@ export const machines = [
   },
 
   {
+    id: "mister-juggler",
+    name: "ミスタージャグラー",
+    maker: "北電子",
+    series: "ジャグラー",
+    inHall: true,
+    category: "JUG",
+    description: "ミスタージャグラー。",
+    metricsLabels: {
+      extraMetrics: [{ id: "grape", label: "ブドウ" }],
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 268.6, reg: 374.5, total: 156.4, rate: 97.0, extras: { grape: 6.29 } },
+        { s: 2, big: 267.5, reg: 354.2, total: 152.4, rate: 98.0, extras: { grape: 6.22 } },
+        { s: 3, big: 260.1, reg: 331.0, total: 145.6, rate: 99.8, extras: { grape: 6.15 } },
+        { s: 4, big: 249.2, reg: 291.3, total: 134.3, rate: 102.7, extras: { grape: 6.09 } },
+        { s: 5, big: 240.9, reg: 257.0, total: 124.4, rate: 105.5, extras: { grape: 6.02 } },
+        { s: 6, big: 237.4, reg: 237.4, total: 118.7, rate: 107.3, extras: { grape: 5.96 } },
+      ],
+    },
+  },
+
+  {
     id: "new-king-hanahana-v-bt",
     name: "ニューキングハナハナV（BT）",
     maker: "パイオニア",
