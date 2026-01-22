@@ -11,7 +11,7 @@ export default function TokushoPage() {
         <div className="mt-4 space-y-4 text-sm text-neutral-700">
           <div>
             <h2 className="font-semibold">販売事業者</h2>
-            <p className="mt-2">個人運営</p>
+            <p className="mt-2">清水 裕基</p>
           </div>
 
           <div>
