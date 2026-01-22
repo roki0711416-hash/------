@@ -40,6 +40,17 @@ function toISODate(d: Date) {
   return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
 }
 
+function toSettingNumber(v: unknown): number | null {
+  if (typeof v === "number" && Number.isInteger(v) && v >= 1 && v <= 6) return v;
+  if (typeof v === "string") {
+    const m = v.match(/(\d)/);
+    if (!m) return null;
+    const n = Number(m[1]);
+    if (Number.isInteger(n) && n >= 1 && n <= 6) return n;
+  }
+  return null;
+}
+
 function toIntOrZero(s: string) {
   if (s === "") return 0;
   const n = Number(s);
@@ -1868,12 +1879,24 @@ export default function MachineJudgeForm({
                     const gamesValue = Number.isFinite(parsed.games)
                       ? String(Math.max(0, Math.trunc(parsed.games)))
                       : "0";
+
+                    const bigCountValue = Number.isFinite(parsed.bigCount)
+                      ? String(Math.max(0, Math.trunc(parsed.bigCount)))
+                      : "";
+                    const regCountValue = Number.isFinite(parsed.regCount)
+                      ? String(Math.max(0, Math.trunc(parsed.regCount)))
+                      : "";
+                    const guessedSettingValue = toSettingNumber(top3?.[0]?.s);
                     const sp = new URLSearchParams({
                       date: toISODate(new Date()),
                       machineName: machine.name,
                       games: gamesValue,
                       judgeResultId,
                     });
+
+                    if (bigCountValue !== "") sp.set("bigCount", bigCountValue);
+                    if (regCountValue !== "") sp.set("regCount", regCountValue);
+                    if (guessedSettingValue !== null) sp.set("guessedSetting", String(guessedSettingValue));
                     router.push(`/record?${sp.toString()}`);
                   }}
                 >

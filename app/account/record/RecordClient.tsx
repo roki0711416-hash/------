@@ -133,6 +133,9 @@ export default function RecordClient({
     const dateParam = searchParams.get("date");
     const machineNameParam = searchParams.get("machineName");
     const gamesParam = searchParams.get("games");
+    const bigCountParam = searchParams.get("bigCount");
+    const regCountParam = searchParams.get("regCount");
+    const guessedSettingParam = searchParams.get("guessedSetting");
     const judgeResultIdParam = searchParams.get("judgeResultId");
 
     const date =
@@ -144,6 +147,15 @@ export default function RecordClient({
 
     const games = gamesParam && /^\d+$/.test(gamesParam) ? gamesParam : "0";
 
+    const bigCount = bigCountParam && /^\d+$/.test(bigCountParam) ? bigCountParam : "";
+    const regCount = regCountParam && /^\d+$/.test(regCountParam) ? regCountParam : "";
+    const guessedSettingRaw = guessedSettingParam && /^\d+$/.test(guessedSettingParam) ? guessedSettingParam : "";
+    const guessedSettingNum = guessedSettingRaw ? Number(guessedSettingRaw) : null;
+    const guessedSetting =
+      guessedSettingNum && Number.isInteger(guessedSettingNum) && guessedSettingNum >= 1 && guessedSettingNum <= 6
+        ? guessedSettingRaw
+        : "";
+
     const judgeResultId =
       judgeResultIdParam && judgeResultIdParam.trim().length > 0 ? judgeResultIdParam : null;
 
@@ -151,6 +163,9 @@ export default function RecordClient({
       date: dateOrToday,
       machineName,
       games,
+      bigCount,
+      regCount,
+      guessedSetting,
       monthBase,
       shouldOpen,
       judgeResultId,
@@ -173,9 +188,9 @@ export default function RecordClient({
   const [modalDate, setModalDate] = useState<string>(prefill.date);
   const [modalMachineName, setModalMachineName] = useState<string>(prefill.machineName);
   const [modalGames, setModalGames] = useState<string>(prefill.games);
-    const [modalBigCount, setModalBigCount] = useState<string>("");
-    const [modalRegCount, setModalRegCount] = useState<string>("");
-    const [modalGuessedSetting, setModalGuessedSetting] = useState<string>("");
+  const [modalBigCount, setModalBigCount] = useState<string>(prefill.bigCount);
+  const [modalRegCount, setModalRegCount] = useState<string>(prefill.regCount);
+  const [modalGuessedSetting, setModalGuessedSetting] = useState<string>(prefill.guessedSetting);
     const [modalMachineNumber, setModalMachineNumber] = useState<string>("");
     const [modalShopName, setModalShopName] = useState<string>("");
   const [modalDiffCoins, setModalDiffCoins] = useState<string>("0");
