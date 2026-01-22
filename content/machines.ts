@@ -101,12 +101,12 @@ export const machines = [
     description: "マイジャグ系の人気機種。",
     odds: {
       settings: [
-        { s: 1, big: 273.1, reg: 409.6, total: 163.8, rate: 97.0 },
-        { s: 2, big: 270.8, reg: 385.5, total: 159.1, rate: 98.0 },
-        { s: 3, big: 266.4, reg: 336.1, total: 148.6, rate: 99.9 },
-        { s: 4, big: 254.0, reg: 290.0, total: 135.4, rate: 102.8 },
-        { s: 5, big: 240.1, reg: 268.6, total: 126.8, rate: 105.3 },
-        { s: 6, big: 229.1, reg: 229.1, total: 114.6, rate: 109.4 },
+        { s: 1, big: 273.1, reg: 409.6, total: 163.8, rate: 97.0, extra: 5.9 },
+        { s: 2, big: 270.8, reg: 385.5, total: 159.1, rate: 98.0, extra: 5.85 },
+        { s: 3, big: 266.4, reg: 336.1, total: 148.6, rate: 99.9, extra: 5.8 },
+        { s: 4, big: 254.0, reg: 290.0, total: 135.4, rate: 102.8, extra: 5.78 },
+        { s: 5, big: 240.1, reg: 268.6, total: 126.8, rate: 105.3, extra: 5.76 },
+        { s: 6, big: 229.1, reg: 229.1, total: 114.6, rate: 109.4, extra: 5.66 },
       ],
     },
   },
