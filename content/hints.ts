@@ -4818,6 +4818,100 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-sister-quest"] = {
+    machineId: "smart-sister-quest",
+    helpUrl: "https://p-town.dmm.com/machines/4741",
+    groups: [
+      {
+        id: "sq_gacha_rarity",
+        title: "ガチャ（カードレアリティ）",
+        note: "確定系として反映。出現した回数をカウント。",
+        items: [
+          { id: "sq_gacha_other", label: "その他/未確認", effect: { type: "none" } },
+          { id: "sq_gacha_a", label: "A（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "sq_gacha_s", label: "S（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "sq_gacha_ss", label: "SS（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "sq_smatalk_q1",
+        title: "スマTALK：『今日の調子は？』",
+        note: "偶数/高設定示唆はソフト示唆（重み付け）として反映。",
+        items: [
+          { id: "sq_smatalk_q1_black_default", label: "黒（デフォルト）", effect: { type: "none" } },
+          {
+            id: "sq_smatalk_q1_black_even",
+            label: "黒（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+          },
+          {
+            id: "sq_smatalk_q1_blue",
+            label: "青（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.06, 5: 1.08, 6: 1.1 } },
+          },
+          { id: "sq_smatalk_q1_red", label: "赤（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+        ],
+      },
+      {
+        id: "sq_smatalk_q2",
+        title: "スマTALK：『続けた方がいい？』",
+        note: "確定系は制約として反映。出現した回数をカウント。",
+        items: [
+          { id: "sq_smatalk_q2_black", label: "黒（デフォルト）", effect: { type: "none" } },
+          { id: "sq_smatalk_q2_blue", label: "青（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "sq_smatalk_q2_red", label: "赤（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+        ],
+      },
+      {
+        id: "sq_smatalk_q3",
+        title: "スマTALK：『今日の意気込みは？』",
+        note: "確定系は制約として反映。出現した回数をカウント。",
+        items: [
+          { id: "sq_smatalk_q3_black", label: "黒（デフォルト）", effect: { type: "none" } },
+          { id: "sq_smatalk_q3_blue", label: "青（設定3以上濃厚）", effect: { type: "minSetting", min: 3 } },
+          { id: "sq_smatalk_q3_red", label: "赤（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "sq_at_end_screen",
+        title: "AT・上位AT終了画面",
+        note: "偶数/高設定示唆はソフト示唆（重み付け）として反映。濃厚/確定系は制約として反映。",
+        items: [
+          { id: "sq_at_end_day", label: "昼間（デフォルト）", effect: { type: "none" } },
+          {
+            id: "sq_at_end_cloudy",
+            label: "曇り空（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+          },
+          {
+            id: "sq_at_end_sunset",
+            label: "夕焼け（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.06, 5: 1.08, 6: 1.1 } },
+          },
+          {
+            id: "sq_at_end_thunder",
+            label: "雷雲（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "sq_at_end_chiffon_stella", label: "シフォン＆ステラ（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "sq_at_end_double_sisters", label: "ダブル姉妹（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "sq_at_end_claire", label: "クレア（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "sq_payout_display",
+        title: "特定の獲得枚数表示",
+        note: "確定系として反映。出現した回数をカウント。",
+        items: [
+          { id: "sq_payout_other", label: "出現なし/その他", effect: { type: "none" } },
+          { id: "sq_payout_222", label: "222枚OVER（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "sq_payout_456", label: "456枚OVER（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "sq_payout_666", label: "666枚OVER（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }

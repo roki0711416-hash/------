@@ -505,6 +505,31 @@ export const machines = [
     },
   },
 
+  {
+    id: "smart-sister-quest",
+    name: "Sister Quest",
+    maker: "カルミナ",
+    series: "Sister Quest",
+    category: "SMART",
+    inHall: true,
+    description: "CZ/AT初当りベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "CZ初当り",
+      regLabel: "AT初当り",
+      totalLabel: "CZ&AT合算",
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 317.3, reg: 470.0, total: 189.4, rate: 97.7 },
+        { s: 2, big: 308.0, reg: 456.3, total: 183.9, rate: 98.5 },
+        { s: 3, big: 299.2, reg: 436.9, total: 177.6, rate: 100.2 },
+        { s: 4, big: 284.2, reg: 403.2, total: 166.7, rate: 103.8 },
+        { s: 5, big: 278.0, reg: 389.9, total: 162.3, rate: 107.0 },
+        { s: 6, big: 267.0, reg: 367.0, total: 154.6, rate: 111.2 },
+      ],
+    },
+  },
+
   // --- ELECO L追加 ---
   {
     id: "smart-shaman-king",
