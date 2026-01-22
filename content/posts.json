@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-22-001",
+    "date": "2026-01-22",
+    "title": "Sister Quest対応",
+    "href": "/tool?machine=smart-sister-quest",
+    "body": "Sister Questを追加しました。"
+  },
+  {
     "id": "2026-01-21-001",
     "date": "2026-01-21",
     "title": "A-SLOT+ ディスクアップ ULTRAREMIX対応",
