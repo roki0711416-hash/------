@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { STRIPE_PAYMENT_LINK_URL } from "../lib/stripePaymentLink";
 
 export default function AccountActions({
   canManage,
@@ -11,41 +12,10 @@ export default function AccountActions({
   isPremium: boolean;
   showYearly?: boolean;
 }) {
+  void showYearly;
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<null | "checkout" | "portal" | "logout">(null);
-
-  async function goCheckout(plan: "monthly" | "yearly") {
-    setError(null);
-    setLoading("checkout");
-    try {
-      const res = await fetch("/api/billing/checkout", {
-        method: "POST",
-        credentials: "include",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ plan }),
-      });
-      const data = (await res.json().catch(() => null)) as
-        | { url: string }
-        | { error: string }
-        | null;
-
-      if (res.status === 401) {
-        window.location.href = "/login";
-        return;
-      }
-
-      if (!res.ok || !data || !("url" in data)) {
-        setError(data && "error" in data ? data.error : `Checkout作成に失敗しました（HTTP ${res.status}）`);
-        return;
-      }
-
-      window.location.href = data.url;
-    } catch {
-      setError("通信に失敗しました");
-    } finally {
-      setLoading(null);
-    }
-  }
 
   async function goPortal() {
     setError(null);
@@ -85,27 +55,14 @@ export default function AccountActions({
     <div className="mt-4 space-y-3">
       {!isPremium ? (
         <>
-          <button
-            onClick={() => goCheckout("monthly")}
-            disabled={loading !== null}
-            className="w-full rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+          <a
+            href={STRIPE_PAYMENT_LINK_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="block w-full rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white disabled:opacity-60"
           >
-            {loading === "checkout"
-              ? "Checkoutへ..."
-              : "初回48時間、全機能解放"}
-          </button>
-
-          {showYearly ? (
-            <button
-              onClick={() => goCheckout("yearly")}
-              disabled={loading !== null}
-              className="w-full rounded-xl border border-neutral-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 disabled:opacity-60"
-            >
-              {loading === "checkout"
-                ? "Checkoutへ..."
-                : "年額で登録する（税込6,800円/年）"}
-            </button>
-          ) : null}
+            2日間無料で試す（その後 月額680円）
+          </a>
         </>
       ) : null}
 

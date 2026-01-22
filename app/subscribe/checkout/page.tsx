@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentUserFromCookies } from "../../../lib/auth";
 import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../../../lib/premium";
-import CheckoutClient from "./CheckoutClient";
+import { STRIPE_PAYMENT_LINK_URL } from "../../../lib/stripePaymentLink";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -51,7 +51,6 @@ export default async function SubscribeCheckoutPage() {
   const sub = await getSubscriptionForUserId(user.id);
   const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
   const isPremium = isPremiumPreview || isPremiumForUserAndSubscription(user, sub);
-  const hasYearly = Boolean(process.env.STRIPE_PRICE_ID_YEARLY?.trim());
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
@@ -90,7 +89,21 @@ export default async function SubscribeCheckoutPage() {
             </div>
           </div>
         ) : (
-          <CheckoutClient hasYearly={hasYearly} />
+          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
+            <p className="text-sm font-semibold text-neutral-800">決済はこちら</p>
+            <p className="mt-1 text-sm text-neutral-700">2日間無料（その後 月額680円）</p>
+            <p className="mt-1 text-xs text-neutral-500">※登録後の管理（解約など）はアカウント画面から行えます。</p>
+            <div className="mt-3">
+              <a
+                href={STRIPE_PAYMENT_LINK_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+              >
+                決済ページを開く
+              </a>
+            </div>
+          </div>
         )}
       </section>
     </main>

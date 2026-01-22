@@ -4,6 +4,7 @@ import { getCurrentUserFromCookies } from "../../../lib/auth";
 import { getStripe } from "../../../lib/stripe";
 import { getSubscriptionForUserId, hasAnyActiveishSubscription } from "../../../lib/premium";
 import { isAdminRole } from "../../../lib/roles";
+import { STRIPE_PAYMENT_LINK_URL } from "../../../lib/stripePaymentLink";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -84,12 +85,14 @@ export default async function SubscribeSuccessPage({
             <p className="text-sm font-semibold text-neutral-800">決済を完了できませんでした</p>
             <p className="mt-1 text-sm text-neutral-700">もう一度お試しください。</p>
             <div className="mt-3 flex gap-2">
-              <Link
-                href={`/subscribe/checkout?plan=${encodeURIComponent(plan)}`}
+              <a
+                href={STRIPE_PAYMENT_LINK_URL}
+                target="_blank"
+                rel="noreferrer"
                 className="flex-1 rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 もう一度
-              </Link>
+              </a>
               <Link
                 href="/account"
                 className="flex-1 rounded-xl border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-semibold text-neutral-900"

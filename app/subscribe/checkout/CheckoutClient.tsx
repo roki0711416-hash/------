@@ -44,9 +44,9 @@ function PlanPicker({
               : "border-neutral-200 bg-white text-neutral-900"
           }`}
         >
-          <div>月額（税込680円/月）</div>
+          <div>月額680円</div>
           <div className="mt-1 text-xs font-medium text-neutral-600">
-            初回48時間、全機能解放
+            2日間無料
           </div>
         </button>
 
@@ -60,9 +60,9 @@ function PlanPicker({
               : "border-neutral-200 bg-white text-neutral-900"
           }`}
         >
-          <div>年額（税込6,800円/年）</div>
+          <div>年額（準備中）</div>
           <div className="mt-1 text-xs font-medium text-neutral-600">
-            初回48時間、全機能解放
+            2日間無料
           </div>
         </button>
       </div>
@@ -109,7 +109,7 @@ function InnerForm({ plan }: { plan: Plan }) {
       <div className="rounded-lg border border-neutral-200 bg-white p-3">
         <p className="text-sm font-semibold text-neutral-900">お支払い情報</p>
         <p className="mt-1 text-xs text-neutral-600">
-          ※初回のみ。48時間終了後は月額¥680で自動更新されます
+          ※初回のみ。2日間無料終了後は月額680円で自動更新されます
           <br />
           クレカ登録のみ・すぐ解約OK
         </p>

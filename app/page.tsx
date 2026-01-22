@@ -15,12 +15,6 @@ export default async function Home() {
   const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
   const sub = user ? await getSubscriptionForUserId(user.id) : null;
   const isPremium = Boolean(user) && (isPremiumPreview || isPremiumForUserAndSubscription(user, sub));
-  const hasYearly = Boolean(process.env.STRIPE_PRICE_ID_YEARLY?.trim());
-  const stripeKey = process.env.STRIPE_SECRET_KEY?.trim() ?? "";
-  const hasStripeKey = Boolean(stripeKey) && !stripeKey.includes("...");
-  const monthlyPriceId =
-    process.env.STRIPE_PRICE_ID_MONTHLY?.trim() ?? process.env.STRIPE_PRICE_ID?.trim() ?? "";
-  const canCheckout = hasStripeKey && Boolean(monthlyPriceId);
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
@@ -151,13 +145,13 @@ export default async function Home() {
         <section className="rounded-2xl border border-neutral-200 bg-white p-5">
           <h2 className="text-lg font-semibold">サブスク会員</h2>
           <p className="mt-2 text-sm text-neutral-600">
-            月額680円（税込）でご利用いただけます。
+            月額680円でご利用いただけます。
             <br />
-            初回48時間、全機能解放
+            2日間無料
             <br />
             設定判別・続行判断をすべて体験できます
             <br />
-            ※初回のみ。48時間終了後は月額¥680で自動更新されます
+            ※初回のみ。2日間無料終了後は月額680円で自動更新されます
             <br />
             サブスク会員に登録すると、会員限定の機能が使えます。
           </p>
@@ -181,23 +175,12 @@ export default async function Home() {
           ) : user ? (
             <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
               <p className="text-sm font-semibold text-neutral-800">登録はこちら</p>
-              <p className="mt-1 text-sm text-neutral-700">
-                {hasYearly
-                  ? "月額：税込680円/月、年額：税込6,800円/年"
-                  : "月額：税込680円/月"}
-              </p>
-              <p className="mt-1 text-sm text-neutral-700">初回48時間、全機能解放</p>
+              <p className="mt-1 text-sm text-neutral-700">月額680円</p>
+              <p className="mt-1 text-sm text-neutral-700">2日間無料</p>
               <p className="mt-1 text-sm text-neutral-700">設定判別・続行判断をすべて体験できます</p>
-              <p className="mt-1 text-xs text-neutral-500">※初回のみ。48時間終了後は月額¥680で自動更新されます</p>
+              <p className="mt-1 text-xs text-neutral-500">※初回のみ。2日間無料終了後は月額680円で自動更新されます</p>
               <p className="mt-1 text-xs text-neutral-500">クレカ登録のみ・すぐ解約OK</p>
-              {canCheckout ? (
-                <SubscribeCheckoutButton showYearly={hasYearly} />
-              ) : (
-                <p className="mt-3 text-sm font-medium text-red-600">
-                  Stripe決済の設定が未完了です。.env.development.local の STRIPE_SECRET_KEY と
-                  STRIPE_PRICE_ID_MONTHLY（または STRIPE_PRICE_ID）を設定してください。
-                </p>
-              )}
+              <SubscribeCheckoutButton showYearly={false} />
               <p className="mt-2 text-xs text-neutral-500">
                 ※登録後の管理（解約など）は{" "}
                 <Link href="/account" className="underline underline-offset-2">

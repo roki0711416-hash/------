@@ -51,7 +51,6 @@ export default async function AccountPage({
 
   const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
   const isPremium = user ? (isPremiumPreview || isPremiumForUserAndSubscription(user, sub)) : false;
-  const hasYearly = Boolean(process.env.STRIPE_PRICE_ID_YEARLY?.trim());
   const isAdmin = user ? isAdminRole(user.role) : false;
 
   return (
@@ -178,7 +177,7 @@ export default async function AccountPage({
             <AccountActions
               canManage={Boolean(user.stripeCustomerId)}
               isPremium={isPremium}
-              showYearly={hasYearly}
+              showYearly={false}
             />
 
             {isAdmin ? (
