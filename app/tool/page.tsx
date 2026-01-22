@@ -31,7 +31,7 @@ export default async function ToolPage({
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-4">
-      <header className="mb-5">
+      <header className="mb-5 rounded-2xl border border-neutral-200 bg-white p-4">
         <div className="flex items-center justify-between">
           <SideMenu
             makers={machines.makers}
