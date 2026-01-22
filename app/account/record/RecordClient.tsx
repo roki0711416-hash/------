@@ -421,15 +421,15 @@ export default function RecordClient({
       </section>
 
       {isModalOpen ? (
-        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 overflow-y-auto px-4 py-6">
           <button
             type="button"
             aria-label="閉じる"
-            className="absolute inset-0 bg-neutral-900/40"
+            className="fixed inset-0 z-0 bg-neutral-900/40"
             onClick={closeModal}
           />
 
-          <div className="relative w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-5">
+          <div className="relative z-10 mx-auto w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-5">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-neutral-900">収支入力</h3>
               <button
