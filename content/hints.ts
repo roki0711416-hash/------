@@ -4912,6 +4912,95 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-prism-nana"] = {
+    machineId: "smart-prism-nana",
+    helpUrl: "https://p-town.dmm.com/machines/4904",
+    groups: [
+      {
+        id: "prismnana_bonus_end_screen",
+        title: "ボーナス終了画面",
+        note: "偶数/高設定示唆はソフト示唆（重み付け）として反映。濃厚/確定系は制約として反映。出現した回数をカウント。",
+        items: [
+          { id: "prismnana_bonus_end_itaru", label: "イタル（デフォルト）", effect: { type: "none" } },
+          {
+            id: "prismnana_bonus_end_asuka_kotone",
+            label: "アスカ・コトネ（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+          },
+          {
+            id: "prismnana_bonus_end_itaru_asuka_kotone",
+            label: "イタル・アスカ・コトネ（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.06, 5: 1.08, 6: 1.1 } },
+          },
+          {
+            id: "prismnana_bonus_end_al_miku_shirube",
+            label: "アル・ミク・しるべ（設定2以上濃厚）",
+            effect: { type: "minSetting", min: 2 },
+          },
+          { id: "prismnana_bonus_end_mako", label: "マコ（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          {
+            id: "prismnana_bonus_end_all_uniform",
+            label: "全員制服（設定5以上濃厚）",
+            effect: { type: "minSetting", min: 5 },
+          },
+          { id: "prismnana_bonus_end_all_swimsuit", label: "全員水着（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "prismnana_payout_display",
+        title: "特定の獲得枚数表示",
+        note: "確定系として反映。出現した回数をカウント。",
+        items: [
+          { id: "prismnana_payout_other", label: "出現なし/その他", effect: { type: "none" } },
+          { id: "prismnana_payout_222", label: "OVER 222枚（設定2以上濃厚）", effect: { type: "minSetting", min: 2 } },
+          { id: "prismnana_payout_456", label: "OVER 456枚（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "prismnana_payout_666", label: "OVER 666枚（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "prismnana_talk",
+        title: "会話演出（返答発生時）",
+        note: "偶数/高設定示唆はソフト示唆（重み付け）として反映。濃厚/確定系は制約として反映。出現した回数をカウント。",
+        items: [
+          { id: "prismnana_talk_kireina", label: "きれいな（デフォルト）", effect: { type: "none" } },
+          {
+            id: "prismnana_talk_gussuri",
+            label: "ぐっすり（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+          },
+          {
+            id: "prismnana_talk_odoritaku",
+            label: "踊りたく（高設定示唆［弱］）",
+            effect: { type: "weight", weights: { 4: 1.06, 5: 1.08, 6: 1.1 } },
+          },
+          {
+            id: "prismnana_talk_rocket",
+            label: "ロケット（高設定示唆［強］）",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          { id: "prismnana_talk_kumo", label: "雲一つない（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "prismnana_talk_unmei", label: "運命の出会い（設定5以上濃厚）", effect: { type: "minSetting", min: 5 } },
+          { id: "prismnana_talk_rainbow", label: "虹（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "prismnana_ppzone_touch_voice",
+        title: "プリプリゾーン終了時：タッチボイス",
+        note: "偶数/確定系を反映。出現した回数をカウント。",
+        items: [
+          { id: "prismnana_ppzone_voice_default", label: "気分（デフォルト）", effect: { type: "none" } },
+          {
+            id: "prismnana_ppzone_voice_even",
+            label: "偶然（偶数設定示唆）",
+            effect: { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+          },
+          { id: "prismnana_ppzone_voice_456", label: "456%（設定4以上濃厚）", effect: { type: "minSetting", min: 4 } },
+          { id: "prismnana_ppzone_voice_666", label: "666%（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }
