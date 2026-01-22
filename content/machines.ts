@@ -79,14 +79,21 @@ export const machines = [
     inHall: true,
     category: "JUG",
     description: "6号機ジャグラー第一弾。定番。",
+    metricsLabels: {
+      extraMetrics: [
+        { id: "grape", label: "ブドウ" },
+        { id: "regSolo", label: "REG(単独)" },
+        { id: "regCherry", label: "REG(チェリー同時)" },
+      ],
+    },
     odds: {
       settings: [
-        { s: 1, big: 273.1, reg: 439.8, total: 168.5, rate: 97.0 },
-        { s: 2, big: 269.7, reg: 399.6, total: 161.0, rate: 98.0 },
-        { s: 3, big: 269.7, reg: 331.0, total: 148.6, rate: 99.5 },
-        { s: 4, big: 259.0, reg: 315.1, total: 142.2, rate: 101.1 },
-        { s: 5, big: 259.0, reg: 255.0, total: 128.5, rate: 103.3 },
-        { s: 6, big: 255.0, reg: 255.0, total: 127.5, rate: 105.5 },
+        { s: 1, big: 273.1, reg: 439.8, total: 168.5, rate: 97.0, extras: { grape: 6.02, regSolo: 630.15, regCherry: 1456.36 } },
+        { s: 2, big: 269.7, reg: 399.6, total: 161.0, rate: 98.0, extras: { grape: 6.02, regSolo: 574.88, regCherry: 1310.72 } },
+        { s: 3, big: 269.7, reg: 331.0, total: 148.6, rate: 99.5, extras: { grape: 6.02, regSolo: 474.9, regCherry: 1092.27 } },
+        { s: 4, big: 259.0, reg: 315.1, total: 142.2, rate: 101.1, extras: { grape: 6.02, regSolo: 448.88, regCherry: 1057.03 } },
+        { s: 5, big: 259.0, reg: 255.0, total: 128.5, rate: 103.3, extras: { grape: 6.02, regSolo: 364.09, regCherry: 851.12 } },
+        { s: 6, big: 255.0, reg: 255.0, total: 127.5, rate: 105.5, extras: { grape: 5.78, regSolo: 364.09, regCherry: 851.12 } },
       ],
     },
   },
