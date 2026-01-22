@@ -46,19 +46,6 @@ export default async function Home() {
         </p>
       </section>
 
-      <section className="mt-4 rounded-2xl border border-neutral-200 bg-white p-5">
-        <h2 className="text-lg font-semibold">スマスロ対応</h2>
-        <div className="mt-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
-          <p className="text-sm font-semibold text-neutral-800">【スマスロ】</p>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-neutral-700">
-            <li>北斗の拳</li>
-            <li>からくりサーカス</li>
-            <li>ヴァルヴレイヴ など</li>
-          </ul>
-          <p className="mt-2 text-xs text-neutral-600">※実戦データ・スランプ傾向から設定推測をサポートします</p>
-        </div>
-      </section>
-
       {/* PCのみ：ヘッダー直下のメイン導線 */}
       <section className="mt-4 hidden lg:block">
         <div className="rounded-2xl border border-neutral-200 bg-gradient-to-b from-neutral-50 to-neutral-100 px-6 py-6">
