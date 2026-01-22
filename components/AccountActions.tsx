@@ -92,7 +92,7 @@ export default function AccountActions({
           >
             {loading === "checkout"
               ? "Checkoutへ..."
-              : "7日間無料で始める"}
+              : "初回48時間、全機能解放で始める"}
           </button>
 
           {showYearly ? (
@@ -103,7 +103,7 @@ export default function AccountActions({
             >
               {loading === "checkout"
                 ? "Checkoutへ..."
-                : "年額で登録する（税込6,800円/年・7日間無料トライアル）"}
+                : "初回48時間、全機能解放で年額登録する（税込6,800円/年）"}
             </button>
           ) : null}
         </>

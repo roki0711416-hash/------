@@ -153,7 +153,9 @@ export default async function Home() {
           <p className="mt-2 text-sm text-neutral-600">
             月額680円（税込）でご利用いただけます。
             <br />
-            初回は7日間の無料トライアル付きです。
+            初回48時間、全機能解放です。
+            <br />
+            ※初回のみ。48時間終了後は月額¥680で自動更新されます
             <br />
             サブスク会員に登録すると、会員限定の機能が使えます。
           </p>
@@ -179,8 +181,8 @@ export default async function Home() {
               <p className="text-sm font-semibold text-neutral-800">登録はこちら</p>
               <p className="mt-1 text-sm text-neutral-700">
                 {hasYearly
-                  ? "月額：税込680円/月、年額：税込6,800円/年・どちらも7日間無料トライアルです。"
-                  : "月額：税込680円/月・7日間無料トライアルです。"}
+                  ? "月額：税込680円/月、年額：税込6,800円/年・どちらも初回48時間、全機能解放です。"
+                  : "月額：税込680円/月・初回48時間、全機能解放です。"}
               </p>
               {canCheckout ? (
                 <SubscribeCheckoutButton showYearly={hasYearly} />

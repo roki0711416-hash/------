@@ -111,8 +111,8 @@ export default async function SubscribePage() {
             <p className="text-sm font-semibold text-neutral-800">登録はこちら</p>
             <p className="mt-1 text-sm text-neutral-700">
                 {hasYearly
-                  ? "月額：税込680円/月、年額：税込6,800円/年（20%オフ）・どちらも7日間無料トライアルです。"
-                  : "月額：税込680円/月・7日間無料トライアルです."}
+              ? "月額：税込680円/月、年額：税込6,800円/年（20%オフ）・どちらも初回48時間、全機能解放です。"
+              : "月額：税込680円/月・初回48時間、全機能解放です。"}
             </p>
             {canCheckout ? (
               <SubscribeCheckoutButton showYearly={hasYearly} />

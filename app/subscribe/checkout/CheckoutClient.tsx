@@ -46,7 +46,7 @@ function PlanPicker({
         >
           <div>月額</div>
           <div className="mt-1 text-xs font-medium text-neutral-600">
-            税込680円/月・7日間無料トライアル
+            初回48時間、全機能解放（以降 税込680円/月）
           </div>
         </button>
 
@@ -62,7 +62,7 @@ function PlanPicker({
         >
           <div>年額</div>
           <div className="mt-1 text-xs font-medium text-neutral-600">
-            税込6,800円/年・7日間無料トライアル
+            初回48時間、全機能解放（以降 税込6,800円/年）
           </div>
         </button>
       </div>
@@ -109,7 +109,10 @@ function InnerForm({ plan }: { plan: Plan }) {
       <div className="rounded-lg border border-neutral-200 bg-white p-3">
         <p className="text-sm font-semibold text-neutral-900">お支払い情報</p>
         <p className="mt-1 text-xs text-neutral-600">
-          7日間無料トライアル中は請求されません。終了後に自動で課金が開始されます。
+          初回48時間の間は請求されません。
+          {plan === "monthly"
+            ? "※初回のみ。48時間終了後は月額¥680で自動更新されます"
+            : "※初回のみ。48時間終了後は年額¥6,800で自動更新されます"}
         </p>
         <div className="mt-3">
           <PaymentElement />
