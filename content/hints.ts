@@ -4998,6 +4998,49 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "prismnana_ppzone_voice_666", label: "666%（設定6濃厚）", effect: { type: "exactSetting", exact: 6 } },
         ],
       },
+      {
+        id: "prismnana_music_hint",
+        title: "楽曲の示唆",
+        note: "偶数/高設定示唆はソフト示唆（重み付け）として反映。出現した回数をカウント。",
+        items: [
+          { id: "prismnana_music_default", label: "デフォルト", effect: { type: "none" } },
+          {
+            id: "prismnana_music_even",
+            label: "偶数設定示唆",
+            effect: { type: "weight", weights: { 2: 1.03, 4: 1.03, 6: 1.03 } },
+          },
+          {
+            id: "prismnana_music_high",
+            label: "高設定示唆",
+            effect: { type: "weight", weights: { 4: 1.06, 5: 1.08, 6: 1.1 } },
+          },
+        ],
+      },
+      {
+        id: "prismnana_touchvoice_song_distribution",
+        title: "タッチボイス：楽曲（出現割合）",
+        note: "DMMの出現割合を元に、各楽曲の出現が起きやすい設定へ重み付け（平均比）で反映。出現した回数をカウント。",
+        items: [
+          {
+            id: "prismnana_touchvoice_song_your_prism",
+            label: "YOUR PRISM",
+            effect: {
+              type: "weight",
+              weights: { 1: 1.2222, 2: 1, 3: 1.1111, 4: 0.8889, 5: 1, 6: 0.7778 },
+            },
+          },
+          {
+            id: "prismnana_touchvoice_song_infection",
+            label: "愛の[infection]",
+            effect: { type: "weight", weights: { 1: 0.8, 2: 1.2, 3: 0.8, 4: 1.2, 5: 0.8, 6: 1.2 } },
+          },
+          {
+            id: "prismnana_touchvoice_song_hoshizora",
+            label: "星空シンカネーション",
+            effect: { type: "weight", weights: { 1: 0.5, 2: 0.5, 3: 1, 4: 1, 5: 1.5, 6: 1.5 } },
+          },
+        ],
+      },
     ],
   };
 
