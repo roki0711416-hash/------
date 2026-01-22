@@ -12,7 +12,9 @@
     "publish:machine": "node scripts/publish-machine-update.mjs",
     "db:init-reviews": "node scripts/init-reviews-table.mjs",
     "db:init-auth": "node scripts/init-auth-tables.mjs",
-    "db:init-community": "node scripts/init-community-table.mjs"
+    "db:init-community": "node scripts/init-community-table.mjs",
+    "db:init-judge-results": "node scripts/init-judge-results-table.mjs",
+    "db:init-sessions": "node scripts/init-slot-sessions-table.mjs"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^5.4.1",

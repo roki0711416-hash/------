@@ -76,6 +76,16 @@ export default async function Home() {
             </Link>
 
             <Link
+              href="/record"
+              className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-5 py-4"
+            >
+              <p className="text-base font-semibold text-neutral-900">収支表</p>
+              <span aria-hidden className="text-xl leading-none text-neutral-800">
+                →
+              </span>
+            </Link>
+
+            <Link
               href="/machines"
               className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-5 py-4"
             >
@@ -104,6 +114,16 @@ export default async function Home() {
             >
               <span>設定判別</span>
               <span aria-hidden className="text-xl leading-none">
+                →
+              </span>
+            </Link>
+
+            <Link
+              href="/record"
+              className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white px-6 py-6"
+            >
+              <span className="text-base font-semibold text-neutral-900">収支表</span>
+              <span aria-hidden className="text-xl leading-none text-neutral-800">
                 →
               </span>
             </Link>

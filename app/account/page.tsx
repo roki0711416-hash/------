@@ -180,6 +180,19 @@ export default async function AccountPage({
               showYearly={false}
             />
 
+            <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
+              <p className="text-sm font-semibold text-neutral-800">収支管理</p>
+              <p className="mt-1 text-sm text-neutral-700">実戦の収支をカレンダーで管理できます。</p>
+              <div className="mt-3">
+                <Link
+                  href="/record"
+                  className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                >
+                  収支管理へ
+                </Link>
+              </div>
+            </div>
+
             {isAdmin ? (
               <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
                 <p className="text-sm font-semibold text-neutral-800">管理者</p>

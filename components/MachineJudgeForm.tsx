@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import type { Machine } from "../content/machines";
 import { getHintConfig } from "../content/hints";
@@ -29,6 +30,14 @@ function fmtSigned(n: number) {
 function fmtOneOver(games: number, count: number) {
   if (!(games > 0) || !(count > 0)) return "-";
   return `1/${fmt(games / count)}`;
+}
+
+function pad2(n: number) {
+  return String(n).padStart(2, "0");
+}
+
+function toISODate(d: Date) {
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
 }
 
 function toIntOrZero(s: string) {
@@ -161,6 +170,13 @@ export default function MachineJudgeForm({
   machine: Machine;
   onPosteriorsChange?: (posteriors: SettingPosterior[] | null) => void;
 }) {
+  const router = useRouter();
+  const [judgeResultId, setJudgeResultId] = useState<string | null>(null);
+  const [judgeSaveStatus, setJudgeSaveStatus] = useState<"idle" | "saving" | "saved" | "error">(
+    "idle",
+  );
+  const lastSavedJudgeSignatureRef = useRef<string | null>(null);
+
   const [games, setGames] = useState<string>("");
   const [bigCount, setBigCount] = useState<string>("0");
   const [regCount, setRegCount] = useState<string>("0");
@@ -1063,6 +1079,61 @@ export default function MachineJudgeForm({
     return topNSettings(posteriors, 3);
   }, [posteriors]);
 
+  const judgeSaveSignature = useMemo(() => {
+    if (!top3) return null;
+    // 判別入力/結果が同一なら二重保存しないための署名
+    // JSON.stringify の安定性に依存（この用途では十分）
+    return JSON.stringify({ machineId: machine.id, parsed, top3 });
+  }, [machine.id, parsed, top3]);
+
+  useEffect(() => {
+    if (!top3 || !judgeSaveSignature) {
+      setJudgeResultId(null);
+      setJudgeSaveStatus("idle");
+      lastSavedJudgeSignatureRef.current = null;
+      return;
+    }
+
+    if (lastSavedJudgeSignatureRef.current === judgeSaveSignature) return;
+
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        setJudgeSaveStatus("saving");
+
+        const res = await fetch("/api/judge-results", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            machineType: machine.id,
+            input: {
+              machineId: machine.id,
+              machineName: machine.name,
+              parsed,
+            },
+            result: { top3 },
+          }),
+        });
+
+        const json = (await res.json()) as { ok: boolean; id?: string };
+        if (!res.ok || !json.ok || !json.id) throw new Error("failed");
+
+        if (cancelled) return;
+        lastSavedJudgeSignatureRef.current = judgeSaveSignature;
+        setJudgeResultId(json.id);
+        setJudgeSaveStatus("saved");
+      } catch {
+        if (cancelled) return;
+        setJudgeSaveStatus("error");
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [judgeSaveSignature, machine.id, machine.name, parsed, top3]);
+
   const sorted = useMemo(() => {
     if (!posteriors) return null;
     return [...posteriors].sort((a, b) => {
@@ -1781,6 +1852,44 @@ export default function MachineJudgeForm({
               <p className="mt-2 text-sm text-neutral-700">
                 {top3.map((t) => `${t.s}（${fmtPct(t.posterior)}）`).join(" / ")}
               </p>
+
+              <div className="mt-3">
+                <button
+                  type="button"
+                  disabled={!judgeResultId || judgeSaveStatus === "saving"}
+                  aria-disabled={!judgeResultId || judgeSaveStatus === "saving"}
+                  className={
+                    "inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white " +
+                    (!judgeResultId || judgeSaveStatus === "saving" ? "opacity-60" : "")
+                  }
+                  onClick={async () => {
+                    if (!judgeResultId) return;
+
+                    const gamesValue = Number.isFinite(parsed.games)
+                      ? String(Math.max(0, Math.trunc(parsed.games)))
+                      : "0";
+                    const sp = new URLSearchParams({
+                      date: toISODate(new Date()),
+                      machineName: machine.name,
+                      games: gamesValue,
+                      judgeResultId,
+                    });
+                    router.push(`/record?${sp.toString()}`);
+                  }}
+                >
+                  {judgeSaveStatus === "saving"
+                    ? "判別結果を保存中…"
+                    : judgeResultId
+                          ? "この実戦を収支に登録"
+                      : "判別結果を保存できません"}
+                </button>
+
+                {judgeSaveStatus === "error" ? (
+                  <p className="mt-2 text-xs font-semibold text-red-600">
+                    うまく登録できませんでした。時間をおいて再度お試しください。
+                  </p>
+                ) : null}
+              </div>
             </div>
           ) : null}
 
