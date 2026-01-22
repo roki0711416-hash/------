@@ -257,14 +257,17 @@ export const machines = [
     inHall: true,
     category: "JUG",
     description: "ガールズ系。",
+    metricsLabels: {
+      extraMetrics: [{ id: "grape", label: "ブドウ" }],
+    },
     odds: {
       settings: [
-        { s: 1, big: 273.1, reg: 381.0, total: 159.1, rate: 97.0 },
-        { s: 2, big: 270.8, reg: 350.5, total: 152.8, rate: 97.9 },
-        { s: 3, big: 260.1, reg: 316.6, total: 142.8, rate: 99.9 },
-        { s: 4, big: 250.1, reg: 281.3, total: 132.4, rate: 102.1 },
-        { s: 5, big: 243.6, reg: 270.8, total: 128.3, rate: 104.4 },
-        { s: 6, big: 226.0, reg: 252.1, total: 119.2, rate: 107.5 },
+        { s: 1, big: 273.1, reg: 381.0, total: 159.1, rate: 97.0, extras: { grape: 5.98 } },
+        { s: 2, big: 270.8, reg: 350.5, total: 152.8, rate: 97.9, extras: { grape: 5.98 } },
+        { s: 3, big: 260.1, reg: 316.6, total: 142.8, rate: 99.9, extras: { grape: 5.98 } },
+        { s: 4, big: 250.1, reg: 281.3, total: 132.4, rate: 102.1, extras: { grape: 5.98 } },
+        { s: 5, big: 243.6, reg: 270.8, total: 128.3, rate: 104.4, extras: { grape: 5.88 } },
+        { s: 6, big: 226.0, reg: 252.1, total: 119.2, rate: 107.5, extras: { grape: 5.83 } },
       ],
     },
   },
