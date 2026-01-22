@@ -60,6 +60,31 @@ body {
   min-height: 100vh;
   background-color: var(--bg);
   color: rgb(var(--text-rgb));
+  position: relative;
+  isolation: isolate;
+}
+
+/* Global background image (all pages) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: url("/slot-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* Dark overlay for readability (behind content) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgb(var(--text-rgb) / 0.55);
+  pointer-events: none;
 }
 
 /* Map existing Tailwind utility usage to theme tokens (no UI/layout changes) */
