@@ -641,6 +641,31 @@ export const machines = [
     },
   },
 
+  {
+    id: "smart-prism-nana",
+    name: "L プリズムナナ",
+    maker: "カルミナ",
+    series: "プリズムナナ",
+    category: "SMART",
+    inHall: true,
+    description: "初当りベースの簡易判別。",
+    metricsLabels: {
+      bigLabel: "初当り",
+      regLabel: null,
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 351.8, reg: 1_000_000_000, total: 351.8, rate: 97.7 },
+        { s: 2, big: 346.9, reg: 1_000_000_000, total: 346.9, rate: 98.5 },
+        { s: 3, big: 337.2, reg: 1_000_000_000, total: 337.2, rate: 100.1 },
+        { s: 4, big: 306.6, reg: 1_000_000_000, total: 306.6, rate: 105.5 },
+        { s: 5, big: 290.1, reg: 1_000_000_000, total: 290.1, rate: 110.1 },
+        { s: 6, big: 278.6, reg: 1_000_000_000, total: 278.6, rate: 114.9 },
+      ],
+    },
+  },
+
   // --- ELECO L追加 ---
   {
     id: "smart-shaman-king",
