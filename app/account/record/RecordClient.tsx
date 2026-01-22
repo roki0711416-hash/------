@@ -16,6 +16,11 @@ export type SlotSession = {
   date: ISODate;
   machineName: string;
   games: number;
+  bigCount?: number;
+  regCount?: number;
+  guessedSetting?: number | null;
+  machineNumber?: string;
+  shopName?: string;
   diffCoins: number;
   invest: number;
   collect: number;
@@ -71,6 +76,22 @@ function isNonNegativeIntString(input: string) {
 function parseNonNegativeIntOrZero(input: string) {
   if (input.trim() === "") return 0;
   return safeInt(input);
+}
+
+function parseNonNegativeIntOrNull(input: string) {
+  if (input.trim() === "") return null;
+  const n = safeInt(input);
+  return n >= 0 ? n : null;
+}
+
+function parseGuessedSetting(input: string) {
+  const trimmed = input.trim();
+  if (trimmed === "") return null;
+  if (!/^\d+$/.test(trimmed)) return null;
+  const n = Number(trimmed);
+  if (!Number.isInteger(n)) return null;
+  if (n < 1 || n > 6) return null;
+  return n;
 }
 
 function formatSignedYen(n: number) {
@@ -152,6 +173,11 @@ export default function RecordClient({
   const [modalDate, setModalDate] = useState<string>(prefill.date);
   const [modalMachineName, setModalMachineName] = useState<string>(prefill.machineName);
   const [modalGames, setModalGames] = useState<string>(prefill.games);
+    const [modalBigCount, setModalBigCount] = useState<string>("");
+    const [modalRegCount, setModalRegCount] = useState<string>("");
+    const [modalGuessedSetting, setModalGuessedSetting] = useState<string>("");
+    const [modalMachineNumber, setModalMachineNumber] = useState<string>("");
+    const [modalShopName, setModalShopName] = useState<string>("");
   const [modalDiffCoins, setModalDiffCoins] = useState<string>("0");
   const [modalInvest, setModalInvest] = useState<string>("0");
   const [modalCollect, setModalCollect] = useState<string>("0");
@@ -167,7 +193,18 @@ export default function RecordClient({
 
   const modalValidation = useMemo(() => {
     const fieldErrors: Partial<
-      Record<"date" | "machineName" | "games" | "diffCoins" | "invest" | "collect", string>
+      Record<
+        | "date"
+        | "machineName"
+        | "games"
+        | "bigCount"
+        | "regCount"
+        | "guessedSetting"
+        | "diffCoins"
+        | "invest"
+        | "collect",
+        string
+      >
     > = {};
 
     const date = modalDate.trim();
@@ -177,6 +214,11 @@ export default function RecordClient({
     if (!machineName) fieldErrors.machineName = "機種名は必須です";
 
     if (!isNonNegativeIntString(modalGames)) fieldErrors.games = "G数は0以上の整数で入力してください";
+    if (!isNonNegativeIntString(modalBigCount)) fieldErrors.bigCount = "BIGは0以上の整数で入力してください";
+    if (!isNonNegativeIntString(modalRegCount)) fieldErrors.regCount = "REGは0以上の整数で入力してください";
+    if (modalGuessedSetting.trim() !== "" && parseGuessedSetting(modalGuessedSetting) === null) {
+      fieldErrors.guessedSetting = "推測設定は1〜6で入力してください";
+    }
     if (!isNonNegativeIntString(modalDiffCoins)) fieldErrors.diffCoins = "差枚は0以上の整数で入力してください";
     if (!isNonNegativeIntString(modalInvest)) fieldErrors.invest = "投資は0以上の整数で入力してください";
     if (!isNonNegativeIntString(modalCollect)) fieldErrors.collect = "回収は0以上の整数で入力してください";
@@ -185,6 +227,11 @@ export default function RecordClient({
       date: date as ISODate,
       machineName,
       games: parseNonNegativeIntOrZero(modalGames),
+      bigCount: parseNonNegativeIntOrNull(modalBigCount),
+      regCount: parseNonNegativeIntOrNull(modalRegCount),
+      guessedSetting: parseGuessedSetting(modalGuessedSetting),
+      machineNumber: modalMachineNumber.trim(),
+      shopName: modalShopName.trim(),
       diffCoins: parseNonNegativeIntOrZero(modalDiffCoins),
       invest: parseNonNegativeIntOrZero(modalInvest),
       collect: parseNonNegativeIntOrZero(modalCollect),
@@ -192,7 +239,19 @@ export default function RecordClient({
 
     const isValid = Object.keys(fieldErrors).length === 0;
     return { isValid, fieldErrors, parsed };
-  }, [modalCollect, modalDate, modalDiffCoins, modalGames, modalInvest, modalMachineName]);
+  }, [
+    modalBigCount,
+    modalCollect,
+    modalDate,
+    modalDiffCoins,
+    modalGames,
+    modalGuessedSetting,
+    modalInvest,
+    modalMachineName,
+    modalMachineNumber,
+    modalRegCount,
+    modalShopName,
+  ]);
 
   const modalProfit = useMemo(() => {
     return calcProfit(modalValidation.parsed.invest, modalValidation.parsed.collect);
@@ -232,6 +291,11 @@ export default function RecordClient({
     setModalDate(iso);
     setModalMachineName("");
     setModalGames("0");
+    setModalBigCount("");
+    setModalRegCount("");
+    setModalGuessedSetting("");
+    setModalMachineNumber("");
+    setModalShopName("");
     setModalDiffCoins("0");
     setModalInvest("0");
     setModalCollect("0");
@@ -260,6 +324,11 @@ export default function RecordClient({
       date,
       machineName: modalValidation.parsed.machineName,
       games: modalValidation.parsed.games,
+      bigCount: modalValidation.parsed.bigCount ?? undefined,
+      regCount: modalValidation.parsed.regCount ?? undefined,
+      guessedSetting: modalValidation.parsed.guessedSetting,
+      machineNumber: modalValidation.parsed.machineNumber || undefined,
+      shopName: modalValidation.parsed.shopName || undefined,
       diffCoins: modalValidation.parsed.diffCoins,
       invest: modalValidation.parsed.invest,
       collect: modalValidation.parsed.collect,
@@ -283,6 +352,11 @@ export default function RecordClient({
           date,
           machineName: session.machineName,
           games: session.games,
+          bigCount: session.bigCount ?? null,
+          regCount: session.regCount ?? null,
+          guessedSetting: session.guessedSetting ?? null,
+          machineNumber: session.machineNumber ?? "",
+          shopName: session.shopName ?? "",
           diffCoins: session.diffCoins,
           invest: session.invest,
           collect: session.collect,
@@ -546,6 +620,80 @@ export default function RecordClient({
                   {modalValidation.fieldErrors.games ? (
                     <p className="mt-1 text-xs font-semibold text-red-600">{modalValidation.fieldErrors.games}</p>
                   ) : null}
+
+                  <div className="mt-3 space-y-3 border-t border-neutral-200 pt-3">
+                    <p className="text-sm font-semibold text-neutral-900">追加情報（任意）</p>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <label className="block">
+                        <span className="text-sm font-semibold text-neutral-900">BIG</span>
+                        <input
+                          type="number"
+                          inputMode="numeric"
+                          value={modalBigCount}
+                          onChange={(e) => setModalBigCount(e.target.value)}
+                          className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                        />
+                        {modalValidation.fieldErrors.bigCount ? (
+                          <p className="mt-1 text-xs font-semibold text-red-600">
+                            {modalValidation.fieldErrors.bigCount}
+                          </p>
+                        ) : null}
+                      </label>
+
+                      <label className="block">
+                        <span className="text-sm font-semibold text-neutral-900">REG</span>
+                        <input
+                          type="number"
+                          inputMode="numeric"
+                          value={modalRegCount}
+                          onChange={(e) => setModalRegCount(e.target.value)}
+                          className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                        />
+                        {modalValidation.fieldErrors.regCount ? (
+                          <p className="mt-1 text-xs font-semibold text-red-600">
+                            {modalValidation.fieldErrors.regCount}
+                          </p>
+                        ) : null}
+                      </label>
+                    </div>
+
+                    <label className="block">
+                      <span className="text-sm font-semibold text-neutral-900">推測設定（1〜6）</span>
+                      <input
+                        type="number"
+                        inputMode="numeric"
+                        value={modalGuessedSetting}
+                        onChange={(e) => setModalGuessedSetting(e.target.value)}
+                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      />
+                      {modalValidation.fieldErrors.guessedSetting ? (
+                        <p className="mt-1 text-xs font-semibold text-red-600">
+                          {modalValidation.fieldErrors.guessedSetting}
+                        </p>
+                      ) : null}
+                    </label>
+
+                    <label className="block">
+                      <span className="text-sm font-semibold text-neutral-900">台番</span>
+                      <input
+                        type="text"
+                        value={modalMachineNumber}
+                        onChange={(e) => setModalMachineNumber(e.target.value)}
+                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      />
+                    </label>
+
+                    <label className="block">
+                      <span className="text-sm font-semibold text-neutral-900">店舗名</span>
+                      <input
+                        type="text"
+                        value={modalShopName}
+                        onChange={(e) => setModalShopName(e.target.value)}
+                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      />
+                    </label>
+                  </div>
                 </div>
               ) : (
                 <>
@@ -589,6 +737,76 @@ export default function RecordClient({
                     {modalValidation.fieldErrors.games ? (
                       <p className="mt-1 text-xs font-semibold text-red-600">{modalValidation.fieldErrors.games}</p>
                     ) : null}
+                  </label>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <label className="block">
+                      <span className="text-sm font-semibold text-neutral-900">BIG</span>
+                      <input
+                        type="number"
+                        inputMode="numeric"
+                        value={modalBigCount}
+                        onChange={(e) => setModalBigCount(e.target.value)}
+                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      />
+                      {modalValidation.fieldErrors.bigCount ? (
+                        <p className="mt-1 text-xs font-semibold text-red-600">
+                          {modalValidation.fieldErrors.bigCount}
+                        </p>
+                      ) : null}
+                    </label>
+
+                    <label className="block">
+                      <span className="text-sm font-semibold text-neutral-900">REG</span>
+                      <input
+                        type="number"
+                        inputMode="numeric"
+                        value={modalRegCount}
+                        onChange={(e) => setModalRegCount(e.target.value)}
+                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      />
+                      {modalValidation.fieldErrors.regCount ? (
+                        <p className="mt-1 text-xs font-semibold text-red-600">
+                          {modalValidation.fieldErrors.regCount}
+                        </p>
+                      ) : null}
+                    </label>
+                  </div>
+
+                  <label className="block">
+                    <span className="text-sm font-semibold text-neutral-900">推測設定（1〜6）</span>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      value={modalGuessedSetting}
+                      onChange={(e) => setModalGuessedSetting(e.target.value)}
+                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                    />
+                    {modalValidation.fieldErrors.guessedSetting ? (
+                      <p className="mt-1 text-xs font-semibold text-red-600">
+                        {modalValidation.fieldErrors.guessedSetting}
+                      </p>
+                    ) : null}
+                  </label>
+
+                  <label className="block">
+                    <span className="text-sm font-semibold text-neutral-900">台番</span>
+                    <input
+                      type="text"
+                      value={modalMachineNumber}
+                      onChange={(e) => setModalMachineNumber(e.target.value)}
+                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="text-sm font-semibold text-neutral-900">店舗名</span>
+                    <input
+                      type="text"
+                      value={modalShopName}
+                      onChange={(e) => setModalShopName(e.target.value)}
+                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                    />
                   </label>
 
                   <label className="block">

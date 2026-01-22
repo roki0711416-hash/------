@@ -29,6 +29,19 @@ function toNonNegativeInt(value: unknown) {
   return null;
 }
 
+function toOptionalNonNegativeInt(value: unknown) {
+  if (value === undefined || value === null || value === "") return null;
+  return toNonNegativeInt(value);
+}
+
+function toOptionalSetting(value: unknown) {
+  if (value === undefined || value === null || value === "") return null;
+  const n = toNonNegativeInt(value);
+  if (n === null) return null;
+  if (n < 1 || n > 6) return null;
+  return n;
+}
+
 export async function POST(req: Request) {
   const user = await getCurrentUserFromCookies();
   if (!user) {
@@ -51,6 +64,11 @@ export async function POST(req: Request) {
   const date = body.date;
   const machineName = body.machineName;
   const games = toNonNegativeInt(body.games);
+  const bigCount = toOptionalNonNegativeInt(body.bigCount);
+  const regCount = toOptionalNonNegativeInt(body.regCount);
+  const guessedSetting = toOptionalSetting(body.guessedSetting);
+  const machineNumber = body.machineNumber;
+  const shopName = body.shopName;
   const diffCoins = toNonNegativeInt(body.diffCoins);
   const invest = toNonNegativeInt(body.invest);
   const collect = toNonNegativeInt(body.collect);
@@ -64,6 +82,33 @@ export async function POST(req: Request) {
   }
   if (games === null || diffCoins === null || invest === null || collect === null) {
     return jsonError("games/diffCoins/invest/collect must be non-negative integers", 400);
+  }
+
+  if (body.bigCount !== undefined && body.bigCount !== null && body.bigCount !== "" && bigCount === null) {
+    return jsonError("bigCount must be a non-negative integer", 400);
+  }
+  if (body.regCount !== undefined && body.regCount !== null && body.regCount !== "" && regCount === null) {
+    return jsonError("regCount must be a non-negative integer", 400);
+  }
+  if (
+    body.guessedSetting !== undefined &&
+    body.guessedSetting !== null &&
+    body.guessedSetting !== "" &&
+    guessedSetting === null
+  ) {
+    return jsonError("guessedSetting must be 1..6", 400);
+  }
+
+  let machineNumberValue: string | null = null;
+  if (machineNumber !== undefined && machineNumber !== null && machineNumber !== "") {
+    if (typeof machineNumber !== "string") return jsonError("machineNumber must be a string", 400);
+    machineNumberValue = machineNumber.trim().slice(0, 64);
+  }
+
+  let shopNameValue: string | null = null;
+  if (shopName !== undefined && shopName !== null && shopName !== "") {
+    if (typeof shopName !== "string") return jsonError("shopName must be a string", 400);
+    shopNameValue = shopName.trim().slice(0, 128);
   }
 
   let judgeResultIdValue: string | null = null;
@@ -80,6 +125,11 @@ export async function POST(req: Request) {
       date,
       machine_name,
       games,
+      big_count,
+      reg_count,
+      guessed_setting,
+      machine_number,
+      shop_name,
       diff_coins,
       invest,
       collect,
@@ -90,6 +140,11 @@ export async function POST(req: Request) {
       ${date},
       ${machineName},
       ${games},
+      ${bigCount},
+      ${regCount},
+      ${guessedSetting},
+      ${machineNumberValue},
+      ${shopNameValue},
       ${diffCoins},
       ${invest},
       ${collect},

@@ -16,6 +16,11 @@ function isSlotSession(v: unknown): v is SlotSession {
     typeof v.date === "string" &&
     typeof v.machineName === "string" &&
     typeof v.games === "number" &&
+    (v.bigCount === undefined || typeof v.bigCount === "number") &&
+    (v.regCount === undefined || typeof v.regCount === "number") &&
+    (v.guessedSetting === undefined || v.guessedSetting === null || typeof v.guessedSetting === "number") &&
+    (v.machineNumber === undefined || typeof v.machineNumber === "string") &&
+    (v.shopName === undefined || typeof v.shopName === "string") &&
     typeof v.diffCoins === "number" &&
     typeof v.invest === "number" &&
     typeof v.collect === "number" &&
