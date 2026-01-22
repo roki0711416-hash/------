@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-01-22-002",
+    "date": "2026-01-22",
+    "title": "L プリズムナナ対応",
+    "href": "/tool?machine=smart-prism-nana",
+    "body": "L プリズムナナを追加しました。"
+  },
+  {
     "id": "2026-01-22-001",
     "date": "2026-01-22",
     "title": "Sister Quest対応",
