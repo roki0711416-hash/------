@@ -162,16 +162,16 @@ export default function MachineJudgeForm({
   onPosteriorsChange?: (posteriors: SettingPosterior[] | null) => void;
 }) {
   const [games, setGames] = useState<string>("");
-  const [bigCount, setBigCount] = useState<string>("");
-  const [regCount, setRegCount] = useState<string>("");
-  const [extraCount, setExtraCount] = useState<string>("");
+  const [bigCount, setBigCount] = useState<string>("0");
+  const [regCount, setRegCount] = useState<string>("0");
+  const [extraCount, setExtraCount] = useState<string>("0");
   const [extraCounts, setExtraCounts] = useState<Record<string, string>>({});
   const [binomialTrials, setBinomialTrials] = useState<Record<string, string>>({});
   const [binomialHits, setBinomialHits] = useState<Record<string, string>>({});
-  const [suikaTrials, setSuikaTrials] = useState<string>("");
-  const [suikaCzHits, setSuikaCzHits] = useState<string>("");
-  const [uraAtTrials, setUraAtTrials] = useState<string>("");
-  const [uraAtHits, setUraAtHits] = useState<string>("");
+  const [suikaTrials, setSuikaTrials] = useState<string>("0");
+  const [suikaCzHits, setSuikaCzHits] = useState<string>("0");
+  const [uraAtTrials, setUraAtTrials] = useState<string>("0");
+  const [uraAtHits, setUraAtHits] = useState<string>("0");
 
   const bigLabel = machine.metricsLabels?.bigLabel ?? "BIG";
   const derivedBigFromExtraIds: string[] | null = (() => {
@@ -277,11 +277,34 @@ export default function MachineJudgeForm({
     // Avoid carrying hint inputs across machine switches.
     setHintCounts({});
     setCollapsedHintGroups({});
-    setExtraCounts({});
+    setBigCount("0");
+    setRegCount("0");
+    setExtraCount("0");
+    setSuikaTrials("0");
+    setSuikaCzHits("0");
+    setUraAtTrials("0");
+    setUraAtHits("0");
+
+    const nextExtraCounts: Record<string, string> = {};
+    if (machine.metricsLabels?.extraMetrics) {
+      for (const m of machine.metricsLabels.extraMetrics) {
+        nextExtraCounts[m.id] = "0";
+      }
+    }
+    setExtraCounts(nextExtraCounts);
+
     setBinomialTrials({});
-    setBinomialHits({});
+
+    const nextBinomialHits: Record<string, string> = {};
+    if (machine.metricsLabels?.binomialMetrics) {
+      for (const m of machine.metricsLabels.binomialMetrics) {
+        nextBinomialHits[m.id] = "0";
+      }
+    }
+    setBinomialHits(nextBinomialHits);
+
     setHintMemos({});
-  }, [machine.id]);
+  }, [machine.id, machine.metricsLabels?.extraMetrics, machine.metricsLabels?.binomialMetrics]);
 
   useEffect(() => {
     if (!hintConfig) return;
@@ -542,18 +565,20 @@ export default function MachineJudgeForm({
   }
 
   const error = useMemo(() => {
+    const isBlankCount = (v: string) => v === "" || v === "0";
+
     if (
       games === "" &&
-      bigCount === "" &&
-      (showReg ? regCount === "" : true) &&
-      extraCount === "" &&
-      Object.values(extraCounts).every((v) => v === "") &&
-      Object.values(binomialTrials).every((v) => v === "") &&
-      Object.values(binomialHits).every((v) => v === "") &&
-      suikaTrials === "" &&
-      suikaCzHits === "" &&
-      uraAtTrials === "" &&
-      uraAtHits === ""
+      isBlankCount(bigCount) &&
+      (showReg ? isBlankCount(regCount) : true) &&
+      isBlankCount(extraCount) &&
+      Object.values(extraCounts).every((v) => isBlankCount(v)) &&
+      Object.values(binomialTrials).every((v) => isBlankCount(v)) &&
+      Object.values(binomialHits).every((v) => isBlankCount(v)) &&
+      isBlankCount(suikaTrials) &&
+      isBlankCount(suikaCzHits) &&
+      isBlankCount(uraAtTrials) &&
+      isBlankCount(uraAtHits)
     )
       return null;
 
@@ -734,21 +759,22 @@ export default function MachineJudgeForm({
       };
     };
 
-    const hasAnyExtraMetricsInput = Object.values(extraCounts).some((v) => v !== "");
+    const isBlankCount = (v: string) => v === "" || v === "0";
+    const hasAnyExtraMetricsInput = Object.values(extraCounts).some((v) => !isBlankCount(v));
     const hasAnyBinomialInput =
-      Object.values(binomialTrials).some((v) => v !== "") ||
-      Object.values(binomialHits).some((v) => v !== "");
+      Object.values(binomialTrials).some((v) => !isBlankCount(v)) ||
+      Object.values(binomialHits).some((v) => !isBlankCount(v));
     if (
       games === "" &&
-      (showBigInput ? bigCount === "" : true) &&
-      (showReg ? regCount === "" : true) &&
-      extraCount === "" &&
+      (showBigInput ? isBlankCount(bigCount) : true) &&
+      (showReg ? isBlankCount(regCount) : true) &&
+      isBlankCount(extraCount) &&
       !hasAnyExtraMetricsInput &&
       !hasAnyBinomialInput &&
-      suikaTrials === "" &&
-      suikaCzHits === "" &&
-      uraAtTrials === "" &&
-      uraAtHits === ""
+      isBlankCount(suikaTrials) &&
+      isBlankCount(suikaCzHits) &&
+      isBlankCount(uraAtTrials) &&
+      isBlankCount(uraAtHits)
     )
       return null;
 
@@ -757,7 +783,7 @@ export default function MachineJudgeForm({
       const out: Record<string, number> = {};
       for (const m of extraMetrics) {
         const raw = extraCounts[m.id] ?? "";
-        if (raw === "") continue;
+        if (raw === "" || raw === "0") continue;
         const n = parsed.extraCounts[m.id];
         if (!Number.isFinite(n)) continue;
         out[m.id] = n;
@@ -770,7 +796,7 @@ export default function MachineJudgeForm({
       const out: Record<string, number> = {};
       for (const m of binomialMetrics) {
         const hitsRaw = binomialHits[m.id] ?? "";
-        if (hitsRaw === "") continue;
+        if (hitsRaw === "" || hitsRaw === "0") continue;
 
         const isAutoTrialsFromGames = autoBinomialTrialsFromGamesMetricIds.includes(m.id);
         const isAutoTrialsFromBigReg = autoBinomialTrialsFromBigRegMetricIds.includes(m.id);
@@ -790,7 +816,7 @@ export default function MachineJudgeForm({
         }
 
         const raw = binomialTrials[m.id] ?? "";
-        if (raw === "") continue;
+        if (raw === "" || raw === "0") continue;
         const n = parsed.binomialTrials[m.id];
         if (!Number.isFinite(n)) continue;
         out[m.id] = n;
@@ -803,7 +829,7 @@ export default function MachineJudgeForm({
       const out: Record<string, number> = {};
       for (const m of binomialMetrics) {
         const raw = binomialHits[m.id] ?? "";
-        if (raw === "") continue;
+        if (raw === "" || raw === "0") continue;
         const n = parsed.binomialHits[m.id];
         if (!Number.isFinite(n)) continue;
         out[m.id] = n;
@@ -1269,7 +1295,7 @@ export default function MachineJudgeForm({
               <CountField
                 key={m.id}
                 label={m.label}
-                value={extraCounts[m.id] ?? ""}
+                value={extraCounts[m.id] ?? "0"}
                 onChange={(next) =>
                   setExtraCounts((prev) => ({
                     ...prev,
@@ -1280,7 +1306,7 @@ export default function MachineJudgeForm({
                 showStep5
                 onStep={(delta) => {
                   const g = parsed.games;
-                  const current = toIntOrZero(extraCounts[m.id] ?? "");
+                  const current = toIntOrZero(extraCounts[m.id] ?? "0");
                   const max = g > 0 ? Math.trunc(g) : Number.POSITIVE_INFINITY;
                   const next = Math.min(Math.max(current + delta, 0), max);
                   setExtraCounts((prev) => ({
@@ -1320,7 +1346,7 @@ export default function MachineJudgeForm({
                   <CountField
                     key={`${m.id}:hits`}
                     label={m.hitsLabel}
-                    value={binomialHits[m.id] ?? ""}
+                    value={binomialHits[m.id] ?? "0"}
                     onChange={(next) => {
                       const n = Number(next);
                       const capped =
@@ -1334,7 +1360,7 @@ export default function MachineJudgeForm({
                     }}
                     placeholder="例: 1"
                     onStep={(delta) => {
-                      const current = toIntOrZero(binomialHits[m.id] ?? "");
+                      const current = toIntOrZero(binomialHits[m.id] ?? "0");
                       const next = Math.min(Math.max(current + delta, 0), trialsCap);
                       setBinomialHits((prev) => ({
                         ...prev,
@@ -1378,7 +1404,7 @@ export default function MachineJudgeForm({
                 <CountField
                   key={`${m.id}:hits`}
                   label={m.hitsLabel}
-                  value={binomialHits[m.id] ?? ""}
+                  value={binomialHits[m.id] ?? "0"}
                   onChange={(next) =>
                     setBinomialHits((prev) => ({
                       ...prev,
@@ -1388,7 +1414,7 @@ export default function MachineJudgeForm({
                   placeholder="例: 1"
                   onStep={(delta) => {
                     const trials = toIntOrZero(binomialTrials[m.id] ?? "");
-                    const current = toIntOrZero(binomialHits[m.id] ?? "");
+                    const current = toIntOrZero(binomialHits[m.id] ?? "0");
                     const next = Math.min(Math.max(current + delta, 0), trials);
                     setBinomialHits((prev) => ({
                       ...prev,
@@ -1605,29 +1631,29 @@ export default function MachineJudgeForm({
         <p className="mt-3 text-sm font-medium text-red-600">{error}</p>
       ) : null}
 
-      {!error &&
-      (games !== "" ||
-        bigCount !== "" ||
-        (showReg ? regCount !== "" : false) ||
-        extraCount !== "" ||
-        Object.values(extraCounts).some((v) => v !== "") ||
-        Object.values(binomialHits).some((v) => v !== "") ||
-        suikaTrials !== "" ||
-        suikaCzHits !== "" ||
-        uraAtTrials !== "" ||
-        uraAtHits !== "") ? (
+      {!error && parsed.games > 0 ? (
         <div className="mt-4 space-y-4">
           <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
             <p className="text-sm font-semibold">実測確率</p>
             <div
               className={`mt-2 grid gap-2 text-sm text-neutral-700 ${
                 (() => {
-                  const showSuika = !!suikaTrialsLabel && !!suikaCzHitsLabel && suikaTrials !== "";
+                  const showSuika =
+                    !!suikaTrialsLabel &&
+                    !!suikaCzHitsLabel &&
+                    suikaTrials !== "" &&
+                    suikaTrials !== "0";
                   const showUraAt =
-                    !!uraAtTrialsLabel && !!uraAtHitsLabel && uraAtTrials !== "";
+                    !!uraAtTrialsLabel &&
+                    !!uraAtHitsLabel &&
+                    uraAtTrials !== "" &&
+                    uraAtTrials !== "0";
                   const shownBinomialCount =
                     showBinomialMetrics && binomialMetrics
-                      ? binomialMetrics.filter((m) => (binomialHits[m.id] ?? "") !== "").length
+                      ? binomialMetrics.filter((m) => {
+                          const raw = binomialHits[m.id] ?? "";
+                          return raw !== "" && raw !== "0";
+                        }).length
                       : 0;
                   const baseCols = showReg ? 2 : 1;
                   const extraCols = showExtraMetrics && extraMetrics
@@ -1672,7 +1698,10 @@ export default function MachineJudgeForm({
                 </div>
               ) : null}
 
-              {suikaTrialsLabel && suikaCzHitsLabel && suikaTrials !== "" ? (
+              {suikaTrialsLabel &&
+              suikaCzHitsLabel &&
+              suikaTrials !== "" &&
+              suikaTrials !== "0" ? (
                 <div>
                   <p className="text-xs text-neutral-500">{suikaCzRateLabel}</p>
                   <p className="font-semibold">
@@ -1686,7 +1715,10 @@ export default function MachineJudgeForm({
                 </div>
               ) : null}
 
-              {uraAtTrialsLabel && uraAtHitsLabel && uraAtTrials !== "" ? (
+              {uraAtTrialsLabel &&
+              uraAtHitsLabel &&
+              uraAtTrials !== "" &&
+              uraAtTrials !== "0" ? (
                 <div>
                   <p className="text-xs text-neutral-500">{uraAtRateLabel}</p>
                   <p className="font-semibold">
@@ -1720,7 +1752,10 @@ export default function MachineJudgeForm({
 
               {showBinomialMetrics && binomialMetrics
                 ? binomialMetrics
-                    .filter((m) => (binomialHits[m.id] ?? "") !== "")
+                    .filter((m) => {
+                      const raw = binomialHits[m.id] ?? "";
+                      return raw !== "" && raw !== "0";
+                    })
                     .map((m) => (
                       <div key={m.id}>
                         <p className="text-xs text-neutral-500">{m.rateLabel ?? m.id}</p>
