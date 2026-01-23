@@ -337,7 +337,7 @@ export const machines = [
       binomialMetrics: [
         {
           id: "bonusInSuika",
-          trialsLabel: "BIG+REG回数",
+          trialsLabel: "ボーナス中ゲーム数",
           hitsLabel: "スイカ回数(ボーナス中)",
           rateLabel: "ボーナス中のスイカ確率",
         },
@@ -368,7 +368,7 @@ export const machines = [
       binomialMetrics: [
         {
           id: "bonusInSuika",
-          trialsLabel: "BIG+REG回数",
+          trialsLabel: "ボーナス中ゲーム数",
           hitsLabel: "スイカ回数(ボーナス中)",
           rateLabel: "ボーナス中のスイカ確率",
         },
@@ -397,7 +397,7 @@ export const machines = [
       binomialMetrics: [
         {
           id: "bonusInSuika",
-          trialsLabel: "BIG+REG回数",
+          trialsLabel: "ボーナス中ゲーム数",
           hitsLabel: "スイカ回数(ボーナス中)",
           rateLabel: "ボーナス中のスイカ確率",
         },
@@ -427,7 +427,7 @@ export const machines = [
       binomialMetrics: [
         {
           id: "bonusInSuika",
-          trialsLabel: "BIG+REG回数",
+          trialsLabel: "ボーナス中ゲーム数",
           hitsLabel: "スイカ回数(ボーナス中)",
           rateLabel: "ボーナス中のスイカ確率",
         },
@@ -456,7 +456,7 @@ export const machines = [
       binomialMetrics: [
         {
           id: "bonusInSuika",
-          trialsLabel: "BIG+REG回数",
+          trialsLabel: "ボーナス中ゲーム数",
           hitsLabel: "スイカ回数(ボーナス中)",
           rateLabel: "ボーナス中のスイカ確率",
         },

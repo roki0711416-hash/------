@@ -295,10 +295,28 @@ export default function MachineJudgeForm({
         m.trialsLabel.includes("ボーナス回数")
       ) {
         ids.push(m.id);
+        continue;
+      }
+
+      // Hanahana: "スイカ回数(ボーナス中)" can exceed bonus count, so trials should be bonus games.
+      // We still auto-fill trials from BIG/REG inputs.
+      if (machine.category === "HANAHANA" && m.id === "bonusInSuika") {
+        ids.push(m.id);
       }
     }
     return ids;
-  }, [binomialMetrics, showReg]);
+  }, [binomialMetrics, machine.category, showReg]);
+
+  const autoBinomialTrialsFromHanahanaBonusGamesMetricIds = useMemo(() => {
+    const ids: string[] = [];
+    if (!binomialMetrics) return ids;
+    if (!showReg) return ids;
+    if (machine.category !== "HANAHANA") return ids;
+    for (const m of binomialMetrics) {
+      if (m.id === "bonusInSuika") ids.push(m.id);
+    }
+    return ids;
+  }, [binomialMetrics, machine.category, showReg]);
 
   useEffect(() => {
     // Avoid carrying hint inputs across machine switches.
@@ -429,6 +447,16 @@ export default function MachineJudgeForm({
       }
     }
 
+    // Hanahana: estimate bonus games (BIG*30 + REG*15) for bonus-in-suika.
+    if (autoBinomialTrialsFromHanahanaBonusGamesMetricIds.length > 0) {
+      const bb = Number.isFinite(b) ? b : Number.NaN;
+      const rr = showReg && Number.isFinite(r) ? r : Number.NaN;
+      const bonusGames = Number.isFinite(bb) && Number.isFinite(rr) ? bb * 30 + rr * 15 : Number.NaN;
+      for (const id of autoBinomialTrialsFromHanahanaBonusGamesMetricIds) {
+        parsedBinomialTrials[id] = bonusGames;
+      }
+    }
+
     return {
       games: Number.isFinite(g) ? g : NaN,
       bigCount: Number.isFinite(b) ? b : NaN,
@@ -452,6 +480,7 @@ export default function MachineJudgeForm({
     binomialHits,
     autoBinomialTrialsFromGamesMetricIds,
     autoBinomialTrialsFromBigRegMetricIds,
+    autoBinomialTrialsFromHanahanaBonusGamesMetricIds,
     suikaTrials,
     suikaCzHits,
     uraAtTrials,
@@ -1427,7 +1456,15 @@ export default function MachineJudgeForm({
                 if (isAutoTrialsFromBigReg) {
                   const b = parsed.bigCount;
                   const r = parsed.regCount;
-                  const t = Number.isFinite(b) && Number.isFinite(r) ? b + r : NaN;
+                  // Hanahana: bonus-in-suika trials are bonus games, not bonus count.
+                  const t =
+                    machine.category === "HANAHANA" && m.id === "bonusInSuika"
+                      ? Number.isFinite(b) && Number.isFinite(r)
+                        ? b * 30 + r * 15
+                        : NaN
+                      : Number.isFinite(b) && Number.isFinite(r)
+                        ? b + r
+                        : NaN;
                   return Number.isFinite(t) && t >= 0
                     ? Math.max(0, Math.trunc(t))
                     : Number.POSITIVE_INFINITY;
