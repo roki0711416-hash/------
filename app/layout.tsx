@@ -194,6 +194,11 @@ export default async function RootLayout({
                       </Link>
                     </li>
                     <li>
+                      <Link href="/record" className="text-neutral-700 underline underline-offset-2">
+                        収支表
+                      </Link>
+                    </li>
+                    <li>
                       <Link href="/community" className="text-neutral-700 underline underline-offset-2">
                         コミュニティ
                       </Link>
