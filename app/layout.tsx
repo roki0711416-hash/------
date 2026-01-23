@@ -194,16 +194,24 @@ export default async function RootLayout({
                       </Link>
                     </li>
                     <li>
-                      <Link href="/record" className="text-neutral-700 underline underline-offset-2">
-                        収支表
-                      </Link>
-                    </li>
-                    <li>
                       <Link href="/community" className="text-neutral-700 underline underline-offset-2">
                         コミュニティ
                       </Link>
                     </li>
                   </ul>
+                </section>
+
+                <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+                  <h2 className="text-sm font-semibold text-neutral-900">収支表</h2>
+                  <p className="mt-2 text-xs text-neutral-700">
+                    日々の実戦収支を記録・管理できます
+                  </p>
+                  <Link
+                    href="/record"
+                    className="mt-3 inline-flex w-full items-center justify-center rounded-xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white"
+                  >
+                    収支表を見る
+                  </Link>
                 </section>
               </div>
             </aside>
