@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LatestXCard from "../components/LatestXCard";
+import BalancePromoCard from "../components/BalancePromoCard";
 import SubscribeCheckoutButton from "../components/SubscribeCheckoutButton";
 import { getCurrentUserFromCookies } from "../lib/auth";
 import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../lib/premium";
@@ -160,6 +161,8 @@ export default async function Home() {
           </div>
         </nav>
       </section>
+
+      <BalancePromoCard />
 
       <section className="mt-4 space-y-4">
         <section className="rounded-2xl border border-neutral-200 bg-white p-5">

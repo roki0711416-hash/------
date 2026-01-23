@@ -1097,6 +1097,17 @@ export default function MachineJudgeForm({
     return JSON.stringify({ machineId: machine.id, parsed, top3 });
   }, [machine.id, parsed, top3]);
 
+  const hintCountsForSave = useMemo(() => {
+    // 0/空欄は保存しない（payloadを小さく、過去互換も保つ）
+    const out: Record<string, number> = {};
+    for (const [k, v] of Object.entries(hintCounts)) {
+      const n = toIntOrZero(v);
+      if (n <= 0) continue;
+      out[k] = n;
+    }
+    return Object.keys(out).length > 0 ? out : null;
+  }, [hintCounts]);
+
   useEffect(() => {
     if (!top3 || !judgeSaveSignature) {
       setJudgeResultId(null);
@@ -1122,6 +1133,7 @@ export default function MachineJudgeForm({
               machineId: machine.id,
               machineName: machine.name,
               parsed,
+              hintCounts: hintCountsForSave,
             },
             result: { top3 },
           }),
@@ -1143,7 +1155,7 @@ export default function MachineJudgeForm({
     return () => {
       cancelled = true;
     };
-  }, [judgeSaveSignature, machine.id, machine.name, parsed, top3]);
+  }, [judgeSaveSignature, hintCountsForSave, machine.id, machine.name, parsed, top3]);
 
   const sorted = useMemo(() => {
     if (!posteriors) return null;

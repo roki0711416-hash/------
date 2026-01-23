@@ -13,6 +13,7 @@ function isSlotSession(v: unknown): v is SlotSession {
   if (!isPlainObject(v)) return false;
   return (
     typeof v.id === "string" &&
+    (v.dbId === undefined || typeof v.dbId === "string") &&
     typeof v.date === "string" &&
     typeof v.machineName === "string" &&
     typeof v.games === "number" &&
@@ -21,10 +22,13 @@ function isSlotSession(v: unknown): v is SlotSession {
     (v.guessedSetting === undefined || v.guessedSetting === null || typeof v.guessedSetting === "number") &&
     (v.machineNumber === undefined || typeof v.machineNumber === "string") &&
     (v.shopName === undefined || typeof v.shopName === "string") &&
+    (v.memo === undefined || typeof v.memo === "string") &&
     typeof v.diffCoins === "number" &&
     typeof v.invest === "number" &&
     typeof v.collect === "number" &&
-    (v.judgeResultId === undefined || v.judgeResultId === null || typeof v.judgeResultId === "string")
+    (v.judgeResultId === undefined || v.judgeResultId === null || typeof v.judgeResultId === "string") &&
+    (v.judgeInputCount === undefined || v.judgeInputCount === null || typeof v.judgeInputCount === "number") &&
+    (v.hintTotalCount === undefined || v.hintTotalCount === null || typeof v.hintTotalCount === "number")
   );
 }
 

@@ -5,6 +5,7 @@ import Script from "next/script";
 import "./globals.css";
 import HeaderMachineSearchBox from "../components/HeaderMachineSearchBox";
 import GmoSiteSeal from "../components/GmoSiteSeal";
+import GlobalAd from "../components/GlobalAd";
 import { getCurrentUserFromCookies } from "../lib/auth";
 
 export const metadata: Metadata = {
@@ -203,6 +204,10 @@ export default async function RootLayout({
             </aside>
           </div>
         </div>
+
+        {/* Global Ad (mobile only): shown just before footer */}
+        <GlobalAd />
+
         <footer className="mt-auto w-full border-t border-neutral-200 bg-white">
           <nav
             aria-label="フッター"
