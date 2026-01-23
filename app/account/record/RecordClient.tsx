@@ -1173,7 +1173,7 @@ export default function RecordClient({
                 <p className="mt-1 text-sm text-neutral-700">まだ登録がありません。</p>
               ) : (
                 <div className="mt-2">
-                  <div className="grid grid-cols-12 gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-[11px] font-semibold text-neutral-700">
+                  <div className="hidden md:grid md:grid-cols-12 md:gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-[11px] font-semibold text-neutral-700">
                     <div className="col-span-4">機種</div>
                     <div className="col-span-2 text-right">G</div>
                     <div className="col-span-2 text-right">差枚</div>
@@ -1186,9 +1186,34 @@ export default function RecordClient({
                       const profit = calcProfit(s.invest, s.collect);
                       return (
                         <div key={s.id} className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
-                          <div className="grid grid-cols-12 items-start gap-2">
-                            <div className="col-span-4 min-w-0">
+                          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 md:grid-cols-12 md:gap-2">
+                            <div className="min-w-0 md:col-span-4">
                               <p className="truncate text-sm font-semibold text-neutral-900">{s.machineName}</p>
+
+                              {/* Mobile: numbers live in the left column to avoid being hidden by action buttons */}
+                              <div className="mt-2 space-y-1 md:hidden">
+                                <div className="flex items-center justify-between gap-3 text-[11px]">
+                                  <span className="text-neutral-700">G</span>
+                                  <span className="font-semibold text-neutral-900">
+                                    {new Intl.NumberFormat("ja-JP").format(s.games)}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between gap-3 text-[11px]">
+                                  <span className="text-neutral-700">差枚</span>
+                                  <span className="font-semibold text-neutral-900">{formatSignedNumber(s.diffCoins)}</span>
+                                </div>
+                                <div className="flex items-center justify-between gap-3 text-[11px]">
+                                  <span className="text-neutral-700">収支</span>
+                                  <span
+                                    className={
+                                      "font-semibold " + (profit < 0 ? "text-red-600" : "text-neutral-900")
+                                    }
+                                  >
+                                    {formatSignedYen(profit)}
+                                  </span>
+                                </div>
+                              </div>
+
                               <p className="mt-1 text-[11px] text-neutral-700">
                                 投資 {new Intl.NumberFormat("ja-JP").format(s.invest)} / 回収 {new Intl.NumberFormat("ja-JP").format(s.collect)}
                               </p>
@@ -1211,36 +1236,36 @@ export default function RecordClient({
                               ) : null}
                             </div>
 
-                            <div className="col-span-2 text-right">
+                            <div className="hidden text-right md:block md:col-span-2">
                               <p className="text-sm font-semibold text-neutral-900">{new Intl.NumberFormat("ja-JP").format(s.games)}</p>
                             </div>
 
-                            <div className="col-span-2 text-right">
+                            <div className="hidden text-right md:block md:col-span-2">
                               <p className="text-sm font-semibold text-neutral-900">{formatSignedNumber(s.diffCoins)}</p>
                             </div>
 
-                            <div className="col-span-2 text-right">
+                            <div className="hidden text-right md:block md:col-span-2">
                               <p className={"text-sm font-semibold " + (profit < 0 ? "text-red-600" : "text-neutral-900")}>
                                 {formatSignedYen(profit)}
                               </p>
                             </div>
 
-                            <div className="col-span-2 flex justify-end">
-                              <div className="flex gap-2">
+                            <div className="shrink-0 md:col-span-2 md:flex md:justify-end">
+                              <div className="flex flex-col gap-2 md:flex-row md:gap-2">
                                 <button
                                   type="button"
                                   onClick={() => startEditSession(s)}
-                                  className="rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-900"
+                                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 md:w-auto"
                                 >
                                   編集
                                 </button>
-                              <button
-                                type="button"
-                                onClick={() => deleteSession(s.date, s.id, s.dbId)}
-                                className="rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-900"
-                              >
-                                削除
-                              </button>
+                                <button
+                                  type="button"
+                                  onClick={() => deleteSession(s.date, s.id, s.dbId)}
+                                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 md:w-auto"
+                                >
+                                  削除
+                                </button>
                               </div>
                             </div>
                           </div>
