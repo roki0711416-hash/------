@@ -1,6 +1,5 @@
 import Link from "next/link";
 import LatestXCard from "../components/LatestXCard";
-import BalancePromoCard from "../components/BalancePromoCard";
 import SubscribeCheckoutButton from "../components/SubscribeCheckoutButton";
 import { getCurrentUserFromCookies } from "../lib/auth";
 import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../lib/premium";
@@ -39,25 +38,6 @@ export default async function Home() {
         <p className="mt-3 text-sm text-neutral-700">
           ジャグラー・ハナハナなどの主要機種に加え、スマスロ・AT機にも対応し、データに基づく判断をサポートします（結果を保証するものではありません）。
         </p>
-      </section>
-
-      {/* PCのみ：ヘッダー直下のメイン導線 */}
-      <section className="mt-4 hidden lg:block">
-        <div className="rounded-2xl border border-neutral-200 bg-gradient-to-b from-neutral-50 to-neutral-100 px-6 py-6">
-          <div className="flex items-center justify-between gap-6">
-            <div>
-              <p className="text-lg font-semibold text-neutral-900">今日の設定判別はここから</p>
-              <p className="mt-1 text-sm text-neutral-700">機種と実測データを入れるだけ</p>
-            </div>
-
-            <Link
-              href="/judge"
-              className="shrink-0 rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white"
-            >
-              設定判別を始める
-            </Link>
-          </div>
-        </div>
       </section>
 
       <section className="mt-5 rounded-2xl border border-neutral-200 bg-white p-5">
@@ -161,8 +141,6 @@ export default async function Home() {
           </div>
         </nav>
       </section>
-
-      <BalancePromoCard />
 
       <section className="mt-4 space-y-4">
         <section className="rounded-2xl border border-neutral-200 bg-white p-5">
