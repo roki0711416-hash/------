@@ -72,6 +72,31 @@ export const machines = [
   },
 
   {
+    id: "smart-chibariyo-2",
+    name: "スマスロ チバリヨ2",
+    maker: "ネット",
+    series: "チバリヨ",
+    inHall: true,
+    category: "SMART",
+    description:
+      "ボーナス確率（REG/BIG+SBIG/合算）＋機械割での簡易判別。数値はp-town（4530）より。導入開始日: 2024年03月04日。",
+    metricsLabels: {
+      bigLabel: "BIG+SBIG合算",
+      regLabel: "REG",
+      totalLabel: "ボーナス合算",
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 171.4, reg: 321.5, total: 111.8, rate: 97.3 },
+        { s: 2, big: 164.2, reg: 308.3, total: 107.1, rate: 99.3 },
+        { s: 4, big: 145.8, reg: 275.9, total: 95.4, rate: 104.7 },
+        { s: 5, big: 135.9, reg: 258.1, total: 89.0, rate: 109.6 },
+        { s: 6, big: 116.1, reg: 221.8, total: 76.2, rate: 114.9 },
+      ],
+    },
+  },
+
+  {
     id: "s-im-juggler-ex-6",
     name: "SアイムジャグラーEX (6号機)",
     maker: "北電子",

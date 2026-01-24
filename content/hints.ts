@@ -5044,6 +5044,72 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
     ],
   };
 
+  hintConfigs["smart-chibariyo-2"] = {
+    machineId: "smart-chibariyo-2",
+    helpUrl: "https://p-town.dmm.com/machines/4530",
+    groups: [
+      {
+        id: "chibariyo2_hanagasa_voice",
+        title: "花笠点灯時のボイス",
+        note: "高設定示唆はソフト示唆（重み付け）として反映。出現した回数をカウント。",
+        items: [
+          { id: "chibariyo2_hanagasa_other", label: "その他/不明", effect: { type: "none" } },
+          {
+            id: "chibariyo2_hanagasa_high",
+            label: "高設定示唆",
+            effect: { type: "weight", weights: { 4: 1.06, 5: 1.08, 6: 1.1 } },
+          },
+          {
+            id: "chibariyo2_hanagasa_loop75_high",
+            label: "ループ率75%以上 + 高設定示唆",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "chibariyo2_hanagasa_loop80_high",
+            label: "ループ率80%以上 + 高設定示唆",
+            effect: { type: "weight", weights: { 4: 1.12, 5: 1.2, 6: 1.28 } },
+          },
+        ],
+      },
+      {
+        id: "chibariyo2_kettei_voice",
+        title: "ボーナス確定契機ボイス",
+        note: "高設定示唆はソフト示唆（重み付け）として反映。出現した回数をカウント。",
+        items: [
+          { id: "chibariyo2_kettei_other", label: "その他/不明", effect: { type: "none" } },
+          {
+            id: "chibariyo2_kettei_high",
+            label: "高設定示唆",
+            effect: { type: "weight", weights: { 4: 1.06, 5: 1.08, 6: 1.1 } },
+          },
+          {
+            id: "chibariyo2_kettei_loop75_high",
+            label: "ループ率75%以上 + 高設定示唆",
+            effect: { type: "weight", weights: { 4: 1.1, 5: 1.15, 6: 1.2 } },
+          },
+          {
+            id: "chibariyo2_kettei_loop80_high",
+            label: "ループ率80%以上 + 高設定示唆",
+            effect: { type: "weight", weights: { 4: 1.12, 5: 1.2, 6: 1.28 } },
+          },
+        ],
+      },
+      {
+        id: "chibariyo2_navi",
+        title: "押し順ナビ系演出",
+        note: "高設定示唆のみ判別に反映（1G連告知などの性能示唆は未反映）。出現した回数をカウント。",
+        items: [
+          { id: "chibariyo2_navi_other", label: "その他/不明", effect: { type: "none" } },
+          {
+            id: "chibariyo2_navi_gushiken",
+            label: "具志堅の押し順ナビ（高設定示唆）",
+            effect: { type: "weight", weights: { 4: 1.08, 5: 1.12, 6: 1.16 } },
+          },
+        ],
+      },
+    ],
+  };
+
 export function getHintConfig(machineId: string): MachineHintConfig | null {
   return hintConfigs[machineId] ?? null;
 }
