@@ -1,4 +1,6 @@
-import { getBaseUrl } from "../lib/baseUrl";
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 
 type Props = {
   profileUrl: string;
@@ -7,7 +9,7 @@ type Props = {
 
 type ApiTweet = {
   id: string;
-  createdAt: string;
+  created_at: string;
   text: string;
   url: string;
 };
@@ -31,17 +33,34 @@ function truncateText(text: string, maxChars = 140) {
   return `${normalized.slice(0, maxChars)}…`;
 }
 
-export default async function LatestXCard({ profileUrl, latestThreadUrl }: Props) {
-  let tweets: ApiTweet[] = [];
-  try {
-    const res = await fetch(`${getBaseUrl()}/api/x/latest`, { next: { revalidate: 300 } });
-    const json = (await res.json().catch(() => null)) as
-      | { ok?: boolean; tweets?: ApiTweet[] }
-      | null;
-    tweets = Array.isArray(json?.tweets) ? json!.tweets! : [];
-  } catch {
-    tweets = [];
-  }
+export default function LatestXCard({ profileUrl, latestThreadUrl }: Props) {
+  const [tweets, setTweets] = useState<ApiTweet[] | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/x/latest");
+        const json = (await res.json().catch(() => null)) as
+          | { ok?: boolean; tweets?: ApiTweet[] }
+          | null;
+
+        const nextTweets = Array.isArray(json?.tweets) ? json!.tweets! : [];
+        if (cancelled) return;
+        setTweets(nextTweets);
+      } catch {
+        if (cancelled) return;
+        setFailed(true);
+        setTweets([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const latest = useMemo(() => (tweets && tweets.length > 0 ? tweets[0] : null), [tweets]);
 
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white p-5">
@@ -57,7 +76,11 @@ export default async function LatestXCard({ profileUrl, latestThreadUrl }: Props
         </a>
       </div>
 
-      <p className="mt-3 text-sm text-neutral-600">最新ツイート（最大3件）を表示します。</p>
+      {failed ? (
+        <p className="mt-3 text-sm text-neutral-600">
+          表示が重いので、必要な時だけ開けるようにしています。
+        </p>
+      ) : null}
 
       {latestThreadUrl ? (
         <p className="mt-2 text-sm">
@@ -72,17 +95,23 @@ export default async function LatestXCard({ profileUrl, latestThreadUrl }: Props
         </p>
       ) : null}
 
-      {tweets.length > 0 ? (
-        <ul className="mt-4 space-y-3 text-sm text-neutral-800">
-          {tweets.map((t) => (
-            <li key={t.id}>
-              <div className="text-xs text-neutral-500">{formatDateTimeJst(t.createdAt)}</div>
-              <div className="mt-1 whitespace-pre-wrap">{truncateText(t.text, 140)}</div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="mt-4 text-sm text-neutral-600">最新ポストを取得できませんでした。</p>
+      {latest ? (
+        <div className="mt-4 text-sm text-neutral-800">
+          <div className="text-xs text-neutral-500">{formatDateTimeJst(latest.created_at)}</div>
+          <div className="mt-1 whitespace-pre-wrap">{truncateText(latest.text, 140)}</div>
+          <div className="mt-2">
+            <a
+              href={latest.url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-neutral-900 underline"
+            >
+              → 詳細を見る
+            </a>
+          </div>
+        </div>
+      ) : tweets ? null : (
+        <div className="mt-4 h-10" />
       )}
     </div>
   );

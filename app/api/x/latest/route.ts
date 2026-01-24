@@ -1,28 +1,15 @@
 import { NextResponse } from "next/server";
 
-import { getXConfig } from "../../../../lib/x";
-
 export const runtime = "nodejs";
 export const revalidate = 300;
 export const dynamic = "force-static";
 
 type XLatestTweet = {
   id: string;
-  createdAt: string;
+  created_at: string;
   text: string;
   url: string;
 };
-
-function parseUsernameFromProfileUrl(profileUrl: string): string | null {
-  try {
-    const u = new URL(profileUrl);
-    const path = u.pathname.replace(/^\/+/, "").replace(/\/+$/, "");
-    const username = path.split("/")[0] ?? "";
-    return username ? username : null;
-  } catch {
-    return null;
-  }
-}
 
 function cacheHeaders() {
   // CDN向け（Vercel等）
@@ -34,10 +21,7 @@ function cacheHeaders() {
 export async function GET() {
   const bearer =
     process.env.X_BEARER_TOKEN?.trim() || process.env.TWITTER_BEARER_TOKEN?.trim() || "";
-
-  const xConfig = await getXConfig();
-  const username =
-    process.env.X_USERNAME?.trim() || parseUsernameFromProfileUrl(xConfig.profileUrl) || "";
+  const username = process.env.X_USERNAME?.trim() || "";
 
   if (!bearer || !username) {
     return NextResponse.json(
@@ -45,7 +29,7 @@ export async function GET() {
         ok: false,
         error: !bearer
           ? "X APIのBearer Tokenが未設定です（X_BEARER_TOKEN）"
-          : "Xのユーザー名が未設定です（X_USERNAME または content/x.json の profileUrl）",
+          : "Xのユーザー名が未設定です（X_USERNAME）",
         tweets: [] as XLatestTweet[],
       },
       { status: 200, headers: cacheHeaders() },
@@ -116,10 +100,10 @@ export async function GET() {
   const tweets = (tweetsJson?.data ?? [])
     .slice(0, 3)
     .map((t) => {
-      const createdAt = t.created_at ?? "";
+      const created_at = t.created_at ?? "";
       return {
         id: t.id,
-        createdAt,
+        created_at,
         text: t.text,
         url: `https://x.com/${username}/status/${t.id}`,
       } satisfies XLatestTweet;
@@ -128,10 +112,7 @@ export async function GET() {
   return NextResponse.json(
     {
       ok: true,
-      username,
-      profileUrl: xConfig.profileUrl,
       tweets,
-      fetchedAt: new Date().toISOString(),
     },
     { status: 200, headers: cacheHeaders() },
   );
