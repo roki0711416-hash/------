@@ -3469,7 +3469,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenzen_gen_battle_kills",
         title: "弦之介BC：撃破人数（設定示唆）",
-        note: "ゾロ目や特定数で設定を示唆（p-town 4466）。分かりやすい『◯以上/偶数/確定』のみ反映。",
+        note: "ゾロ目や特定数で設定を示唆。分かりやすい『◯以上/偶数/確定』のみ反映。",
         items: [
           { id: "tenzen_kill_222_min2", label: "222人（設定2以上）", effect: { type: "minSetting", min: 2 } },
           {
@@ -3498,7 +3498,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenzen_bc_entry_led_red",
         title: "BC入賞時LED（BT非当選）：赤",
-        note: "BT非当選のBC入賞時に赤点灯で設定4以上確定（p-town 4466）。",
+        note: "BT非当選のBC入賞時に赤点灯で設定4以上確定。",
         items: [
           { id: "tenzen_led_red_isoshiki_min4", label: "異色BC：赤（設定4以上）", effect: { type: "minSetting", min: 4 } },
           { id: "tenzen_led_red_doushiki_min4", label: "同色BC：赤（設定4以上）", effect: { type: "minSetting", min: 4 } },
@@ -3507,7 +3507,7 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
       {
         id: "tenzen_bt_start_screen",
         title: "争忍の刻：開始画面（設定示唆）",
-        note: "開始画面で設定を示唆（p-town 4466）。",
+        note: "開始画面で設定を示唆。",
         items: [
           { id: "tenzen_bt_start_women_min4", label: "女性キャラ集合（設定4以上）", effect: { type: "minSetting", min: 4 } },
           { id: "tenzen_bt_start_gen_oro_min5", label: "弦之介＆朧（設定5以上）", effect: { type: "minSetting", min: 5 } },
