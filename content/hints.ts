@@ -3496,15 +3496,6 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
         ],
       },
       {
-        id: "tenzen_bc_entry_led_red",
-        title: "BC入賞時LED（BT非当選）：赤",
-        note: "BT非当選のBC入賞時に赤点灯で設定4以上確定。",
-        items: [
-          { id: "tenzen_led_red_isoshiki_min4", label: "異色BC：赤（設定4以上）", effect: { type: "minSetting", min: 4 } },
-          { id: "tenzen_led_red_doushiki_min4", label: "同色BC：赤（設定4以上）", effect: { type: "minSetting", min: 4 } },
-        ],
-      },
-      {
         id: "tenzen_bt_start_screen",
         title: "争忍の刻：開始画面（設定示唆）",
         note: "開始画面で設定を示唆。",
@@ -3512,6 +3503,18 @@ export const hintConfigs: Record<string, MachineHintConfig> = {
           { id: "tenzen_bt_start_women_min4", label: "女性キャラ集合（設定4以上）", effect: { type: "minSetting", min: 4 } },
           { id: "tenzen_bt_start_gen_oro_min5", label: "弦之介＆朧（設定5以上）", effect: { type: "minSetting", min: 5 } },
           { id: "tenzen_bt_start_gen_oro_song_exact6", label: "弦之介＆朧+鼻歌（設定6）", effect: { type: "exactSetting", exact: 6 } },
+        ],
+      },
+      {
+        id: "tenzen_bt_end_universal_plate",
+        title: "BT終了時：ユニバプレート",
+        note: "BT終了時などに出現。『設定◯以上/設定6』のみ判別に反映。",
+        items: [
+          { id: "tenzen_plate_bronze_min2", label: "銅（設定2以上）", effect: { type: "minSetting", min: 2 } },
+          { id: "tenzen_plate_silver_min3", label: "銀（設定3以上）", effect: { type: "minSetting", min: 3 } },
+          { id: "tenzen_plate_gold_min4", label: "金（設定4以上）", effect: { type: "minSetting", min: 4 } },
+          { id: "tenzen_plate_hanabi_min5", label: "花火柄（設定5以上）", effect: { type: "minSetting", min: 5 } },
+          { id: "tenzen_plate_rainbow_exact6", label: "虹（設定6）", effect: { type: "exactSetting", exact: 6 } },
         ],
       },
     ],
