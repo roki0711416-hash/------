@@ -922,7 +922,24 @@ export default function MachineJudgeForm({
   let exactSetting: number | null = null;
   const excluded = new Set<number>();
   const weightBySetting = new Map<number, number>();
+  const parityLogBySetting = new Map<number, number>();
+  let hasParityWeight = false;
   let contradiction = false;
+
+    function isHanahanaParityWeights(weights: Record<string, number>): boolean {
+      // Treat pure odd-only or even-only weights as "parity" hints.
+      // (e.g. {1,3,5} or {2,4,6}). Mixed sets are not parity.
+      const nums = Object.keys(weights)
+        .map((k) => Number(k))
+        .filter((n) => Number.isFinite(n));
+      if (nums.length === 0) return false;
+      const hasOdd = nums.some((n) => n === 1 || n === 3 || n === 5);
+      const hasEven = nums.some((n) => n === 2 || n === 4 || n === 6);
+      if (hasOdd && hasEven) return false;
+      return nums.every(
+        (n) => n === 1 || n === 2 || n === 3 || n === 4 || n === 5 || n === 6,
+      );
+    }
 
     for (const group of hintConfig.groups) {
       for (const item of group.items) {
@@ -949,13 +966,21 @@ export default function MachineJudgeForm({
             excluded.add(eff.exclude);
           } else if (eff.type === "weight") {
             hasWeight = true;
+            const isParityWeight =
+              machine.category === "HANAHANA" && isHanahanaParityWeights(eff.weights);
+            if (isParityWeight) hasParityWeight = true;
             for (const [k, v] of Object.entries(eff.weights)) {
               const settingNum = Number(k);
               if (!Number.isFinite(settingNum)) continue;
               const multiplier = Number(v);
               if (!Number.isFinite(multiplier) || multiplier <= 0) continue;
-              const current = weightBySetting.get(settingNum) ?? 1;
-              weightBySetting.set(settingNum, current * Math.pow(multiplier, count));
+              if (isParityWeight) {
+                const current = parityLogBySetting.get(settingNum) ?? 0;
+                parityLogBySetting.set(settingNum, current + Math.log(multiplier) * count);
+              } else {
+                const current = weightBySetting.get(settingNum) ?? 1;
+                weightBySetting.set(settingNum, current * Math.pow(multiplier, count));
+              }
             }
           }
         }
@@ -992,29 +1017,95 @@ export default function MachineJudgeForm({
 
     const allowedSet = new Set<number>(allowedNums);
 
-    const adjusted = base.map((p) => {
+    // Core distribution: only constraints applied (no soft weights).
+    const coreConstrained = base.map((p) => {
       const n = settingKeyToNumber(p.s);
       const isNumeric = Number.isFinite(n);
       if (hasConstraint) {
         if (!isNumeric) return { ...p, posterior: 0 };
         if (!allowedSet.has(n)) return { ...p, posterior: 0 };
       }
-
-      if (!isNumeric) return p;
-
-      const mult = hasWeight ? (weightBySetting.get(n) ?? 1) : 1;
-      return { ...p, posterior: p.posterior * mult };
+      return p;
     });
 
-    const sum = adjusted.reduce((acc, cur) => acc + cur.posterior, 0);
-    if (!(sum > 0)) {
+    const coreSum = coreConstrained.reduce((acc, cur) => acc + cur.posterior, 0);
+    const coreNorm =
+      coreSum > 0
+        ? coreConstrained.map((p) => ({ ...p, posterior: p.posterior / coreSum }))
+        : coreConstrained;
+
+    // confidenceCore: derived from the gap between top-1 and top-2 posteriors.
+    const coreSorted = coreNorm
+      .map((p) => ({ p, n: settingKeyToNumber(p.s) }))
+      .filter((x) => Number.isFinite(x.n) && x.p.posterior > 0)
+      .sort((a, b) => b.p.posterior - a.p.posterior);
+    const p1 = coreSorted[0]?.p.posterior ?? 0;
+    const p2 = coreSorted[1]?.p.posterior ?? 0;
+    const confidenceCore = clamp(p1 - p2, 0, 1);
+
+    const normalized = (() => {
+      // Default behavior (non-HANAHANA or no parity weights): keep legacy multiplier application.
+      if (machine.category !== "HANAHANA" || !hasParityWeight) {
+        const adjusted = base.map((p) => {
+          const n = settingKeyToNumber(p.s);
+          const isNumeric = Number.isFinite(n);
+          if (hasConstraint) {
+            if (!isNumeric) return { ...p, posterior: 0 };
+            if (!allowedSet.has(n)) return { ...p, posterior: 0 };
+          }
+
+          if (!isNumeric) return p;
+          const mult = hasWeight ? (weightBySetting.get(n) ?? 1) : 1;
+          return { ...p, posterior: p.posterior * mult };
+        });
+
+        const sum = adjusted.reduce((acc, cur) => acc + cur.posterior, 0);
+        if (!(sum > 0)) return null;
+        return adjusted.map((p) => ({ ...p, posterior: p.posterior / sum }));
+      }
+
+      // HANAHANA parity is treated as a supplemental score mixed by dynamic weight.
+      const baseParity = 0.35;
+      let wParity = baseParity * (1 - confidenceCore);
+      const gamesNum = parsed.games;
+      if (typeof gamesNum === "number" && Number.isFinite(gamesNum) && gamesNum > 0) {
+        wParity *= clamp(1200 / gamesNum, 0.15, 1.0);
+      }
+
+      const logScores: Array<{ p: SettingPosterior; logScore: number }> = coreNorm.map((p) => {
+        const n = settingKeyToNumber(p.s);
+        const isNumeric = Number.isFinite(n);
+        if (hasConstraint) {
+          if (!isNumeric) return { p: { ...p, posterior: 0 }, logScore: -Infinity };
+          if (!allowedSet.has(n)) return { p: { ...p, posterior: 0 }, logScore: -Infinity };
+        }
+
+        if (!(p.posterior > 0)) return { p, logScore: -Infinity };
+
+        const logCore = Math.log(p.posterior);
+        const logSoft = hasWeight && isNumeric ? Math.log(weightBySetting.get(n) ?? 1) : 0;
+        const rawParity = isNumeric ? (parityLogBySetting.get(n) ?? 0) : 0;
+        const parity = clamp(rawParity, -0.6, 0.6);
+        const logScore = logCore + logSoft + wParity * parity;
+        return { p, logScore };
+      });
+
+      const maxLog = Math.max(...logScores.map((x) => x.logScore));
+      if (!Number.isFinite(maxLog)) return null;
+
+      const weights = logScores.map((x) => Math.exp(x.logScore - maxLog));
+      const sum = weights.reduce((a, b) => a + b, 0);
+      if (!(sum > 0)) return null;
+
+      return logScores.map((x, i) => ({ ...x.p, posterior: weights[i] / sum }));
+    })();
+
+    if (!normalized) {
       return withSlumpDebug(
         base,
         "示唆入力が矛盾している可能性があるため、示唆を無視して計算しました。",
       );
     }
-
-    const normalized = adjusted.map((p) => ({ ...p, posterior: p.posterior / sum }));
 
     const noteParts: string[] = [];
     if (hasConstraint) {
