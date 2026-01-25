@@ -560,6 +560,93 @@ export const machines = [
     },
   },
   {
+    id: "smart-basilisk-kizuna-2-tenzen-black-edition",
+    name: "スマスロバジリスク～甲賀忍法帖～絆2 天膳 BLACK EDITION",
+    maker: "ユニバーサル",
+    series: "バジリスク絆",
+    category: "SMART",
+    inHall: true,
+    description:
+      "BC/BT確率 + 機械割での簡易判別。数値はp-town（4466）より。導入開始日: 2023年12月18日。",
+    metricsLabels: {
+      bigLabel: "BC(バジリスクチャンス)",
+      regLabel: "BT(バジリスクタイム)",
+      totalLabel: null,
+      binomialMetrics: [
+        {
+          id: "weakCherry",
+          trialsLabel: "総ゲーム数",
+          hitsLabel: "弱チェリー回数",
+          rateLabel: "弱チェリー",
+        },
+      ],
+    },
+    odds: {
+      settings: [
+        {
+          s: 1,
+          big: 124.7,
+          reg: 418.1,
+          total: 124.7,
+          rate: 97.4,
+          binomialRates: {
+            weakCherry: 1 / 46.1,
+          },
+        },
+        {
+          s: 2,
+          big: 123.2,
+          reg: 405.0,
+          total: 123.2,
+          rate: 98.5,
+          binomialRates: {
+            weakCherry: 1 / 45.1,
+          },
+        },
+        {
+          s: 3,
+          big: 119.2,
+          reg: 362.4,
+          total: 119.2,
+          rate: 102.0,
+          binomialRates: {
+            weakCherry: 1 / 44.1,
+          },
+        },
+        {
+          s: 4,
+          big: 113.6,
+          reg: 311.2,
+          total: 113.6,
+          rate: 106.2,
+          binomialRates: {
+            weakCherry: 1 / 43.2,
+          },
+        },
+        {
+          s: 5,
+          big: 108.5,
+          reg: 278.5,
+          total: 108.5,
+          rate: 110.5,
+          binomialRates: {
+            weakCherry: 1 / 42.3,
+          },
+        },
+        {
+          s: 6,
+          big: 105.0,
+          reg: 247.3,
+          total: 105.0,
+          rate: 114.9,
+          binomialRates: {
+            weakCherry: 1 / 41.4,
+          },
+        },
+      ],
+    },
+  },
+  {
     id: "smart-guilty-crown-2",
     name: "スマスロ ギルティクラウン2",
     maker: "ユニバーサル",
