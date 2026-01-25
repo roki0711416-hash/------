@@ -57,7 +57,7 @@ export async function POST(req: Request) {
 
   const passwordHash = await hashPassword(password);
   const userId = randomId("u_");
-  const role = shouldBeAdminFromEnv({ userId, email }) ? "admin" : null;
+  const role = shouldBeAdminFromEnv({ userId, email }) ? "admin" : "user";
 
   try {
     await db.sql`
