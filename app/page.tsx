@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LatestXCard from "../components/LatestXCard";
+import AdsenseAuto from "../components/AdsenseAuto";
 import SubscribeCheckoutButton from "../components/SubscribeCheckoutButton";
 import { getCurrentUserFromCookies } from "../lib/auth";
 import { getSubscriptionForUserId, isPremiumForUserAndSubscription } from "../lib/premium";
@@ -218,30 +219,33 @@ export default async function Home() {
           <section className="rounded-2xl border border-neutral-200 bg-white p-5">
             <h2 className="text-lg font-semibold">新着情報</h2>
             {recentPosts.length > 0 ? (
-              <ul className="mt-3 space-y-2 text-sm text-neutral-700">
-                {recentPosts.map((p) => (
-                  <li key={p.id}>
-                    <div>
-                      <span className="text-neutral-500">{p.date}：</span>
-                      {p.href ? (
-                        <Link
-                          href={p.href}
-                          className="font-medium text-neutral-900 underline underline-offset-2"
-                        >
-                          {p.title}
-                        </Link>
-                      ) : (
-                        p.title
-                      )}
-                    </div>
-                    {p.body.trim() !== p.title.trim() ? (
-                      <div className="mt-1 whitespace-pre-line text-xs text-neutral-600">
-                        {p.body}
+              <>
+                <ul className="mt-3 space-y-2 text-sm text-neutral-700">
+                  {recentPosts.map((p) => (
+                    <li key={p.id}>
+                      <div>
+                        <span className="text-neutral-500">{p.date}：</span>
+                        {p.href ? (
+                          <Link
+                            href={p.href}
+                            className="font-medium text-neutral-900 underline underline-offset-2"
+                          >
+                            {p.title}
+                          </Link>
+                        ) : (
+                          p.title
+                        )}
                       </div>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
+                      {p.body.trim() !== p.title.trim() ? (
+                        <div className="mt-1 whitespace-pre-line text-xs text-neutral-600">
+                          {p.body}
+                        </div>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+                {isPremium ? null : <AdsenseAuto />}
+              </>
             ) : (
               <p className="mt-3 text-sm text-neutral-600">まだ新着情報がありません。</p>
             )}

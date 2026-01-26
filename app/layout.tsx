@@ -5,7 +5,6 @@ import Script from "next/script";
 import "./globals.css";
 import HeaderMachineSearchBox from "../components/HeaderMachineSearchBox";
 import GmoSiteSeal from "../components/GmoSiteSeal";
-import GlobalAd from "../components/GlobalAd";
 import { getCurrentUserFromCookies } from "../lib/auth";
 
 export const metadata: Metadata = {
@@ -27,6 +26,14 @@ export default async function RootLayout({
 
   return (
     <html lang="ja">
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6861979311690077"
+          crossOrigin="anonymous"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className="min-h-screen bg-neutral-100 text-neutral-900">
         <Script id="theme-init" strategy="beforeInteractive">
           {`(function(){
@@ -38,12 +45,6 @@ export default async function RootLayout({
   } catch (e) {}
 })();`}
         </Script>
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6861979311690077"
-          crossOrigin="anonymous"
-          strategy="beforeInteractive"
-        />
         <header className="w-full border-b border-neutral-200 bg-white bg-orange-500">
           {/* SP/タブレット（〜1023px）：2段ヘッダー */}
           <div className="lg:hidden">
@@ -217,9 +218,6 @@ export default async function RootLayout({
             </aside>
           </div>
         </div>
-
-        {/* Global Ad (mobile only): shown just before footer */}
-        <GlobalAd />
 
         <footer className="mt-auto w-full border-t border-neutral-200 bg-white">
           <nav
