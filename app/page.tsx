@@ -11,7 +11,9 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const recentPosts = await getRecentPosts(2);
-  const xConfig = await getXConfig();
+  // X（旧Twitter）アカウント凍結等の事情で一時的に非表示にするためのフラグ
+  const isXSectionEnabled = false;
+  const xConfig = isXSectionEnabled ? await getXConfig() : null;
   const user = await getCurrentUserFromCookies();
   const isPremiumPreview = process.env.SLOKASU_PREMIUM_PREVIEW === "1";
   const sub = user ? await getSubscriptionForUserId(user.id) : null;
@@ -216,7 +218,7 @@ export default async function Home() {
           )}
           </section>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className={`grid gap-4 ${isXSectionEnabled ? "md:grid-cols-2" : ""}`}>
             <section className="rounded-2xl border border-neutral-200 bg-white p-5">
               <h2 className="text-lg font-semibold">新着情報</h2>
               {recentPosts.length > 0 ? (
@@ -252,7 +254,9 @@ export default async function Home() {
               )}
             </section>
 
-            <LatestXCard profileUrl={xConfig.profileUrl} latestThreadUrl={xConfig.latestThreadUrl} />
+            {isXSectionEnabled && xConfig ? (
+              <LatestXCard profileUrl={xConfig.profileUrl} latestThreadUrl={xConfig.latestThreadUrl} />
+            ) : null}
           </div>
         </section>
       </div>
