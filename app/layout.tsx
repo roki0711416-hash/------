@@ -224,7 +224,15 @@ export default async function RootLayout({
             aria-label="フッター"
             className="mx-auto w-full max-w-xl px-4 py-6"
           >
-            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+            <ul className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm whitespace-nowrap">
+              <li>
+                <Link
+                  href="/privacy"
+                  className="text-neutral-700 underline underline-offset-2"
+                >
+                  プライバシーポリシー
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/contact"
@@ -235,12 +243,15 @@ export default async function RootLayout({
               </li>
               <li>
                 <Link
-                  href="/privacy"
+                  href="/about"
                   className="text-neutral-700 underline underline-offset-2"
                 >
-                  プライバシーポリシー
+                  運営情報
                 </Link>
               </li>
+            </ul>
+
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
               <li>
                 <Link
                   href="/disclaimer"
@@ -279,14 +290,6 @@ export default async function RootLayout({
                   className="text-neutral-700 underline underline-offset-2"
                 >
                   解約方法
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
-                  運営情報
                 </Link>
               </li>
             </ul>

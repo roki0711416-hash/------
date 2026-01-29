@@ -6,8 +6,8 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+    <main className="max-w-3xl mx-auto px-4 py-12 space-y-4">
+      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
         <h1 className="text-lg font-semibold">運営情報</h1>
 
         <div className="mt-4 space-y-4 text-sm text-neutral-700">
