@@ -15,7 +15,7 @@ export default function ContactPage() {
 
         <div className="mt-5">
           <a
-            href="mailto:contact@example.com?subject=%E3%80%90%E3%82%B9%E3%83%AD%E3%82%AB%E3%82%B9%E3%81%8F%E3%82%93%E3%80%91%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B"
+            href="mailto:slokasukun1@gmail.com?subject=%E3%80%90%E3%82%B9%E3%83%AD%E3%82%AB%E3%82%B9%E3%81%8F%E3%82%93%E3%80%91%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B"
             className="flex items-center justify-between rounded-xl bg-neutral-900 px-5 py-4 text-base font-semibold text-white"
           >
             <span>問い合わせフォーム（メール）を開く</span>
@@ -26,7 +26,7 @@ export default function ContactPage() {
         </div>
 
         <p className="mt-4 text-xs text-neutral-600">
-          ※現在、連絡先メールは仮の表示です（運用に合わせて差し替えてください）。
+          返信までお時間をいただく場合があります。
         </p>
 
         <div className="mt-6">
