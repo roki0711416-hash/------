@@ -22,9 +22,7 @@ export default async function Home() {
   return (
     <main className="w-full">
       <div className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <header className="space-y-2">
-          <h1 className="sr-only">スロカスくん</h1>
-        </header>
+        <h1 className="sr-only">スロカスくん</h1>
 
         <section className="mt-4 rounded-2xl border border-neutral-200 bg-white p-5">
           <h2 className="text-lg font-semibold">パチスロの設定判別をサポートする分析ツール</h2>
