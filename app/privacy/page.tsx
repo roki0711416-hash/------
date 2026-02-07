@@ -37,6 +37,7 @@ export default function PrivacyPage() {
             <div className="mt-2 space-y-2">
               <p>
                 当サイトでは、第三者配信の広告サービス（例: Google AdSense）を利用する場合があります。
+                当サイトでは、Google AdSense に加え、モバイルアプリにおいて Google AdMob などの第三者配信の広告サービスを利用する場合があります。
                 広告配信事業者は、ユーザーの興味に応じた広告（パーソナライズ広告）を表示するためにCookie等を使用することがあります。
               </p>
               <p>
@@ -60,7 +61,7 @@ export default function PrivacyPage() {
             <p className="mt-2">個別のご連絡はお問い合わせページをご利用ください。</p>
           </div>
 
-          <p className="text-xs text-neutral-500">最終更新日: 2026-01-13</p>
+          <p className="text-xs text-neutral-500">最終更新日: 2026-02-07</p>
         </div>
       </section>
     </main>
