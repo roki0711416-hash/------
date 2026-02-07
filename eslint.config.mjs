@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+
+    // Native / generated artifacts (not part of Next.js source):
+    "ios/**",
+    "legacy-app/**",
+    "**/out/**",
   ]),
 ]);
 
