@@ -59,6 +59,14 @@ html[data-theme="dark"] {
 html,
 body {
   overscroll-behavior-y: none;
+  overflow-x: hidden;
+}
+
+@supports (overflow: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
 }
 
 body {
@@ -77,10 +85,7 @@ footer {
 body::before {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   z-index: -2;
   background-image: url("/slot-bg.jpg");
   background-size: cover;
@@ -94,21 +99,16 @@ body::before {
 body::after {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   z-index: -1;
   background: rgb(var(--text-rgb) / 0.55);
   pointer-events: none;
   transform: translateZ(0);
 }
 
-@supports (height: 100lvh) {
-  body::before,
-  body::after {
-    height: 100lvh;
-  }
+/* 審査中の最終兵器：TOPの新着情報セクションは強制非表示 */
+#home-news {
+  display: none !important;
 }
 
 /* Map existing Tailwind utility usage to theme tokens (no UI/layout changes) */
