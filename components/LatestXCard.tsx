@@ -111,7 +111,7 @@ export default function LatestXCard({ profileUrl, latestThreadUrl }: Props) {
           </div>
         </div>
       ) : tweets ? null : (
-        <div className="mt-4 h-10" />
+          null
       )}
     </div>
   );
