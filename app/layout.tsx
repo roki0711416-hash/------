@@ -286,6 +286,14 @@ export default async function RootLayout({
               </li>
               <li>
                 <Link
+                  href="/column"
+                  className="text-neutral-700 underline underline-offset-2"
+                >
+                  コラム
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/cancel"
                   className="text-neutral-700 underline underline-offset-2"
                 >

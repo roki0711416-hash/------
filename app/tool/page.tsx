@@ -72,6 +72,34 @@ export default async function ToolPage({
           <p className="mt-2 text-sm text-neutral-700">
             サブスク会員向けには、スランプグラフ解析や詳細データを用いた、より踏み込んだ設定判別・分析機能を提供しています。
           </p>
+
+          <div className="mt-4 space-y-3 text-sm leading-7 text-neutral-700">
+            <div>
+              <h2 className="font-semibold text-neutral-900">使い方</h2>
+              <ol className="mt-1 list-decimal space-y-1 pl-5">
+                <li>左上のメニューから機種を選択します</li>
+                <li>総ゲーム数・BIG回数・REG回数などを入力します</li>
+                <li>入力内容に基づいた設定推測結果が表示されます</li>
+              </ol>
+            </div>
+
+            <div>
+              <h2 className="font-semibold text-neutral-900">表示結果について</h2>
+              <p className="mt-1">
+                表示される推測結果は、入力されたデータと機種ごとの理論値を比較した参考情報です。
+                実際の設定を確定するものではなく、遊技の勝敗や収支を保証するものでもありません。
+                判断材料の整理・可視化の補助ツールとして、娯楽の範囲でご利用ください。
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+              <p className="text-xs font-semibold text-amber-800">⚠ ご注意</p>
+              <p className="mt-1 text-xs text-amber-700">
+                本ツールの結果は娯楽・参考情報であり、遊技の勝敗や収支を保証するものではありません。
+                遊技に関する最終的な判断はご自身の責任で行ってください。
+              </p>
+            </div>
+          </div>
         </section>
 
         {selectedMachine ? (

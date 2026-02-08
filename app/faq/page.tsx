@@ -1,5 +1,7 @@
 export const metadata = {
-  title: "よくある質問（FAQ） | スロット設定判別ツール",
+  title: "よくある質問（FAQ） | スロカスくん（スロット設定判別ツール）",
+  description:
+    "スロカスくんに関するよくある質問と回答。無料・有料の違い、支払い方法、解約方法などをまとめています。",
 };
 
 export default function FaqPage() {

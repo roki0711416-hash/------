@@ -4,6 +4,8 @@ import MachinesSearchList from "../../components/MachinesSearchList";
 
 export const metadata = {
   title: "機種一覧 | スロカスくん",
+  description:
+    "メーカー別にパチスロ機種を検索できます。ジャグラー・ハナハナ・スマスロなどの機種を選び、そのまま設定判別へ進めます。",
 };
 
 export default async function MachinesPage({

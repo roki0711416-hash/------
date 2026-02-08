@@ -2,6 +2,8 @@ import Link from "next/link";
 
 export const metadata = {
   title: "使い方 | スロカスくん",
+  description:
+    "スロカスくんの使い方を解説。機種選択から設定判別・収支記録まで、初めての方でもかんたんに始められます。",
 };
 
 export default function GuidePage() {

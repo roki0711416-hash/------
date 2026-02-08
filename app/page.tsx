@@ -141,6 +141,57 @@ export default async function Home() {
           </nav>
         </section>
 
+        <section className="mt-4 rounded-2xl border border-neutral-200 bg-white p-5">
+          <h2 className="text-lg font-semibold">コラム ── 考え方を整理する</h2>
+          <p className="mt-2 text-sm text-neutral-600">
+            設定判別やデータの読み方に関する基礎知識を、娯楽・参考情報として整理しています。
+          </p>
+
+          <div className="mt-4 space-y-3">
+            <Link
+              href="/column/what-is-setting"
+              className="block rounded-xl border border-neutral-200 bg-neutral-50 p-4 transition-colors hover:bg-neutral-100"
+            >
+              <p className="text-sm font-semibold text-neutral-900">
+                パチスロの「設定」とは？ 仕組みと基本を整理する
+              </p>
+              <p className="mt-1 text-xs text-neutral-600">
+                設定1〜6の仕組み、出玉率との関係、判別の前提知識を解説
+              </p>
+            </Link>
+
+            <Link
+              href="/column/continuation-criteria"
+              className="block rounded-xl border border-neutral-200 bg-neutral-50 p-4 transition-colors hover:bg-neutral-100"
+            >
+              <p className="text-sm font-semibold text-neutral-900">
+                続行 or やめどき？ 判断基準の考え方
+              </p>
+              <p className="mt-1 text-xs text-neutral-600">
+                サンプル数・確率収束の概念から続行・撤退判断の視点を整理
+              </p>
+            </Link>
+
+            <Link
+              href="/column/how-to-read-probability"
+              className="block rounded-xl border border-neutral-200 bg-neutral-50 p-4 transition-colors hover:bg-neutral-100"
+            >
+              <p className="text-sm font-semibold text-neutral-900">
+                確率の読み方入門 ── ボーナス確率表の見方
+              </p>
+              <p className="mt-1 text-xs text-neutral-600">
+                合算確率と単独確率の違い、分母によるブレの大きさを解説
+              </p>
+            </Link>
+          </div>
+
+          <div className="mt-4">
+            <Link href="/column" className="text-sm text-neutral-700 underline underline-offset-2">
+              コラム一覧を見る →
+            </Link>
+          </div>
+        </section>
+
         <section className="mt-4 space-y-4">
           <section className="rounded-2xl border border-neutral-200 bg-white p-5">
             <h2 className="text-lg font-semibold">サブスク会員</h2>
@@ -275,3 +326,4 @@ export default async function Home() {
     </main>
   );
 }
+

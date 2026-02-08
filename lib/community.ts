@@ -1,10 +1,10 @@
 export const BOARDS = [
-  { id: "region", label: "地域別（都道府県）" },
-  { id: "hall", label: "ホール別" },
-  { id: "machine", label: "機種別" },
-  { id: "chat", label: "雑談" },
-  { id: "report", label: "実践報告" },
-  { id: "beginner", label: "初心者質問" },
+  { id: "region", label: "地域別（都道府県）", hasNew: false },
+  { id: "hall", label: "ホール別", hasNew: false },
+  { id: "machine", label: "機種別", hasNew: false },
+  { id: "chat", label: "雑談", hasNew: false },
+  { id: "report", label: "実践報告", hasNew: false },
+  { id: "beginner", label: "初心者質問", hasNew: false },
 ] as const;
 
 export const PREFECTURES = [
