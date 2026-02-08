@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/7340adf74ff47ec0.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"m9z70ocnOFsl0GBe5qucd","rsc":["$","$1","c",{"children":[["$","div",null,{"className":"space-y-4","children":[["$","div",null,{"children":[["$","h1",null,{"className":"text-xl font-semibold tracking-tight","children":"使い方"}],["$","p",null,{"className":"mt-1 text-sm text-zinc-600","children":"最小構成の案内です。"}]]}],["$","div",null,{"className":"rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm ","children":["$","div",null,{"className":"space-y-2 text-sm text-zinc-700","children":[["$","p",null,{"children":"1. 「Machines」で機種を選びます。"}],["$","p",null,{"children":"2. 「Judge」で回転数・BIG・REG（必要ならぶどう）を入力します。"}],["$","p",null,{"children":"3. 「判別する」でTOP3が表示されます（現在はモック）。"}]]}]}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null

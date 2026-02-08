@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://slokasukun.com/sitemap.xml
