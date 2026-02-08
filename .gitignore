@@ -47,6 +47,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# editor / IDE
 .vscode/
-.worktrees/
+
+# local-only: iOS / Capacitor (not for web deploy)
+ios/
+app/ios/
+capacitor.config.ts
+
+# local-only: legacy / worktrees
 legacy-app/
+.worktrees/
+worktrees/
