@@ -48,9 +48,13 @@ export async function GET(req: Request) {
 
   const columns: SchemaColumn[] = [
     { label: bigLabel, value: (st) => st.big },
-    ...(regLabel !== null ? [{ label: regLabel, value: (st) => st.reg }] : []),
-    ...(totalLabel !== null ? [{ label: totalLabel, value: (st) => st.total }] : []),
   ];
+  if (regLabel !== null) {
+    columns.push({ label: regLabel, value: (st) => st.reg });
+  }
+  if (totalLabel !== null) {
+    columns.push({ label: totalLabel, value: (st) => st.total });
+  }
 
   // Optional payout rate
   if (machine.odds.settings.every((st) => typeof st.rate === "number" && Number.isFinite(st.rate))) {
