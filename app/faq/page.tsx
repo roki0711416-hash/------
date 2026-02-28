@@ -7,10 +7,10 @@ export const metadata = {
 export default function FaqPage() {
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
-        <h1 className="text-lg font-semibold">よくある質問（FAQ）</h1>
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5 backdrop-blur-sm">
+        <h1 className="text-lg font-bold text-white">よくある質問（FAQ）</h1>
 
-        <div className="mt-4 space-y-4 text-sm text-neutral-700">
+        <div className="mt-4 space-y-4 text-sm text-muted">
           <div>
             <h2 className="font-semibold">Q1. このツールを使えば必ず勝てますか？</h2>
             <div className="mt-2 space-y-2">
@@ -141,7 +141,7 @@ export default function FaqPage() {
             </div>
           </div>
 
-          <p className="text-xs text-neutral-500">最終更新日：2026年1月13日</p>
+          <p className="text-xs text-white/30">最終更新日：2026年1月13日</p>
         </div>
       </section>
     </main>

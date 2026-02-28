@@ -55,9 +55,9 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
 
   return (
     <>
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h2 className="text-lg font-semibold">確率・機械割</h2>
-        <p className="mt-1 text-sm text-neutral-600">
+        <p className="mt-1 text-sm text-muted">
           {machine.name}
           {machine.maker ? `（${machine.maker}）` : ""}
         </p>
@@ -65,52 +65,52 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
         <div className="mt-4 overflow-x-auto">
           <table className="w-full min-w-[560px] border-collapse text-sm">
             <thead>
-              <tr className="text-left text-neutral-600">
-                <th className="sticky left-0 z-10 bg-white px-3 py-2 border border-neutral-200">
+              <tr className="text-left text-muted">
+                <th className="sticky left-0 z-10 bg-white/[0.04] px-3 py-2 border border-white/[0.08]">
                   設定
                 </th>
-                <th className="px-3 py-2 border border-neutral-200">{bigLabel}</th>
+                <th className="px-3 py-2 border border-white/[0.08]">{bigLabel}</th>
                 {showReg ? (
-                  <th className="px-3 py-2 border border-neutral-200">{regLabel}</th>
+                  <th className="px-3 py-2 border border-white/[0.08]">{regLabel}</th>
                 ) : null}
                 {showTotal ? (
-                  <th className="px-3 py-2 border border-neutral-200">{totalLabel}</th>
+                  <th className="px-3 py-2 border border-white/[0.08]">{totalLabel}</th>
                 ) : null}
                 {hasExtra ? (
-                  <th className="px-3 py-2 border border-neutral-200">{extraLabel}</th>
+                  <th className="px-3 py-2 border border-white/[0.08]">{extraLabel}</th>
                 ) : null}
                 {hasSuikaCzRate ? (
-                  <th className="px-3 py-2 border border-neutral-200">{suikaCzRateLabel}</th>
+                  <th className="px-3 py-2 border border-white/[0.08]">{suikaCzRateLabel}</th>
                 ) : null}
-                <th className="px-3 py-2 border border-neutral-200">機械割(%)</th>
+                <th className="px-3 py-2 border border-white/[0.08]">機械割(%)</th>
               </tr>
             </thead>
             <tbody>
               {machine.odds.settings.map((row, idx) => (
-                <tr key={`${row.s}-${idx}`} className="text-neutral-800">
-                  <td className="sticky left-0 bg-white px-3 py-2 font-semibold border border-neutral-200">
+                <tr key={`${row.s}-${idx}`} className="text-white">
+                  <td className="sticky left-0 bg-white/[0.04] px-3 py-2 font-semibold border border-white/[0.08]">
                     {row.s}
                   </td>
-                  <td className="px-3 py-2 border border-neutral-200">1/{fmt(row.big)}</td>
+                  <td className="px-3 py-2 border border-white/[0.08]">1/{fmt(row.big)}</td>
                   {showReg ? (
-                    <td className="px-3 py-2 border border-neutral-200">1/{fmt(row.reg)}</td>
+                    <td className="px-3 py-2 border border-white/[0.08]">1/{fmt(row.reg)}</td>
                   ) : null}
                   {showTotal ? (
-                    <td className="px-3 py-2 border border-neutral-200">1/{fmt(row.total)}</td>
+                    <td className="px-3 py-2 border border-white/[0.08]">1/{fmt(row.total)}</td>
                   ) : null}
                   {hasExtra ? (
-                    <td className="px-3 py-2 border border-neutral-200">
+                    <td className="px-3 py-2 border border-white/[0.08]">
                       {typeof row.extra === "number" ? `1/${fmt(row.extra)}` : "-"}
                     </td>
                   ) : null}
                   {hasSuikaCzRate ? (
-                    <td className="px-3 py-2 border border-neutral-200">
+                    <td className="px-3 py-2 border border-white/[0.08]">
                       {typeof row.suikaCzRate === "number"
                         ? `${(row.suikaCzRate * 100).toFixed(1)}%`
                         : "-"}
                     </td>
                   ) : null}
-                  <td className="px-3 py-2 border border-neutral-200">{fmt(row.rate)}</td>
+                  <td className="px-3 py-2 border border-white/[0.08]">{fmt(row.rate)}</td>
                 </tr>
               ))}
             </tbody>
@@ -119,19 +119,19 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
       </section>
 
       {hasCountOdds ? (
-        <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <h2 className="text-lg font-semibold">カウント系確率</h2>
-          <p className="mt-1 text-sm text-neutral-600">設定別の 1/○○ 表記</p>
+          <p className="mt-1 text-sm text-muted">設定別の 1/○○ 表記</p>
 
           <div className="mt-4 overflow-x-auto">
             <table className="w-full min-w-[560px] border-collapse text-sm">
               <thead>
-                <tr className="text-left text-neutral-600">
-                  <th className="sticky left-0 z-10 bg-white px-3 py-2 border border-neutral-200">
+                <tr className="text-left text-muted">
+                  <th className="sticky left-0 z-10 bg-white/[0.04] px-3 py-2 border border-white/[0.08]">
                     項目
                   </th>
                   {machine.odds.settings.map((s, idx) => (
-                    <th key={`${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
+                    <th key={`${s.s}-${idx}`} className="px-3 py-2 border border-white/[0.08]">
                       設定{s.s}
                     </th>
                   ))}
@@ -139,14 +139,14 @@ export default function MachineOddsTable({ machine }: { machine: Machine }) {
               </thead>
               <tbody>
                 {countRows.map((row) => (
-                  <tr key={row.key} className="text-neutral-800">
-                    <td className="sticky left-0 bg-white px-3 py-2 font-semibold border border-neutral-200">
+                  <tr key={row.key} className="text-white">
+                    <td className="sticky left-0 bg-white/[0.04] px-3 py-2 font-semibold border border-white/[0.08]">
                       {row.label}
                     </td>
                     {machine.odds.settings.map((s, idx) => {
                       const denom = row.denomBySetting(s);
                       return (
-                        <td key={`${row.key}-${s.s}-${idx}`} className="px-3 py-2 border border-neutral-200">
+                        <td key={`${row.key}-${s.s}-${idx}`} className="px-3 py-2 border border-white/[0.08]">
                           {typeof denom === "number" ? `1/${fmt(denom)}` : "-"}
                         </td>
                       );

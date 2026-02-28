@@ -90,26 +90,26 @@ export default function AdminStoresClient() {
       <h1 className="text-xl font-bold">店舗管理</h1>
 
       {/* ── バッチ実行 ── */}
-      <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h2 className="text-base font-semibold">バッチ実行（モック）</h2>
-        <p className="mt-1 text-xs text-neutral-500">
+        <p className="mt-1 text-xs text-white/40">
           直近3日分のシグナルをモックデータで生成・更新します。
         </p>
         <button
           type="button"
           onClick={handleBatch}
           disabled={batchRunning}
-          className="mt-3 rounded-xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white disabled:opacity-50"
+          className="mt-3 rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-6 py-3 text-sm font-semibold text-white disabled:opacity-50"
         >
           {batchRunning ? "実行中..." : "バッチを実行"}
         </button>
         {batchResult && (
-          <p className="mt-2 text-sm text-neutral-700">{batchResult}</p>
+          <p className="mt-2 text-sm text-muted">{batchResult}</p>
         )}
       </section>
 
       {/* ── 店舗追加 ── */}
-      <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h2 className="text-base font-semibold">店舗を追加</h2>
         <form onSubmit={handleAdd} className="mt-4 space-y-3">
           <input
@@ -118,7 +118,7 @@ export default function AdminStoresClient() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-white/[0.08] px-3 py-2 text-sm"
           />
           <input
             type="text"
@@ -126,45 +126,45 @@ export default function AdminStoresClient() {
             value={prefecture}
             onChange={(e) => setPrefecture(e.target.value)}
             required
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-white/[0.08] px-3 py-2 text-sm"
           />
           <input
             type="text"
             placeholder="市区町村"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-white/[0.08] px-3 py-2 text-sm"
           />
           <input
             type="text"
             placeholder="住所"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-white/[0.08] px-3 py-2 text-sm"
           />
           <button
             type="submit"
-            className="rounded-xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white"
+            className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-6 py-3 text-sm font-semibold text-white"
           >
             追加
           </button>
-          {formMsg && <p className="text-sm text-neutral-700">{formMsg}</p>}
+          {formMsg && <p className="text-sm text-muted">{formMsg}</p>}
         </form>
       </section>
 
       {/* ── 店舗一覧 ── */}
-      <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h2 className="text-base font-semibold">登録店舗一覧</h2>
         {loading ? (
-          <p className="mt-3 text-sm text-neutral-500">読み込み中...</p>
+          <p className="mt-3 text-sm text-white/40">読み込み中...</p>
         ) : stores.length === 0 ? (
-          <p className="mt-3 text-sm text-neutral-500">店舗がありません</p>
+          <p className="mt-3 text-sm text-white/40">店舗がありません</p>
         ) : (
-          <ul className="mt-3 divide-y divide-neutral-100">
+          <ul className="mt-3 divide-y divide-white/[0.06]">
             {stores.map((s) => (
               <li key={s.id} className="py-2">
                 <p className="text-sm font-semibold">{s.name}</p>
-                <p className="text-xs text-neutral-500">
+                <p className="text-xs text-white/40">
                   {s.prefecture} {s.city ?? ""} | {s.id}
                 </p>
               </li>

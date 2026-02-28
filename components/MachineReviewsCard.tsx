@@ -350,10 +350,10 @@ export default function MachineReviewsCard({
   }
 
   return (
-    <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+    <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
       <h2 className="text-lg font-semibold">ユーザー口コミ</h2>
       {avg !== null ? (
-        <p className="mt-1 text-xs text-neutral-500">
+        <p className="mt-1 text-xs text-white/40">
           平均 {avg.toFixed(2)} / 5（{userReviews.length}件）
         </p>
       ) : null}
@@ -363,84 +363,84 @@ export default function MachineReviewsCard({
           {userReviews.map((r) => (
             <li
               key={r.id}
-              className="rounded-xl border border-neutral-200 bg-neutral-50 p-4"
+              className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4"
             >
               <div className="flex items-start justify-between gap-3">
-                <p className="text-sm font-semibold text-neutral-800">
+                <p className="text-sm font-semibold text-white">
                   {renderStars(r.rating)}
-                  <span className="ml-2 text-xs font-medium text-neutral-500">
+                  <span className="ml-2 text-xs font-medium text-white/40">
                     {r.rating}/5
                   </span>
                 </p>
-                <p className="text-xs text-neutral-500">
+                <p className="text-xs text-white/40">
                   {r.date}
                   {r.author ? `・${r.author}` : ""}
                 </p>
               </div>
-              <p className="mt-2 whitespace-pre-line text-sm text-neutral-700">
+              <p className="mt-2 whitespace-pre-line text-sm text-muted">
                 {r.body}
               </p>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="mt-3 text-sm text-neutral-600">まだ口コミがありません。</p>
+        <p className="mt-3 text-sm text-muted">まだ口コミがありません。</p>
       )}
 
       {isLoading ? (
-        <p className="mt-3 text-sm text-neutral-600">読み込み中…</p>
+        <p className="mt-3 text-sm text-muted">読み込み中…</p>
       ) : null}
 
       {loadError ? (
         <p className="mt-3 text-sm font-medium text-red-600">{loadError}</p>
       ) : null}
 
-      <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+      <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
         <p className="text-sm font-semibold">口コミを書く</p>
         {mode === "server" ? (
-          <p className="mt-1 text-xs text-neutral-500">※投稿はみんなに共有されます。</p>
+          <p className="mt-1 text-xs text-white/40">※投稿はみんなに共有されます。</p>
         ) : (
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1 text-xs text-white/40">
             ※この端末のブラウザに保存されます（他の人には共有されません）。共有DBが使えるようになれば自動で共有に戻ります。
           </p>
         )}
 
         {!viewer.loaded ? (
           <div className="mt-3">
-            <p className="text-sm text-neutral-600">ログイン状態を確認中…</p>
+            <p className="text-sm text-muted">ログイン状態を確認中…</p>
           </div>
         ) : !viewer.loggedIn ? (
-          <div className="mt-3 rounded-xl border border-neutral-200 bg-white p-4">
-            <p className="text-sm font-semibold text-neutral-800">
+          <div className="mt-3 rounded-xl border border-white/[0.08] bg-white/[0.04] p-4">
+            <p className="text-sm font-semibold text-white">
               口コミ投稿にはログイン（ユーザー登録）が必要です
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <a
                 href="/signup"
-                className="rounded-xl bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
+                className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-2 text-sm font-semibold text-white"
               >
                 ユーザー登録
               </a>
               <a
                 href="/login"
-                className="rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-900"
+                className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-sm font-semibold text-white"
               >
                 ログイン
               </a>
             </div>
           </div>
         ) : !viewer.username ? (
-          <div className="mt-3 rounded-xl border border-neutral-200 bg-white p-4">
-            <p className="text-sm font-semibold text-neutral-800">
+          <div className="mt-3 rounded-xl border border-white/[0.08] bg-white/[0.04] p-4">
+            <p className="text-sm font-semibold text-white">
               口コミ投稿にはユーザーネーム設定が必要です
             </p>
-            <p className="mt-1 text-xs text-neutral-500">
+            <p className="mt-1 text-xs text-white/40">
               /account からユーザーネームを設定すると投稿できます。
             </p>
             <div className="mt-3">
               <a
                 href="/account"
-                className="inline-block rounded-xl bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
+                className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-2 text-sm font-semibold text-white"
               >
                 アカウント画面へ
               </a>
@@ -449,17 +449,17 @@ export default function MachineReviewsCard({
         ) : (
           <div className="mt-3 grid gap-3">
             <div className="block">
-              <span className="text-xs font-semibold text-neutral-600">投稿者</span>
-              <div className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm">
+              <span className="text-xs font-semibold text-muted">投稿者</span>
+              <div className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm">
                 {viewer.username}
               </div>
-              <p className="mt-1 text-xs text-neutral-500">ユーザーネームで投稿されます。</p>
+              <p className="mt-1 text-xs text-white/40">ユーザーネームで投稿されます。</p>
             </div>
 
             <label className="block">
-              <span className="text-xs font-semibold text-neutral-600">評価</span>
+              <span className="text-xs font-semibold text-muted">評価</span>
               <select
-                className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                 value={rating}
                 onChange={(e) => setRating(Number(e.target.value) as ReviewRating)}
               >
@@ -472,11 +472,11 @@ export default function MachineReviewsCard({
             </label>
 
             <label className="block">
-              <span className="text-xs font-semibold text-neutral-600">口コミ</span>
+              <span className="text-xs font-semibold text-muted">口コミ</span>
               <textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
-                className="mt-1 min-h-24 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="mt-1 min-h-24 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                 placeholder="例: 右上がりだったので6を期待したが…"
                 maxLength={500}
               />
@@ -486,13 +486,13 @@ export default function MachineReviewsCard({
               <p className="text-sm font-medium text-red-600">{submitError}</p>
             ) : null}
             {submitted ? (
-              <p className="text-sm font-medium text-neutral-700">投稿しました。</p>
+              <p className="text-sm font-medium text-muted">投稿しました。</p>
             ) : null}
 
             <button
               type="button"
               onClick={submit}
-              className="rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white"
+              className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-sm font-semibold text-white"
             >
               投稿する
             </button>

@@ -58,7 +58,7 @@ export default function CheckoutSync({ sessionId }: { sessionId: string }) {
 
   return (
     <div className="mt-3">
-      <p className="text-xs text-neutral-600">
+      <p className="text-xs text-muted">
         {status === "syncing" ? "会員状態を同期中..." : message ?? ""}
       </p>
       {status === "error" ? (

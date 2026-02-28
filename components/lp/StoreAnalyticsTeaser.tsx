@@ -32,13 +32,13 @@ export default function LpStoreAnalyticsTeaser() {
     <section className="relative py-16 sm:py-24">
       <div className="mx-auto w-full max-w-4xl px-5 sm:px-8">
         <Reveal>
-          <p className="text-center text-xs font-semibold tracking-wider text-neutral-500">
+          <p className="text-center text-xs font-semibold tracking-wider text-white/40">
             ▼ WEB版の無料機能
           </p>
           <h2 className="mt-3 text-center text-3xl font-black tracking-tight text-white sm:text-4xl">
             🏢 全国ホール分析
           </h2>
-          <p className="mt-4 text-center text-base text-neutral-400">
+          <p className="mt-4 text-center text-base text-white/50">
             地域を選んで都道府県ごとの店舗データを無料でチェック。
           </p>
         </Reveal>
@@ -69,7 +69,7 @@ export default function LpStoreAnalyticsTeaser() {
 
             {/* 都道府県リンク */}
             <div className="mt-5 rounded-xl border border-white/5 bg-white/[0.02] p-4">
-              <h3 className="text-sm font-semibold text-neutral-300">
+              <h3 className="text-sm font-semibold text-white/60">
                 {REGION_DEFS.find((r) => r.key === selectedRegion)?.label ?? "地方"} の都道府県
               </h3>
               <div className="mt-3 flex flex-wrap gap-2">
@@ -77,7 +77,7 @@ export default function LpStoreAnalyticsTeaser() {
                   <Link
                     key={p.slug}
                     href={`/prefectures/${p.slug}`}
-                    className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-neutral-300 transition-all hover:border-white/20 hover:bg-white/10 hover:text-white"
+                    className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-white/60 transition-all hover:border-white/20 hover:bg-white/10 hover:text-white"
                   >
                     {p.name}
                   </Link>

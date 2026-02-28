@@ -9,15 +9,15 @@ export default async function LoginPage() {
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h1 className="text-lg font-semibold">ログイン</h1>
-        <p className="mt-2 text-sm text-neutral-600">
+        <p className="mt-2 text-sm text-muted">
           端末共有NGのため、ログインは常に「最後の1台のみ」有効になります。
         </p>
 
         <LoginForm />
 
-        <p className="mt-4 text-sm text-neutral-700">
+        <p className="mt-4 text-sm text-muted">
           まだアカウントがない方：{" "}
           <Link href="/signup" className="underline underline-offset-2">
             会員登録

@@ -45,7 +45,7 @@ export default function Features() {
           <h2 className="text-center text-3xl font-black tracking-tight text-white sm:text-4xl">
             主な機能
           </h2>
-          <p className="mt-4 text-center text-base text-neutral-400">
+          <p className="mt-4 text-center text-base text-white/50">
             設定判別から収支管理まで、これひとつで。
           </p>
         </Reveal>
@@ -62,7 +62,7 @@ export default function Features() {
                 />
                 <p className="text-3xl">{f.icon}</p>
                 <h3 className="mt-4 text-lg font-bold text-white">{f.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-400">
+                <p className="mt-2 text-sm leading-relaxed text-white/50">
                   {f.body}
                 </p>
               </div>

@@ -7,7 +7,7 @@ import { APPSTORE_URL } from "@/lib/constants";
  */
 export default function StickyCTA() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-slate-950/95 px-4 py-3 backdrop-blur-md sm:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-bg0/95 px-4 py-3 backdrop-blur-md sm:hidden">
       <a
         href={APPSTORE_URL}
         target="_blank"

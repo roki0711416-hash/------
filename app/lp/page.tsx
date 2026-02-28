@@ -26,7 +26,7 @@ export default function LandingPage() {
   return (
     <>
       {/* ダーク系全幅コンテナ：レイアウトの制約を突き抜けてフルブリード */}
-      <div className="relative w-[100vw] ml-[calc(-50vw+50%)] overflow-hidden bg-gradient-to-b from-slate-950 via-[#0c0e2b] to-slate-950">
+      <div className="relative w-[100vw] ml-[calc(-50vw+50%)] overflow-hidden bg-gradient-to-b from-bg0 via-bg1 to-bg0">
         {/* ──── Ambient glow orbs ──── */}
         <div className="pointer-events-none absolute left-1/4 top-0 h-[600px] w-[600px] rounded-full bg-orange-600/[0.07] blur-[150px]" />
         <div className="pointer-events-none absolute right-0 top-[30%] h-[500px] w-[500px] rounded-full bg-pink-600/[0.06] blur-[130px]" />

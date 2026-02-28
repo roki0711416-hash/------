@@ -81,13 +81,13 @@ export default function MachinesSearchList({ makers, initialQuery }: Props) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="全機種を検索…"
-          className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm"
+          className="w-full rounded-xl border border-white/[0.12] bg-white/[0.06] px-4 py-3 text-sm text-white placeholder-white/30 outline-none backdrop-blur-sm transition focus:border-white/25 focus:bg-white/[0.1]"
         />
       </label>
 
       {normalizedQuery ? (
-        <section className="mt-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
-          <h3 className="text-sm font-semibold text-neutral-800">検索結果</h3>
+        <section className="mt-4 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+          <h3 className="text-sm font-semibold text-white/80">検索結果</h3>
 
           <ul className="mt-3 grid gap-2">
             {filteredMachines.map((mc) => {
@@ -98,11 +98,11 @@ export default function MachinesSearchList({ makers, initialQuery }: Props) {
                 <li key={`${mc.makerName}:${mc.id}`}>
                   <Link
                     href={`/judge?${sp.toString()}`}
-                    className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm font-medium text-neutral-900"
+                    className="flex items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm font-medium text-white/90 transition-all hover:border-white/[0.16] hover:bg-white/[0.07]"
                   >
                     <span className="min-w-0 flex-1 break-words">{mc.name}</span>
-                    <span className="ml-3 shrink-0 text-xs text-neutral-500">{mc.makerName}</span>
-                    <span aria-hidden className="ml-3 text-base leading-none text-neutral-700">
+                    <span className="ml-3 shrink-0 text-xs text-muted">{mc.makerName}</span>
+                    <span aria-hidden className="ml-3 text-base leading-none text-white/50">
                       →
                     </span>
                   </Link>
@@ -111,7 +111,7 @@ export default function MachinesSearchList({ makers, initialQuery }: Props) {
             })}
 
             {filteredMachines.length === 0 ? (
-              <li className="text-sm text-neutral-600">検索結果がありません。</li>
+              <li className="text-sm text-muted">検索結果がありません。</li>
             ) : null}
           </ul>
         </section>
@@ -120,13 +120,13 @@ export default function MachinesSearchList({ makers, initialQuery }: Props) {
           {makers.map((mk) => (
             <details
               key={mk.name}
-              className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4"
+              className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
-                <h3 className="text-sm font-semibold text-neutral-800">{mk.name}</h3>
+                <h3 className="text-sm font-semibold text-white/80">{mk.name}</h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-neutral-500">{mk.machines.length}</span>
-                  <span aria-hidden className="text-base leading-none text-neutral-600">
+                  <span className="text-xs text-muted">{mk.machines.length}</span>
+                  <span aria-hidden className="text-base leading-none text-white/40">
                     ▾
                   </span>
                 </div>
@@ -141,10 +141,10 @@ export default function MachinesSearchList({ makers, initialQuery }: Props) {
                     <li key={mc.id}>
                       <Link
                         href={`/judge?${sp.toString()}`}
-                        className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm font-medium text-neutral-900"
+                        className="flex items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm font-medium text-white/90 transition-all hover:border-white/[0.16] hover:bg-white/[0.07]"
                       >
                         <span className="min-w-0 flex-1 break-words">{mc.name}</span>
-                        <span aria-hidden className="ml-3 text-base leading-none text-neutral-700">
+                        <span aria-hidden className="ml-3 text-base leading-none text-white/50">
                           →
                         </span>
                       </Link>
@@ -156,7 +156,7 @@ export default function MachinesSearchList({ makers, initialQuery }: Props) {
           ))}
 
           {makers.length === 0 ? (
-            <p className="text-sm text-neutral-600">機種データがありません。</p>
+            <p className="text-sm text-muted">機種データがありません。</p>
           ) : null}
         </div>
       )}

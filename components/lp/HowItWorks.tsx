@@ -28,7 +28,7 @@ export default function HowItWorks() {
           <h2 className="text-center text-3xl font-black tracking-tight text-white sm:text-4xl">
             使い方はかんたん
           </h2>
-          <p className="mt-4 text-center text-base text-neutral-400">
+          <p className="mt-4 text-center text-base text-white/50">
             3ステップで設定判別。
           </p>
         </Reveal>
@@ -47,7 +47,7 @@ export default function HowItWorks() {
                   </span>
                   <div>
                     <h3 className="text-lg font-bold text-white">{s.title}</h3>
-                    <p className="mt-1 text-sm leading-relaxed text-neutral-400">
+                    <p className="mt-1 text-sm leading-relaxed text-white/50">
                       {s.body}
                     </p>
                   </div>

@@ -69,12 +69,12 @@ export default function CommunityScopeJumpForm({
   }
 
   return (
-    <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
       <p className="text-sm font-semibold">{label}を選ぶ</p>
       {kind === "machine" && machineMakers ? (
         <div className="mt-3 space-y-2">
           <select
-            className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
             value={selectedMaker}
             onChange={(e) => {
               setSelectedMaker(e.target.value);
@@ -92,7 +92,7 @@ export default function CommunityScopeJumpForm({
 
           <div className="flex gap-2">
             <select
-              className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
               value={selectedMachine}
               onChange={(e) => {
                 setSelectedMachine(e.target.value);
@@ -111,7 +111,7 @@ export default function CommunityScopeJumpForm({
             <button
               type="button"
               onClick={go}
-              className="shrink-0 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
+              className="shrink-0 rounded-lg bg-gradient-to-r from-cta-from to-cta-to px-4 py-2 text-sm font-semibold text-white"
             >
               次へ
             </button>
@@ -120,7 +120,7 @@ export default function CommunityScopeJumpForm({
       ) : (
         <div className="mt-3 flex gap-2">
           <input
-            className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
             value={value}
             onChange={(e) => {
               setValue(e.target.value);
@@ -132,7 +132,7 @@ export default function CommunityScopeJumpForm({
           <button
             type="button"
             onClick={go}
-            className="shrink-0 rounded-lg bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
+            className="shrink-0 rounded-lg bg-gradient-to-r from-cta-from to-cta-to px-4 py-2 text-sm font-semibold text-white"
           >
             次へ
           </button>
@@ -140,7 +140,7 @@ export default function CommunityScopeJumpForm({
       )}
 
       {error ? <p className="mt-2 text-xs text-red-600">{error}</p> : null}
-      <p className="mt-2 text-xs text-neutral-500">入力後「次へ」でスレ一覧に移動します。</p>
+      <p className="mt-2 text-xs text-white/40">入力後「次へ」でスレ一覧に移動します。</p>
     </div>
   );
 }

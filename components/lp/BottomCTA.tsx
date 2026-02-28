@@ -18,7 +18,7 @@ export default function BottomCTA() {
             <h2 className="relative text-2xl font-black text-white sm:text-3xl">
               今すぐ始めよう
             </h2>
-            <p className="relative mt-3 text-base text-neutral-400">
+            <p className="relative mt-3 text-base text-white/50">
               ダウンロードは無料。実戦中でもサクッと判別。
             </p>
             <a
@@ -29,7 +29,7 @@ export default function BottomCTA() {
             >
               🍎 App Storeで入手
             </a>
-            <p className="relative mt-4 text-xs text-neutral-500">
+            <p className="relative mt-4 text-xs text-white/40">
               無料で使えます（※一部機能は順次拡充予定）
             </p>
           </div>

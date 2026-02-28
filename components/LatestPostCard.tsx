@@ -17,7 +17,7 @@ export default function LatestPostCard({ post }: Props) {
   const regionId = useId();
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-5">
+    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
       <div className="flex items-start justify-between gap-3">
         <h2 className="text-lg font-semibold">最新ポスト</h2>
         <button
@@ -25,31 +25,31 @@ export default function LatestPostCard({ post }: Props) {
           aria-expanded={isOpen}
           aria-controls={regionId}
           onClick={() => setIsOpen((v) => !v)}
-          className="shrink-0 rounded-lg border border-neutral-200 bg-white px-3 py-1 text-sm font-medium"
+          className="shrink-0 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-sm font-medium"
         >
           {isOpen ? "閉じる" : "開く"}
         </button>
       </div>
 
-      <p className="mt-3 text-sm text-neutral-600">
+      <p className="mt-3 text-sm text-muted">
         表示が重いので、必要な時だけ開けるようにしています。
       </p>
 
       {isOpen ? (
         <div
           id={regionId}
-          className="mt-4 rounded-xl border border-neutral-200 bg-white p-4"
+          className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.04] p-4"
         >
           {post ? (
             <>
               <p className="text-sm font-semibold">{post.title}</p>
-              <p className="mt-1 text-xs text-neutral-500">{post.date}</p>
-              <p className="mt-3 whitespace-pre-line text-sm text-neutral-700">
+              <p className="mt-1 text-xs text-white/40">{post.date}</p>
+              <p className="mt-3 whitespace-pre-line text-sm text-muted">
                 {post.body}
               </p>
             </>
           ) : (
-            <p className="text-sm text-neutral-700">まだポストがありません。</p>
+            <p className="text-sm text-muted">まだポストがありません。</p>
           )}
         </div>
       ) : null}

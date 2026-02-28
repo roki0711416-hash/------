@@ -43,7 +43,7 @@ export default function PreviewStrip() {
           <h2 className="text-center text-3xl font-black tracking-tight text-white sm:text-4xl">
             画面プレビュー
           </h2>
-          <p className="mt-4 text-center text-base text-neutral-400">
+          <p className="mt-4 text-center text-base text-white/50">
             シンプルな操作で、すぐに使いこなせます。
           </p>
         </Reveal>
@@ -71,7 +71,7 @@ export default function PreviewStrip() {
                   {/* Label */}
                   <div className="p-4">
                     <p className="text-sm font-bold text-white">{s.title}</p>
-                    <p className="mt-1 text-xs text-neutral-500">{s.desc}</p>
+                    <p className="mt-1 text-xs text-white/40">{s.desc}</p>
                   </div>
                 </div>
               </div>

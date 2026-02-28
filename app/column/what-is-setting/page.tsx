@@ -9,7 +9,7 @@ export const metadata = {
 export default function WhatIsSettingPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 space-y-4">
-      <nav aria-label="パンくず" className="text-xs text-neutral-500">
+      <nav aria-label="パンくず" className="text-xs text-white/40">
         <Link href="/" className="underline underline-offset-2">トップ</Link>
         <span className="mx-1">/</span>
         <Link href="/column" className="underline underline-offset-2">コラム一覧</Link>
@@ -17,13 +17,13 @@ export default function WhatIsSettingPage() {
         <span>パチスロの「設定」とは？</span>
       </nav>
 
-      <article className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <article className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6">
         <h1 className="text-lg font-semibold">パチスロの「設定」とは？ 仕組みと基本を整理する</h1>
-        <p className="mt-1 text-xs text-neutral-500">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
+        <p className="mt-1 text-xs text-white/40">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
 
-        <div className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
+        <div className="mt-5 space-y-5 text-sm leading-7 text-muted">
           <section>
-            <h2 className="font-semibold text-neutral-900">設定とは何か</h2>
+            <h2 className="font-semibold text-white">設定とは何か</h2>
             <p className="mt-2">
               パチスロ機には「設定」と呼ばれる段階（多くの機種で1〜6）が内部的に存在します。
               設定ごとにボーナスや小役の当選確率が異なり、一般的に数字が大きいほど出玉性能が優遇される傾向にあります。
@@ -32,7 +32,7 @@ export default function WhatIsSettingPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">出玉率（機械割）との関係</h2>
+            <h2 className="font-semibold text-white">出玉率（機械割）との関係</h2>
             <p className="mt-2">
               設定ごとの性能差を数値で示す指標のひとつが「出玉率（機械割）」です。
               たとえば出玉率が100%を超える設定では、長期的に見てメダルが増える方向に傾きやすいとされています。
@@ -42,7 +42,7 @@ export default function WhatIsSettingPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">なぜ設定を推測するのか</h2>
+            <h2 className="font-semibold text-white">なぜ設定を推測するのか</h2>
             <p className="mt-2">
               パチスロを遊技する上で、現在打っている台の設定を知ることはできません。
               しかし、ボーナス確率や小役カウント、演出の出現傾向などを記録・整理することで、
@@ -57,7 +57,7 @@ export default function WhatIsSettingPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">設定判別で陥りやすい誤解</h2>
+            <h2 className="font-semibold text-white">設定判別で陥りやすい誤解</h2>
             <ul className="mt-2 list-disc space-y-2 pl-5">
               <li>
                 <span className="font-semibold">「高設定＝勝てる」という思い込み</span>
@@ -75,7 +75,7 @@ export default function WhatIsSettingPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">まとめ</h2>
+            <h2 className="font-semibold text-white">まとめ</h2>
             <p className="mt-2">
               パチスロの設定は、遊技体験に影響を与える重要な要素ですが、
               それを知ること自体が勝利を保証するわけではありません。
@@ -96,13 +96,13 @@ export default function WhatIsSettingPage() {
         <div className="mt-6 flex gap-3">
           <Link
             href="/column"
-            className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-900"
+            className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-center text-sm font-semibold text-white"
           >
             ← コラム一覧
           </Link>
           <Link
             href="/judge"
-            className="rounded-xl bg-neutral-900 px-4 py-3 text-center text-sm font-semibold text-white"
+            className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-3 text-center text-sm font-semibold text-white"
           >
             設定判別ツールへ →
           </Link>

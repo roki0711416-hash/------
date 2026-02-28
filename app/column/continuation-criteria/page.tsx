@@ -9,7 +9,7 @@ export const metadata = {
 export default function ContinuationCriteriaPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 space-y-4">
-      <nav aria-label="パンくず" className="text-xs text-neutral-500">
+      <nav aria-label="パンくず" className="text-xs text-white/40">
         <Link href="/" className="underline underline-offset-2">トップ</Link>
         <span className="mx-1">/</span>
         <Link href="/column" className="underline underline-offset-2">コラム一覧</Link>
@@ -17,13 +17,13 @@ export default function ContinuationCriteriaPage() {
         <span>続行 or やめどき？</span>
       </nav>
 
-      <article className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <article className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6">
         <h1 className="text-lg font-semibold">続行 or やめどき？ 判断基準の考え方</h1>
-        <p className="mt-1 text-xs text-neutral-500">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
+        <p className="mt-1 text-xs text-white/40">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
 
-        <div className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
+        <div className="mt-5 space-y-5 text-sm leading-7 text-muted">
           <section>
-            <h2 className="font-semibold text-neutral-900">「続行するか、やめるか」は最大の悩み</h2>
+            <h2 className="font-semibold text-white">「続行するか、やめるか」は最大の悩み</h2>
             <p className="mt-2">
               パチスロの実戦中、最も判断に迷うのが「このまま打ち続けるか、やめるか」という場面です。
               投資がかさんでいるとき、逆に好調なとき、どちらの場面でも判断は揺れがちです。
@@ -32,7 +32,7 @@ export default function ContinuationCriteriaPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">サンプル数という考え方</h2>
+            <h2 className="font-semibold text-white">サンプル数という考え方</h2>
             <p className="mt-2">
               ボーナス確率や小役確率には「設定差」がありますが、
               それが意味を持つのは、十分な回転数（サンプル数）が確保された場合に限られます。
@@ -46,7 +46,7 @@ export default function ContinuationCriteriaPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">確率の収束とは</h2>
+            <h2 className="font-semibold text-white">確率の収束とは</h2>
             <p className="mt-2">
               「確率は収束する」という言葉を聞いたことがあるかもしれません。
               これは、試行回数が増えるほど、実際の出現率が理論値に近づいていくという統計的な性質です。
@@ -59,7 +59,7 @@ export default function ContinuationCriteriaPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">判断基準を「事前に決めておく」重要性</h2>
+            <h2 className="font-semibold text-white">判断基準を「事前に決めておく」重要性</h2>
             <p className="mt-2">
               続行・撤退の判断で最も危険なのは、打ちながらその場の感情で決めてしまうことです。
               投資が増えると「取り返したい」という心理が働き、冷静な判断ができなくなります。
@@ -72,7 +72,7 @@ export default function ContinuationCriteriaPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">複数要素を組み合わせて判断する</h2>
+            <h2 className="font-semibold text-white">複数要素を組み合わせて判断する</h2>
             <p className="mt-2">
               ひとつの要素（例：BIG確率だけ）で続行・撤退を決めるのは危険です。
               BIG確率が良くてもREG確率が悪い、小役が弱い、演出が出ないなど、
@@ -85,7 +85,7 @@ export default function ContinuationCriteriaPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">まとめ</h2>
+            <h2 className="font-semibold text-white">まとめ</h2>
             <p className="mt-2">
               「続行 or やめどき」は正解がひとつに定まらない問題ですが、
               判断のプロセスを整理しておくことで、後悔の少ない選択がしやすくなります。
@@ -106,13 +106,13 @@ export default function ContinuationCriteriaPage() {
         <div className="mt-6 flex gap-3">
           <Link
             href="/column"
-            className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-900"
+            className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-center text-sm font-semibold text-white"
           >
             ← コラム一覧
           </Link>
           <Link
             href="/judge"
-            className="rounded-xl bg-neutral-900 px-4 py-3 text-center text-sm font-semibold text-white"
+            className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-3 text-center text-sm font-semibold text-white"
           >
             設定判別ツールへ →
           </Link>

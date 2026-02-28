@@ -14,30 +14,30 @@ export default function LpFooter() {
         >
           <Link
             href="/privacy"
-            className="text-neutral-500 underline underline-offset-2 transition hover:text-neutral-300"
+            className="text-white/40 underline underline-offset-2 transition hover:text-white/60"
           >
             プライバシーポリシー
           </Link>
           <Link
             href="/contact"
-            className="text-neutral-500 underline underline-offset-2 transition hover:text-neutral-300"
+            className="text-white/40 underline underline-offset-2 transition hover:text-white/60"
           >
             お問い合わせ / サポート
           </Link>
           <Link
             href="/terms"
-            className="text-neutral-500 underline underline-offset-2 transition hover:text-neutral-300"
+            className="text-white/40 underline underline-offset-2 transition hover:text-white/60"
           >
             利用規約
           </Link>
         </nav>
 
-        <p className="mt-6 text-center text-[10px] leading-relaxed text-neutral-600">
+        <p className="mt-6 text-center text-[10px] leading-relaxed text-white/30">
           ※ 本ページ・本サービスは公開情報等を基にした独自集計の参考情報であり、
           設定判別やホール分析の結果を保証するものではありません。
           遊技に関する最終的な判断はご自身の責任で行ってください。
         </p>
-        <p className="mt-3 text-center text-xs text-neutral-600">
+        <p className="mt-3 text-center text-xs text-white/30">
           © {new Date().getFullYear()} スロカスくん
         </p>
       </div>

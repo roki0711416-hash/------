@@ -42,26 +42,26 @@ export default function LoginForm() {
   return (
     <form onSubmit={onSubmit} className="mt-4 space-y-3">
       <label className="block">
-        <span className="text-xs font-semibold text-neutral-600">メールアドレス</span>
+        <span className="text-xs font-semibold text-muted">メールアドレス</span>
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
           autoComplete="email"
-          className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+          className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
           placeholder="you@example.com"
           required
         />
       </label>
 
       <label className="block">
-        <span className="text-xs font-semibold text-neutral-600">パスワード</span>
+        <span className="text-xs font-semibold text-muted">パスワード</span>
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
           autoComplete="current-password"
-          className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+          className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
           placeholder="********"
           required
         />
@@ -72,7 +72,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+        className="w-full rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
       >
         {loading ? "ログイン中..." : "ログイン"}
       </button>

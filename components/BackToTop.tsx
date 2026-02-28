@@ -27,7 +27,7 @@ export default function BackToTop() {
     <button
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-[90px] right-4 z-50 rounded-full border border-zinc-200 bg-white px-4 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-50 active:scale-[0.99]"
+      className="fixed bottom-[90px] right-4 z-50 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-white/[0.07] active:scale-[0.99]"
       aria-label="TOPへ戻る"
     >
       ↑ TOPへ

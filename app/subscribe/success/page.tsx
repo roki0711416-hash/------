@@ -37,15 +37,15 @@ export default async function SubscribeSuccessPage({
   if (!user) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <h1 className="text-lg font-semibold">決済</h1>
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">ログインが必要です</p>
-            <p className="mt-1 text-sm text-neutral-700">ログイン後にもう一度お試しください。</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">ログインが必要です</p>
+            <p className="mt-1 text-sm text-muted">ログイン後にもう一度お試しください。</p>
             <div className="mt-3">
               <Link
                 href="/login"
-                className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 ログイン
               </Link>
@@ -60,13 +60,13 @@ export default async function SubscribeSuccessPage({
   if (!stripe) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <h1 className="text-lg font-semibold">決済</h1>
           <p className="mt-3 text-sm font-medium text-red-600">STRIPE_SECRET_KEY が未設定です</p>
           <div className="mt-4">
             <Link
               href="/account"
-              className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+              className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
             >
               アカウントへ
             </Link>
@@ -79,23 +79,23 @@ export default async function SubscribeSuccessPage({
   if (redirectStatus !== "succeeded" || !setupIntentId) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <h1 className="text-lg font-semibold">決済</h1>
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">決済を完了できませんでした</p>
-            <p className="mt-1 text-sm text-neutral-700">もう一度お試しください。</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">決済を完了できませんでした</p>
+            <p className="mt-1 text-sm text-muted">もう一度お試しください。</p>
             <div className="mt-3 flex gap-2">
               <a
                 href={STRIPE_PAYMENT_LINK_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="flex-1 rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 もう一度
               </a>
               <Link
                 href="/account"
-                className="flex-1 rounded-xl border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-semibold text-neutral-900"
+                className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.04] px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 アカウント
               </Link>
@@ -110,7 +110,7 @@ export default async function SubscribeSuccessPage({
   if (!priceId) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <h1 className="text-lg font-semibold">決済</h1>
           <p className="mt-3 text-sm font-medium text-red-600">
             {plan === "yearly"
@@ -120,7 +120,7 @@ export default async function SubscribeSuccessPage({
           <div className="mt-4">
             <Link
               href="/subscribe"
-              className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+              className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
             >
               サブスク登録へ
             </Link>
@@ -134,15 +134,15 @@ export default async function SubscribeSuccessPage({
   if (isAdminRole(user.role)) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <h1 className="text-lg font-semibold">決済</h1>
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">管理者アカウントは課金不要です</p>
-            <p className="mt-1 text-sm text-neutral-700">アカウント画面へ戻ってください。</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">管理者アカウントは課金不要です</p>
+            <p className="mt-1 text-sm text-muted">アカウント画面へ戻ってください。</p>
             <div className="mt-3">
               <Link
                 href="/account"
-                className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 アカウントへ
               </Link>
@@ -172,13 +172,13 @@ export default async function SubscribeSuccessPage({
       if (user.stripeCustomerId && user.stripeCustomerId !== customerId) {
         return (
           <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-            <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+            <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
               <h1 className="text-lg font-semibold">決済</h1>
               <p className="mt-3 text-sm font-medium text-red-600">不正な決済結果です</p>
               <div className="mt-4">
                 <Link
                   href="/account"
-                  className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                  className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
                 >
                   アカウントへ
                 </Link>
@@ -203,29 +203,29 @@ export default async function SubscribeSuccessPage({
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h1 className="text-lg font-semibold">決済</h1>
 
-        <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-          <p className="text-sm font-semibold text-neutral-800">購入処理を受け付けました</p>
-          <p className="mt-1 text-sm text-neutral-700">
+        <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+          <p className="text-sm font-semibold text-white">購入処理を受け付けました</p>
+          <p className="mt-1 text-sm text-muted">
             反映はWebhook経由なので、数秒〜数十秒かかることがあります。
           </p>
           {createdSubscription ? (
-            <p className="mt-2 text-xs text-neutral-600">受付ID: {createdSubscription.id}</p>
+            <p className="mt-2 text-xs text-muted">受付ID: {createdSubscription.id}</p>
           ) : null}
         </div>
 
         <div className="mt-4 flex gap-2">
           <Link
             href="/account"
-            className="flex-1 rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+            className="flex-1 rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
           >
             アカウントへ
           </Link>
           <Link
             href="/subscriber"
-            className="flex-1 rounded-xl border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-semibold text-neutral-900"
+            className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.04] px-5 py-3 text-center text-sm font-semibold text-white"
           >
             専用ページ
           </Link>

@@ -167,12 +167,12 @@ export default function SlumpUploader({
   }
 
   return (
-    <section className="rounded-2xl border border-neutral-200 bg-white p-4">
+    <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-4">
       <h3 className="text-sm font-semibold">スランプ解析</h3>
 
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <label className="block">
-          <span className="text-xs font-semibold text-neutral-600">画像（ダミー）</span>
+          <span className="text-xs font-semibold text-muted">画像（ダミー）</span>
           <input
             type="file"
             accept="image/*"
@@ -182,13 +182,13 @@ export default function SlumpUploader({
               setImageName(f?.name ?? "");
             }}
           />
-          {imageName ? <p className="mt-1 text-xs text-neutral-500">{imageName}</p> : null}
+          {imageName ? <p className="mt-1 text-xs text-white/40">{imageName}</p> : null}
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold text-neutral-600">machineType</span>
+          <span className="text-xs font-semibold text-muted">machineType</span>
           <select
-            className="mt-1 w-full rounded-md border border-neutral-200 bg-white p-2 text-sm"
+            className="mt-1 w-full rounded-md border border-white/[0.08] bg-white/[0.04] p-2 text-sm"
             value={machineType}
             onChange={(e) => setMachineType(e.target.value as MachineType)}
           >
@@ -199,10 +199,10 @@ export default function SlumpUploader({
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold text-neutral-600">縦軸 上限（差枚）</span>
+          <span className="text-xs font-semibold text-muted">縦軸 上限（差枚）</span>
           <input
             inputMode="numeric"
-            className="mt-1 w-full rounded-md border border-neutral-200 bg-white p-2 text-sm"
+            className="mt-1 w-full rounded-md border border-white/[0.08] bg-white/[0.04] p-2 text-sm"
             value={yTop}
             onChange={(e) => setYTop(e.target.value)}
             placeholder="例: 2000"
@@ -210,10 +210,10 @@ export default function SlumpUploader({
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold text-neutral-600">縦軸 下限（差枚）</span>
+          <span className="text-xs font-semibold text-muted">縦軸 下限（差枚）</span>
           <input
             inputMode="numeric"
-            className="mt-1 w-full rounded-md border border-neutral-200 bg-white p-2 text-sm"
+            className="mt-1 w-full rounded-md border border-white/[0.08] bg-white/[0.04] p-2 text-sm"
             value={yBottom}
             onChange={(e) => setYBottom(e.target.value)}
             placeholder="例: -2000"
@@ -224,13 +224,13 @@ export default function SlumpUploader({
       <div className="mt-3 flex items-center gap-2">
         <button
           type="button"
-          className="rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-semibold"
+          className="rounded-md border border-white/[0.12] bg-white/[0.04] px-3 py-2 text-sm font-semibold"
           onClick={runAnalyze}
           disabled={!canAnalyze || status === "running"}
         >
           {status === "running" ? "解析中…" : "解析"}
         </button>
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-white/40">
           slumpLine: {slumpLine.length}点 / spins: {isFiniteNumber(spins) ? String(spins) : "-"}
         </p>
       </div>
@@ -238,12 +238,12 @@ export default function SlumpUploader({
       {error ? <p className="mt-2 text-sm text-red-600">{error}</p> : null}
 
       {result ? (
-        <div className="mt-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3">
+        <div className="mt-3 rounded-xl border border-white/[0.08] bg-white/[0.03] p-3">
           <p className="text-sm font-semibold">{result.decision}</p>
-          <p className="mt-1 text-xs text-neutral-600">
+          <p className="mt-1 text-xs text-muted">
             信頼度: {Math.round(result.graphConfidence * 100)}%
           </p>
-          <div className="mt-2 text-xs text-neutral-700">
+          <div className="mt-2 text-xs text-muted">
             <p>{result.reasons[0]}</p>
             <p>{result.reasons[1]}</p>
             <p>{result.reasons[2]}</p>

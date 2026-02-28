@@ -5,7 +5,7 @@ import Script from "next/script";
 import "./globals.css";
 import HeaderMachineSearchBox from "../components/HeaderMachineSearchBox";
 import GmoSiteSeal from "../components/GmoSiteSeal";
-import { getCurrentUserFromCookies } from "../lib/auth";
+import GradientBg from "../components/ui/GradientBg";
 
 export const metadata: Metadata = {
   title: "スロカスくん | スロット設定判別ツール",
@@ -18,11 +18,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const user = await getCurrentUserFromCookies();
-  const isLoggedIn = !!user;
 
   return (
     <html lang="ja">
@@ -34,18 +32,11 @@ export default async function RootLayout({
           strategy="beforeInteractive"
         />
       </head>
-      <body className="min-h-screen bg-neutral-100 text-neutral-900">
-        <Script id="theme-init" strategy="beforeInteractive">
-          {`(function(){
-  try {
-    var choice = localStorage.getItem('slokasu_theme') || 'system';
-    var mql = window.matchMedia('(prefers-color-scheme: dark)');
-    var applied = (choice === 'system') ? (mql.matches ? 'dark' : 'light') : choice;
-    document.documentElement.dataset.theme = applied;
-  } catch (e) {}
-})();`}
-        </Script>
-        <header className="w-full border-b border-neutral-200 bg-white bg-orange-500">
+      <body className="min-h-screen text-txt">
+        {/* 全ページ共通：アンビエントグローオーブ背景 */}
+        <GradientBg />
+
+        <header className="relative z-20 w-full border-b border-white/[0.08] bg-bg0/80 backdrop-blur-xl">
           {/* SP/タブレット（〜1023px）：2段ヘッダー */}
           <div className="lg:hidden">
             <div className="mx-auto w-full max-w-xl px-4 py-3">
@@ -62,26 +53,44 @@ export default async function RootLayout({
                     height={32}
                     priority
                   />
-                  <span className="text-base font-semibold text-neutral-900">スロカスくん</span>
+                  <span className="text-base font-semibold text-white">スロカスくん</span>
                 </Link>
-
-                <div className="flex shrink-0 items-center gap-3">
-                  {isLoggedIn ? (
-                    <span className="text-sm font-semibold text-neutral-700">ログイン中</span>
-                  ) : (
-                    <Link
-                      href="/login"
-                      className="text-sm font-semibold text-neutral-700 underline underline-offset-2"
-                    >
-                      ログイン
-                    </Link>
-                  )}
-                </div>
               </div>
 
               <div className="mt-3">
                 <HeaderMachineSearchBox />
               </div>
+
+              {/* クイックナビ */}
+              <nav aria-label="クイックナビ" className="mt-3 -mx-4 px-4 overflow-x-auto scrollbar-none">
+                <ul className="flex items-center gap-2 text-xs font-medium whitespace-nowrap pb-1">
+                  <li>
+                    <Link href="/judge" className="inline-block rounded-full bg-gradient-to-r from-cta-from to-cta-to px-3 py-1.5 text-white">
+                      設定判別
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/machines" className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-white/80">
+                      機種一覧
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/community" className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-white/80">
+                      コミュニティ
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/record" className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-white/80">
+                      収支表
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/guide" className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-white/80">
+                      使い方
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
 
@@ -96,7 +105,7 @@ export default async function RootLayout({
                   height={36}
                   priority
                 />
-                <span className="text-base font-semibold text-neutral-900">スロカスくん</span>
+                <span className="text-base font-semibold text-white">スロカスくん</span>
               </Link>
 
               <div className="flex-1">
@@ -106,32 +115,34 @@ export default async function RootLayout({
               <nav aria-label="ヘッダー" className="shrink-0">
                 <ul className="flex items-center justify-end gap-5 text-sm font-medium">
                   <li>
-                    <Link
-                      href="/about"
-                      className="text-neutral-700 underline underline-offset-2"
-                    >
-                      運営情報
+                    <Link href="/lp" className="text-white/70 transition hover:text-white">
+                      はじめに
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      href="/terms"
-                      className="text-neutral-700 underline underline-offset-2"
-                    >
-                      利用規約
+                    <Link href="/judge" className="text-white/70 transition hover:text-white">
+                      設定判別
                     </Link>
                   </li>
                   <li>
-                    {isLoggedIn ? (
-                      <span className="text-neutral-700">ログイン中</span>
-                    ) : (
-                      <Link
-                        href="/login"
-                        className="text-neutral-700 underline underline-offset-2"
-                      >
-                        ログイン
-                      </Link>
-                    )}
+                    <Link href="/machines" className="text-white/70 transition hover:text-white">
+                      機種一覧
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/community" className="text-white/70 transition hover:text-white">
+                      コミュニティ
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/record" className="text-white/70 transition hover:text-white">
+                      収支表
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/guide" className="text-white/70 transition hover:text-white">
+                      使い方
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -143,166 +154,107 @@ export default async function RootLayout({
             {/* 左：広告（狭いPCでは非表示） */}
             <aside className="hidden shrink-0 2xl:block w-[300px]">
               <div className="sticky top-4">
-                <div className="min-h-[600px] rounded-2xl border border-neutral-200 bg-white p-3">
-                  <p className="text-xs font-semibold text-neutral-500">広告</p>
-                  <div className="mt-2 min-h-[560px] rounded-xl bg-neutral-50" />
+                <div className="min-h-[600px] rounded-2xl border border-white/[0.08] bg-white/[0.03] p-3">
+                  <p className="text-xs font-semibold text-muted">広告</p>
+                  <div className="mt-2 min-h-[560px] rounded-xl bg-white/[0.02]" />
                 </div>
               </div>
             </aside>
 
             {/* 中：メイン */}
             <div className="min-w-0 flex-1">
-              <div className="w-full xl:max-w-[900px] 2xl:max-w-[960px]">
+              <div className="w-full max-w-[960px]">
                 {children}
               </div>
             </div>
-
-            {/* 右：情報（狭いPCでは非表示） */}
-            <aside className="hidden shrink-0 xl:block w-[280px]">
-              <div className="sticky top-4 space-y-4">
-                <section className="rounded-2xl border border-neutral-200 bg-white p-4">
-                  <h2 className="text-sm font-semibold text-neutral-900">ショートカット</h2>
-                  <ul className="mt-3 space-y-2 text-sm">
-                    <li>
-                      <Link href="/judge" className="text-neutral-700 underline underline-offset-2">
-                        設定判別ツールへ
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/machines" className="text-neutral-700 underline underline-offset-2">
-                        機種一覧へ
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/guide" className="text-neutral-700 underline underline-offset-2">
-                        使い方
-                      </Link>
-                    </li>
-                  </ul>
-                </section>
-
-                <section className="rounded-2xl border border-neutral-200 bg-white p-4">
-                  <h2 className="text-sm font-semibold text-neutral-900">情報</h2>
-                  <ul className="mt-3 space-y-2 text-sm">
-                    <li>
-                      <Link href="/" className="text-neutral-700 underline underline-offset-2">
-                        新着情報を見る
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/account" className="text-neutral-700 underline underline-offset-2">
-                        アカウント
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/community" className="text-neutral-700 underline underline-offset-2">
-                        コミュニティ
-                      </Link>
-                    </li>
-                  </ul>
-                </section>
-
-                <section className="rounded-2xl border border-neutral-200 bg-white p-4">
-                  <h2 className="text-sm font-semibold text-neutral-900">収支表</h2>
-                  <p className="mt-2 text-xs text-neutral-700">
-                    日々の実戦収支を記録・管理できます
-                  </p>
-                  <Link
-                    href="/record"
-                    className="mt-3 inline-flex w-full items-center justify-center rounded-xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white"
-                  >
-                    収支表を見る
-                  </Link>
-                </section>
-              </div>
-            </aside>
           </div>
         </div>
 
-        <footer className="mt-auto w-full border-t border-neutral-200 bg-white">
+        <footer className="mt-auto w-full border-t border-white/[0.08] bg-bg0/80 backdrop-blur-xl">
           <nav
             aria-label="フッター"
             className="mx-auto w-full max-w-xl px-4 py-6"
           >
+            {/* サイトマップ系 */}
             <ul className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm whitespace-nowrap">
               <li>
-                <Link
-                  href="/privacy"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
+                <Link href="/judge" className="text-white/60 underline underline-offset-2 transition hover:text-white">
+                  設定判別ツール
+                </Link>
+              </li>
+              <li>
+                <Link href="/machines" className="text-white/60 underline underline-offset-2 transition hover:text-white">
+                  機種一覧
+                </Link>
+              </li>
+              <li>
+                <Link href="/community" className="text-white/60 underline underline-offset-2 transition hover:text-white">
+                  コミュニティ
+                </Link>
+              </li>
+              <li>
+                <Link href="/record" className="text-white/60 underline underline-offset-2 transition hover:text-white">
+                  収支表
+                </Link>
+              </li>
+              <li>
+                <Link href="/guide" className="text-white/60 underline underline-offset-2 transition hover:text-white">
+                  使い方
+                </Link>
+              </li>
+            </ul>
+
+            {/* 法的・ポリシー系 */}
+            <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm whitespace-nowrap">
+              <li>
+                <Link href="/privacy" className="text-white/60 underline underline-offset-2 transition hover:text-white">
                   プライバシーポリシー
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/contact"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
+                <Link href="/contact" className="text-white/60 underline underline-offset-2 transition hover:text-white">
                   お問い合わせ
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/about"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
+                <Link href="/about" className="text-white/60 underline underline-offset-2 transition hover:text-white">
                   運営情報
                 </Link>
               </li>
             </ul>
 
-            <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+            <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm">
               <li>
-                <Link
-                  href="/disclaimer"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
+                <Link href="/disclaimer" className="text-white/60 underline underline-offset-2 transition hover:text-white">
                   免責事項
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/terms"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
+                <Link href="/terms" className="text-white/60 underline underline-offset-2 transition hover:text-white">
                   利用規約
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/tokusho"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
+                <Link href="/tokusho" className="text-white/60 underline underline-offset-2 transition hover:text-white">
                   特定商取引法に基づく表記
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/faq"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
+                <Link href="/faq" className="text-white/60 underline underline-offset-2 transition hover:text-white">
                   よくある質問（FAQ）
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/column"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
+                <Link href="/column" className="text-white/60 underline underline-offset-2 transition hover:text-white">
                   コラム
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/cancel"
-                  className="text-neutral-700 underline underline-offset-2"
-                >
-                  解約方法
-                </Link>
-              </li>
             </ul>
-            <p className="mt-4 text-xs text-neutral-500">
+            <p className="mt-4 text-xs text-white/30">
               © {new Date().getFullYear()} スロット設定判別ツール
+            </p>
+            <p className="mt-2 text-[10px] leading-relaxed text-white/20">
+              ※ 本サイトは公開情報等を基にした独自集計の参考情報であり、結果を保証するものではありません。
             </p>
 
             <GmoSiteSeal />

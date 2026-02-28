@@ -28,7 +28,7 @@ export default function Hero() {
               </span>
             </h1>
 
-            <p className="mt-6 text-base leading-relaxed text-neutral-400 sm:text-lg">
+            <p className="mt-6 text-base leading-relaxed text-white/50 sm:text-lg">
               実戦データを入力すると傾向を可視化。
               <br className="hidden sm:inline" />
               迷いが減って立ち回りがラクになる。
@@ -53,7 +53,7 @@ export default function Hero() {
               </Link>
             </div>
 
-            <p className="mt-4 text-xs text-neutral-500">
+            <p className="mt-4 text-xs text-white/40">
               無料で使えます（※一部機能は順次拡充予定）
             </p>
           </div>
@@ -65,12 +65,12 @@ export default function Hero() {
               <div className="pointer-events-none absolute -inset-10 rounded-[60px] bg-gradient-to-b from-orange-500/20 via-pink-500/15 to-transparent blur-3xl" />
 
               {/* Phone frame */}
-              <div className="relative rounded-[40px] border-[5px] border-neutral-700/80 bg-black p-3 shadow-2xl ring-1 ring-white/10">
+              <div className="relative rounded-[40px] border-[5px] border-white/20/80 bg-black p-3 shadow-2xl ring-1 ring-white/10">
                 {/* Dynamic Island */}
                 <div className="absolute left-1/2 top-3 h-[22px] w-[90px] -translate-x-1/2 rounded-full bg-black" />
 
                 {/* Screen */}
-                <div className="mt-5 space-y-2.5 rounded-[30px] bg-gradient-to-b from-neutral-900 to-neutral-950 p-4">
+                <div className="mt-5 space-y-2.5 rounded-[30px] bg-gradient-to-b from-bg1 to-bg0 p-4">
                   {/* App header */}
                   <div className="flex items-center gap-2.5 rounded-xl bg-white/5 p-2.5">
                     <Image
@@ -82,14 +82,14 @@ export default function Hero() {
                     />
                     <div>
                       <p className="text-[10px] font-bold text-white">スロカスくん</p>
-                      <p className="text-[8px] text-neutral-500">設定判別ツール</p>
+                      <p className="text-[8px] text-white/40">設定判別ツール</p>
                     </div>
                   </div>
 
                   {/* 設定判別 mock card */}
                   <div className="rounded-xl border border-orange-500/20 bg-gradient-to-br from-orange-500/10 to-pink-500/5 p-3">
                     <p className="text-[10px] font-bold text-orange-400">🎰 設定判別</p>
-                    <p className="mt-0.5 text-[8px] text-neutral-500">設定ごとの傾向を可視化</p>
+                    <p className="mt-0.5 text-[8px] text-white/40">設定ごとの傾向を可視化</p>
                     <div className="mt-2 flex gap-0.5">
                       {[1, 2, 3, 4, 5, 6].map((n) => (
                         <div
@@ -105,13 +105,13 @@ export default function Hero() {
                   {/* 店舗分析 mock card */}
                   <div className="rounded-xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-teal-500/5 p-3">
                     <p className="text-[10px] font-bold text-emerald-400">🏢 店舗分析</p>
-                    <p className="mt-0.5 text-[8px] text-neutral-500">地域の傾向をチェック</p>
+                    <p className="mt-0.5 text-[8px] text-white/40">地域の傾向をチェック</p>
                   </div>
 
                   {/* 収支管理 mock card */}
                   <div className="rounded-xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-purple-500/5 p-3">
                     <p className="text-[10px] font-bold text-violet-400">📊 収支管理</p>
-                    <p className="mt-0.5 text-[8px] text-neutral-500">日々の収支を記録</p>
+                    <p className="mt-0.5 text-[8px] text-white/40">日々の収支を記録</p>
                   </div>
                 </div>
               </div>

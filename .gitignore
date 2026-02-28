@@ -60,3 +60,4 @@ capacitor.config.ts
 legacy-app/
 .worktrees/
 worktrees/
+.derivedData-ios-verify/

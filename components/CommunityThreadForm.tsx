@@ -120,22 +120,22 @@ export default function CommunityThreadForm({
   }
 
   return (
-    <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
       <p className="text-sm font-semibold">スレを立てる（{boardLabel(boardId)}）</p>
-      {username ? <p className="mt-1 text-xs text-neutral-600">投稿者: {username}</p> : null}
-      {help ? <p className="mt-1 text-xs text-neutral-500">{help}</p> : null}
+      {username ? <p className="mt-1 text-xs text-muted">投稿者: {username}</p> : null}
+      {help ? <p className="mt-1 text-xs text-white/40">{help}</p> : null}
 
       <div className="mt-3 grid gap-3">
         {needPref ? (
           <label className="block">
-            <span className="text-xs font-semibold text-neutral-600">都道府県</span>
+            <span className="text-xs font-semibold text-muted">都道府県</span>
             {fixedPrefecture ? (
-              <p className="mt-1 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800">
+              <p className="mt-1 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white">
                 {fixedPrefecture}
               </p>
             ) : (
               <select
-                className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                 value={prefecture}
                 onChange={(e) => setPrefecture(e.target.value)}
               >
@@ -152,14 +152,14 @@ export default function CommunityThreadForm({
 
         {needHall ? (
           <label className="block">
-            <span className="text-xs font-semibold text-neutral-600">ホール名</span>
+            <span className="text-xs font-semibold text-muted">ホール名</span>
             {fixedHall ? (
-              <p className="mt-1 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800">
+              <p className="mt-1 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white">
                 {fixedHall}
               </p>
             ) : (
               <input
-                className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                 value={hall}
                 onChange={(e) => setHall(e.target.value)}
                 placeholder="例: ○○ホール新宿店"
@@ -171,14 +171,14 @@ export default function CommunityThreadForm({
 
         {needMachine ? (
           <label className="block">
-            <span className="text-xs font-semibold text-neutral-600">機種名</span>
+            <span className="text-xs font-semibold text-muted">機種名</span>
             {fixedMachine ? (
-              <p className="mt-1 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800">
+              <p className="mt-1 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white">
                 {fixedMachine}
               </p>
             ) : (
               <input
-                className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                 value={machine}
                 onChange={(e) => setMachine(e.target.value)}
                 placeholder="例: L北斗の拳"
@@ -189,9 +189,9 @@ export default function CommunityThreadForm({
         ) : null}
 
         <label className="block">
-          <span className="text-xs font-semibold text-neutral-600">タイトル</span>
+          <span className="text-xs font-semibold text-muted">タイトル</span>
           <input
-            className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="例: 東京の稼働状況どう？"
@@ -200,30 +200,30 @@ export default function CommunityThreadForm({
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold text-neutral-600">本文（1レス目）</span>
+          <span className="text-xs font-semibold text-muted">本文（1レス目）</span>
           <textarea
-            className="mt-1 min-h-24 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+            className="mt-1 min-h-24 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="例: 最近の状況、狙い目、注意点など"
             maxLength={1000}
           />
-          <p className="mt-1 text-xs text-neutral-500">1000文字まで</p>
+          <p className="mt-1 text-xs text-white/40">1000文字まで</p>
         </label>
 
         {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
-        {done ? <p className="text-sm font-medium text-neutral-700">スレを作成しました。</p> : null}
+        {done ? <p className="text-sm font-medium text-muted">スレを作成しました。</p> : null}
 
         <button
           type="button"
           onClick={submit}
           disabled={isSubmitting}
-          className="rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+          className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
         >
           スレを立てる
         </button>
 
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-white/40">
           ※有料会員限定。ユーザーネーム固定で投稿されます。
         </p>
       </div>

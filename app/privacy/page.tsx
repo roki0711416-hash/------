@@ -9,16 +9,16 @@ export const metadata = {
 export default function PrivacyPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 space-y-4">
-      <nav aria-label="パンくず" className="text-xs text-neutral-500">
+      <nav aria-label="パンくず" className="text-xs text-white/40">
         <Link href="/" className="underline underline-offset-2">トップ</Link>
         <span className="mx-1">/</span>
         <span>プライバシーポリシー</span>
       </nav>
 
-      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6">
         <h1 className="text-lg font-semibold">プライバシーポリシー</h1>
 
-        <div className="mt-4 space-y-4 text-sm text-neutral-700">
+        <div className="mt-4 space-y-4 text-sm text-muted">
           <p>
             本プライバシーポリシーは、スロカスくん（以下「当サイト」）が取得する情報、
             その利用目的、および管理方法について定めるものです。
@@ -147,7 +147,7 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          <p className="text-xs text-neutral-500">制定日: 2026-01-13 ／ 最終更新日: 2026-02-08</p>
+          <p className="text-xs text-white/40">制定日: 2026-01-13 ／ 最終更新日: 2026-02-08</p>
         </div>
       </section>
     </main>
