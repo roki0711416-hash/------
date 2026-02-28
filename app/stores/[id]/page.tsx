@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getMockStoreById } from "@/lib/stores/mockStores";
+import { getStoreById, getRecentSignals, type StoreDailySignalRow } from "@/lib/storeAnalytics";
 import { getPrefectureBySlug } from "@/lib/prefectures";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://slokasukun.com";
@@ -13,7 +13,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const store = getMockStoreById(id);
+  const store = await getStoreById(id);
   const title = store
     ? `${store.name}のホール分析｜スロカスくん`
     : "ホール分析｜スロカスくん";
@@ -26,22 +26,37 @@ export async function generateMetadata({
   };
 }
 
-/* ── スケルトンゲージ ── */
-function SkeletonGauge({ label }: { label: string }) {
+/* ── ゲージ ── */
+function Gauge({ label, value }: { label: string; value: number }) {
+  let barColor = "bg-white/20";
+  if (value >= 70) barColor = "bg-emerald-500";
+  else if (value >= 50) barColor = "bg-amber-500";
+  else if (value >= 30) barColor = "bg-white/30";
+
   return (
     <div className="flex items-center gap-3">
-      <span className="w-20 text-xs font-medium text-muted">
-        {label}
-      </span>
+      <span className="w-20 text-xs font-medium text-muted">{label}</span>
       <div className="relative h-4 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
-        <div className="absolute inset-y-0 left-0 w-0 rounded-full bg-white/[0.1]" />
+        <div
+          className={`absolute inset-y-0 left-0 rounded-full transition-all ${barColor}`}
+          style={{ width: `${value}%` }}
+        />
       </div>
-      <span className="w-8 text-right text-xs text-white/30">—</span>
+      <span className="w-8 text-right text-xs font-bold text-white">{value}</span>
     </div>
   );
 }
 
+/* ── 平均値計算 ── */
+function computeAvg(signals: StoreDailySignalRow[], key: keyof Pick<StoreDailySignalRow, "traffic_index" | "swing_index" | "reward_index" | "high_chance_index">) {
+  if (signals.length === 0) return 0;
+  const sum = signals.reduce((acc, s) => acc + Number(s[key]), 0);
+  return Math.round(sum / signals.length);
+}
+
 /* ── ページ ── */
+export const dynamic = "force-dynamic";
+
 export default async function StoreDetailPage({
   params,
 }: {
@@ -49,11 +64,30 @@ export default async function StoreDetailPage({
 }) {
   const { id } = await params;
 
-  // モックで検索（DB不要）
-  const store = getMockStoreById(id);
+  const store = await getStoreById(id);
   if (!store) notFound();
 
-  const pref = getPrefectureBySlug(store.prefSlug);
+  const signals7 = await getRecentSignals(id, 7);
+  const signals30 = await getRecentSignals(id, 30);
+
+  const pref = getPrefectureBySlug(store.prefecture);
+  const prefSlug = store.prefecture;
+
+  // 直近7日の平均
+  const avg7 = {
+    traffic: computeAvg(signals7, "traffic_index"),
+    swing: computeAvg(signals7, "swing_index"),
+    reward: computeAvg(signals7, "reward_index"),
+    highChance: computeAvg(signals7, "high_chance_index"),
+  };
+
+  // 直近30日の平均
+  const avg30 = {
+    traffic: computeAvg(signals30, "traffic_index"),
+    swing: computeAvg(signals30, "swing_index"),
+    reward: computeAvg(signals30, "reward_index"),
+    highChance: computeAvg(signals30, "high_chance_index"),
+  };
 
   return (
     <main className="w-full">
@@ -65,14 +99,14 @@ export default async function StoreDetailPage({
           </Link>{" "}
           &gt;{" "}
           <Link
-            href={`/prefectures/${store.prefSlug}`}
+            href={`/prefectures/${prefSlug}`}
             className="hover:underline hover:text-white transition"
           >
-            {pref?.name ?? store.prefSlug}
+            {pref?.name ?? prefSlug}
           </Link>{" "}
           &gt;{" "}
           <Link
-            href={`/prefectures/${store.prefSlug}/stores`}
+            href={`/prefectures/${prefSlug}/stores`}
             className="hover:underline hover:text-white transition"
           >
             店舗一覧
@@ -85,44 +119,90 @@ export default async function StoreDetailPage({
           {pref?.name} {store.city} {store.address}
         </p>
 
-        {/* 準備中バッジ */}
-        <div className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-300">
-          🔧 分析データを拡充中です。しばらくお待ちください。
-        </div>
-
-        {/* スケルトンゲージ */}
+        {/* ゲージ（直近7日平均） */}
         <section className="mt-6">
-          <h2 className="text-base font-bold text-white">ホール傾向分析</h2>
-          <div className="mt-3 space-y-3 rounded-xl border border-white/[0.08] bg-white/[0.04] p-4 backdrop-blur-sm">
-            <SkeletonGauge label="活性" />
-            <SkeletonGauge label="荒さ" />
-            <SkeletonGauge label="還元傾向" />
-            <SkeletonGauge label="上振れ期待" />
-          </div>
+          <h2 className="text-base font-bold text-white">ホール傾向分析（直近7日平均）</h2>
+          {signals7.length === 0 ? (
+            <div className="mt-3 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-300">
+              🔧 分析データがまだありません。シグナル生成バッチを実行してください。
+            </div>
+          ) : (
+            <div className="mt-3 space-y-3 rounded-xl border border-white/[0.08] bg-white/[0.04] p-4 backdrop-blur-sm">
+              <Gauge label="活性" value={avg7.traffic} />
+              <Gauge label="荒さ" value={avg7.swing} />
+              <Gauge label="還元傾向" value={avg7.reward} />
+              <Gauge label="上振れ期待" value={avg7.highChance} />
+            </div>
+          )}
         </section>
 
-        {/* 更新履歴（準備中） */}
+        {/* 30日平均 */}
+        {signals30.length > 0 && (
+          <section className="mt-6">
+            <h2 className="text-base font-bold text-white">30日平均</h2>
+            <div className="mt-3 grid grid-cols-4 gap-2">
+              {([
+                { label: "活性", value: avg30.traffic },
+                { label: "荒さ", value: avg30.swing },
+                { label: "還元", value: avg30.reward },
+                { label: "上振", value: avg30.highChance },
+              ] as const).map((item) => (
+                <div
+                  key={item.label}
+                  className="flex flex-col items-center rounded-xl border border-white/[0.08] bg-white/[0.04] py-3"
+                >
+                  <span className="text-[10px] text-muted">{item.label}</span>
+                  <span className="mt-1 text-lg font-bold text-white">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 日別スコア履歴 */}
         <section className="mt-8">
-          <h2 className="text-base font-bold text-white">更新履歴</h2>
-          <p className="mt-1 text-xs text-muted">準備中</p>
-          <div className="mt-3 space-y-2">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2"
-              >
-                <div className="h-3 w-16 rounded bg-white/[0.06]" />
-                <div className="h-3 w-24 rounded bg-white/[0.06]" />
-                <div className="h-3 w-12 rounded bg-white/[0.06]" />
-              </div>
-            ))}
-          </div>
+          <h2 className="text-base font-bold text-white">日別スコア履歴</h2>
+          {signals7.length === 0 ? (
+            <p className="mt-1 text-xs text-muted">データなし</p>
+          ) : (
+            <div className="mt-3 space-y-2">
+              {signals7.map((sig) => (
+                <div
+                  key={sig.id}
+                  className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2"
+                >
+                  <span className="w-20 text-xs font-medium text-muted">
+                    {sig.date.slice(0, 10)}
+                  </span>
+                  <div className="flex flex-1 flex-wrap gap-1">
+                    <span className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-white/60">
+                      活{sig.traffic_index}
+                    </span>
+                    <span className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-white/60">
+                      荒{sig.swing_index}
+                    </span>
+                    <span className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-white/60">
+                      還{sig.reward_index}
+                    </span>
+                    <span className="rounded bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-white/60">
+                      上{sig.high_chance_index}
+                    </span>
+                  </div>
+                  {sig.note && (
+                    <span className="text-[10px] text-muted truncate max-w-[120px]" title={sig.note}>
+                      {sig.note}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* CTA */}
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
-            href={`/prefectures/${store.prefSlug}`}
+            href={`/prefectures/${prefSlug}`}
             className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/10"
           >
             ← {pref?.name ?? "県ページ"}へ

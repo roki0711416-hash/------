@@ -25,7 +25,7 @@ import type { SourceAdapter, Store, DatedObservation } from "../lib/sources/sour
 
 /* ── 設定 ── */
 
-const DAYS_BACK = 3;
+const DAYS_BACK = 30;
 const REQUEST_DELAY_MS = 2000; // リクエスト間の待機 (ms)
 const MAX_RETRIES = 3;
 
