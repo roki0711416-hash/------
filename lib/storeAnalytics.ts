@@ -170,7 +170,7 @@ export async function getLatestSignalForStores(
   const { rows } = await db.sql`
     SELECT DISTINCT ON (store_id) *
     FROM store_daily_signals
-    WHERE store_id = ANY(${storeIds}::text[])
+    WHERE store_id = ANY(${storeIds as unknown as string}::text[])
     ORDER BY store_id, date DESC
   `;
   const map = new Map<string, StoreDailySignalRow>();

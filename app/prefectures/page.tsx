@@ -1,48 +1,60 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { PREFECTURES, getPrefecturesByRegion } from "@/lib/prefectures";
+import PrefectureSearch from "@/components/PrefectureSearch";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://slokasukun.com";
 
 export const metadata: Metadata = {
-  title: "都道府県一覧 | 店舗傾向 | スロカスくん",
-  description: "パチスロ店舗の独自傾向分析を都道府県から探す（参考情報）",
-  robots: "noindex",
+  title: "全国のパチンコホール分析｜スロカスくん",
+  description: "都道府県別にホールの傾向を独自指標でまとめています。",
+  alternates: { canonical: `${BASE_URL}/prefectures` },
 };
 
-const REGIONS: { name: string; prefs: string[] }[] = [
-  { name: "北海道・東北", prefs: ["北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県"] },
-  { name: "関東", prefs: ["茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県"] },
-  { name: "中部", prefs: ["新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県", "愛知県"] },
-  { name: "近畿", prefs: ["三重県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県"] },
-  { name: "中国・四国", prefs: ["鳥取県", "島根県", "岡山県", "広島県", "山口県", "徳島県", "香川県", "愛媛県", "高知県"] },
-  { name: "九州・沖縄", prefs: ["福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"] },
-];
-
 export default function PrefecturesIndexPage() {
+  const regions = getPrefecturesByRegion();
+
   return (
     <main className="w-full">
       <div className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <h1 className="text-xl font-bold">都道府県から店舗を探す</h1>
-        <p className="mt-2 text-xs text-neutral-500">
-          ※ 公開情報等を基にした独自集計の参考情報です。結果を保証するものではありません。
+        <h1 className="text-xl font-bold">全国のパチンコホール分析</h1>
+        <p className="mt-2 text-sm text-neutral-600">
+          都道府県別にホールの傾向を独自指標でまとめています。
         </p>
 
-        <div className="mt-6 space-y-6">
-          {REGIONS.map((region) => (
-            <section key={region.name}>
-              <h2 className="text-sm font-semibold text-neutral-500">{region.name}</h2>
+        {/* ── 検索 ── */}
+        <div className="mt-5">
+          <PrefectureSearch
+            prefs={PREFECTURES.map((p) => ({ slug: p.slug, name: p.name }))}
+          />
+        </div>
+
+        {/* ── 地方別一覧 ── */}
+        <div className="mt-8 space-y-6">
+          {regions.map((group) => (
+            <section key={group.region}>
+              <h2 className="text-sm font-semibold text-neutral-500">
+                {group.region}
+              </h2>
               <div className="mt-2 flex flex-wrap gap-2">
-                {region.prefs.map((pref) => (
+                {group.prefs.map((p) => (
                   <Link
-                    key={pref}
-                    href={`/prefectures/${encodeURIComponent(pref)}`}
+                    key={p.slug}
+                    href={`/prefectures/${p.slug}`}
                     className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium transition hover:bg-neutral-50"
                   >
-                    {pref}
+                    {p.name}
                   </Link>
                 ))}
               </div>
             </section>
           ))}
         </div>
+
+        {/* ── 免責 ── */}
+        <p className="mt-10 text-[10px] leading-relaxed text-neutral-400">
+          ※ 本サイトは公開情報等を基にした独自集計の参考情報であり、結果を保証するものではありません。
+        </p>
       </div>
     </main>
   );

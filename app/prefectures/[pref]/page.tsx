@@ -1,108 +1,101 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { listStoresByPrefecture, getLatestSignalForStores } from "@/lib/storeAnalytics";
+import {
+  getPrefectureBySlug,
+  getAllPrefectureSlugs,
+} from "@/lib/prefectures";
 
-export const dynamic = "force-dynamic";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://slokasukun.com";
 
-// 主要都道府県一覧
-const PREFECTURES = [
-  "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
-  "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
-  "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県",
-  "岐阜県", "静岡県", "愛知県", "三重県",
-  "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県",
-  "鳥取県", "島根県", "岡山県", "広島県", "山口県",
-  "徳島県", "香川県", "愛媛県", "高知県",
-  "福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県",
-];
+/* ── 静的パス生成 ── */
+export function generateStaticParams() {
+  return getAllPrefectureSlugs().map((slug) => ({ pref: slug }));
+}
 
-type Params = { params: Promise<{ pref: string }> };
-
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+/* ── メタデータ ── */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ pref: string }>;
+}): Promise<Metadata> {
   const { pref } = await params;
-  const prefName = decodeURIComponent(pref);
+  const p = getPrefectureBySlug(pref);
+  if (!p) return {};
   return {
-    title: `${prefName}の店舗傾向 | スロカスくん`,
-    description: `${prefName}のパチスロ店舗ごとの独自傾向分析（参考情報）`,
-    robots: "noindex",
+    title: `${p.name}のパチンコホール分析｜スロカスくん`,
+    description: `${p.name}のパチンコ・スロットホールの傾向を独自指標で分析。`,
+    alternates: { canonical: `${BASE_URL}/prefectures/${pref}` },
   };
 }
 
-function indexLabel(value: number): string {
-  if (value >= 70) return "高め";
-  if (value >= 40) return "普通";
-  return "低め";
-}
-
-function indexColor(value: number): string {
-  if (value >= 70) return "text-green-700";
-  if (value >= 40) return "text-neutral-700";
-  return "text-neutral-400";
-}
-
-export default async function PrefecturePage({ params }: Params) {
+/* ── ページ ── */
+export default async function PrefecturePage({
+  params,
+}: {
+  params: Promise<{ pref: string }>;
+}) {
   const { pref } = await params;
-  const prefName = decodeURIComponent(pref);
-
-  const stores = await listStoresByPrefecture(prefName);
-  const storeIds = stores.map((s) => s.id);
-  const latestSignals = await getLatestSignalForStores(storeIds);
+  const prefecture = getPrefectureBySlug(pref);
+  if (!prefecture) notFound();
 
   return (
     <main className="w-full">
       <div className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <h1 className="text-xl font-bold">{prefName}の店舗傾向</h1>
-        <p className="mt-2 text-xs text-neutral-500">
-          ※ 公開情報等を基にした独自集計の参考情報です。結果を保証するものではありません。
+        {/* パンくず */}
+        <nav className="text-xs text-neutral-400">
+          <Link href="/prefectures" className="hover:underline">
+            全国
+          </Link>{" "}
+          &gt; <span className="text-neutral-700">{prefecture.name}</span>
+        </nav>
+
+        <h1 className="mt-3 text-xl font-bold">
+          {prefecture.name}のパチンコホール分析
+        </h1>
+        <p className="mt-2 text-sm text-neutral-600">
+          {prefecture.name}
+          のホール傾向を独自指標で分析しています。データは順次拡充中です。
         </p>
 
-        {stores.length === 0 ? (
-          <p className="mt-6 text-sm text-neutral-600">
-            {prefName}に登録されている店舗はまだありません。
-          </p>
-        ) : (
-          <div className="mt-6 space-y-3">
-            {stores.map((store) => {
-              const signal = latestSignals.get(store.id);
-              return (
-                <Link
-                  key={store.id}
-                  href={`/stores/${store.id}`}
-                  className="block rounded-2xl border border-neutral-200 bg-white p-4 transition hover:bg-neutral-50"
-                >
-                  <p className="text-base font-semibold">{store.name}</p>
-                  {store.city && (
-                    <p className="mt-0.5 text-xs text-neutral-500">{store.city}</p>
-                  )}
-                  {signal ? (
-                    <div className="mt-2 flex flex-wrap gap-3 text-xs">
-                      <span className={indexColor(signal.traffic_index)}>
-                        活性 {signal.traffic_index}
-                      </span>
-                      <span className={indexColor(signal.reward_index)}>
-                        還元 {signal.reward_index}
-                      </span>
-                      <span className={indexColor(signal.swing_index)}>
-                        荒さ {signal.swing_index}
-                      </span>
-                      <span className={indexColor(signal.high_chance_index)}>
-                        期待 {signal.high_chance_index}
-                      </span>
-                    </div>
-                  ) : (
-                    <p className="mt-2 text-xs text-neutral-400">データなし</p>
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-        )}
-
-        <div className="mt-8">
-          <Link href="/prefectures" className="text-sm text-neutral-600 underline underline-offset-2">
-            ← 都道府県一覧に戻る
+        {/* 店舗一覧へ */}
+        <div className="mt-6">
+          <Link
+            href={`/prefectures/${pref}/stores`}
+            className="inline-flex items-center gap-1 rounded-lg border border-blue-500 px-4 py-2 text-sm font-medium text-blue-600 transition hover:bg-blue-50"
+          >
+            店舗一覧を見る →
           </Link>
         </div>
+
+        {/* 県内ランキング（準備中） */}
+        <section className="mt-8">
+          <h2 className="text-base font-semibold">県内ランキング</h2>
+          <p className="mt-1 text-xs text-neutral-400">準備中</p>
+          <div className="mt-3 space-y-3">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 rounded-lg border border-neutral-100 bg-white p-3"
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-neutral-200 text-xs font-bold text-neutral-400">
+                  {i}
+                </span>
+                <div className="flex-1">
+                  <div className="h-4 w-32 rounded bg-neutral-100" />
+                  <div className="mt-1 h-3 w-20 rounded bg-neutral-100" />
+                </div>
+                <div className="h-6 w-16 rounded bg-neutral-100" />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 免責 */}
+        <p className="mt-10 text-[10px] leading-relaxed text-neutral-400">
+          ※
+          本サイトは公開情報等を基にした独自集計の参考情報であり、結果を保証するものではありません。
+        </p>
       </div>
     </main>
   );
