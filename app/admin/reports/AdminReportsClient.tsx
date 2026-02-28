@@ -91,7 +91,14 @@ export default function AdminReportsClient() {
       if (!res.ok) {
         setMessage(`❌ エラー: ${data.error ?? res.statusText}`);
       } else {
-        setMessage("✅ 操作が完了しました");
+        const actionLabel = body.action === "delete_content"
+          ? "✅ 投稿を削除しました（アプリ側からも非表示になります）"
+          : body.action === "ban_user"
+            ? "✅ ユーザーをBANしました"
+            : body.action === "unban_user"
+              ? "✅ BANを解除しました"
+              : "✅ 操作が完了しました";
+        setMessage(actionLabel);
         setSelectedReport(null);
         fetchReports();
       }
@@ -273,11 +280,11 @@ export default function AdminReportsClient() {
                     }
                   />
                   <ActionButton
-                    label="🗑️ コンテンツを削除（論理削除）"
+                    label="🗑️ 投稿/コメントを削除"
                     variant="danger"
                     disabled={actionLoading}
                     onClick={() => {
-                      if (confirm("このコンテンツを削除（非表示化）しますか？")) {
+                      if (confirm("この投稿/コメントを削除（非表示化）しますか？\nアプリ側からも即座に非表示になります。")) {
                         doAction(selectedReport.id, { action: "delete_content" });
                       }
                     }}

@@ -59,9 +59,10 @@ export async function GET(req: Request) {
 
   try {
     const { rows } = await db.sql`
-      SELECT id, board_id, prefecture, hall, machine, title, reply_count, username, created_at, updated_at
+      SELECT id, board_id, user_id, prefecture, hall, machine, title, reply_count, username, created_at, updated_at, is_deleted
       FROM community_threads
       WHERE board_id = ${boardId}
+        AND (is_deleted = false OR is_deleted IS NULL)
       ORDER BY updated_at DESC, id DESC
       LIMIT ${limit}
     `;

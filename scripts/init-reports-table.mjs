@@ -70,8 +70,14 @@ async function main() {
       IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'community_threads' AND column_name = 'is_deleted') THEN
         ALTER TABLE community_threads ADD COLUMN is_deleted boolean NOT NULL DEFAULT false;
       END IF;
+      IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'community_threads' AND column_name = 'deleted_at') THEN
+        ALTER TABLE community_threads ADD COLUMN deleted_at timestamptz;
+      END IF;
       IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'community_thread_posts' AND column_name = 'is_deleted') THEN
         ALTER TABLE community_thread_posts ADD COLUMN is_deleted boolean NOT NULL DEFAULT false;
+      END IF;
+      IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'community_thread_posts' AND column_name = 'deleted_at') THEN
+        ALTER TABLE community_thread_posts ADD COLUMN deleted_at timestamptz;
       END IF;
     END
     $$;

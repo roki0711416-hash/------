@@ -115,9 +115,9 @@ export async function PATCH(req: Request, { params }: Params) {
         const report = rows[0] as { target_type: string; target_id: string };
 
         if (report.target_type === "thread") {
-          await db.sql`UPDATE community_threads SET is_deleted = true WHERE id = ${report.target_id}`;
+          await db.sql`UPDATE community_threads SET is_deleted = true, deleted_at = now() WHERE id = ${report.target_id}`;
         } else if (report.target_type === "post") {
-          await db.sql`UPDATE community_thread_posts SET is_deleted = true WHERE id = ${report.target_id}`;
+          await db.sql`UPDATE community_thread_posts SET is_deleted = true, deleted_at = now() WHERE id = ${report.target_id}`;
         }
 
         // 通報もRESOLVEDに
