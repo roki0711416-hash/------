@@ -29,7 +29,7 @@ async function main() {
   await db.sql`
     CREATE TABLE IF NOT EXISTS community_reports (
       id              text PRIMARY KEY,
-      reporter_user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      reporter_user_id text NOT NULL,
       target_type     text NOT NULL CHECK (target_type IN ('thread', 'post')),
       target_id       text NOT NULL,
       reason          text NOT NULL,
