@@ -14,7 +14,11 @@
     "db:init-auth": "node scripts/init-auth-tables.mjs",
     "db:init-community": "node scripts/init-community-table.mjs",
     "db:init-judge-results": "node scripts/init-judge-results-table.mjs",
-    "db:init-sessions": "node scripts/init-slot-sessions-table.mjs"
+    "db:init-sessions": "node scripts/init-slot-sessions-table.mjs",
+    "osm:fetch": "npx tsx scripts/fetchOsmPachinko.ts",
+    "osm:summarize": "npx tsx scripts/osm/normalizeAndSummarize.ts",
+    "osm:report": "npx tsx scripts/osm/generateCoverageReport.ts",
+    "osm:all": "npm run osm:fetch && npm run osm:summarize && npm run osm:report"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^5.4.1",

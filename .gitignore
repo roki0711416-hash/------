@@ -61,3 +61,7 @@ legacy-app/
 .worktrees/
 worktrees/
 .derivedData-ios-verify/
+
+# OSM raw data (large JSON files)
+data/osm/pachinko_raw.json
+data/osm/pachinko_normalized.json
