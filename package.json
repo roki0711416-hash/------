@@ -18,7 +18,12 @@
     "osm:fetch": "npx tsx scripts/fetchOsmPachinko.ts",
     "osm:summarize": "npx tsx scripts/osm/normalizeAndSummarize.ts",
     "osm:report": "npx tsx scripts/osm/generateCoverageReport.ts",
-    "osm:all": "npm run osm:fetch && npm run osm:summarize && npm run osm:report"
+    "osm:all": "npm run osm:fetch && npm run osm:summarize && npm run osm:report",
+    "db:migrate-source": "node scripts/migrate-add-source-canonical.mjs",
+    "db:mark-sample": "node scripts/mark-sample-stores.mjs",
+    "stores:import-osm": "npx tsx scripts/importOsmToStores.ts",
+    "stores:dedupe": "npx tsx scripts/dedupeStores.ts",
+    "stores:dedupe:dry": "npx tsx scripts/dedupeStores.ts --dry-run"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^5.4.1",

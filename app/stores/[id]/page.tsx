@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { getStoreById, getRecentSignals, type StoreDailySignalRow } from "@/lib/storeAnalytics";
 import { getPrefectureBySlug } from "@/lib/prefectures";
@@ -66,6 +66,11 @@ export default async function StoreDetailPage({
 
   const store = await getStoreById(id);
   if (!store) notFound();
+
+  // 重複店舗 → 代表店舗にリダイレクト
+  if (store.canonical_store_id) {
+    redirect(`/stores/${store.canonical_store_id}`);
+  }
 
   const signals7 = await getRecentSignals(id, 7);
   const signals30 = await getRecentSignals(id, 30);

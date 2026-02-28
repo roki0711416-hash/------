@@ -44,8 +44,13 @@ async function main() {
   // 既存テーブルへの安全なカラム追加（冪等）
   await db.sql`ALTER TABLE stores ADD COLUMN IF NOT EXISTS external_id TEXT UNIQUE`;
   await db.sql`ALTER TABLE stores ADD COLUMN IF NOT EXISTS prefecture_name TEXT`;
+  await db.sql`ALTER TABLE stores ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'manual'`;
+  await db.sql`ALTER TABLE stores ADD COLUMN IF NOT EXISTS imported_at TIMESTAMPTZ`;
+  await db.sql`ALTER TABLE stores ADD COLUMN IF NOT EXISTS canonical_store_id TEXT REFERENCES stores(id) ON DELETE SET NULL`;
   // name インデックス
   await db.sql`CREATE INDEX IF NOT EXISTS idx_stores_name ON stores (name)`;
+  await db.sql`CREATE INDEX IF NOT EXISTS idx_stores_source ON stores (source)`;
+  await db.sql`CREATE INDEX IF NOT EXISTS idx_stores_canonical ON stores (canonical_store_id)`;
 
   console.log("[init] Creating store_daily_signals table...");
   await db.sql`

@@ -19,6 +19,9 @@ export interface StoreRow {
   address: string | null;
   lat: number | null;
   lng: number | null;
+  source: string;                   // 'osm' | 'sample' | 'manual'
+  canonical_store_id: string | null; // 重複マージ: 代表店舗の id
+  imported_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -41,23 +44,30 @@ export interface StoreDailySignalRow {
 
 export async function listStoresByPrefecture(
   prefecture: string,
-  opts?: { search?: string; limit?: number; offset?: number },
+  opts?: { search?: string; limit?: number; offset?: number; source?: string },
 ): Promise<{ stores: StoreRow[]; total: number }> {
   const db = getDb();
   if (!db) return { stores: [], total: 0 };
   const search = opts?.search?.trim() ?? "";
   const limit = opts?.limit ?? 200;
   const offset = opts?.offset ?? 0;
+  const source = opts?.source ?? "osm";
   const like = search ? `%${search}%` : null;
 
   if (like) {
     const countRes = await db.sql`
       SELECT count(*)::int AS total FROM stores
-      WHERE prefecture = ${prefecture} AND name ILIKE ${like}
+      WHERE prefecture = ${prefecture}
+        AND source = ${source}
+        AND canonical_store_id IS NULL
+        AND name ILIKE ${like}
     `;
     const { rows } = await db.sql`
       SELECT * FROM stores
-      WHERE prefecture = ${prefecture} AND name ILIKE ${like}
+      WHERE prefecture = ${prefecture}
+        AND source = ${source}
+        AND canonical_store_id IS NULL
+        AND name ILIKE ${like}
       ORDER BY name
       LIMIT ${limit} OFFSET ${offset}
     `;
@@ -67,10 +77,14 @@ export async function listStoresByPrefecture(
   const countRes = await db.sql`
     SELECT count(*)::int AS total FROM stores
     WHERE prefecture = ${prefecture}
+      AND source = ${source}
+      AND canonical_store_id IS NULL
   `;
   const { rows } = await db.sql`
     SELECT * FROM stores
     WHERE prefecture = ${prefecture}
+      AND source = ${source}
+      AND canonical_store_id IS NULL
     ORDER BY name
     LIMIT ${limit} OFFSET ${offset}
   `;
@@ -107,11 +121,13 @@ export async function upsertStore(store: {
   address?: string;
   lat?: number;
   lng?: number;
+  source?: string;
 }): Promise<void> {
   const db = getDb();
   if (!db) throw new Error("DB未設定");
+  const src = store.source ?? "manual";
   await db.sql`
-    INSERT INTO stores (id, external_id, name, prefecture, prefecture_name, city, address, lat, lng)
+    INSERT INTO stores (id, external_id, name, prefecture, prefecture_name, city, address, lat, lng, source, imported_at)
     VALUES (
       ${store.id},
       ${store.externalId ?? null},
@@ -121,7 +137,9 @@ export async function upsertStore(store: {
       ${store.city ?? null},
       ${store.address ?? null},
       ${store.lat ?? null},
-      ${store.lng ?? null}
+      ${store.lng ?? null},
+      ${src},
+      now()
     )
     ON CONFLICT (id) DO UPDATE SET
       external_id     = COALESCE(EXCLUDED.external_id, stores.external_id),
@@ -132,6 +150,8 @@ export async function upsertStore(store: {
       address         = EXCLUDED.address,
       lat             = EXCLUDED.lat,
       lng             = EXCLUDED.lng,
+      source          = EXCLUDED.source,
+      imported_at     = now(),
       updated_at      = now()
   `;
 }

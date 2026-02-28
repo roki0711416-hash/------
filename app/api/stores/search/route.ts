@@ -27,7 +27,10 @@ export async function GET(req: NextRequest) {
 
   /* 合計件数 */
   const { rows: countRows } = await db.sql`
-    SELECT count(*)::int AS total FROM stores WHERE prefecture = ${pref}
+    SELECT count(*)::int AS total FROM stores
+    WHERE prefecture = ${pref}
+      AND source = 'osm'
+      AND canonical_store_id IS NULL
   `;
   const total: number = countRows[0]?.total ?? 0;
 
@@ -56,6 +59,8 @@ export async function GET(req: NextRequest) {
        ORDER BY sd.date DESC LIMIT 1
      ) sig ON true
      WHERE s.prefecture = $1
+       AND s.source = 'osm'
+       AND s.canonical_store_id IS NULL
      ORDER BY ${orderCol} ${orderDir}
      LIMIT $2 OFFSET $3`,
     [pref, limit, offset],

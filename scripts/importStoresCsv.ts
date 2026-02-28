@@ -95,8 +95,12 @@ interface RowError {
 }
 
 async function main() {
-  const csvPath = process.argv[2]
-    ? path.resolve(process.argv[2])
+  // --source=osm などの引数
+  const sourceArg = process.argv.find((a) => a.startsWith("--source="));
+  const source = sourceArg ? sourceArg.split("=")[1] : "manual";
+
+  const csvPath = process.argv.filter((a) => !a.startsWith("--"))[2]
+    ? path.resolve(process.argv.filter((a) => !a.startsWith("--"))[2])
     : path.join(process.cwd(), "data", "stores_master.csv");
 
   if (!fs.existsSync(csvPath)) {
@@ -197,7 +201,7 @@ async function main() {
     try {
       // upsert — xmax = 0 なら INSERT、そうでなければ UPDATE を判定
       const res = await db.sql`
-        INSERT INTO stores (id, external_id, name, prefecture, prefecture_name, city, address, lat, lng)
+        INSERT INTO stores (id, external_id, name, prefecture, prefecture_name, city, address, lat, lng, source, imported_at)
         VALUES (
           ${id},
           ${externalId},
@@ -207,7 +211,9 @@ async function main() {
           ${city || null},
           ${address || null},
           ${lat},
-          ${lng}
+          ${lng},
+          ${source},
+          now()
         )
         ON CONFLICT (id) DO UPDATE SET
           external_id     = COALESCE(EXCLUDED.external_id, stores.external_id),
@@ -218,6 +224,8 @@ async function main() {
           address         = EXCLUDED.address,
           lat             = EXCLUDED.lat,
           lng             = EXCLUDED.lng,
+          source          = EXCLUDED.source,
+          imported_at     = now(),
           updated_at      = now()
         RETURNING (xmax = 0) AS is_insert
       `;

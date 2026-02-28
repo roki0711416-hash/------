@@ -42,6 +42,8 @@ export async function GET(
      JOIN store_daily_signals sig ON sig.store_id = s.id
        AND sig.date >= current_date - 7
      WHERE s.prefecture = $1
+       AND s.source = 'osm'
+       AND s.canonical_store_id IS NULL
      GROUP BY s.id, s.name, s.city
      ORDER BY ${orderCol} DESC
      LIMIT $2`,

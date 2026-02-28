@@ -98,13 +98,14 @@ async function main() {
       const address = `${pref.name}${city}1-1-1`;
 
       await db.sql`
-        INSERT INTO stores (id, name, prefecture, city, address)
-        VALUES (${id}, ${name}, ${pref.slug}, ${city}, ${address})
+        INSERT INTO stores (id, name, prefecture, city, address, source)
+        VALUES (${id}, ${name}, ${pref.slug}, ${city}, ${address}, 'sample')
         ON CONFLICT (id) DO UPDATE SET
           name       = EXCLUDED.name,
           prefecture = EXCLUDED.prefecture,
           city       = EXCLUDED.city,
           address    = EXCLUDED.address,
+          source     = 'sample',
           updated_at = now()
       `;
       count++;
