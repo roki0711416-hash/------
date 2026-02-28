@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDb } from "../../../../lib/db";
 import { requireAdmin } from "../../../../lib/requireAdmin";
+import { sendTransactionalEmail } from "../../../../lib/email";
 
 export const runtime = "nodejs";
 
@@ -82,7 +83,6 @@ export async function POST(req: Request) {
   const db = getDb();
   if (!db) return jsonError(503, "DB未設定");
 
-  // ログイン不要（iOS側から userId 直送り）だが、Web の場合はログインユーザーを使う
   let bodyJson: unknown;
   try {
     bodyJson = await req.json();
@@ -92,16 +92,21 @@ export async function POST(req: Request) {
 
   const payload = bodyJson as Record<string, unknown>;
   const reporterUserId = typeof payload.reporter_user_id === "string" ? payload.reporter_user_id.trim() : "";
-  const targetType = typeof payload.target_type === "string" ? payload.target_type.trim() : "";
+  const rawTargetType = typeof payload.target_type === "string" ? payload.target_type.trim() : "";
   const targetId = typeof payload.target_id === "string" ? payload.target_id.trim() : "";
   const reason = typeof payload.reason === "string" ? payload.reason.trim() : "";
   const detail = typeof payload.detail === "string" ? payload.detail.trim() : "";
+  const targetContent = typeof payload.target_content === "string" ? payload.target_content.trim() : "";
+  const reporterUsername = typeof payload.reporter_username === "string" ? payload.reporter_username.trim() : "（不明）";
 
-  if (!reporterUserId || !targetType || !targetId || !reason) {
+  if (!reporterUserId || !rawTargetType || !targetId || !reason) {
     return jsonError(400, "Missing required fields");
   }
+
+  // iOS は "reply" を送る → DB は ('thread','post') なので変換
+  const targetType = rawTargetType === "reply" ? "post" : rawTargetType;
   if (!["thread", "post"].includes(targetType)) {
-    return jsonError(400, "Invalid target_type");
+    return jsonError(400, `Invalid target_type: ${rawTargetType}`);
   }
 
   const id = globalThis.crypto?.randomUUID
@@ -113,9 +118,45 @@ export async function POST(req: Request) {
       INSERT INTO community_reports (id, reporter_user_id, target_type, target_id, reason, detail)
       VALUES (${id}, ${reporterUserId}, ${targetType}, ${targetId}, ${reason}, ${detail})
     `;
-    return NextResponse.json({ ok: true, id, status: "OPEN" }, { status: 201 });
   } catch (e) {
     console.error("[admin/reports] Insert error:", e);
     return jsonError(500, "通報の保存に失敗しました");
   }
+
+  // ── メール通知（ベストエフォート） ──
+  const REASON_LABELS: Record<string, string> = {
+    spam: "スパム・宣伝", harassment: "嫌がらせ・誹謗中傷",
+    hate: "ヘイトスピーチ・差別", sexual: "わいせつ・性的コンテンツ",
+    violence: "暴力的な内容", other: "その他",
+  };
+  const typeLabel = targetType === "thread" ? "スレッド" : "返信";
+  const reasonLabel = REASON_LABELS[reason] ?? reason;
+
+  const emailText = [
+    "【スロカスくん】新しい通報が届きました",
+    "",
+    `■ 通報対象: ${typeLabel}`,
+    `■ 通報理由: ${reasonLabel}`,
+    detail ? `■ 詳細: ${detail}` : "",
+    "",
+    targetContent ? `■ 対象コンテンツ:\n  ${targetContent}` : "",
+    "",
+    `■ 通報者: ${reporterUsername} (${reporterUserId})`,
+    `■ 通報ID: ${id}`,
+    "",
+    "管理画面で確認・対応してください:",
+    "https://slokasukun.com/admin/reports",
+  ].filter(Boolean).join("\n");
+
+  try {
+    await sendTransactionalEmail({
+      to: "slokasukun1@gmail.com",
+      subject: `[通報] ${typeLabel}: ${reasonLabel}`,
+      text: emailText,
+    });
+  } catch (emailErr) {
+    console.error("[admin/reports] Email send failed:", emailErr);
+  }
+
+  return NextResponse.json({ ok: true, id, status: "OPEN" }, { status: 201 });
 }
