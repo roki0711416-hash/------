@@ -120,10 +120,11 @@ export async function PATCH(req: Request, { params }: Params) {
           await db.sql`UPDATE community_thread_posts SET is_deleted = true, deleted_at = now() WHERE id = ${report.target_id}`;
         }
 
-        // 通報もRESOLVEDに
+        // 通報もRESOLVEDに + action_taken を記録
         await db.sql`
           UPDATE community_reports
-          SET status = 'RESOLVED', handled_at = now(), handled_by = ${auth.user.id}
+          SET status = 'RESOLVED', handled_at = now(), handled_by = ${auth.user.id},
+              action_taken = 'delete_content'
           WHERE id = ${id}
         `;
 
@@ -143,10 +144,11 @@ export async function PATCH(req: Request, { params }: Params) {
           WHERE id = ${targetUserId}
         `;
 
-        // 通報もRESOLVEDに
+        // 通報もRESOLVEDに + action_taken を記録
         await db.sql`
           UPDATE community_reports
-          SET status = 'RESOLVED', handled_at = now(), handled_by = ${auth.user.id}
+          SET status = 'RESOLVED', handled_at = now(), handled_by = ${auth.user.id},
+              action_taken = 'ban_user'
           WHERE id = ${id}
         `;
 
