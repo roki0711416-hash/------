@@ -159,6 +159,11 @@ export default async function PrefectureStoresPage({
             <ul className="mt-4 space-y-3">
               {stores.map((s) => {
                 const sig = signalMap.get(s.id);
+                const hasLocation = s.city || s.address;
+                const mapsUrl =
+                  s.lat && s.lng
+                    ? `https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lng}`
+                    : null;
                 return (
                   <li key={s.id}>
                     <Link
@@ -166,11 +171,28 @@ export default async function PrefectureStoresPage({
                       className="block rounded-xl border border-white/[0.08] bg-white/[0.04] p-4 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-white/[0.16] hover:bg-white/[0.07] hover:shadow-xl"
                     >
                       <p className="text-sm font-bold text-white">{s.name}</p>
-                      <p className="mt-1 text-xs text-muted">
-                        {s.city} {s.address}
-                      </p>
-                      <div className="mt-2">
+                      {hasLocation ? (
+                        <p className="mt-1 text-xs text-muted truncate">
+                          📍 {[s.city, s.address].filter(Boolean).join(" ")}
+                        </p>
+                      ) : (
+                        <span className="mt-1 inline-block rounded-full border border-white/[0.06] bg-white/[0.02] px-2 py-0.5 text-[10px] text-white/25">
+                          住所情報なし
+                        </span>
+                      )}
+                      <div className="mt-2 flex items-center gap-2">
                         <SignalBadges sig={sig} />
+                        {mapsUrl && (
+                          <a
+                            href={mapsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-auto shrink-0 rounded-full border border-white/[0.1] bg-white/[0.04] px-2 py-0.5 text-[10px] text-white/40 transition hover:bg-white/[0.12] hover:text-white/70"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            🗺 地図
+                          </a>
+                        )}
                       </div>
                     </Link>
                   </li>

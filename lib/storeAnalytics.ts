@@ -40,6 +40,30 @@ export interface StoreDailySignalRow {
   updated_at: string;
 }
 
+export interface StoreDailySummaryRow {
+  id: string;
+  store_id: string;
+  date: string;
+  total_diff: number;
+  avg_diff: number;
+  total_games: number | null;
+  top_machines: { name: string; diff: number; count: number }[] | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StoreDailyMachineRow {
+  id: string;
+  store_id: string;
+  date: string;
+  machine_name: string;
+  diff_sum: number;
+  diff_avg: number;
+  machine_count: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
 /* ── Store CRUD ── */
 
 export async function listStoresByPrefecture(
@@ -231,4 +255,38 @@ export async function getLatestSignalForStores(
     map.set(row.store_id, row);
   }
   return map;
+}
+
+/* ── Daily Summaries / Machines ── */
+
+/** 指定店舗の日別サマリーを新しい順に取得 */
+export async function getDailySummaries(
+  storeId: string,
+  days: number = 30,
+): Promise<StoreDailySummaryRow[]> {
+  const db = getDb();
+  if (!db) return [];
+  const { rows } = await db.sql`
+    SELECT * FROM store_daily_summaries
+    WHERE store_id = ${storeId}
+    ORDER BY date DESC
+    LIMIT ${days}
+  `;
+  return rows as StoreDailySummaryRow[];
+}
+
+/** 指定日の機種別データを取得 */
+export async function getDailyMachines(
+  storeId: string,
+  date: string,
+): Promise<StoreDailyMachineRow[]> {
+  const db = getDb();
+  if (!db) return [];
+  const { rows } = await db.sql`
+    SELECT * FROM store_daily_machines
+    WHERE store_id = ${storeId}
+      AND date = ${date}
+    ORDER BY diff_sum DESC
+  `;
+  return rows as StoreDailyMachineRow[];
 }

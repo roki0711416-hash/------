@@ -161,6 +161,9 @@ export default async function PrefecturePage({
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-white truncate">{r.name}</p>
+                    {r.city && (
+                      <p className="text-[10px] text-white/30 truncate">{r.city}</p>
+                    )}
                     <div className="mt-1 flex flex-wrap gap-1">
                       <ScoreBadge value={r.avg_reward} label="還元" />
                       <ScoreBadge value={r.avg_traffic} label="活性" />

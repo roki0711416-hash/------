@@ -23,7 +23,9 @@
     "db:mark-sample": "node scripts/mark-sample-stores.mjs",
     "stores:import-osm": "npx tsx scripts/importOsmToStores.ts",
     "stores:dedupe": "npx tsx scripts/dedupeStores.ts",
-    "stores:dedupe:dry": "npx tsx scripts/dedupeStores.ts --dry-run"
+    "stores:dedupe:dry": "npx tsx scripts/dedupeStores.ts --dry-run",
+    "db:migrate-daily": "node scripts/migrate-add-daily-summaries.mjs",
+    "stores:mock-daily": "npx tsx scripts/generateDailyMockData.ts"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^5.4.1",
