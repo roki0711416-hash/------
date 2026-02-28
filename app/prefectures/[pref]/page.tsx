@@ -101,8 +101,7 @@ export default async function PrefecturePage({
   if (!prefecture) notFound();
 
   const ranking = await getRanking(pref, "reward");
-  const stores = await listStoresByPrefecture(pref);
-  const storeCount = stores.length;
+  const { total: storeCount } = await listStoresByPrefecture(pref, { limit: 0 });
 
   return (
     <main className="w-full">

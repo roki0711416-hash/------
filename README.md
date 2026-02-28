@@ -64,6 +64,47 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 `content/machines.ts` に新しい機種（`id` を含むオブジェクト）を追加して `main` にpushすると、GitHub Actions が差分から新規 `machineId` を検出し、`content/posts.json` に新着投稿を自動で追加します。
 
+## 全国店舗マスタ（CSV一括投入）
+
+`data/stores_master.csv` に全国のパチンコホール情報を用意し、一括投入できます。
+
+### CSVフォーマット
+
+```
+external_id,name,prefecture_slug,prefecture_name,city,address,lat,lng
+```
+
+- `external_id`: 外部データソースID（空でもOK。空の場合は name+slug+address のハッシュが自動生成）
+- `name`（必須）: 店舗名
+- `prefecture_slug`（必須）: 都道府県slug（例: `tokyo`）
+- `prefecture_name`（必須）: 都道府県名（例: `東京都`）
+- `city`: 市区町村（空OK）
+- `address`: 住所（空OK）
+- `lat`, `lng`: 緯度/経度（空OK）
+
+### 手順
+
+```bash
+# 1) サンプルCSV生成（47都道府県×3=141件）
+npx tsx scripts/generateSampleStoresCsv.ts
+
+# 2) CSVインポート（デフォルト: data/stores_master.csv）
+npx tsx scripts/importStoresCsv.ts data/stores_master.sample.csv
+
+# 3) DBに入ったか確認 → /prefectures/tokyo/stores に店舗が出る
+npm run dev
+```
+
+サンプルではなく本番データを投入する場合は `data/stores_master.csv` に実データを置いてから：
+
+```bash
+npx tsx scripts/importStoresCsv.ts
+```
+
+- 冪等（同じCSVを再投入しても壊れない）
+- 1000件ごとに進捗ログ
+- エラー行は行番号と理由を表示
+
 - ワークフロー: `.github/workflows/auto-posts.yml`
 - 生成スクリプト: `scripts/auto-add-machine-posts.mjs`
 

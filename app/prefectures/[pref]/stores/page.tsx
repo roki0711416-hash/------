@@ -66,19 +66,42 @@ function SignalBadges({ sig }: { sig: StoreDailySignalRow | undefined }) {
 /* ── ページ ── */
 export const dynamic = "force-dynamic";
 
+const PAGE_SIZE = 20;
+
 export default async function PrefectureStoresPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ pref: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { pref } = await params;
+  const sp = await searchParams;
   const prefecture = getPrefectureBySlug(pref);
   if (!prefecture) notFound();
 
-  const stores = await listStoresByPrefecture(pref);
+  const search = typeof sp.q === "string" ? sp.q : "";
+  const page = Math.max(1, Number(sp.page) || 1);
+  const offset = (page - 1) * PAGE_SIZE;
+
+  const { stores, total } = await listStoresByPrefecture(pref, {
+    search: search || undefined,
+    limit: PAGE_SIZE,
+    offset,
+  });
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
   const signalMap = stores.length > 0
     ? await getLatestSignalForStores(stores.map((s) => s.id))
     : new Map<string, StoreDailySignalRow>();
+
+  function pageUrl(p: number) {
+    const u = new URLSearchParams();
+    if (search) u.set("q", search);
+    if (p > 1) u.set("page", String(p));
+    const qs = u.toString();
+    return `/prefectures/${pref}/stores${qs ? `?${qs}` : ""}`;
+  }
 
   return (
     <main className="w-full">
@@ -99,36 +122,87 @@ export default async function PrefectureStoresPage({
           {prefecture.name}の店舗一覧
         </h1>
         <p className="mt-2 text-sm text-muted">
-          {stores.length}店舗の分析データを表示しています。
+          {total}店舗{search ? `（「${search}」で絞り込み）` : ""}
         </p>
 
+        {/* 検索ボックス */}
+        <form method="GET" className="mt-4">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              name="q"
+              defaultValue={search}
+              placeholder="店舗名で検索..."
+              className="flex-1 rounded-xl border border-white/[0.12] bg-white/[0.06] px-3 py-2 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/30 focus:bg-white/[0.08] transition"
+            />
+            <button
+              type="submit"
+              className="rounded-xl bg-white/[0.1] px-4 py-2 text-sm font-medium text-white transition hover:bg-white/[0.18]"
+            >
+              検索
+            </button>
+          </div>
+        </form>
+
         {/* 店舗カード */}
-        {stores.length === 0 ? (
-          <p className="mt-6 text-xs text-muted">
-            店舗データがありません。シードスクリプトを実行してください。
-          </p>
+        {total === 0 ? (
+          <div className="mt-8 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-6 text-center">
+            <p className="text-sm text-amber-300">
+              {search ? `「${search}」に一致する店舗がありません` : "店舗データがまだありません"}
+            </p>
+            <p className="mt-1 text-xs text-amber-300/60">
+              {search ? "検索条件を変えてお試しください" : "CSVインポートで店舗を追加してください"}
+            </p>
+          </div>
         ) : (
-          <ul className="mt-6 space-y-3">
-            {stores.map((s) => {
-              const sig = signalMap.get(s.id);
-              return (
-                <li key={s.id}>
+          <>
+            <ul className="mt-4 space-y-3">
+              {stores.map((s) => {
+                const sig = signalMap.get(s.id);
+                return (
+                  <li key={s.id}>
+                    <Link
+                      href={`/stores/${s.id}`}
+                      className="block rounded-xl border border-white/[0.08] bg-white/[0.04] p-4 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-white/[0.16] hover:bg-white/[0.07] hover:shadow-xl"
+                    >
+                      <p className="text-sm font-bold text-white">{s.name}</p>
+                      <p className="mt-1 text-xs text-muted">
+                        {s.city} {s.address}
+                      </p>
+                      <div className="mt-2">
+                        <SignalBadges sig={sig} />
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
+            {/* ページネーション */}
+            {totalPages > 1 && (
+              <nav className="mt-6 flex items-center justify-center gap-2">
+                {page > 1 && (
                   <Link
-                    href={`/stores/${s.id}`}
-                    className="block rounded-xl border border-white/[0.08] bg-white/[0.04] p-4 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-white/[0.16] hover:bg-white/[0.07] hover:shadow-xl"
+                    href={pageUrl(page - 1)}
+                    className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-3 py-1.5 text-xs text-white/70 transition hover:bg-white/[0.1]"
                   >
-                    <p className="text-sm font-bold text-white">{s.name}</p>
-                    <p className="mt-1 text-xs text-muted">
-                      {s.city} {s.address}
-                    </p>
-                    <div className="mt-2">
-                      <SignalBadges sig={sig} />
-                    </div>
+                    ← 前へ
                   </Link>
-                </li>
-              );
-            })}
-          </ul>
+                )}
+                <span className="text-xs text-muted">
+                  {page} / {totalPages}
+                </span>
+                {page < totalPages && (
+                  <Link
+                    href={pageUrl(page + 1)}
+                    className="rounded-lg border border-white/[0.1] bg-white/[0.04] px-3 py-1.5 text-xs text-white/70 transition hover:bg-white/[0.1]"
+                  >
+                    次へ →
+                  </Link>
+                )}
+              </nav>
+            )}
+          </>
         )}
 
         {/* 免責 */}

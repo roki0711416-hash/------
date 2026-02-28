@@ -11,8 +11,10 @@ import { getDb } from "./db";
 
 export interface StoreRow {
   id: string;
+  external_id: string | null;
   name: string;
   prefecture: string;
+  prefecture_name: string | null;
   city: string | null;
   address: string | null;
   lat: number | null;
@@ -39,15 +41,40 @@ export interface StoreDailySignalRow {
 
 export async function listStoresByPrefecture(
   prefecture: string,
-): Promise<StoreRow[]> {
+  opts?: { search?: string; limit?: number; offset?: number },
+): Promise<{ stores: StoreRow[]; total: number }> {
   const db = getDb();
-  if (!db) return [];
+  if (!db) return { stores: [], total: 0 };
+  const search = opts?.search?.trim() ?? "";
+  const limit = opts?.limit ?? 200;
+  const offset = opts?.offset ?? 0;
+  const like = search ? `%${search}%` : null;
+
+  if (like) {
+    const countRes = await db.sql`
+      SELECT count(*)::int AS total FROM stores
+      WHERE prefecture = ${prefecture} AND name ILIKE ${like}
+    `;
+    const { rows } = await db.sql`
+      SELECT * FROM stores
+      WHERE prefecture = ${prefecture} AND name ILIKE ${like}
+      ORDER BY name
+      LIMIT ${limit} OFFSET ${offset}
+    `;
+    return { stores: rows as StoreRow[], total: countRes.rows[0].total };
+  }
+
+  const countRes = await db.sql`
+    SELECT count(*)::int AS total FROM stores
+    WHERE prefecture = ${prefecture}
+  `;
   const { rows } = await db.sql`
     SELECT * FROM stores
     WHERE prefecture = ${prefecture}
     ORDER BY name
+    LIMIT ${limit} OFFSET ${offset}
   `;
-  return rows as StoreRow[];
+  return { stores: rows as StoreRow[], total: countRes.rows[0].total };
 }
 
 export async function getStoreById(
@@ -72,8 +99,10 @@ export async function listAllStores(): Promise<StoreRow[]> {
 
 export async function upsertStore(store: {
   id: string;
+  externalId?: string | null;
   name: string;
   prefecture: string;
+  prefectureName?: string | null;
   city?: string;
   address?: string;
   lat?: number;
@@ -82,24 +111,28 @@ export async function upsertStore(store: {
   const db = getDb();
   if (!db) throw new Error("DB未設定");
   await db.sql`
-    INSERT INTO stores (id, name, prefecture, city, address, lat, lng)
+    INSERT INTO stores (id, external_id, name, prefecture, prefecture_name, city, address, lat, lng)
     VALUES (
       ${store.id},
+      ${store.externalId ?? null},
       ${store.name},
       ${store.prefecture},
+      ${store.prefectureName ?? null},
       ${store.city ?? null},
       ${store.address ?? null},
       ${store.lat ?? null},
       ${store.lng ?? null}
     )
     ON CONFLICT (id) DO UPDATE SET
-      name = EXCLUDED.name,
-      prefecture = EXCLUDED.prefecture,
-      city = EXCLUDED.city,
-      address = EXCLUDED.address,
-      lat = EXCLUDED.lat,
-      lng = EXCLUDED.lng,
-      updated_at = now()
+      external_id     = COALESCE(EXCLUDED.external_id, stores.external_id),
+      name            = EXCLUDED.name,
+      prefecture      = EXCLUDED.prefecture,
+      prefecture_name = COALESCE(EXCLUDED.prefecture_name, stores.prefecture_name),
+      city            = EXCLUDED.city,
+      address         = EXCLUDED.address,
+      lat             = EXCLUDED.lat,
+      lng             = EXCLUDED.lng,
+      updated_at      = now()
   `;
 }
 

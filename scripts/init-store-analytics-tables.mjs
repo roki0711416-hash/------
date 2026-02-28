@@ -27,17 +27,25 @@ async function main() {
   console.log("[init] Creating stores table...");
   await db.sql`
     CREATE TABLE IF NOT EXISTS stores (
-      id          TEXT PRIMARY KEY,
-      name        TEXT NOT NULL,
-      prefecture  TEXT NOT NULL,
-      city        TEXT,
-      address     TEXT,
-      lat         DOUBLE PRECISION,
-      lng         DOUBLE PRECISION,
-      created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-      updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+      id               TEXT PRIMARY KEY,
+      external_id      TEXT UNIQUE,
+      name             TEXT NOT NULL,
+      prefecture        TEXT NOT NULL,
+      prefecture_name   TEXT,
+      city             TEXT,
+      address          TEXT,
+      lat              DOUBLE PRECISION,
+      lng              DOUBLE PRECISION,
+      created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+      updated_at       TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `;
+
+  // 既存テーブルへの安全なカラム追加（冪等）
+  await db.sql`ALTER TABLE stores ADD COLUMN IF NOT EXISTS external_id TEXT UNIQUE`;
+  await db.sql`ALTER TABLE stores ADD COLUMN IF NOT EXISTS prefecture_name TEXT`;
+  // name インデックス
+  await db.sql`CREATE INDEX IF NOT EXISTS idx_stores_name ON stores (name)`;
 
   console.log("[init] Creating store_daily_signals table...");
   await db.sql`
