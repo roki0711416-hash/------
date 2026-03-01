@@ -4,9 +4,9 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/",
-        destination: "/prefectures",
-        permanent: false,
+        source: "/lp",
+        destination: "/",
+        permanent: true,
       },
       {
         source: "/:path*",

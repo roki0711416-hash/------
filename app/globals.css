@@ -91,6 +91,19 @@ footer {
   display: none !important;
 }
 
+/* Vercel Toolbar（右下ボタン）を非表示 */
+[data-vercel-toolbar],
+[data-vercel-toolbar-launcher],
+[id*="vercel-toolbar"],
+[class*="vercel-toolbar"],
+iframe[src*="vercel.live"],
+iframe[src*="vercel.com/toolbar"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* ================================================================== */
 /*  Scrollbar                                                          */
 /* ================================================================== */

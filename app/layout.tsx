@@ -65,7 +65,7 @@ export default function RootLayout({
               <nav aria-label="クイックナビ" className="mt-3 -mx-4 px-4 overflow-x-auto scrollbar-none">
                 <ul className="flex items-center gap-2 text-xs font-medium whitespace-nowrap pb-1">
                   <li>
-                    <Link href="/lp" className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-white/80">
+                    <Link href="/" className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-white/80">
                       TOPへ戻る
                     </Link>
                   </li>
@@ -120,12 +120,12 @@ export default function RootLayout({
               <nav aria-label="ヘッダー" className="shrink-0">
                 <ul className="flex items-center justify-end gap-5 text-sm font-medium">
                   <li>
-                    <Link href="/lp" className="text-white/70 transition hover:text-white">
+                    <Link href="/" className="text-white/70 transition hover:text-white">
                       はじめに
                     </Link>
                   </li>
                   <li>
-                    <Link href="/lp" className="text-white/70 transition hover:text-white">
+                    <Link href="/" className="text-white/70 transition hover:text-white">
                       TOPへ戻る
                     </Link>
                   </li>
@@ -160,7 +160,7 @@ export default function RootLayout({
           </div>
         </header>
         <div className="mx-auto w-full max-w-[1440px] px-0 lg:px-6">
-          <div className="lg:flex lg:gap-6">
+          <div className="lg:flex lg:gap-6 lg:justify-center">
             {/* 左：広告（狭いPCでは非表示） */}
             <aside className="hidden shrink-0 2xl:block w-[300px]">
               <div className="sticky top-4">
@@ -173,7 +173,7 @@ export default function RootLayout({
 
             {/* 中：メイン */}
             <div className="min-w-0 flex-1">
-              <div className="w-full max-w-[960px]">
+              <div className="mx-auto w-full max-w-[960px]">
                 {children}
               </div>
             </div>
