@@ -126,6 +126,18 @@ export async function getStoreById(
   return (rows[0] as StoreRow) ?? null;
 }
 
+/** external_id (例: "osm:n12345") で店舗を検索 */
+export async function getStoreByExternalId(
+  externalId: string,
+): Promise<StoreRow | null> {
+  const db = getDb();
+  if (!db) return null;
+  const { rows } = await db.sql`
+    SELECT * FROM stores WHERE external_id = ${externalId} LIMIT 1
+  `;
+  return (rows[0] as StoreRow) ?? null;
+}
+
 export async function listAllStores(): Promise<StoreRow[]> {
   const db = getDb();
   if (!db) return [];

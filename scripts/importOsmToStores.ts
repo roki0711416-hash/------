@@ -5,14 +5,15 @@
  *
  * - 名前なし (name: null) の店舗はスキップ
  * - 都道府県不明 (prefectureSlug: null) の店舗はスキップ
- * - externalId をそのまま stores.id として使用（例: "osm:n12345"）
- * - ON CONFLICT (id) DO UPDATE で冪等
+ * - id は UUID を使用（externalId は external_id カラムに保存）
+ * - ON CONFLICT (external_id) がある場合は既存行を更新
  *
  * 実行: npx tsx scripts/importOsmToStores.ts
  */
 
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import dotenv from "dotenv";
 
 dotenv.config({ path: ".env.local" });
@@ -77,13 +78,14 @@ async function main() {
       continue;
     }
 
-    const id = s.externalId; // "osm:n12345" 等
+    const externalId = s.externalId; // "osm:n12345" 等
+    const id = crypto.randomUUID(); // UUID を生成
     try {
       const res = await db.sql`
         INSERT INTO stores (id, external_id, name, prefecture, prefecture_name, city, address, lat, lng, source, imported_at)
         VALUES (
           ${id},
-          ${id},
+          ${externalId},
           ${s.name},
           ${s.prefectureSlug},
           ${s.prefectureName},
@@ -115,7 +117,7 @@ async function main() {
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      if (errors < 5) console.error(`  Error on ${id}: ${msg}`);
+      if (errors < 5) console.error(`  Error on ${externalId}: ${msg}`);
       errors++;
     }
 

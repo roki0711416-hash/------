@@ -188,7 +188,6 @@ export default async function PrefectureStoresPage({
                             target="_blank"
                             rel="noopener noreferrer"
                             className="ml-auto shrink-0 rounded-full border border-white/[0.1] bg-white/[0.04] px-2 py-0.5 text-[10px] text-white/40 transition hover:bg-white/[0.12] hover:text-white/70"
-                            onClick={(e) => e.stopPropagation()}
                           >
                             🗺 地図
                           </a>

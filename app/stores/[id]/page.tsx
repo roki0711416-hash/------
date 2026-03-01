@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import {
   getStoreById,
+  getStoreByExternalId,
   getRecentSignals,
   getDailySummaries,
   getDailyMachines,
@@ -20,16 +21,25 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const store = await getStoreById(id);
+
+  // osm: プレフィックスは旧形式 → external_id で検索
+  let store;
+  if (id.startsWith("osm:") || id.startsWith("osm%3A")) {
+    store = await getStoreByExternalId(decodeURIComponent(id));
+  } else {
+    store = await getStoreById(id);
+  }
+
   const title = store
     ? `${store.name}のホール分析｜スロカスくん`
     : "ホール分析｜スロカスくん";
+  const canonicalId = store?.id ?? id;
   return {
     title,
     description: store
       ? `${store.name}（${store.city ?? store.prefecture}）の差枚推移・機種別傾向を独自分析。`
       : "パチンコ・スロットホールの傾向を独自分析。",
-    alternates: { canonical: `${BASE_URL}/stores/${id}` },
+    alternates: { canonical: `${BASE_URL}/stores/${canonicalId}` },
   };
 }
 
@@ -113,6 +123,14 @@ export default async function StoreDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
+  // osm: プレフィックス付きIDは旧形式 → external_id で検索してUUIDにリダイレクト
+  if (id.startsWith("osm:") || id.startsWith("osm%3A")) {
+    const externalId = decodeURIComponent(id);
+    const found = await getStoreByExternalId(externalId);
+    if (found) redirect(`/stores/${found.id}`);
+    notFound();
+  }
 
   const store = await getStoreById(id);
   if (!store) notFound();

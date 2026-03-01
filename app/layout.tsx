@@ -65,6 +65,11 @@ export default function RootLayout({
               <nav aria-label="クイックナビ" className="mt-3 -mx-4 px-4 overflow-x-auto scrollbar-none">
                 <ul className="flex items-center gap-2 text-xs font-medium whitespace-nowrap pb-1">
                   <li>
+                    <Link href="/lp" className="inline-block rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-white/80">
+                      TOPへ戻る
+                    </Link>
+                  </li>
+                  <li>
                     <Link href="/judge" className="inline-block rounded-full bg-gradient-to-r from-cta-from to-cta-to px-3 py-1.5 text-white">
                       設定判別
                     </Link>
@@ -117,6 +122,11 @@ export default function RootLayout({
                   <li>
                     <Link href="/lp" className="text-white/70 transition hover:text-white">
                       はじめに
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/lp" className="text-white/70 transition hover:text-white">
+                      TOPへ戻る
                     </Link>
                   </li>
                   <li>
