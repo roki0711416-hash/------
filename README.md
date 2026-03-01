@@ -223,3 +223,57 @@ Webhook URL:
 
 トライアルはStripe側の設定に従い、かつカード登録必須です。これはCheckout作成時にアプリ側で `payment_method_collection: always` を指定して担保しています。
 
+## Vercel Cron Jobs（自動定期更新）
+
+本番環境で毎日/週1の自動更新を行います。
+
+### スケジュール
+
+| エンドポイント | 実行タイミング | 内容 |
+|---|---|---|
+| `/api/cron/daily` | 毎日 JST 04:10（UTC 19:10） | 当日分のデイリーシグナル生成 |
+| `/api/cron/weekly` | 毎週日曜 JST 05:00（UTC Sat 20:00） | OSM店舗データ取得 → 重複検出 |
+
+### 必要な環境変数
+
+Vercel ダッシュボード → Settings → Environment Variables に以下を追加：
+
+- `CRON_SECRET`: Cron ジョブの認証トークン（ランダム文字列）
+
+> Vercel Cron は自動で `Authorization: Bearer <CRON_SECRET>` ヘッダーを送ります。
+
+### DB マイグレーション
+
+初回のみ `job_locks` テーブルを作成：
+
+```bash
+node scripts/migrate-add-job-locks.mjs
+```
+
+### ローカルテスト
+
+```bash
+# dev サーバー起動
+npm run dev
+
+# Daily cron テスト
+curl "http://localhost:3000/api/cron/daily?token=$CRON_SECRET"
+
+# Weekly cron テスト
+curl "http://localhost:3000/api/cron/weekly?token=$CRON_SECRET"
+```
+
+### ジョブロック
+
+`job_locks` テーブルによる排他制御で、同時実行を防止します。ロックの有効期間は30分で、異常終了時にも自動解放されます。
+
+### ファイル構成
+
+- `lib/jobs/jobLock.ts` — DB ベースの排他ロック
+- `lib/jobs/generateDailySignals.ts` — デイリーシグナル生成
+- `lib/jobs/updateOsmStores.ts` — OSM データ取得→正規化→DB upsert
+- `lib/jobs/dedupeStores.ts` — 重複店舗検出→ canonical_store_id 設定
+- `app/api/cron/daily/route.ts` — Daily cron エンドポイント
+- `app/api/cron/weekly/route.ts` — Weekly cron エンドポイント
+- `vercel.json` — Cron スケジュール定義
+

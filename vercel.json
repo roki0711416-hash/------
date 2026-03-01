@@ -1,4 +1,14 @@
 {
+  "crons": [
+    {
+      "path": "/api/cron/daily",
+      "schedule": "10 19 * * *"
+    },
+    {
+      "path": "/api/cron/weekly",
+      "schedule": "0 20 * * 0"
+    }
+  ],
   "redirects": [
     {
       "source": "/(.*)",
