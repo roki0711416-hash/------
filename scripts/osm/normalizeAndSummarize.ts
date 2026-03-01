@@ -241,6 +241,23 @@ interface NormalizedStore {
   website: string | null;
   phone: string | null;
   sourceUrl: string;
+  isClosed: boolean;
+}
+
+/* ── 閉店判定（OSMタグ） ── */
+function isClosedByTags(tags: Record<string, string>): boolean {
+  // disused: / abandoned: / was: プレフィックス付きタグ
+  if (tags["disused"] === "yes" || tags["abandoned"] === "yes") return true;
+  if (tags["closed"] === "yes") return true;
+  // disused:leisure=adult_gaming_centre — 旧パチンコ店
+  if (tags["disused:leisure"] === "adult_gaming_centre") return true;
+  if (tags["was:leisure"] === "adult_gaming_centre") return true;
+  if (tags["abandoned:leisure"] === "adult_gaming_centre") return true;
+  // disused:amenity / was:amenity
+  if (tags["disused:amenity"] || tags["was:amenity"] || tags["abandoned:amenity"]) return true;
+  // end_date が設定されている場合も閉店とみなす
+  if (tags["end_date"]) return true;
+  return false;
 }
 
 /* ── CSV エスケープ ── */
@@ -305,6 +322,7 @@ function main() {
       website: tags.website ?? tags["contact:website"] ?? null,
       phone: tags.phone ?? tags["contact:phone"] ?? null,
       sourceUrl: osmUrl(el),
+      isClosed: isClosedByTags(tags),
     };
 
     normalized.push(rec);

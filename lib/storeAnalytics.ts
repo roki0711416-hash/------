@@ -21,6 +21,8 @@ export interface StoreRow {
   lng: number | null;
   source: string;                   // 'osm' | 'sample' | 'manual'
   canonical_store_id: string | null; // 重複マージ: 代表店舗の id
+  is_closed: boolean;
+  closed_at: string | null;
   imported_at: string | null;
   created_at: string;
   updated_at: string;
@@ -84,6 +86,7 @@ export async function listStoresByPrefecture(
       WHERE prefecture = ${prefecture}
         AND source = ${source}
         AND canonical_store_id IS NULL
+        AND (is_closed = false OR is_closed IS NULL)
         AND name ILIKE ${like}
     `;
     const { rows } = await db.sql`
@@ -91,6 +94,7 @@ export async function listStoresByPrefecture(
       WHERE prefecture = ${prefecture}
         AND source = ${source}
         AND canonical_store_id IS NULL
+        AND (is_closed = false OR is_closed IS NULL)
         AND name ILIKE ${like}
       ORDER BY name
       LIMIT ${limit} OFFSET ${offset}
@@ -103,12 +107,14 @@ export async function listStoresByPrefecture(
     WHERE prefecture = ${prefecture}
       AND source = ${source}
       AND canonical_store_id IS NULL
+      AND (is_closed = false OR is_closed IS NULL)
   `;
   const { rows } = await db.sql`
     SELECT * FROM stores
     WHERE prefecture = ${prefecture}
       AND source = ${source}
       AND canonical_store_id IS NULL
+      AND (is_closed = false OR is_closed IS NULL)
     ORDER BY name
     LIMIT ${limit} OFFSET ${offset}
   `;

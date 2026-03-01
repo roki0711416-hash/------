@@ -73,6 +73,7 @@ async function getRanking(pref: string, sort: SortKey = "reward"): Promise<RankR
      WHERE s.prefecture = $1
        AND s.source = 'osm'
        AND s.canonical_store_id IS NULL
+       AND (s.is_closed = false OR s.is_closed IS NULL)
      GROUP BY s.id, s.name, s.city, s.address, s.prefecture_name, s.lat, s.lng
      ORDER BY ${orderCol} DESC
      LIMIT 10`,

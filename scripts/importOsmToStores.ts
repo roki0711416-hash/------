@@ -44,6 +44,7 @@ interface NormalizedStore {
   website: string | null;
   phone: string | null;
   sourceUrl: string;
+  isClosed?: boolean;
 }
 
 async function main() {
@@ -81,8 +82,10 @@ async function main() {
     const externalId = s.externalId; // "osm:n12345" 等
     const id = crypto.randomUUID(); // UUID を生成
     try {
+      const isClosed = s.isClosed === true;
+      const closedAt = isClosed ? new Date().toISOString() : null;
       const res = await db.sql`
-        INSERT INTO stores (id, external_id, name, prefecture, prefecture_name, city, address, lat, lng, source, imported_at)
+        INSERT INTO stores (id, external_id, name, prefecture, prefecture_name, city, address, lat, lng, source, imported_at, is_closed, closed_at)
         VALUES (
           ${id},
           ${externalId},
@@ -94,7 +97,9 @@ async function main() {
           ${s.lat},
           ${s.lng},
           'osm',
-          now()
+          now(),
+          ${isClosed},
+          ${closedAt}::timestamptz
         )
         ON CONFLICT (external_id) DO UPDATE SET
           name            = EXCLUDED.name,
@@ -106,7 +111,9 @@ async function main() {
           lng             = EXCLUDED.lng,
           source          = 'osm',
           imported_at     = now(),
-          updated_at      = now()
+          updated_at      = now(),
+          is_closed       = EXCLUDED.is_closed,
+          closed_at       = COALESCE(EXCLUDED.closed_at, stores.closed_at)
         RETURNING (xmax = 0) AS is_insert
       `;
       if (res.rows[0]?.is_insert) {
