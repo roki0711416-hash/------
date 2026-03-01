@@ -6,7 +6,6 @@ import HowItWorks from "@/components/lp/HowItWorks";
 import BottomCTA from "@/components/lp/BottomCTA";
 import LpStoreAnalyticsTeaser from "@/components/lp/StoreAnalyticsTeaser";
 import FAQ from "@/components/lp/FAQ";
-import LpFooter from "@/components/lp/Footer";
 import StickyCTA from "@/components/lp/StickyCTA";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://slokasukun.com";
@@ -63,9 +62,6 @@ export default function LandingPage() {
 
         {/* (7) FAQ */}
         <FAQ />
-
-        {/* (8) Footer（免責＋リンク） */}
-        <LpFooter />
       </div>
 
       {/* モバイル固定CTA */}
