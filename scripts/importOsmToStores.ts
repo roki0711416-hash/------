@@ -96,13 +96,12 @@ async function main() {
           'osm',
           now()
         )
-        ON CONFLICT (id) DO UPDATE SET
-          external_id     = EXCLUDED.external_id,
+        ON CONFLICT (external_id) DO UPDATE SET
           name            = EXCLUDED.name,
           prefecture      = EXCLUDED.prefecture,
           prefecture_name = COALESCE(EXCLUDED.prefecture_name, stores.prefecture_name),
-          city            = EXCLUDED.city,
-          address         = EXCLUDED.address,
+          city            = COALESCE(EXCLUDED.city, stores.city),
+          address         = COALESCE(EXCLUDED.address, stores.address),
           lat             = EXCLUDED.lat,
           lng             = EXCLUDED.lng,
           source          = 'osm',

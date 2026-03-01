@@ -7,6 +7,7 @@ import {
 } from "@/lib/prefectures";
 import { listStoresByPrefecture } from "@/lib/storeAnalytics";
 import { getDb } from "@/lib/db";
+import StoreCard from "@/components/stores/StoreCard";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://slokasukun.com";
 
@@ -36,6 +37,10 @@ interface RankRow {
   id: string;
   name: string;
   city: string | null;
+  address: string | null;
+  prefecture_name: string | null;
+  lat: number | null;
+  lng: number | null;
   avg_traffic: number;
   avg_swing: number;
   avg_reward: number;
@@ -56,7 +61,7 @@ async function getRanking(pref: string, sort: SortKey = "reward"): Promise<RankR
   const orderCol = colMap[sort] ?? "avg_reward";
   const { rows } = await db.query(
     `SELECT
-       s.id, s.name, s.city,
+       s.id, s.name, s.city, s.address, s.prefecture_name, s.lat, s.lng,
        round(avg(sig.traffic_index))::int      AS avg_traffic,
        round(avg(sig.swing_index))::int        AS avg_swing,
        round(avg(sig.reward_index))::int       AS avg_reward,
@@ -68,26 +73,12 @@ async function getRanking(pref: string, sort: SortKey = "reward"): Promise<RankR
      WHERE s.prefecture = $1
        AND s.source = 'osm'
        AND s.canonical_store_id IS NULL
-     GROUP BY s.id, s.name, s.city
+     GROUP BY s.id, s.name, s.city, s.address, s.prefecture_name, s.lat, s.lng
      ORDER BY ${orderCol} DESC
      LIMIT 10`,
     [pref],
   );
   return rows as RankRow[];
-}
-
-/* ── スコアバッジ ── */
-function ScoreBadge({ value, label }: { value: number; label: string }) {
-  let color = "text-white/60 border-white/10 bg-white/[0.04]";
-  if (value >= 70) color = "text-emerald-300 border-emerald-500/30 bg-emerald-500/10";
-  else if (value >= 50) color = "text-amber-300 border-amber-500/30 bg-amber-500/10";
-  else if (value >= 30) color = "text-white/60 border-white/10 bg-white/[0.04]";
-  else color = "text-white/30 border-white/[0.06] bg-white/[0.02]";
-  return (
-    <span className={`inline-block rounded-full border px-2 py-0.5 text-[10px] font-medium ${color}`}>
-      {label} {value}
-    </span>
-  );
 }
 
 /* ── ページ ── */
@@ -146,31 +137,17 @@ export default async function PrefecturePage({
           ) : (
             <div className="mt-3 space-y-3">
               {ranking.map((r, idx) => (
-                <Link
+                <StoreCard
                   key={r.id}
+                  store={r}
                   href={`/stores/${r.id}`}
-                  className="flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.04] p-3 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-white/[0.16] hover:bg-white/[0.07]"
-                >
-                  <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                    idx === 0 ? "bg-amber-500/20 text-amber-300" :
-                    idx === 1 ? "bg-white/10 text-white/60" :
-                    idx === 2 ? "bg-orange-800/20 text-orange-300" :
-                    "bg-white/[0.06] text-white/40"
-                  }`}>
-                    {idx + 1}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-white truncate">{r.name}</p>
-                    {r.city && (
-                      <p className="text-[10px] text-white/30 truncate">{r.city}</p>
-                    )}
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      <ScoreBadge value={r.avg_reward} label="還元" />
-                      <ScoreBadge value={r.avg_traffic} label="活性" />
-                      <ScoreBadge value={r.avg_high_chance} label="上振" />
-                    </div>
-                  </div>
-                </Link>
+                  rank={idx + 1}
+                  badges={[
+                    { label: "還元", value: r.avg_reward },
+                    { label: "活性", value: r.avg_traffic },
+                    { label: "上振", value: r.avg_high_chance },
+                  ]}
+                />
               ))}
             </div>
           )}
