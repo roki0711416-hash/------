@@ -77,11 +77,15 @@ function getConnectionString() {
   );
 }
 
+/* ── バッチサイズ ── */
+const STORE_CHUNK = 50;  // 50店舗ずつ処理
+const SQL_BATCH = 200;   // 200行ずつ INSERT
+
 /* ── main ── */
 async function main() {
   const connectionString = getConnectionString();
   if (!connectionString) throw new Error("Missing DB connection string.");
-  const db = createPool({ connectionString });
+  const db = createPool({ connectionString, max: 4 });
 
   // 全 visible OSM 店舗を取得
   const { rows: stores } = await db.query(
@@ -104,91 +108,94 @@ async function main() {
   let summaryCount = 0;
   let machineCount = 0;
 
-  for (const store of stores) {
-    const rng = splitmix32(hashSeed(store.id));
+  // 店舗をチャンク分割して処理
+  for (let ci = 0; ci < stores.length; ci += STORE_CHUNK) {
+    const chunk = stores.slice(ci, ci + STORE_CHUNK);
 
-    for (const date of dates) {
-      // この店舗・この日の機種数 (3〜8)
-      const machineCountForDay = 3 + Math.floor(rng() * 6);
+    // チャンク内の全行を生成してバッチ INSERT
+    const summaryRows: unknown[][] = [];
+    const machineRows: unknown[][] = [];
 
-      // 機種をシャッフルして先頭 N 台
-      const shuffled = [...MACHINE_CANDIDATES].sort(() => rng() - 0.5);
-      const pickedMachines = shuffled.slice(0, machineCountForDay);
+    for (const store of chunk) {
+      const rng = splitmix32(hashSeed(store.id));
 
-      let dailyTotalDiff = 0;
-      const machineRows: {
-        machineName: string;
-        diffSum: number;
-        diffAvg: number;
-        count: number;
-      }[] = [];
+      for (const date of dates) {
+        const machineCountForDay = 3 + Math.floor(rng() * 6);
+        const shuffled = [...MACHINE_CANDIDATES].sort(() => rng() - 0.5);
+        const pickedMachines = shuffled.slice(0, machineCountForDay);
 
-      for (const mName of pickedMachines) {
-        // 台数 (2〜12)
-        const count = 2 + Math.floor(rng() * 11);
-        // 合計差枚 (-3000〜+5000)
-        const diffSum = Math.round((rng() * 8000 - 3000));
-        const diffAvg = Math.round(diffSum / count);
-        dailyTotalDiff += diffSum;
-        machineRows.push({ machineName: mName, diffSum, diffAvg, count });
+        let dailyTotalDiff = 0;
+        const dayMachines: { machineName: string; diffSum: number; diffAvg: number; count: number }[] = [];
 
-        // UPSERT store_daily_machines
-        const mId = `${store.id}_${date}_${crypto
-          .createHash("md5")
-          .update(mName)
-          .digest("hex")
-          .slice(0, 8)}`;
+        for (const mName of pickedMachines) {
+          const count = 2 + Math.floor(rng() * 11);
+          const diffSum = Math.round(rng() * 8000 - 3000);
+          const diffAvg = Math.round(diffSum / count);
+          dailyTotalDiff += diffSum;
+          dayMachines.push({ machineName: mName, diffSum, diffAvg, count });
 
-        await db.query(
-          `INSERT INTO store_daily_machines
-             (id, store_id, date, machine_name, diff_sum, diff_avg, machine_count)
-           VALUES ($1,$2,$3,$4,$5,$6,$7)
-           ON CONFLICT (store_id, date, machine_name) DO UPDATE SET
-             diff_sum = EXCLUDED.diff_sum,
-             diff_avg = EXCLUDED.diff_avg,
-             machine_count = EXCLUDED.machine_count,
-             updated_at = now()`,
-          [mId, store.id, date, mName, diffSum, diffAvg, count],
-        );
-        machineCount++;
+          const mId = `${store.id}_${date}_${crypto.createHash("md5").update(mName).digest("hex").slice(0, 8)}`;
+          machineRows.push([mId, store.id, date, mName, diffSum, diffAvg, count]);
+        }
+
+        const avgDiff = Math.round(dailyTotalDiff / machineCountForDay);
+        const totalGames = 1000 + Math.floor(rng() * 9000);
+        const top3 = [...dayMachines]
+          .sort((a, b) => b.diffSum - a.diffSum)
+          .slice(0, 3)
+          .map((m) => ({ name: m.machineName, diff: m.diffSum, count: m.count }));
+
+        const sId = `${store.id}_${date}`;
+        summaryRows.push([sId, store.id, date, dailyTotalDiff, avgDiff, totalGames, JSON.stringify(top3)]);
       }
+    }
 
-      // 日別サマリー
-      const avgDiff = Math.round(dailyTotalDiff / machineCountForDay);
-      const totalGames = 1000 + Math.floor(rng() * 9000);
-
-      // TOP3 machines by diff
-      const top3 = [...machineRows]
-        .sort((a, b) => b.diffSum - a.diffSum)
-        .slice(0, 3)
-        .map((m) => ({
-          name: m.machineName,
-          diff: m.diffSum,
-          count: m.count,
-        }));
-
-      const sId = `${store.id}_${date}`;
+    // バッチ INSERT — summaries
+    for (let b = 0; b < summaryRows.length; b += SQL_BATCH) {
+      const batch = summaryRows.slice(b, b + SQL_BATCH);
+      const placeholders: string[] = [];
+      const values: unknown[] = [];
+      batch.forEach((row, i) => {
+        const offset = i * 7;
+        placeholders.push(`($${offset+1},$${offset+2},$${offset+3},$${offset+4},$${offset+5},$${offset+6},$${offset+7})`);
+        values.push(...row);
+      });
       await db.query(
-        `INSERT INTO store_daily_summaries
-           (id, store_id, date, total_diff, avg_diff, total_games, top_machines)
-         VALUES ($1,$2,$3,$4,$5,$6,$7)
+        `INSERT INTO store_daily_summaries (id, store_id, date, total_diff, avg_diff, total_games, top_machines)
+         VALUES ${placeholders.join(",")}
          ON CONFLICT (store_id, date) DO UPDATE SET
-           total_diff = EXCLUDED.total_diff,
-           avg_diff = EXCLUDED.avg_diff,
-           total_games = EXCLUDED.total_games,
-           top_machines = EXCLUDED.top_machines,
+           total_diff = EXCLUDED.total_diff, avg_diff = EXCLUDED.avg_diff,
+           total_games = EXCLUDED.total_games, top_machines = EXCLUDED.top_machines,
            updated_at = now()`,
-        [sId, store.id, date, dailyTotalDiff, avgDiff, totalGames, JSON.stringify(top3)],
+        values,
       );
-      summaryCount++;
+      summaryCount += batch.length;
     }
 
-    // 進捗 (100 店舗ごと)
-    if (summaryCount % (30 * 100) < 30) {
-      process.stdout.write(
-        `\r[mock] ${summaryCount} summaries, ${machineCount} machines ...`,
+    // バッチ INSERT — machines
+    for (let b = 0; b < machineRows.length; b += SQL_BATCH) {
+      const batch = machineRows.slice(b, b + SQL_BATCH);
+      const placeholders: string[] = [];
+      const values: unknown[] = [];
+      batch.forEach((row, i) => {
+        const offset = i * 7;
+        placeholders.push(`($${offset+1},$${offset+2},$${offset+3},$${offset+4},$${offset+5},$${offset+6},$${offset+7})`);
+        values.push(...row);
+      });
+      await db.query(
+        `INSERT INTO store_daily_machines (id, store_id, date, machine_name, diff_sum, diff_avg, machine_count)
+         VALUES ${placeholders.join(",")}
+         ON CONFLICT (store_id, date, machine_name) DO UPDATE SET
+           diff_sum = EXCLUDED.diff_sum, diff_avg = EXCLUDED.diff_avg,
+           machine_count = EXCLUDED.machine_count, updated_at = now()`,
+        values,
       );
+      machineCount += batch.length;
     }
+
+    process.stdout.write(
+      `\r[mock] ${ci + chunk.length}/${stores.length} stores | ${summaryCount} summaries, ${machineCount} machines`,
+    );
   }
 
   console.log(

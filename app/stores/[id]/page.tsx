@@ -8,9 +8,12 @@ import {
   getDailySummaries,
   getDailyMachines,
   type StoreDailySignalRow,
-  type StoreDailySummaryRow,
 } from "@/lib/storeAnalytics";
 import { getPrefectureBySlug } from "@/lib/prefectures";
+import {
+  DailySummaryCards,
+  DailyTableWithMachines,
+} from "@/components/stores/StoreDetailInteractive";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://slokasukun.com";
 
@@ -74,45 +77,7 @@ function computeAvg(
   return Math.round(sum / signals.length);
 }
 
-/* ── 差枚フォーマッタ ── */
-function formatDiff(v: number) {
-  if (v > 0) return `+${v.toLocaleString()}`;
-  return v.toLocaleString();
-}
-function diffColor(v: number) {
-  if (v >= 3000) return "text-emerald-300";
-  if (v > 0) return "text-emerald-400/70";
-  if (v === 0) return "text-white/50";
-  if (v > -3000) return "text-red-400/70";
-  return "text-red-400";
-}
 
-/* ── TOP機種チップ ── */
-function TopMachineChips({
-  machines,
-}: {
-  machines: StoreDailySummaryRow["top_machines"];
-}) {
-  if (!machines || machines.length === 0) {
-    return <span className="text-[10px] text-white/20">—</span>;
-  }
-  return (
-    <div className="flex flex-wrap gap-1">
-      {machines.map((m) => (
-        <span
-          key={m.name}
-          className={`rounded px-1.5 py-0.5 text-[10px] ${
-            m.diff >= 0
-              ? "bg-emerald-500/10 text-emerald-300/80"
-              : "bg-red-500/10 text-red-300/80"
-          }`}
-        >
-          {m.name.length > 6 ? m.name.slice(0, 6) + "…" : m.name}
-        </span>
-      ))}
-    </div>
-  );
-}
 
 /* ── ページ ── */
 export const dynamic = "force-dynamic";
@@ -139,6 +104,9 @@ export default async function StoreDetailPage({
   if (store.canonical_store_id) {
     redirect(`/stores/${store.canonical_store_id}`);
   }
+
+  // 閉店チェック
+  const isClosed = store.is_closed === true;
 
   // データ取得を並列化
   const [signals7, signals30, dailySummaries] = await Promise.all([
@@ -243,37 +211,23 @@ export default async function StoreDetailPage({
           )}
         </div>
 
+        {/* ── 閉店バナー ── */}
+        {isClosed && (
+          <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3">
+            <p className="text-sm font-bold text-red-300">⚠ 閉店の可能性があります</p>
+            <p className="mt-1 text-xs text-red-300/70">
+              この店舗は閉店している可能性があります。表示されているデータは過去の参考情報です。
+            </p>
+          </div>
+        )}
+
         {/* ── サマリーカード ── */}
         {dailySummaries.length > 0 && (
-          <section className="mt-6 grid grid-cols-3 gap-2">
-            <div className="flex flex-col items-center rounded-xl border border-white/[0.08] bg-white/[0.04] py-3">
-              <span className="text-[10px] text-muted">7日差枚合計</span>
-              <span className={`mt-1 text-lg font-bold ${diffColor(sum7Diff)}`}>
-                {formatDiff(sum7Diff)}
-              </span>
-            </div>
-            <div className="flex flex-col items-center rounded-xl border border-white/[0.08] bg-white/[0.04] py-3">
-              <span className="text-[10px] text-muted">30日平均差枚</span>
-              <span className={`mt-1 text-lg font-bold ${diffColor(avg30Diff)}`}>
-                {formatDiff(avg30Diff)}
-              </span>
-            </div>
-            <div className="flex flex-col items-center rounded-xl border border-white/[0.08] bg-white/[0.04] py-3">
-              <span className="text-[10px] text-muted">ベストデイ</span>
-              {bestDay ? (
-                <>
-                  <span className={`mt-1 text-lg font-bold ${diffColor(bestDay.total_diff)}`}>
-                    {formatDiff(bestDay.total_diff)}
-                  </span>
-                  <span className="text-[10px] text-white/30">
-                    {bestDay.date.slice(5, 10)}
-                  </span>
-                </>
-              ) : (
-                <span className="mt-1 text-sm text-white/30">—</span>
-              )}
-            </div>
-          </section>
+          <DailySummaryCards
+            sum7Diff={sum7Diff}
+            avg30Diff={avg30Diff}
+            bestDay={bestDay ? { date: bestDay.date, total_diff: bestDay.total_diff } : null}
+          />
         )}
 
         {/* ── ゲージ（直近7日平均） ── */}
@@ -316,121 +270,29 @@ export default async function StoreDetailPage({
           </section>
         )}
 
-        {/* ── 差枚推移テーブル（直近14日） ── */}
-        {recentSummaries.length > 0 && (
-          <section className="mt-8">
-            <h2 className="text-base font-bold text-white">差枚推移（直近14日）</h2>
-            <div className="mt-3 overflow-hidden rounded-xl border border-white/[0.08]">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-white/[0.06] bg-white/[0.04]">
-                    <th className="px-3 py-2 text-left font-medium text-muted">日付</th>
-                    <th className="px-3 py-2 text-right font-medium text-muted">合計差枚</th>
-                    <th className="px-3 py-2 text-right font-medium text-muted">平均差枚</th>
-                    <th className="px-3 py-2 text-left font-medium text-muted">TOP機種</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recentSummaries.map((s) => (
-                    <tr
-                      key={s.date}
-                      className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.03] transition"
-                    >
-                      <td className="px-3 py-2 text-white/60">{s.date.slice(5, 10)}</td>
-                      <td className={`px-3 py-2 text-right font-bold ${diffColor(s.total_diff)}`}>
-                        {formatDiff(s.total_diff)}
-                      </td>
-                      <td className={`px-3 py-2 text-right ${diffColor(s.avg_diff)}`}>
-                        {formatDiff(s.avg_diff)}
-                      </td>
-                      <td className="px-3 py-2">
-                        <TopMachineChips machines={s.top_machines} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        )}
-
-        {/* ── 強い日ランキング TOP5 ── */}
-        {strongDays.length > 0 && (
-          <section className="mt-8">
-            <h2 className="text-base font-bold text-white">強い日ランキング TOP5（30日）</h2>
-            <div className="mt-3 space-y-2">
-              {strongDays.map((s, idx) => (
-                <div
-                  key={s.date}
-                  className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2"
-                >
-                  <span
-                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
-                      idx === 0
-                        ? "bg-amber-500/20 text-amber-300"
-                        : idx === 1
-                          ? "bg-white/10 text-white/60"
-                          : idx === 2
-                            ? "bg-orange-800/20 text-orange-300"
-                            : "bg-white/[0.06] text-white/40"
-                    }`}
-                  >
-                    {idx + 1}
-                  </span>
-                  <span className="w-16 text-xs text-white/60">{s.date.slice(5, 10)}</span>
-                  <span className={`text-sm font-bold ${diffColor(s.total_diff)}`}>
-                    {formatDiff(s.total_diff)}
-                  </span>
-                  <div className="ml-auto">
-                    <TopMachineChips machines={s.top_machines} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── 機種別内訳（最新日） ── */}
-        {latestMachines.length > 0 && latestDate && (
-          <section className="mt-8">
-            <h2 className="text-base font-bold text-white">
-              機種別内訳（{latestDate.slice(5, 10)}）
-            </h2>
-            <div className="mt-3 overflow-hidden rounded-xl border border-white/[0.08]">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-white/[0.06] bg-white/[0.04]">
-                    <th className="px-3 py-2 text-left font-medium text-muted">機種名</th>
-                    <th className="px-3 py-2 text-right font-medium text-muted">台数</th>
-                    <th className="px-3 py-2 text-right font-medium text-muted">合計差枚</th>
-                    <th className="px-3 py-2 text-right font-medium text-muted">平均差枚</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {latestMachines.map((m) => (
-                    <tr
-                      key={m.machine_name}
-                      className="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.03] transition"
-                    >
-                      <td className="px-3 py-2 text-white/80 truncate max-w-[140px]">
-                        {m.machine_name}
-                      </td>
-                      <td className="px-3 py-2 text-right text-white/50">
-                        {m.machine_count ?? "—"}
-                      </td>
-                      <td className={`px-3 py-2 text-right font-bold ${diffColor(m.diff_sum)}`}>
-                        {formatDiff(m.diff_sum)}
-                      </td>
-                      <td className={`px-3 py-2 text-right ${diffColor(m.diff_avg)}`}>
-                        {formatDiff(m.diff_avg)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        )}
+        {/* ── インタラクティブ部分（差枚推移 + 強い日 + 機種一覧） ── */}
+        <DailyTableWithMachines
+          storeId={id}
+          recentSummaries={recentSummaries.map((s) => ({
+            date: s.date,
+            total_diff: s.total_diff,
+            avg_diff: s.avg_diff,
+            top_machines: s.top_machines,
+          }))}
+          strongDays={strongDays.map((s) => ({
+            date: s.date,
+            total_diff: s.total_diff,
+            avg_diff: s.avg_diff,
+            top_machines: s.top_machines,
+          }))}
+          initialMachines={latestMachines.map((m) => ({
+            machine_name: m.machine_name,
+            diff_sum: m.diff_sum,
+            diff_avg: m.diff_avg,
+            machine_count: m.machine_count,
+          }))}
+          initialDate={latestDate}
+        />
 
         {/* ── 日別スコア履歴 ── */}
         <section className="mt-8">
@@ -492,6 +354,9 @@ export default async function StoreDetailPage({
         <p className="mt-10 text-[10px] leading-relaxed text-white/20">
           ※
           本サイトは公開情報等を基にした独自集計の参考情報であり、結果を保証するものではありません。
+        </p>
+        <p className="mt-1 text-[10px] leading-relaxed text-white/20">
+          ※ データは整備中のため欠損がある場合があります。
         </p>
       </div>
     </main>
