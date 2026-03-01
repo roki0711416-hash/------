@@ -9,10 +9,10 @@ export const metadata = {
 export default function SettingJudgementColumnPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 space-y-4">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6">
         <h1 className="text-lg font-semibold">パチスロの設定判別とは？</h1>
 
-        <div className="mt-4 space-y-4 text-sm leading-7 text-neutral-700">
+        <div className="mt-4 space-y-4 text-sm leading-7 text-muted">
           <p>
             パチスロの「設定判別」とは、台に設定されている設定（例：1〜6）を、
             実戦中に集めた情報から推測していく考え方です。設定が高いほど出玉性能が優遇されやすい、

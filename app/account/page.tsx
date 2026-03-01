@@ -55,21 +55,21 @@ export default async function AccountPage({
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-semibold">アカウント</h1>
           <Link
             href="/"
-            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+            className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
           >
             ← トップ
           </Link>
         </div>
 
         {checkout === "success" ? (
-          <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">購入処理を受け付けました</p>
-            <p className="mt-1 text-sm text-neutral-700">
+          <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">購入処理を受け付けました</p>
+            <p className="mt-1 text-sm text-muted">
               反映はWebhook経由なので、数秒〜数十秒かかることがあります。
             </p>
             {sessionId ? <CheckoutSync sessionId={sessionId} /> : null}
@@ -77,24 +77,24 @@ export default async function AccountPage({
         ) : null}
 
         {checkout === "cancel" ? (
-          <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">購入をキャンセルしました</p>
+          <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">購入をキャンセルしました</p>
           </div>
         ) : null}
 
         {!user ? (
           <div className="mt-4 space-y-3">
-            <p className="text-sm text-neutral-700">ログインしていません。</p>
+            <p className="text-sm text-muted">ログインしていません。</p>
             <div className="flex gap-2">
               <Link
                 href="/signup"
-                className="flex-1 rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="flex-1 rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 会員登録
               </Link>
               <Link
                 href="/login"
-                className="flex-1 rounded-xl border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-semibold text-neutral-900"
+                className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.04] px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 ログイン
               </Link>
@@ -102,21 +102,21 @@ export default async function AccountPage({
           </div>
         ) : (
           <>
-            <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-              <p className="text-sm font-semibold text-neutral-800">ログイン中</p>
-              <p className="mt-1 text-sm text-neutral-700">{user.email}</p>
+            <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+              <p className="text-sm font-semibold text-white">ログイン中</p>
+              <p className="mt-1 text-sm text-muted">{user.email}</p>
             </div>
 
-            <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-              <p className="text-sm font-semibold text-neutral-800">ユーザーネーム</p>
-              <p className="mt-1 text-sm text-neutral-700">
+            <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+              <p className="text-sm font-semibold text-white">ユーザーネーム</p>
+              <p className="mt-1 text-sm text-muted">
                 {username ? (
                   <span className="inline-flex items-center gap-2">
-                    <span className="font-semibold text-neutral-900">{username}</span>
+                    <span className="font-semibold text-white">{username}</span>
                     {isPremium ? (
                       <span
                         aria-label="有料会員"
-                        className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-neutral-200 bg-white text-xs font-bold text-neutral-900"
+                        className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.04] text-xs font-bold text-white"
                       >
                         7
                       </span>
@@ -128,36 +128,36 @@ export default async function AccountPage({
               </p>
 
               {!username ? (
-                <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
-                  <p className="text-sm font-semibold text-neutral-900">
+                <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.04] p-3">
+                  <p className="text-sm font-semibold text-white">
                     口コミ投稿にはユーザーネーム設定が必要です
                   </p>
-                  <p className="mt-1 text-xs text-neutral-600">
+                  <p className="mt-1 text-xs text-muted">
                     いまは未設定のため、口コミを投稿できません。下のフォームから設定してください。
                   </p>
                 </div>
               ) : null}
 
               <UsernameForm initialUsername={username} />
-              <p className="mt-2 text-xs text-neutral-500">
+              <p className="mt-2 text-xs text-white/40">
                 ※空白なし・20文字以内。後から変更できます。
               </p>
             </div>
 
-            <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-              <p className="text-sm font-semibold text-neutral-800">会員状態</p>
-              <p className="mt-1 whitespace-pre-line text-sm text-neutral-700">
+            <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+              <p className="text-sm font-semibold text-white">会員状態</p>
+              <p className="mt-1 whitespace-pre-line text-sm text-muted">
                 {isPremium
                   ? "サブスク会員です。\n判別ツールの全機能と、会員限定の機能をご利用いただけます。"
                   : "現在は無料会員です。\n月額会員に登録すると、判別ツールの精度向上機能や限定機能がすべて使えるようになります。"}
               </p>
               {sub?.trial_end ? (
-                <p className="mt-1 text-xs text-neutral-600">
+                <p className="mt-1 text-xs text-muted">
                   トライアル終了予定：{fmtDate(sub.trial_end)}
                 </p>
               ) : null}
               {sub?.current_period_end ? (
-                <p className="mt-1 text-xs text-neutral-600">
+                <p className="mt-1 text-xs text-muted">
                   期限：{fmtDate(sub.current_period_end)}
                 </p>
               ) : null}
@@ -166,7 +166,7 @@ export default async function AccountPage({
                 {isPremium ? (
                   <Link
                     href="/community"
-                    className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                    className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
                   >
                     有料会員限定コミュニティへ
                   </Link>
@@ -180,13 +180,13 @@ export default async function AccountPage({
               showYearly={false}
             />
 
-            <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-              <p className="text-sm font-semibold text-neutral-800">収支管理</p>
-              <p className="mt-1 text-sm text-neutral-700">実戦の収支をカレンダーで管理できます。</p>
+            <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+              <p className="text-sm font-semibold text-white">収支管理</p>
+              <p className="mt-1 text-sm text-muted">実戦の収支をカレンダーで管理できます。</p>
               <div className="mt-3">
                 <Link
                   href="/record"
-                  className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                  className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
                 >
                   収支管理へ
                 </Link>
@@ -194,16 +194,16 @@ export default async function AccountPage({
             </div>
 
             {isAdmin ? (
-              <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-                <p className="text-sm font-semibold text-neutral-800">管理者</p>
-                <p className="mt-1 text-xs text-neutral-600">
+              <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+                <p className="text-sm font-semibold text-white">管理者</p>
+                <p className="mt-1 text-xs text-muted">
                   admin は課金状態より優先して会員機能が解放されます。
                 </p>
                 <AdminRoleForm />
               </div>
             ) : null}
 
-            <p className="mt-4 text-xs text-neutral-500">
+            <p className="mt-4 text-xs text-white/40">
               ※端末共有NG: ログインは常に最後の1台のみ有効です。
             </p>
           </>

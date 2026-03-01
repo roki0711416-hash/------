@@ -97,7 +97,7 @@ export default function SideMenu({
         type="button"
         aria-label="メニュー"
         onClick={() => setIsOpen(true)}
-        className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+        className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
       >
         ≡
       </button>
@@ -111,9 +111,9 @@ export default function SideMenu({
             className="absolute inset-0 bg-black/30"
           />
 
-          <div className="absolute inset-y-0 left-0 flex w-[92vw] max-w-sm flex-col overflow-x-hidden bg-white shadow-sm">
-            <div className="flex flex-wrap items-center gap-2 border-b border-neutral-200 p-4">
-              <p className="text-sm font-semibold text-neutral-800">機種一覧</p>
+          <div className="absolute inset-y-0 left-0 flex w-[92vw] max-w-sm flex-col overflow-x-hidden bg-white/[0.04] shadow-sm">
+            <div className="flex flex-wrap items-center gap-2 border-b border-white/[0.08] p-4">
+              <p className="text-sm font-semibold text-white">機種一覧</p>
 
               <label className="min-w-0 flex-1">
                 <span className="sr-only">機種を検索</span>
@@ -121,22 +121,22 @@ export default function SideMenu({
                   value={machineQuery}
                   onChange={(e) => setMachineQuery(e.target.value)}
                   placeholder="機種を検索…"
-                  className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                 />
               </label>
 
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg border border-neutral-200 bg-white px-3 py-1 text-sm font-medium"
+                className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-sm font-medium"
               >
                 閉じる
               </button>
             </div>
 
             <div className="grid min-w-0 flex-1 grid-cols-2 gap-0 overflow-hidden">
-              <div className="min-w-0 overflow-y-auto border-r border-neutral-200 p-2">
-                <p className="px-2 pb-2 text-xs font-semibold text-neutral-500">
+              <div className="min-w-0 overflow-y-auto border-r border-white/[0.08] p-2">
+                <p className="px-2 pb-2 text-xs font-semibold text-white/40">
                   メーカー
                 </p>
                 <div className="space-y-1">
@@ -152,8 +152,8 @@ export default function SideMenu({
                         }}
                         className={`w-full rounded-lg px-3 py-2 text-left text-sm whitespace-normal break-words ${
                           isActive
-                            ? "bg-neutral-100 font-semibold text-neutral-900"
-                            : "text-neutral-700"
+                            ? "bg-white/[0.06] font-semibold text-white"
+                            : "text-muted"
                         }`}
                       >
                         {mk.name}
@@ -161,7 +161,7 @@ export default function SideMenu({
                     );
                   })}
                   {makers.length === 0 ? (
-                    <p className="px-2 py-2 text-sm text-neutral-600">
+                    <p className="px-2 py-2 text-sm text-muted">
                       機種データがありません。
                     </p>
                   ) : null}
@@ -169,7 +169,7 @@ export default function SideMenu({
               </div>
 
               <div className="min-w-0 overflow-y-auto p-2">
-                <p className="px-2 pb-2 text-xs font-semibold text-neutral-500">機種</p>
+                <p className="px-2 pb-2 text-xs font-semibold text-white/40">機種</p>
 
                 <div className="space-y-1">
                   {filteredMachines.map((mc) => {
@@ -191,8 +191,8 @@ export default function SideMenu({
                         }}
                         className={`w-full rounded-lg px-3 py-2 text-left text-sm whitespace-normal break-words ${
                           isSelected
-                            ? "bg-neutral-100 font-semibold text-neutral-900"
-                            : "text-neutral-700"
+                            ? "bg-white/[0.06] font-semibold text-white"
+                            : "text-muted"
                         }`}
                       >
                         {displayMachineName(mc.name)}
@@ -201,7 +201,7 @@ export default function SideMenu({
                   })}
 
                   {makers.length > 0 && filteredMachines.length === 0 ? (
-                    <p className="px-2 py-2 text-sm text-neutral-600">
+                    <p className="px-2 py-2 text-sm text-muted">
                       {normalizedQuery ? "検索結果がありません。" : "機種がありません。"}
                     </p>
                   ) : null}

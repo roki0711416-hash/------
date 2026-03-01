@@ -5,10 +5,10 @@ export const metadata = {
 export default function DisclaimerPage() {
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h1 className="text-lg font-semibold">免責事項</h1>
 
-        <div className="mt-4 space-y-4 text-sm text-neutral-700">
+        <div className="mt-4 space-y-4 text-sm text-muted">
           <div>
             <h2 className="font-semibold">情報の正確性</h2>
             <p className="mt-2">
@@ -38,7 +38,7 @@ export default function DisclaimerPage() {
             </p>
           </div>
 
-          <p className="text-xs text-neutral-500">最終更新日: 2026-01-13</p>
+          <p className="text-xs text-white/40">最終更新日: 2026-01-13</p>
         </div>
       </section>
     </main>

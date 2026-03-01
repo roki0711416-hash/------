@@ -9,7 +9,7 @@ export const metadata = {
 export default function HowToReadProbabilityPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 space-y-4">
-      <nav aria-label="パンくず" className="text-xs text-neutral-500">
+      <nav aria-label="パンくず" className="text-xs text-white/40">
         <Link href="/" className="underline underline-offset-2">トップ</Link>
         <span className="mx-1">/</span>
         <Link href="/column" className="underline underline-offset-2">コラム一覧</Link>
@@ -17,13 +17,13 @@ export default function HowToReadProbabilityPage() {
         <span>確率の読み方入門</span>
       </nav>
 
-      <article className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <article className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6">
         <h1 className="text-lg font-semibold">確率の読み方入門 ── ボーナス確率表の見方</h1>
-        <p className="mt-1 text-xs text-neutral-500">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
+        <p className="mt-1 text-xs text-white/40">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
 
-        <div className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
+        <div className="mt-5 space-y-5 text-sm leading-7 text-muted">
           <section>
-            <h2 className="font-semibold text-neutral-900">確率表は何を示しているのか</h2>
+            <h2 className="font-semibold text-white">確率表は何を示しているのか</h2>
             <p className="mt-2">
               パチスロの機種情報では、設定ごとのボーナス確率が表形式で公開されていることがあります。
               たとえば「BIG 1/280」「REG 1/340」のように記載されている数字は、
@@ -36,7 +36,7 @@ export default function HowToReadProbabilityPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">合算確率と単独確率の違い</h2>
+            <h2 className="font-semibold text-white">合算確率と単独確率の違い</h2>
             <p className="mt-2">
               「合算確率」はBIG＋REGをまとめた確率で、総合的なボーナス出現率を示します。
               一方、「単独確率」はBIG・REGそれぞれ個別の確率です。
@@ -49,7 +49,7 @@ export default function HowToReadProbabilityPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">分母が大きい確率ほどブレやすい</h2>
+            <h2 className="font-semibold text-white">分母が大きい確率ほどブレやすい</h2>
             <p className="mt-2">
               確率の分母が大きい（例：1/400 など）ほど、少ないゲーム数ではブレが大きくなります。
               逆に分母が小さい確率（例：1/8 のぶどう確率など）は、比較的少ないサンプルでも傾向が見えやすいとされています。
@@ -61,7 +61,7 @@ export default function HowToReadProbabilityPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">確率の「良い」「悪い」は相対的</h2>
+            <h2 className="font-semibold text-white">確率の「良い」「悪い」は相対的</h2>
             <p className="mt-2">
               「ボーナスが1/250で引けているから高設定だ」と考えがちですが、
               それが本当に「良い」かどうかは、その機種の設定ごとの理論値と比較しなければわかりません。
@@ -74,7 +74,7 @@ export default function HowToReadProbabilityPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">まとめ</h2>
+            <h2 className="font-semibold text-white">まとめ</h2>
             <p className="mt-2">
               確率表は設定判別の基本となるデータですが、読み方を誤ると判断を間違える原因にもなります。
               合算と単独の違いを理解し、分母の大きさによるブレを意識し、
@@ -96,13 +96,13 @@ export default function HowToReadProbabilityPage() {
         <div className="mt-6 flex gap-3">
           <Link
             href="/column"
-            className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-900"
+            className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-center text-sm font-semibold text-white"
           >
             ← コラム一覧
           </Link>
           <Link
             href="/judge"
-            className="rounded-xl bg-neutral-900 px-4 py-3 text-center text-sm font-semibold text-white"
+            className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-3 text-center text-sm font-semibold text-white"
           >
             設定判別ツールへ →
           </Link>

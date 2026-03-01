@@ -66,15 +66,15 @@ export default function ThemeSettings() {
   }
 
   return (
-    <section className="mt-6 rounded-2xl border border-neutral-200 bg-white p-4">
-      <p className="text-sm font-semibold text-neutral-900">表示設定</p>
+    <section className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-4">
+      <p className="text-sm font-semibold text-white">表示設定</p>
       <div className="mt-3 flex items-center justify-between gap-3">
-        <p className="text-sm text-neutral-700">テーマ</p>
+        <p className="text-sm text-muted">テーマ</p>
         <select
           ref={selectRef}
           defaultValue="system"
           onChange={(e) => update(normalizeChoice(e.target.value))}
-          className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900"
+          className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white"
         >
           <option value="system">自動</option>
           <option value="light">明るい</option>

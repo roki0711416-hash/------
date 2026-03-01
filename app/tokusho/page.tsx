@@ -5,10 +5,10 @@ export const metadata = {
 export default function TokushoPage() {
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h1 className="text-lg font-semibold">特定商取引法に基づく表記</h1>
 
-        <div className="mt-4 space-y-4 text-sm text-neutral-700">
+        <div className="mt-4 space-y-4 text-sm text-muted">
           <div>
             <h2 className="font-semibold">販売事業者</h2>
             <p className="mt-2">清水 裕基</p>
@@ -134,7 +134,7 @@ export default function TokushoPage() {
             </p>
           </div>
 
-          <p className="text-xs text-neutral-500">最終更新日：2026年1月13日</p>
+          <p className="text-xs text-white/40">最終更新日：2026年1月13日</p>
         </div>
       </section>
     </main>

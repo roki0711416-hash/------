@@ -1,61 +1,53 @@
 @import "tailwindcss";
 
-html[data-theme="light"] {
-  /* Design system tokens (light) */
-  --color-cta: #FF7A00;
-  --color-cta-hover: #FF8F26;
-  --color-cta-rgb: 255 122 0;
-  --color-main: #0F172A;
-  --color-sub: #10B981;
-  --color-danger: #EF4444;
-  --bg: #F8FAFC;
-  --card: #FFFFFF;
-  --border: #E5E7EB;
-  --text-rgb: 15 23 42;
-  color-scheme: light;
+/* ================================================================== */
+/*  Tailwind v4 @theme — グローバルデザイントークン                      */
+/* ================================================================== */
+@theme {
+  /* 背景 */
+  --color-bg0: #050816;
+  --color-bg1: #0c0e2b;
+  --color-bg2: #111336;
+
+  /* カード・サーフェス */
+  --color-card: rgba(255, 255, 255, 0.04);
+  --color-card-hover: rgba(255, 255, 255, 0.07);
+
+  /* アクセント */
+  --color-accent: #f97316;
+  --color-accent2: #ec4899;
+
+  /* ボーダー */
+  --color-bdr: rgba(255, 255, 255, 0.08);
+  --color-bdr-hover: rgba(255, 255, 255, 0.18);
+
+  /* テキスト */
+  --color-txt: #f1f5f9;
+  --color-muted: #94a3b8;
+
+  /* CTA グラデーション端点 */
+  --color-cta-from: #f97316;
+  --color-cta-to: #ec4899;
+
+  /* Danger */
+  --color-danger: #ef4444;
 }
 
-html[data-theme="dark"] {
-  /* Temporarily keep the site palette consistent in production (same as light). */
-  --color-cta: #FF7A00;
-  --color-cta-hover: #FF8F26;
-  --color-cta-rgb: 255 122 0;
-  --color-main: #0F172A;
-  --color-sub: #10B981;
-  --color-danger: #EF4444;
-  --bg: #F8FAFC;
-  --card: #FFFFFF;
-  --border: #E5E7EB;
-  --text-rgb: 15 23 42;
-  color-scheme: light;
-}
-
-/* Fallback (before JS runs): treat as system */
+/* ================================================================== */
+/*  CSS 変数 (旧テーマ互換用 + 追加)                                     */
+/* ================================================================== */
 :root {
-  --color-cta: #FF7A00;
-  --color-cta-hover: #FF8F26;
-  --color-cta-rgb: 255 122 0;
+  --color-cta: #f97316;
+  --color-cta-hover: #fb923c;
+  --color-cta-rgb: 249 115 22;
   --color-main: #0F172A;
   --color-sub: #10B981;
-  --color-danger: #EF4444;
-  --bg: #F8FAFC;
-  --card: #FFFFFF;
-  --border: #E5E7EB;
-  --text-rgb: 15 23 42;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Keep the palette consistent regardless of system theme. */
-    --bg: #F8FAFC;
-    --card: #FFFFFF;
-    --border: #E5E7EB;
-    --text-rgb: 15 23 42;
-    color-scheme: light;
-  }
-}
-
+/* ================================================================== */
+/*  Base                                                               */
+/* ================================================================== */
 html,
 body {
   overscroll-behavior-y: none;
@@ -71,39 +63,27 @@ body {
 
 body {
   min-height: 100vh;
-  background-color: var(--bg);
-  color: rgb(var(--text-rgb));
+  background: linear-gradient(180deg, var(--color-bg0) 0%, var(--color-bg1) 40%, var(--color-bg0) 100%);
+  color: var(--color-txt);
   position: relative;
   isolation: isolate;
 }
 
-footer {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* Global background image (all pages) */
+/* ノイズテクスチャ疑似要素 */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -2;
-  background-image: url("/slot-bg.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  z-index: -1;
+  opacity: 0.03;
   pointer-events: none;
-  transform: translateZ(0);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
 }
 
-/* Dark overlay for readability (behind content) */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: rgb(var(--text-rgb) / 0.55);
-  pointer-events: none;
-  transform: translateZ(0);
+footer {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* 審査中の最終兵器：TOPの新着情報セクションは強制非表示 */
@@ -111,55 +91,10 @@ body::after {
   display: none !important;
 }
 
-/* Map existing Tailwind utility usage to theme tokens (no UI/layout changes) */
-.bg-neutral-100 {
-  background-color: var(--bg);
-}
+/* ================================================================== */
+/*  Scrollbar                                                          */
+/* ================================================================== */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { scrollbar-width: none; }
 
-.bg-white,
-.bg-neutral-50 {
-  background-color: var(--card);
-}
 
-.border-neutral-200 {
-  border-color: var(--border);
-}
-
-/* Primary CTA buttons: map existing bg-neutral-900 usage to CTA tokens */
-.bg-neutral-900 {
-  background-color: var(--color-cta);
-}
-
-.bg-neutral-900:hover {
-  background-color: var(--color-cta-hover);
-}
-
-.bg-neutral-900:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgb(var(--color-cta-rgb) / 0.35);
-}
-
-/* Danger (use sparingly) */
-.text-red-600 {
-  color: var(--color-danger);
-}
-
-.text-neutral-900 {
-  color: rgb(var(--text-rgb));
-}
-
-.text-neutral-800 {
-  color: rgb(var(--text-rgb) / 0.92);
-}
-
-.text-neutral-700 {
-  color: rgb(var(--text-rgb) / 0.84);
-}
-
-.text-neutral-600 {
-  color: rgb(var(--text-rgb) / 0.76);
-}
-
-.text-neutral-500 {
-  color: rgb(var(--text-rgb) / 0.68);
-}

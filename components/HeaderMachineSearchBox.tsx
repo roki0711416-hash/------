@@ -23,17 +23,17 @@ export default function HeaderMachineSearchBox() {
       }}
       className="w-full"
     >
-      <label className="flex w-full items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2">
+      <label className="flex w-full items-center gap-2 rounded-xl border border-white/[0.12] bg-white/[0.06] px-3 py-2 backdrop-blur-sm transition focus-within:border-white/25 focus-within:bg-white/[0.1]">
         <span className="sr-only">機種を検索</span>
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="機種を検索…"
-          className="w-full bg-transparent text-sm text-neutral-900 outline-none"
+          className="w-full bg-transparent text-sm text-white placeholder-white/40 outline-none"
         />
         <button
           type="submit"
-          className="shrink-0 text-sm font-semibold text-neutral-900"
+          className="shrink-0 text-sm font-semibold text-white/70 transition hover:text-white"
         >
           検索
         </button>

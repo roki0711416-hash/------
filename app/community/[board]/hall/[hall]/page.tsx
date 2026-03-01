@@ -38,28 +38,28 @@ export default async function CommunityHallPage({
   if (!user) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
             <Link
               href={`/community/${boardId}`}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
             >
               ← 条件選択
             </Link>
           </div>
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">ログインが必要です</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">ログインが必要です</p>
             <div className="mt-3 flex gap-2">
               <Link
                 href="/signup"
-                className="flex-1 rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="flex-1 rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 会員登録
               </Link>
               <Link
                 href="/login"
-                className="flex-1 rounded-xl border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-semibold text-neutral-900"
+                className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.04] px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 ログイン
               </Link>
@@ -76,23 +76,23 @@ export default async function CommunityHallPage({
   if (!isPremium) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
             <Link
               href={`/community/${boardId}`}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
             >
               ← 条件選択
             </Link>
           </div>
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">有料会員限定です</p>
-            <p className="mt-1 text-sm text-neutral-700">アカウント画面から登録してください。</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">有料会員限定です</p>
+            <p className="mt-1 text-sm text-muted">アカウント画面から登録してください。</p>
             <div className="mt-3">
               <Link
                 href="/account"
-                className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 アカウントへ
               </Link>
@@ -107,19 +107,19 @@ export default async function CommunityHallPage({
   if (!db) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
             <Link
               href={`/community/${boardId}`}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
             >
               ← 条件選択
             </Link>
           </div>
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">DBが未設定です</p>
-            <p className="mt-1 text-sm text-neutral-700">DATABASE_URL または POSTGRES_URL を設定してください。</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">DBが未設定です</p>
+            <p className="mt-1 text-sm text-muted">DATABASE_URL または POSTGRES_URL を設定してください。</p>
           </div>
         </section>
       </main>
@@ -134,24 +134,24 @@ export default async function CommunityHallPage({
   if (!username) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
             <Link
               href={`/community/${boardId}`}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
             >
               ← 条件選択
             </Link>
           </div>
 
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">ユーザーネーム設定が必要です</p>
-            <p className="mt-1 text-sm text-neutral-700">/account からユーザーネームを設定してください。</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">ユーザーネーム設定が必要です</p>
+            <p className="mt-1 text-sm text-muted">/account からユーザーネームを設定してください。</p>
             <div className="mt-3">
               <Link
                 href="/account"
-                className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 アカウントへ
               </Link>
@@ -177,19 +177,19 @@ export default async function CommunityHallPage({
     if (msg.includes('relation "community_threads" does not exist')) {
       return (
         <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-          <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+          <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
             <div className="flex items-center justify-between">
               <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
               <Link
                 href={`/community/${boardId}`}
-                className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+                className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
               >
                 ← 条件選択
               </Link>
             </div>
-            <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-              <p className="text-sm font-semibold text-neutral-800">掲示板DBが未初期化です</p>
-              <p className="mt-1 text-sm text-neutral-700">ターミナルで `npm run db:init-community` を実行してください。</p>
+            <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+              <p className="text-sm font-semibold text-white">掲示板DBが未初期化です</p>
+              <p className="mt-1 text-sm text-muted">ターミナルで `npm run db:init-community` を実行してください。</p>
             </div>
           </section>
         </main>
@@ -200,15 +200,15 @@ export default async function CommunityHallPage({
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
-            <p className="mt-1 text-sm font-semibold text-neutral-700">{hallName}</p>
+            <p className="mt-1 text-sm font-semibold text-muted">{hallName}</p>
           </div>
           <Link
             href={`/community/${boardId}`}
-            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+            className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
           >
             ← 条件選択
           </Link>
@@ -219,7 +219,7 @@ export default async function CommunityHallPage({
         </div>
 
         <div className="mt-6">
-          <h2 className="text-sm font-semibold text-neutral-800">スレ一覧</h2>
+          <h2 className="text-sm font-semibold text-white">スレ一覧</h2>
 
           {threads.length > 0 ? (
             <ul className="mt-3 space-y-2">
@@ -241,15 +241,15 @@ export default async function CommunityHallPage({
                   <li key={th.id}>
                     <Link
                       href={`/community/${boardId}/${th.id}`}
-                      className="block rounded-xl border border-neutral-200 bg-white px-4 py-3"
+                      className="block rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3"
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        <p className="text-sm font-semibold text-neutral-900">{th.title}</p>
-                        <p className="text-xs text-neutral-500">
+                        <p className="text-sm font-semibold text-white">{th.title}</p>
+                        <p className="text-xs text-white/40">
                           {th.reply_count}レス・最終 {fmt(th.updated_at)}
                         </p>
                       </div>
-                      <p className="mt-1 text-xs text-neutral-500">
+                      <p className="mt-1 text-xs text-white/40">
                         {th.username}
                         {extra ? `・${extra}` : ""}
                       </p>
@@ -259,7 +259,7 @@ export default async function CommunityHallPage({
               })}
             </ul>
           ) : (
-            <p className="mt-3 text-sm text-neutral-600">まだスレがありません。</p>
+            <p className="mt-3 text-sm text-muted">まだスレがありません。</p>
           )}
         </div>
       </section>

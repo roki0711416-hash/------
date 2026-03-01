@@ -49,11 +49,11 @@ export default function UsernameForm({
   return (
     <form onSubmit={onSubmit} className="mt-3 space-y-2">
       <label className="block">
-        <span className="text-xs font-semibold text-neutral-600">ユーザーネーム</span>
+        <span className="text-xs font-semibold text-muted">ユーザーネーム</span>
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+          className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
           placeholder="20文字以内・空白なし"
           maxLength={20}
           required
@@ -61,12 +61,12 @@ export default function UsernameForm({
       </label>
 
       {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
-      {ok ? <p className="text-sm font-medium text-neutral-700">更新しました。</p> : null}
+      {ok ? <p className="text-sm font-medium text-muted">更新しました。</p> : null}
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+        className="w-full rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
       >
         {loading ? "更新中..." : "ユーザーネームを設定する"}
       </button>

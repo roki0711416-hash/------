@@ -42,28 +42,28 @@ export default async function CommunityThreadPage({
   if (!user) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
             <Link
               href={`/community/${boardId}`}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
             >
               ← スレ一覧
             </Link>
           </div>
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">ログインが必要です</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">ログインが必要です</p>
             <div className="mt-3 flex gap-2">
               <Link
                 href="/signup"
-                className="flex-1 rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="flex-1 rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 会員登録
               </Link>
               <Link
                 href="/login"
-                className="flex-1 rounded-xl border border-neutral-200 bg-white px-5 py-3 text-center text-sm font-semibold text-neutral-900"
+                className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.04] px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 ログイン
               </Link>
@@ -80,23 +80,23 @@ export default async function CommunityThreadPage({
   if (!isPremium) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
             <Link
               href={`/community/${boardId}`}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
             >
               ← スレ一覧
             </Link>
           </div>
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">有料会員限定です</p>
-            <p className="mt-1 text-sm text-neutral-700">アカウント画面から登録してください。</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">有料会員限定です</p>
+            <p className="mt-1 text-sm text-muted">アカウント画面から登録してください。</p>
             <div className="mt-3">
               <Link
                 href="/account"
-                className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 アカウントへ
               </Link>
@@ -111,19 +111,19 @@ export default async function CommunityThreadPage({
   if (!db) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
             <Link
               href={`/community/${boardId}`}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
             >
               ← スレ一覧
             </Link>
           </div>
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">DBが未設定です</p>
-            <p className="mt-1 text-sm text-neutral-700">DATABASE_URL または POSTGRES_URL を設定してください。</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">DBが未設定です</p>
+            <p className="mt-1 text-sm text-muted">DATABASE_URL または POSTGRES_URL を設定してください。</p>
           </div>
         </section>
       </main>
@@ -138,24 +138,24 @@ export default async function CommunityThreadPage({
   if (!username) {
     return (
       <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-        <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+        <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
             <Link
               href={`/community/${boardId}`}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+              className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
             >
               ← スレ一覧
             </Link>
           </div>
 
-          <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">ユーザーネーム設定が必要です</p>
-            <p className="mt-1 text-sm text-neutral-700">/account からユーザーネームを設定してください。</p>
+          <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">ユーザーネーム設定が必要です</p>
+            <p className="mt-1 text-sm text-muted">/account からユーザーネームを設定してください。</p>
             <div className="mt-3">
               <Link
                 href="/account"
-                className="inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+                className="inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
               >
                 アカウントへ
               </Link>
@@ -215,44 +215,44 @@ export default async function CommunityThreadPage({
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-semibold">{boardLabel(boardId)}</h1>
           <Link
             href={backHref}
-            className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+            className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
           >
             ← スレ一覧
           </Link>
         </div>
 
-        <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-          <p className="text-sm font-semibold text-neutral-900">{threadRow.title}</p>
-          <p className="mt-1 text-xs text-neutral-500">
+        <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+          <p className="text-sm font-semibold text-white">{threadRow.title}</p>
+          <p className="mt-1 text-xs text-white/40">
             {threadRow.username}・{fmt(threadRow.created_at)}
             {extra ? `・${extra}` : ""}
           </p>
         </div>
 
         <div className="mt-4">
-          <h2 className="text-sm font-semibold text-neutral-800">レス</h2>
+          <h2 className="text-sm font-semibold text-white">レス</h2>
 
           {posts.length > 0 ? (
             <ol className="mt-3 space-y-3">
               {posts.map((p) => {
                 const r = p as { post_no: number; username: string; body: string; created_at: string };
                 return (
-                  <li key={r.post_no} className="rounded-xl border border-neutral-200 bg-white p-4">
-                    <p className="text-xs text-neutral-500">
+                  <li key={r.post_no} className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-4">
+                    <p className="text-xs text-white/40">
                       {r.post_no}：{r.username}・{fmt(r.created_at)}
                     </p>
-                    <p className="mt-2 whitespace-pre-line text-sm text-neutral-800">{r.body}</p>
+                    <p className="mt-2 whitespace-pre-line text-sm text-white">{r.body}</p>
                   </li>
                 );
               })}
             </ol>
           ) : (
-            <p className="mt-3 text-sm text-neutral-600">まだレスがありません。</p>
+            <p className="mt-3 text-sm text-muted">まだレスがありません。</p>
           )}
         </div>
 

@@ -186,9 +186,9 @@ export default function PremiumMemberCard({
   }, [machine.odds.settings, posteriors, predictGamesInfo]);
 
   return (
-    <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+    <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
       <h2 className="text-lg font-semibold">サブスク会員限定</h2>
-      <p className="mt-2 text-sm text-neutral-700">
+      <p className="mt-2 text-sm text-muted">
         入力された数値をもとに、
         <br />
         AIが統計的な観点から状況を整理し、
@@ -202,37 +202,37 @@ export default function PremiumMemberCard({
       </p>
 
       {!isPremium ? (
-        <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-          <p className="text-sm font-semibold text-neutral-700">AI続行判定</p>
-          <p className="mt-1 text-sm text-neutral-700">サブスク会員限定の機能です。</p>
+        <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+          <p className="text-sm font-semibold text-muted">AI続行判定</p>
+          <p className="mt-1 text-sm text-muted">サブスク会員限定の機能です。</p>
           <Link
             href="/account"
-            className="mt-2 inline-block text-sm font-semibold text-neutral-900 underline underline-offset-2"
+            className="mt-2 inline-block text-sm font-semibold text-white underline underline-offset-2"
           >
             サブスク登録・ログインはこちら
           </Link>
         </div>
       ) : !posteriors ? (
-        <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-          <p className="text-sm font-semibold text-neutral-700">AI続行判定</p>
-          <p className="mt-1 text-sm text-neutral-700">
+        <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+          <p className="text-sm font-semibold text-muted">AI続行判定</p>
+          <p className="mt-1 text-sm text-muted">
             表示するには、まず設定判別の入力をしてください。
           </p>
         </div>
       ) : (
         <>
-          <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-700">AI続行判定</p>
+          <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-muted">AI続行判定</p>
 
             <div className="mt-2">
               <label className="block">
-                <span className="text-xs font-semibold text-neutral-600">将来G数</span>
+                <span className="text-xs font-semibold text-muted">将来G数</span>
                 <input
                   inputMode="numeric"
                   value={futureGames}
                   onChange={(e) => setFutureGames(e.target.value)}
                   placeholder="例: 800"
-                  className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                  className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                 />
               </label>
             </div>
@@ -242,54 +242,54 @@ export default function PremiumMemberCard({
             ) : null}
 
             {aiContinue && !("error" in aiContinue) ? (
-              <div className="mt-3 grid gap-2 text-sm text-neutral-700 sm:grid-cols-2">
+              <div className="mt-3 grid gap-2 text-sm text-muted sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <p className="text-xs text-neutral-500">判定</p>
+                  <p className="text-xs text-white/40">判定</p>
                   <p
                     className={`text-base font-semibold ${
                       aiContinue.level === "続行注意（期待しづらい）"
                         ? "text-red-600"
-                        : "text-neutral-900"
+                        : "text-white"
                     }`}
                   >
                     {aiContinue.level}
                   </p>
-                  <p className="mt-1 text-xs text-neutral-500">{aiContinue.reason}</p>
+                  <p className="mt-1 text-xs text-white/40">{aiContinue.reason}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-neutral-500">推定機械割（加重平均）</p>
+                  <p className="text-xs text-white/40">推定機械割（加重平均）</p>
                   <p className="font-semibold">{aiContinue.weightedRate.toFixed(2)}%</p>
                 </div>
                 <div>
-                  <p className="text-xs text-neutral-500">勝率（推定）</p>
+                  <p className="text-xs text-white/40">勝率（推定）</p>
                   <p className="font-semibold">{fmtPct(aiContinue.pWin)}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-neutral-500">負け確率（推定）</p>
+                  <p className="text-xs text-white/40">負け確率（推定）</p>
                   <p className="font-semibold">{fmtPct(aiContinue.pLose)}</p>
                 </div>
-                <p className="text-xs text-neutral-500 sm:col-span-2">
+                <p className="text-xs text-white/40 sm:col-span-2">
                   ※概算です。短期的なブレは大きいので参考程度にお願いします。
                 </p>
               </div>
             ) : null}
           </div>
 
-          <div className="mt-3 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
+          <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
             <div className="flex items-start justify-between gap-3">
-              <p className="text-sm font-semibold text-neutral-700">
+              <p className="text-sm font-semibold text-muted">
                 {predictGamesInfo.value}G先 期待差枚（推定）
               </p>
-              <label className="flex items-center gap-2 text-xs text-neutral-600">
-                <span className="font-semibold text-neutral-600">G数</span>
+              <label className="flex items-center gap-2 text-xs text-muted">
+                <span className="font-semibold text-muted">G数</span>
                 <input
                   inputMode="numeric"
                   value={predictGames}
                   onChange={(e) => setPredictGames(e.target.value)}
-                  className="w-20 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
+                  className="w-20 rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-1 text-sm"
                   placeholder={String(DEFAULT_PREDICT_GAMES)}
                 />
-                <span className="text-neutral-500">G</span>
+                <span className="text-white/40">G</span>
               </label>
             </div>
 
@@ -299,14 +299,14 @@ export default function PremiumMemberCard({
               </p>
             ) : null}
 
-            <p className="mt-2 whitespace-pre-line text-xs text-neutral-500">
+            <p className="mt-2 whitespace-pre-line text-xs text-white/40">
               {"※本ツールの期待値は、\n同じ条件で何度もプレイした場合の「平均的な結果」を示したものです。\n実戦では一時的に大きく勝つことも、大きく負けることもあります。\n表示される金額は「必ずそうなる結果」ではありません"}
             </p>
 
-            <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
-              <p className="text-xs font-semibold text-neutral-600">換算</p>
+            <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.04] p-3">
+              <p className="text-xs font-semibold text-muted">換算</p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
-                <label className="flex items-center gap-2 text-sm text-neutral-700">
+                <label className="flex items-center gap-2 text-sm text-muted">
                   <input
                     type="radio"
                     name="exchangeModePremiumEv"
@@ -316,7 +316,7 @@ export default function PremiumMemberCard({
                   />
                   等価（1枚=20円）
                 </label>
-                <label className="flex items-center gap-2 text-sm text-neutral-700">
+                <label className="flex items-center gap-2 text-sm text-muted">
                   <input
                     type="radio"
                     name="exchangeModePremiumEv"
@@ -327,15 +327,15 @@ export default function PremiumMemberCard({
                   非等価
                 </label>
                 {exchangeMode === "custom" ? (
-                  <div className="flex items-center gap-2 text-sm text-neutral-700">
-                    <span className="text-xs text-neutral-500">1枚=</span>
+                  <div className="flex items-center gap-2 text-sm text-muted">
+                    <span className="text-xs text-white/40">1枚=</span>
                     <input
                       inputMode="decimal"
                       value={yenPerCoinCustom}
                       onChange={(e) => setYenPerCoinCustom(e.target.value)}
-                      className="w-20 rounded-md border border-neutral-200 bg-white px-2 py-1 text-sm"
+                      className="w-20 rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-1 text-sm"
                     />
-                    <span className="text-xs text-neutral-500">円</span>
+                    <span className="text-xs text-white/40">円</span>
                   </div>
                 ) : null}
               </div>
@@ -347,20 +347,20 @@ export default function PremiumMemberCard({
             </div>
 
             {evPredict ? (
-              <div className="mt-3 grid gap-2 text-sm text-neutral-700 sm:grid-cols-2">
+              <div className="mt-3 grid gap-2 text-sm text-muted sm:grid-cols-2">
                 <div>
-                  <p className="text-xs text-neutral-500">全体（期待値）</p>
+                  <p className="text-xs text-white/40">全体（期待値）</p>
                   <p className="font-semibold">
                     {fmtSigned(evPredict.overall)}枚
                     {Number.isFinite(yenPerCoin) ? (
-                      <span className="text-neutral-500">
+                      <span className="text-white/40">
                         {" "}（{fmtYenSigned(evPredict.overall * yenPerCoin)}）
                       </span>
                     ) : null}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-neutral-500">TOP3内訳</p>
+                  <p className="text-xs text-white/40">TOP3内訳</p>
                   <p className="font-semibold">
                     {evPredict.perSettingTop3
                       .map((t) => {
@@ -375,8 +375,8 @@ export default function PremiumMemberCard({
                 </div>
               </div>
             ) : (
-              <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
-                <p className="text-sm text-neutral-700">この機種は機械割(設定別)が未登録です。</p>
+              <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.04] p-3">
+                <p className="text-sm text-muted">この機種は機械割(設定別)が未登録です。</p>
               </div>
             )}
           </div>

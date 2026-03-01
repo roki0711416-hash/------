@@ -59,7 +59,7 @@ export default function AccountActions({
             href={STRIPE_PAYMENT_LINK_URL}
             target="_blank"
             rel="noreferrer"
-            className="block w-full rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white disabled:opacity-60"
+            className="block w-full rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white disabled:opacity-60"
           >
             2日間無料で試す（その後 月額680円）
           </a>
@@ -69,7 +69,7 @@ export default function AccountActions({
       <button
         onClick={goPortal}
         disabled={loading !== null || !canManage}
-        className="w-full rounded-xl border border-neutral-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 disabled:opacity-60"
+        className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
       >
         {loading === "portal" ? "管理画面へ..." : isPremium ? "解約・プラン管理" : "プラン管理"}
       </button>
@@ -77,14 +77,14 @@ export default function AccountActions({
       <button
         onClick={logout}
         disabled={loading !== null}
-        className="w-full rounded-xl border border-neutral-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 disabled:opacity-60"
+        className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
       >
         {loading === "logout" ? "ログアウト中..." : "ログアウト"}
       </button>
 
       {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
       {!canManage ? (
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-white/40">
           ※まだStripe customerが作成されていないため「プラン管理」は利用できません。
         </p>
       ) : null}

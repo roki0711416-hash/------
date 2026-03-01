@@ -34,6 +34,7 @@
     "node_modules",
     "legacy-app",
     "ios",
-    ".worktrees"
+    ".worktrees",
+    "capacitor.config.ts"
   ]
 }

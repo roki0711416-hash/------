@@ -9,18 +9,18 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 space-y-4">
-      <nav aria-label="パンくず" className="text-xs text-neutral-500">
-        <Link href="/" className="underline underline-offset-2">トップ</Link>
+      <nav aria-label="パンくず" className="text-xs text-muted">
+        <Link href="/" className="underline underline-offset-2 hover:text-white transition">トップ</Link>
         <span className="mx-1">/</span>
-        <span>運営情報</span>
+        <span className="text-white/80">運営情報</span>
       </nav>
 
-      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h1 className="text-lg font-semibold">運営情報</h1>
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm">
+        <h1 className="text-lg font-bold text-white">運営情報</h1>
 
-        <div className="mt-4 space-y-5 text-sm text-neutral-700">
+        <div className="mt-4 space-y-5 text-sm text-muted">
           <div>
-            <h2 className="font-semibold">サイトの目的</h2>
+            <h2 className="font-semibold text-white">サイトの目的</h2>
             <p className="mt-2">
               「スロカスくん」は、パチスロの設定判別や続行判断を「感覚」だけで行うのではなく、
               実戦データを入力・整理して根拠ある判断材料にまとめるための分析補助ツールです。
@@ -37,7 +37,7 @@ export default function AboutPage() {
           </div>
 
           <div>
-            <h2 className="font-semibold">開設の経緯</h2>
+            <h2 className="font-semibold text-white">開設の経緯</h2>
             <p className="mt-2">
               運営者自身がパチスロを遊技する中で、設定示唆が出ない状況での
               「打ち続けるべきか、やめるべきか」という判断に不安を感じた経験がきっかけです。
@@ -48,7 +48,7 @@ export default function AboutPage() {
           </div>
 
           <div>
-            <h2 className="font-semibold">運営方針</h2>
+            <h2 className="font-semibold text-white">運営方針</h2>
             <ul className="mt-2 list-disc space-y-1 pl-5">
               <li>「確実に勝てる」「必勝」等の煽り表現は使用しません</li>
               <li>提供する情報は娯楽・参考情報であることを常に明示します</li>
@@ -58,7 +58,7 @@ export default function AboutPage() {
           </div>
 
           <div>
-            <h2 className="font-semibold">技術構成</h2>
+            <h2 className="font-semibold text-white">技術構成</h2>
             <p className="mt-2">
               Next.js（App Router）を使用したWebアプリケーションとして構築しています。
               決済には Stripe、ホスティングには Vercel を利用しています。
@@ -67,16 +67,16 @@ export default function AboutPage() {
           </div>
 
           <div>
-            <h2 className="font-semibold">運営者</h2>
+            <h2 className="font-semibold text-white">運営者</h2>
             <p className="mt-2">ハンドルネーム：三日坊主（個人運営）</p>
           </div>
 
           <div>
-            <h2 className="font-semibold">連絡先</h2>
+            <h2 className="font-semibold text-white">連絡先</h2>
             <p className="mt-2">
               <Link
                 href="/contact"
-                className="text-neutral-700 underline underline-offset-2"
+                className="underline underline-offset-2 hover:text-white transition"
               >
                 お問い合わせページ
               </Link>
@@ -86,24 +86,24 @@ export default function AboutPage() {
           </div>
 
           <div>
-            <h2 className="font-semibold">関連ページ</h2>
+            <h2 className="font-semibold text-white">関連ページ</h2>
             <ul className="mt-2 space-y-1">
               <li>
-                <Link href="/privacy" className="underline underline-offset-2">プライバシーポリシー</Link>
+                <Link href="/privacy" className="underline underline-offset-2 hover:text-white transition">プライバシーポリシー</Link>
               </li>
               <li>
-                <Link href="/terms" className="underline underline-offset-2">利用規約</Link>
+                <Link href="/terms" className="underline underline-offset-2 hover:text-white transition">利用規約</Link>
               </li>
               <li>
-                <Link href="/disclaimer" className="underline underline-offset-2">免責事項</Link>
+                <Link href="/disclaimer" className="underline underline-offset-2 hover:text-white transition">免責事項</Link>
               </li>
               <li>
-                <Link href="/tokusho" className="underline underline-offset-2">特定商取引法に基づく表記</Link>
+                <Link href="/tokusho" className="underline underline-offset-2 hover:text-white transition">特定商取引法に基づく表記</Link>
               </li>
             </ul>
           </div>
 
-          <p className="text-xs text-neutral-500">最終更新日: 2026-02-08</p>
+          <p className="text-xs text-white/30">最終更新日: 2026-02-08</p>
         </div>
       </section>
     </main>

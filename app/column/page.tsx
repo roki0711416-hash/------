@@ -54,15 +54,15 @@ const columns = [
 export default function ColumnIndexPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 space-y-4">
-      <nav aria-label="パンくず" className="text-xs text-neutral-500">
-        <Link href="/" className="underline underline-offset-2">トップ</Link>
+      <nav aria-label="パンくず" className="text-xs text-muted">
+        <Link href="/" className="underline underline-offset-2 hover:text-white transition">トップ</Link>
         <span className="mx-1">/</span>
-        <span>コラム一覧</span>
+        <span className="text-white/80">コラム一覧</span>
       </nav>
 
-      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h1 className="text-lg font-semibold">コラム一覧</h1>
-        <p className="mt-2 text-sm text-neutral-600">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm">
+        <h1 className="text-lg font-bold text-white">コラム一覧</h1>
+        <p className="mt-2 text-sm text-muted">
           パチスロの基礎知識・考え方を、娯楽・参考情報として整理しています。
           遊技に関する最終判断はご自身の責任で行ってください。
         </p>
@@ -72,13 +72,13 @@ export default function ColumnIndexPage() {
             <Link
               key={col.href}
               href={col.href}
-              className="block rounded-xl border border-neutral-200 bg-neutral-50 p-4 transition-colors hover:bg-neutral-100"
+              className="block rounded-xl border border-white/[0.08] bg-white/[0.03] p-4 transition-all hover:-translate-y-0.5 hover:border-white/[0.16] hover:bg-white/[0.07]"
             >
-              <p className="text-base font-semibold text-neutral-900">
+              <p className="text-base font-semibold text-white">
                 {col.title}
               </p>
-              <p className="mt-1 text-sm text-neutral-700">{col.summary}</p>
-              <p className="mt-2 text-xs text-neutral-500">{col.date}</p>
+              <p className="mt-1 text-sm text-muted">{col.summary}</p>
+              <p className="mt-2 text-xs text-white/30">{col.date}</p>
             </Link>
           ))}
         </div>
@@ -87,7 +87,7 @@ export default function ColumnIndexPage() {
       <div className="pt-1">
         <Link
           href="/"
-          className="text-sm text-neutral-700 underline underline-offset-2"
+          className="text-sm text-muted underline underline-offset-2 hover:text-white transition"
         >
           ← トップへ戻る
         </Link>

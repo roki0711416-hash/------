@@ -7,10 +7,10 @@ export const metadata = {
 export default function CancelHowToPage() {
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h1 className="text-lg font-semibold">解約方法</h1>
 
-        <div className="mt-4 space-y-4 text-sm text-neutral-700">
+        <div className="mt-4 space-y-4 text-sm text-muted">
           <div>
             <h2 className="font-semibold">手順</h2>
             <ol className="mt-2 list-decimal space-y-1 pl-5">
@@ -25,7 +25,7 @@ export default function CancelHowToPage() {
               </li>
               <li>Stripeの画面でサブスクリプションをキャンセルしてください。</li>
             </ol>
-            <p className="mt-2 text-xs text-neutral-500">
+            <p className="mt-2 text-xs text-white/40">
               ※未ログインの場合は、
               <Link href="/login" className="underline underline-offset-2">
                 ログイン
@@ -53,7 +53,7 @@ export default function CancelHowToPage() {
             </p>
           </div>
 
-          <p className="text-xs text-neutral-500">最終更新日：2026年1月15日</p>
+          <p className="text-xs text-white/40">最終更新日：2026年1月15日</p>
         </div>
       </section>
     </main>

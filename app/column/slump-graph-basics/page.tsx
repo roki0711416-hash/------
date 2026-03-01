@@ -9,7 +9,7 @@ export const metadata = {
 export default function SlumpGraphBasicsPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 space-y-4">
-      <nav aria-label="パンくず" className="text-xs text-neutral-500">
+      <nav aria-label="パンくず" className="text-xs text-white/40">
         <Link href="/" className="underline underline-offset-2">トップ</Link>
         <span className="mx-1">/</span>
         <Link href="/column" className="underline underline-offset-2">コラム一覧</Link>
@@ -17,13 +17,13 @@ export default function SlumpGraphBasicsPage() {
         <span>スランプグラフの見方</span>
       </nav>
 
-      <article className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <article className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6">
         <h1 className="text-lg font-semibold">スランプグラフの見方と注意点</h1>
-        <p className="mt-1 text-xs text-neutral-500">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
+        <p className="mt-1 text-xs text-white/40">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
 
-        <div className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
+        <div className="mt-5 space-y-5 text-sm leading-7 text-muted">
           <section>
-            <h2 className="font-semibold text-neutral-900">スランプグラフとは</h2>
+            <h2 className="font-semibold text-white">スランプグラフとは</h2>
             <p className="mt-2">
               スランプグラフとは、パチスロの出玉推移を時系列で表したグラフのことです。
               多くのホールではデータランプに表示されており、その台が1日を通じてどのような出玉の動きをしたかを確認できます。
@@ -35,7 +35,7 @@ export default function SlumpGraphBasicsPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">右肩上がり＝高設定とは限らない</h2>
+            <h2 className="font-semibold text-white">右肩上がり＝高設定とは限らない</h2>
             <p className="mt-2">
               最もよくある誤解が「グラフが右肩上がり＝高設定」という思い込みです。
               確かに高設定の台は長期的に右肩上がりの傾向を示しやすいですが、
@@ -48,7 +48,7 @@ export default function SlumpGraphBasicsPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">「波」の読み方の誤解</h2>
+            <h2 className="font-semibold text-white">「波」の読み方の誤解</h2>
             <p className="mt-2">
               「この台はハマりの後に大きく出る波がある」「そろそろ出る時期だ」
               といった考え方は、いわゆる「波理論」と呼ばれることがあります。
@@ -63,7 +63,7 @@ export default function SlumpGraphBasicsPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">グラフを「結果の記録」として活用する</h2>
+            <h2 className="font-semibold text-white">グラフを「結果の記録」として活用する</h2>
             <p className="mt-2">
               スランプグラフの本来の価値は、「予測」ではなく「記録」にあります。
               たとえば、自分が打った台の出玉推移を振り返ることで、
@@ -77,7 +77,7 @@ export default function SlumpGraphBasicsPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">まとめ</h2>
+            <h2 className="font-semibold text-white">まとめ</h2>
             <p className="mt-2">
               スランプグラフは視覚的にわかりやすい分、過信しやすい情報でもあります。
               グラフだけで判断するのではなく、ボーナス確率・小役カウント・演出など
@@ -98,13 +98,13 @@ export default function SlumpGraphBasicsPage() {
         <div className="mt-6 flex gap-3">
           <Link
             href="/column"
-            className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-900"
+            className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-center text-sm font-semibold text-white"
           >
             ← コラム一覧
           </Link>
           <Link
             href="/judge"
-            className="rounded-xl bg-neutral-900 px-4 py-3 text-center text-sm font-semibold text-white"
+            className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-3 text-center text-sm font-semibold text-white"
           >
             設定判別ツールへ →
           </Link>

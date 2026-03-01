@@ -63,21 +63,21 @@ export default function LatestXCard({ profileUrl, latestThreadUrl }: Props) {
   const latest = useMemo(() => (tweets && tweets.length > 0 ? tweets[0] : null), [tweets]);
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-5">
+    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
       <div className="flex items-start justify-between gap-3">
         <h2 className="text-lg font-semibold">最新ポスト</h2>
         <a
           href={profileUrl}
           target="_blank"
           rel="noreferrer"
-          className="shrink-0 rounded-lg border border-neutral-200 bg-white px-3 py-1 text-sm font-medium"
+          className="shrink-0 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-sm font-medium"
         >
           Xへ
         </a>
       </div>
 
       {failed ? (
-        <p className="mt-3 text-sm text-neutral-600">
+        <p className="mt-3 text-sm text-muted">
           表示が重いので、必要な時だけ開けるようにしています。
         </p>
       ) : null}
@@ -88,7 +88,7 @@ export default function LatestXCard({ profileUrl, latestThreadUrl }: Props) {
             href={latestThreadUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-neutral-900 underline"
+            className="text-white underline"
           >
             最新スレッドを見る
           </a>
@@ -96,15 +96,15 @@ export default function LatestXCard({ profileUrl, latestThreadUrl }: Props) {
       ) : null}
 
       {latest ? (
-        <div className="mt-4 text-sm text-neutral-800">
-          <div className="text-xs text-neutral-500">{formatDateTimeJst(latest.created_at)}</div>
+        <div className="mt-4 text-sm text-white">
+          <div className="text-xs text-white/40">{formatDateTimeJst(latest.created_at)}</div>
           <div className="mt-1 whitespace-pre-wrap">{truncateText(latest.text, 140)}</div>
           <div className="mt-2">
             <a
               href={latest.url}
               target="_blank"
               rel="noreferrer"
-              className="text-neutral-900 underline"
+              className="text-white underline"
             >
               → 詳細を見る
             </a>

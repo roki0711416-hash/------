@@ -49,22 +49,22 @@ export default function AdminRoleForm() {
   }
 
   return (
-    <div className="mt-3 rounded-lg border border-neutral-200 bg-white p-3">
-      <p className="text-sm font-semibold text-neutral-900">管理者：ユーザー権限の更新</p>
-      <p className="mt-1 text-xs text-neutral-600">メールアドレスで指定して role を設定します。</p>
+    <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.04] p-3">
+      <p className="text-sm font-semibold text-white">管理者：ユーザー権限の更新</p>
+      <p className="mt-1 text-xs text-muted">メールアドレスで指定して role を設定します。</p>
 
       <div className="mt-3 space-y-2">
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="target@example.com"
-          className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm"
+          className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm"
         />
 
         <select
           value={role}
           onChange={(e) => setRole(e.target.value as Role)}
-          className="w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm"
+          className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm"
         >
           <option value="user">user（一般）</option>
           <option value="dev">dev</option>
@@ -74,12 +74,12 @@ export default function AdminRoleForm() {
         <button
           onClick={submit}
           disabled={loading}
-          className="w-full rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+          className="w-full rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
         >
           {loading ? "更新中..." : "更新する"}
         </button>
 
-        {ok ? <p className="text-sm font-medium text-neutral-900">{ok}</p> : null}
+        {ok ? <p className="text-sm font-medium text-white">{ok}</p> : null}
         {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
       </div>
     </div>

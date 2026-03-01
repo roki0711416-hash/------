@@ -9,7 +9,7 @@ export const metadata = {
 export default function RecordKeepingPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-12 space-y-4">
-      <nav aria-label="パンくず" className="text-xs text-neutral-500">
+      <nav aria-label="パンくず" className="text-xs text-white/40">
         <Link href="/" className="underline underline-offset-2">トップ</Link>
         <span className="mx-1">/</span>
         <Link href="/column" className="underline underline-offset-2">コラム一覧</Link>
@@ -17,13 +17,13 @@ export default function RecordKeepingPage() {
         <span>収支管理の意味</span>
       </nav>
 
-      <article className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <article className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6">
         <h1 className="text-lg font-semibold">収支管理の意味 ── 記録をつけるメリットと方法</h1>
-        <p className="mt-1 text-xs text-neutral-500">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
+        <p className="mt-1 text-xs text-white/40">公開日: 2026-02-08 ／ 最終更新: 2026-02-08</p>
 
-        <div className="mt-5 space-y-5 text-sm leading-7 text-neutral-700">
+        <div className="mt-5 space-y-5 text-sm leading-7 text-muted">
           <section>
-            <h2 className="font-semibold text-neutral-900">なぜ記録をつけるのか</h2>
+            <h2 className="font-semibold text-white">なぜ記録をつけるのか</h2>
             <p className="mt-2">
               パチスロの実戦を振り返ろうとしたとき、
               多くの人は「なんとなく勝った」「最近は負けが多い気がする」という曖昧な記憶に頼りがちです。
@@ -37,7 +37,7 @@ export default function RecordKeepingPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">記録すべき項目</h2>
+            <h2 className="font-semibold text-white">記録すべき項目</h2>
             <p className="mt-2">
               最低限記録しておくと役立つ項目は以下のとおりです。
             </p>
@@ -53,7 +53,7 @@ export default function RecordKeepingPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">記録から「振り返り」へつなげる</h2>
+            <h2 className="font-semibold text-white">記録から「振り返り」へつなげる</h2>
             <p className="mt-2">
               記録をつけるだけでは十分ではありません。大切なのは、記録をもとに「振り返り」を行うことです。
             </p>
@@ -69,7 +69,7 @@ export default function RecordKeepingPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">記録を続けるコツ</h2>
+            <h2 className="font-semibold text-white">記録を続けるコツ</h2>
             <p className="mt-2">
               収支管理が続かない最大の理由は「面倒くさい」ことです。
               対策として、以下の工夫をおすすめします。
@@ -90,7 +90,7 @@ export default function RecordKeepingPage() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-neutral-900">まとめ</h2>
+            <h2 className="font-semibold text-white">まとめ</h2>
             <p className="mt-2">
               収支管理は、パチスロを「なんとなく」ではなく「根拠を持って」楽しむための第一歩です。
               勝ち方を教えるものではありませんが、自分の遊技を客観的に把握し、
@@ -111,13 +111,13 @@ export default function RecordKeepingPage() {
         <div className="mt-6 flex gap-3">
           <Link
             href="/column"
-            className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-center text-sm font-semibold text-neutral-900"
+            className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-center text-sm font-semibold text-white"
           >
             ← コラム一覧
           </Link>
           <Link
             href="/record"
-            className="rounded-xl bg-neutral-900 px-4 py-3 text-center text-sm font-semibold text-white"
+            className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-3 text-center text-sm font-semibold text-white"
           >
             収支表へ →
           </Link>

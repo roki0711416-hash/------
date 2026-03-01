@@ -56,36 +56,36 @@ export default function CommunityReplyForm({
   }
 
   return (
-    <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+    <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
       <p className="text-sm font-semibold">レスする</p>
-      {username ? <p className="mt-1 text-xs text-neutral-600">投稿者: {username}</p> : null}
+      {username ? <p className="mt-1 text-xs text-muted">投稿者: {username}</p> : null}
 
       <div className="mt-3 grid gap-3">
         <label className="block">
-          <span className="text-xs font-semibold text-neutral-600">本文</span>
+          <span className="text-xs font-semibold text-muted">本文</span>
           <textarea
-            className="mt-1 min-h-24 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+            className="mt-1 min-h-24 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="例: 自分は○○でした"
             maxLength={1000}
           />
-          <p className="mt-1 text-xs text-neutral-500">1000文字まで</p>
+          <p className="mt-1 text-xs text-white/40">1000文字まで</p>
         </label>
 
         {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
-        {done ? <p className="text-sm font-medium text-neutral-700">投稿しました。</p> : null}
+        {done ? <p className="text-sm font-medium text-muted">投稿しました。</p> : null}
 
         <button
           type="button"
           onClick={submit}
           disabled={isSubmitting}
-          className="rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+          className="rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
         >
           書き込む
         </button>
 
-        <p className="text-xs text-neutral-500">※有料会員限定。ユーザーネーム固定で投稿されます。</p>
+        <p className="text-xs text-white/40">※有料会員限定。ユーザーネーム固定で投稿されます。</p>
       </div>
     </div>
   );

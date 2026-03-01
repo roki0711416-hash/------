@@ -113,10 +113,10 @@ export default function AdminReportsClient() {
     <div className="mx-auto max-w-4xl px-4 py-8">
       {/* ヘッダー */}
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-neutral-900">🛡️ 通報管理</h1>
+        <h1 className="text-2xl font-bold text-white">🛡️ 通報管理</h1>
         <button
           onClick={fetchReports}
-          className="rounded-lg bg-neutral-200 px-3 py-1.5 text-sm font-medium hover:bg-neutral-300"
+          className="rounded-lg bg-white/[0.08] px-3 py-1.5 text-sm font-medium hover:bg-white/[0.12]"
         >
           🔄 更新
         </button>
@@ -135,8 +135,8 @@ export default function AdminReportsClient() {
             onClick={() => setFilter(s)}
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               filter === s
-                ? "bg-neutral-900 text-white"
-                : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+                ? "bg-gradient-to-r from-cta-from to-cta-to text-white"
+                : "bg-white/[0.06] text-muted hover:bg-white/[0.08]"
             }`}
           >
             {STATUS_LABELS[s].label}
@@ -145,20 +145,20 @@ export default function AdminReportsClient() {
       </div>
 
       {/* 件数 */}
-      <p className="mb-4 text-sm text-neutral-500">
+      <p className="mb-4 text-sm text-white/40">
         {filter} の通報: {total}件
       </p>
 
       {/* ローディング */}
       {loading && (
-        <div className="py-12 text-center text-neutral-400">読み込み中...</div>
+        <div className="py-12 text-center text-white/30">読み込み中...</div>
       )}
 
       {/* 空状態 */}
       {!loading && reports.length === 0 && (
-        <div className="rounded-2xl border border-neutral-200 bg-white p-12 text-center">
-          <p className="text-lg font-semibold text-neutral-400">✅ 通報はありません</p>
-          <p className="mt-2 text-sm text-neutral-400">
+        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-12 text-center">
+          <p className="text-lg font-semibold text-white/30">✅ 通報はありません</p>
+          <p className="mt-2 text-sm text-white/30">
             現在 {STATUS_LABELS[filter].label} の通報はありません。
           </p>
         </div>
@@ -171,7 +171,7 @@ export default function AdminReportsClient() {
             <div
               key={r.id}
               onClick={() => setSelectedReport(r)}
-              className="cursor-pointer rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:border-neutral-300 hover:shadow"
+              className="cursor-pointer rounded-xl border border-white/[0.08] bg-white/[0.04] p-4 shadow-sm transition hover:border-white/[0.12] hover:shadow"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
@@ -181,28 +181,28 @@ export default function AdminReportsClient() {
                     >
                       {STATUS_LABELS[r.status].label}
                     </span>
-                    <span className="text-xs text-neutral-400">
+                    <span className="text-xs text-white/30">
                       {r.target_type === "thread" ? "🧵 スレッド" : "💬 返信"}
                     </span>
                   </div>
 
-                  <p className="mt-1 text-sm font-medium text-neutral-800">
+                  <p className="mt-1 text-sm font-medium text-white">
                     理由: {REASON_LABELS[r.reason] ?? r.reason}
                   </p>
 
                   {r.target_content && (
-                    <p className="mt-1 line-clamp-2 text-sm text-neutral-600">
+                    <p className="mt-1 line-clamp-2 text-sm text-muted">
                       「{r.target_content}」
                     </p>
                   )}
 
-                  <p className="mt-1 text-xs text-neutral-400">
+                  <p className="mt-1 text-xs text-white/30">
                     通報者: {r.reporter_username ?? r.reporter_user_id?.slice(0, 8) + "…"}{" "}
                     ・{new Date(r.created_at).toLocaleString("ja-JP")}
                   </p>
                 </div>
 
-                <span className="text-neutral-300">→</span>
+                <span className="text-white/30">→</span>
               </div>
             </div>
           ))}
@@ -212,12 +212,12 @@ export default function AdminReportsClient() {
       {/* ── 詳細モーダル ── */}
       {selectedReport && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
+          <div className="w-full max-w-lg rounded-2xl bg-white/[0.04] p-6 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-neutral-900">通報詳細</h2>
+              <h2 className="text-lg font-bold text-white">通報詳細</h2>
               <button
                 onClick={() => setSelectedReport(null)}
-                className="text-neutral-400 hover:text-neutral-600"
+                className="text-white/30 hover:text-muted"
               >
                 ✕
               </button>
@@ -243,8 +243,8 @@ export default function AdminReportsClient() {
 
               {selectedReport.target_content && (
                 <div>
-                  <p className="mb-1 font-medium text-neutral-500">通報対象の本文:</p>
-                  <blockquote className="rounded-lg border-l-4 border-red-300 bg-red-50 p-3 text-neutral-800">
+                  <p className="mb-1 font-medium text-white/40">通報対象の本文:</p>
+                  <blockquote className="rounded-lg border-l-4 border-red-300 bg-red-50 p-3 text-white">
                     {selectedReport.target_content}
                   </blockquote>
                 </div>
@@ -325,7 +325,7 @@ export default function AdminReportsClient() {
 
               <button
                 onClick={() => setSelectedReport(null)}
-                className="w-full rounded-lg bg-neutral-100 px-4 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-200"
+                className="w-full rounded-lg bg-white/[0.06] px-4 py-2.5 text-sm font-medium text-muted hover:bg-white/[0.08]"
               >
                 閉じる
               </button>
@@ -342,8 +342,8 @@ export default function AdminReportsClient() {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-3">
-      <span className="w-24 shrink-0 font-medium text-neutral-500">{label}</span>
-      <span className="text-neutral-800">{value}</span>
+      <span className="w-24 shrink-0 font-medium text-white/40">{label}</span>
+      <span className="text-white">{value}</span>
     </div>
   );
 }
@@ -363,7 +363,7 @@ function ActionButton({
   const styles =
     variant === "danger"
       ? `${base} bg-red-600 text-white hover:bg-red-700`
-      : `${base} bg-neutral-800 text-white hover:bg-neutral-900`;
+      : `${base} bg-white/[0.08] text-white hover:bg-gradient-to-r from-cta-from to-cta-to`;
 
   return (
     <button className={styles} onClick={onClick} disabled={disabled}>

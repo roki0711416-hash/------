@@ -378,7 +378,7 @@ export default function MachineJudgeForm({
           href={part}
           target="_blank"
           rel="noreferrer"
-          className="underline text-neutral-900"
+          className="underline text-white"
         >
           {part}
         </a>
@@ -1294,25 +1294,25 @@ export default function MachineJudgeForm({
   }, [posteriors]);
 
   return (
-    <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+    <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
       <h2 className="text-lg font-semibold">設定判別</h2>
-      <p className="mt-1 text-sm text-neutral-600">
+      <p className="mt-1 text-sm text-muted">
         総ゲーム数 / {bigLabelForJudge}
         {showReg ? ` / ${regLabel}` : ""}
         を入力すると、近い設定TOP3を表示します。
       </p>
 
       {IS_DEV ? (
-        <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+        <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
           <p className="text-sm font-semibold">スランプグラフ画像から補正</p>
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1 text-xs text-white/40">
             画像から「上振れ/下振れ」の補正値を算出します（設定断定には使いません）。
             MVPでは自動認識は行わず、開始点/終了点/縦軸上限/縦軸下限のタップ補助が前提です。
           </p>
 
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <label className="block">
-              <span className="text-xs font-semibold text-neutral-600">画像</span>
+              <span className="text-xs font-semibold text-muted">画像</span>
               <input
                 type="file"
                 accept="image/*"
@@ -1331,7 +1331,7 @@ export default function MachineJudgeForm({
             </label>
 
             {graphImageUrl ? (
-              <div className="rounded-lg border border-neutral-200 bg-white p-2">
+              <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] p-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={graphImageUrl}
@@ -1344,13 +1344,13 @@ export default function MachineJudgeForm({
           </div>
 
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-lg border border-neutral-200 bg-white p-3">
-              <p className="text-xs font-semibold text-neutral-600">タップ補助</p>
-              <p className="mt-1 text-xs text-neutral-500">
+            <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] p-3">
+              <p className="text-xs font-semibold text-muted">タップ補助</p>
+              <p className="mt-1 text-xs text-white/40">
                 画像をタップして順に指定：
                 開始点 → 終了点 → 縦軸上限位置 → 縦軸下限位置
               </p>
-              <p className="mt-2 text-xs text-neutral-700">
+              <p className="mt-2 text-xs text-muted">
                 次にタップ：
                 <span className="font-semibold">
                   {tapStep === "start"
@@ -1362,7 +1362,7 @@ export default function MachineJudgeForm({
                         : "縦軸下限"}
                 </span>
               </p>
-              <div className="mt-2 flex flex-wrap gap-2 text-xs text-neutral-600">
+              <div className="mt-2 flex flex-wrap gap-2 text-xs text-muted">
                 <span>開始: {tapStart ? `(${tapStart.x},${tapStart.y})` : "-"}</span>
                 <span>終了: {tapEnd ? `(${tapEnd.x},${tapEnd.y})` : "-"}</span>
                 <span>上限: {tapYTop ? `y=${tapYTop.y}` : "-"}</span>
@@ -1371,33 +1371,33 @@ export default function MachineJudgeForm({
               <button
                 type="button"
                 onClick={resetGraphInputs}
-                className="mt-3 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium"
+                className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
               >
                 指定をリセット
               </button>
             </div>
 
-            <div className="rounded-lg border border-neutral-200 bg-white p-3">
-              <p className="text-xs font-semibold text-neutral-600">縦軸（差枚）</p>
+            <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] p-3">
+              <p className="text-xs font-semibold text-muted">縦軸（差枚）</p>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <label className="block">
-                  <span className="text-xs text-neutral-500">上限</span>
+                  <span className="text-xs text-white/40">上限</span>
                   <input
                     inputMode="numeric"
                     value={yTopValue}
                     onChange={(e) => setYTopValue(e.target.value)}
                     placeholder="例: 3000"
-                    className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                    className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                   />
                 </label>
                 <label className="block">
-                  <span className="text-xs text-neutral-500">下限</span>
+                  <span className="text-xs text-white/40">下限</span>
                   <input
                     inputMode="numeric"
                     value={yBottomValue}
                     onChange={(e) => setYBottomValue(e.target.value)}
                     placeholder="例: -3000"
-                    className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+                    className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                   />
                 </label>
               </div>
@@ -1409,13 +1409,13 @@ export default function MachineJudgeForm({
               type="button"
               onClick={analyzeGraph}
               disabled={!graphImageUrl || graphStatus === "running"}
-              className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm font-medium disabled:opacity-40"
+              className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium disabled:opacity-40"
             >
               {graphStatus === "running" ? "解析中…" : "解析する"}
             </button>
 
             {graphBiasZ !== null && graphConfidence !== null ? (
-              <p className="text-xs text-neutral-600">
+              <p className="text-xs text-muted">
                 解析結果：biasZ {graphBiasZ.toFixed(2)} / confidence {graphConfidence.toFixed(2)}
               </p>
             ) : null}
@@ -1439,13 +1439,13 @@ export default function MachineJudgeForm({
         }`}
       >
         <label className="block">
-          <span className="text-xs font-semibold text-neutral-600">総G</span>
+          <span className="text-xs font-semibold text-muted">総G</span>
           <input
             inputMode="numeric"
             value={games}
             onChange={(e) => setGames(e.target.value)}
             placeholder="例: 3000"
-            className="mt-1 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
           />
         </label>
 
@@ -1714,10 +1714,10 @@ export default function MachineJudgeForm({
       </form>
 
       {hintConfig ? (
-        <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+        <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
           <p className="text-sm font-semibold">示唆カウント</p>
           {!hideHintDescriptions ? (
-            <p className="mt-1 text-xs text-neutral-500">
+            <p className="mt-1 text-xs text-white/40">
               反映される示唆（設定◯以上/確定系）は、総G/{bigLabelForJudge}
               {showReg ? `/${regLabel}` : ""}
               を入力すると判別に反映されます。
@@ -1725,13 +1725,13 @@ export default function MachineJudgeForm({
           ) : null}
 
           {!hideHintDescriptions && hintConfig.helpUrl ? (
-            <p className="mt-1 text-xs text-neutral-500">
+            <p className="mt-1 text-xs text-white/40">
               示唆画面の確認はこちら：
               <a
                 href={hintConfig.helpUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="underline text-neutral-900"
+                className="underline text-white"
               >
                 {hintConfig.helpUrl}
               </a>
@@ -1760,13 +1760,13 @@ export default function MachineJudgeForm({
               return (
                 <div
                   key={group.id}
-                  className="rounded-lg border border-neutral-200 bg-white p-3"
+                  className="rounded-lg border border-white/[0.08] bg-white/[0.04] p-3"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="text-xs font-semibold text-neutral-700">{group.title}</p>
+                      <p className="text-xs font-semibold text-muted">{group.title}</p>
                       {!hideHintDescriptions && group.note ? (
-                        <p className="mt-1 text-xs text-neutral-500">
+                        <p className="mt-1 text-xs text-white/40">
                           {renderNoteWithLinks(group.note)}
                         </p>
                       ) : null}
@@ -1774,7 +1774,7 @@ export default function MachineJudgeForm({
 
                     <button
                       type="button"
-                      className="shrink-0 rounded-md border border-neutral-200 bg-white px-2 py-1 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 active:bg-neutral-100"
+                      className="shrink-0 rounded-md border border-white/[0.08] bg-white/[0.04] px-2 py-1 text-xs font-semibold text-muted hover:bg-white/[0.07] active:bg-white/[0.06]"
                       onClick={() =>
                         setCollapsedHintGroups((prev) => ({
                           ...prev,
@@ -1798,8 +1798,8 @@ export default function MachineJudgeForm({
                     <div id={`hint-group-${group.id}`} className="mt-3 grid gap-2">
                       {showHintMemo ? (
                         <div>
-                          <p className="text-xs font-semibold text-neutral-700">メモ（台詞など自由入力）</p>
-                          <p className="mt-1 text-xs text-neutral-500">
+                          <p className="text-xs font-semibold text-muted">メモ（台詞など自由入力）</p>
+                          <p className="mt-1 text-xs text-white/40">
                             判別には未反映。必要ならそのまま貼り付けてください。
                           </p>
                           <textarea
@@ -1817,7 +1817,7 @@ export default function MachineJudgeForm({
                             }}
                             placeholder="例：表示されたボイス台詞をそのまま入力"
                             rows={3}
-                            className="mt-2 w-full rounded-md border border-neutral-200 bg-white p-2 text-xs text-neutral-900"
+                            className="mt-2 w-full rounded-md border border-white/[0.08] bg-white/[0.04] p-2 text-xs text-white"
                           />
                         </div>
                       ) : null}
@@ -1855,10 +1855,10 @@ export default function MachineJudgeForm({
 
       {!error && parsed.games > 0 ? (
         <div className="mt-4 space-y-4">
-          <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+          <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
             <p className="text-sm font-semibold">実測確率</p>
             <div
-              className={`mt-2 grid gap-2 text-sm text-neutral-700 ${
+              className={`mt-2 grid gap-2 text-sm text-muted ${
                 (() => {
                   const showSuika =
                     !!suikaTrialsLabel &&
@@ -1898,14 +1898,14 @@ export default function MachineJudgeForm({
               }`}
             >
               <div>
-                <p className="text-xs text-neutral-500">{bigLabelForJudge}</p>
+                <p className="text-xs text-white/40">{bigLabelForJudge}</p>
                 <p className="font-semibold">
                   {fmtOneOver(parsed.games, parsed.bigCount)}
                 </p>
               </div>
               {showReg ? (
                 <div>
-                  <p className="text-xs text-neutral-500">{regLabel}</p>
+                  <p className="text-xs text-white/40">{regLabel}</p>
                   <p className="font-semibold">
                     {fmtOneOver(parsed.games, parsed.regCount)}
                   </p>
@@ -1913,7 +1913,7 @@ export default function MachineJudgeForm({
               ) : null}
               {showTotal ? (
                 <div>
-                  <p className="text-xs text-neutral-500">{totalLabel}</p>
+                  <p className="text-xs text-white/40">{totalLabel}</p>
                   <p className="font-semibold">
                     {fmtOneOver(parsed.games, parsed.bigCount + (showReg ? parsed.regCount : 0))}
                   </p>
@@ -1925,7 +1925,7 @@ export default function MachineJudgeForm({
               suikaTrials !== "" &&
               suikaTrials !== "0" ? (
                 <div>
-                  <p className="text-xs text-neutral-500">{suikaCzRateLabel}</p>
+                  <p className="text-xs text-white/40">{suikaCzRateLabel}</p>
                   <p className="font-semibold">
                     {(() => {
                       const t = parsed.suikaTrials;
@@ -1942,7 +1942,7 @@ export default function MachineJudgeForm({
               uraAtTrials !== "" &&
               uraAtTrials !== "0" ? (
                 <div>
-                  <p className="text-xs text-neutral-500">{uraAtRateLabel}</p>
+                  <p className="text-xs text-white/40">{uraAtRateLabel}</p>
                   <p className="font-semibold">
                     {(() => {
                       const t = parsed.uraAtTrials;
@@ -1956,7 +1956,7 @@ export default function MachineJudgeForm({
 
               {!showExtraMetrics && extraLabel ? (
                 <div>
-                  <p className="text-xs text-neutral-500">{extraLabel}</p>
+                  <p className="text-xs text-white/40">{extraLabel}</p>
                   <p className="font-semibold">{fmtOneOver(parsed.games, parsed.extraCount)}</p>
                 </div>
               ) : null}
@@ -1964,7 +1964,7 @@ export default function MachineJudgeForm({
               {showExtraMetrics && extraMetrics
                 ? extraMetrics.map((m) => (
                     <div key={m.id}>
-                      <p className="text-xs text-neutral-500">{m.label}</p>
+                      <p className="text-xs text-white/40">{m.label}</p>
                       <p className="font-semibold">
                         {fmtOneOver(parsed.games, parsed.extraCounts[m.id])}
                       </p>
@@ -1980,7 +1980,7 @@ export default function MachineJudgeForm({
                     })
                     .map((m) => (
                       <div key={m.id}>
-                        <p className="text-xs text-neutral-500">{m.rateLabel ?? m.id}</p>
+                        <p className="text-xs text-white/40">{m.rateLabel ?? m.id}</p>
                         <p className="font-semibold">
                           {(() => {
                             const t = parsed.binomialTrials[m.id];
@@ -1995,12 +1995,12 @@ export default function MachineJudgeForm({
           </div>
 
           {top3 ? (
-            <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+            <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
               <p className="text-sm font-semibold">近い設定TOP3</p>
               {posteriorNote ? (
-                <p className="mt-1 text-xs text-neutral-500">{posteriorNote}</p>
+                <p className="mt-1 text-xs text-white/40">{posteriorNote}</p>
               ) : null}
-              <p className="mt-2 text-sm text-neutral-700">
+              <p className="mt-2 text-sm text-muted">
                 {top3.map((t) => `${t.s}（${fmtPct(t.posterior)}）`).join(" / ")}
               </p>
 
@@ -2010,7 +2010,7 @@ export default function MachineJudgeForm({
                   disabled={!judgeResultId || judgeSaveStatus === "saving"}
                   aria-disabled={!judgeResultId || judgeSaveStatus === "saving"}
                   className={
-                    "inline-block rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white " +
+                    "inline-block rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white " +
                     (!judgeResultId || judgeSaveStatus === "saving" ? "opacity-60" : "")
                   }
                   onClick={async () => {
@@ -2057,12 +2057,12 @@ export default function MachineJudgeForm({
           ) : null}
 
           {IS_DEV && slumpDebugRows ? (
-            <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+            <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-sm font-semibold">DEV: スランプ補正の影響確認</p>
                 <button
                   type="button"
-                  className="rounded-lg border border-neutral-200 bg-white px-3 py-1 text-xs font-semibold text-neutral-700 hover:bg-neutral-50"
+                  className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-xs font-semibold text-muted hover:bg-white/[0.07]"
                   onClick={() => setShowSlumpPosteriorDebug((v) => !v)}
                 >
                   {showSlumpPosteriorDebug ? "閉じる" : "開く"}
@@ -2071,14 +2071,14 @@ export default function MachineJudgeForm({
 
               {showSlumpPosteriorDebug ? (
                 <>
-                  <p className="mt-1 text-xs text-neutral-500">
+                  <p className="mt-1 text-xs text-white/40">
                     biasZ={fmtSigned(graphBiasZ ?? NaN)} / conf={fmt(graphConfidence ?? NaN)} / 
                     typeFactor={fmt(slumpStrength.typeFactor)} / strengthRaw={fmtSigned(
                       slumpStrength.strengthRaw,
                     )} / strength={fmtSigned(slumpStrength.strength)}
                   </p>
 
-                  <div className="mt-2 grid gap-2 text-xs text-neutral-700 sm:grid-cols-2">
+                  <div className="mt-2 grid gap-2 text-xs text-muted sm:grid-cols-2">
                     <div>
                       合計：補正前 {fmt(slumpDebugRows.sumBefore)} / 補正後 {fmt(slumpDebugRows.sumAfter)}
                     </div>
@@ -2091,26 +2091,26 @@ export default function MachineJudgeForm({
                   <div className="mt-3 overflow-x-auto">
                     <table className="w-full min-w-[520px] border-collapse text-xs">
                       <thead>
-                        <tr className="text-left text-neutral-600">
-                          <th className="px-3 py-2 border border-neutral-200">設定</th>
-                          <th className="px-3 py-2 border border-neutral-200">補正前</th>
-                          <th className="px-3 py-2 border border-neutral-200">補正後</th>
-                          <th className="px-3 py-2 border border-neutral-200">差分(pp)</th>
+                        <tr className="text-left text-muted">
+                          <th className="px-3 py-2 border border-white/[0.08]">設定</th>
+                          <th className="px-3 py-2 border border-white/[0.08]">補正前</th>
+                          <th className="px-3 py-2 border border-white/[0.08]">補正後</th>
+                          <th className="px-3 py-2 border border-white/[0.08]">差分(pp)</th>
                         </tr>
                       </thead>
                       <tbody>
                         {slumpDebugRows.rows.map((r) => (
-                          <tr key={r.s} className="text-neutral-800">
-                            <td className="px-3 py-2 font-semibold border border-neutral-200">
+                          <tr key={r.s} className="text-white">
+                            <td className="px-3 py-2 font-semibold border border-white/[0.08]">
                               {r.s}
                             </td>
-                            <td className="px-3 py-2 border border-neutral-200">
+                            <td className="px-3 py-2 border border-white/[0.08]">
                               {fmtPct(r.before)}
                             </td>
-                            <td className="px-3 py-2 border border-neutral-200">
+                            <td className="px-3 py-2 border border-white/[0.08]">
                               {fmtPct(r.after)}
                             </td>
-                            <td className="px-3 py-2 border border-neutral-200">
+                            <td className="px-3 py-2 border border-white/[0.08]">
                               {fmtSigned(r.delta * 100)}
                             </td>
                           </tr>
@@ -2151,11 +2151,11 @@ function CountField({
 
   return (
     <label className="block">
-      <span className="text-xs font-semibold text-neutral-600">{label}</span>
+      <span className="text-xs font-semibold text-muted">{label}</span>
       <div className="mt-1 grid grid-cols-[40px_1fr_40px] gap-2">
         <button
           type="button"
-          className="rounded-lg border border-neutral-200 bg-white text-sm font-semibold text-neutral-700 hover:bg-neutral-50 active:bg-neutral-100 disabled:opacity-40"
+          className="rounded-lg border border-white/[0.08] bg-white/[0.04] text-sm font-semibold text-muted hover:bg-white/[0.07] active:bg-white/[0.06] disabled:opacity-40"
           onClick={() => onStep(-1)}
           disabled={current <= 0}
           aria-label={`${label}を1減らす`}
@@ -2167,11 +2167,11 @@ function CountField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm"
+          className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
         />
         <button
           type="button"
-          className="rounded-lg border border-neutral-200 bg-white text-sm font-semibold text-neutral-700 hover:bg-neutral-50 active:bg-neutral-100"
+          className="rounded-lg border border-white/[0.08] bg-white/[0.04] text-sm font-semibold text-muted hover:bg-white/[0.07] active:bg-white/[0.06]"
           onClick={() => onStep(1)}
           aria-label={`${label}を1増やす`}
         >
@@ -2183,7 +2183,7 @@ function CountField({
         <div className="mt-2 grid grid-cols-2 gap-2">
           <button
             type="button"
-            className="rounded-lg border border-neutral-200 bg-white px-2 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 active:bg-neutral-100 disabled:opacity-40"
+            className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-2 py-2 text-xs font-semibold text-muted hover:bg-white/[0.07] active:bg-white/[0.06] disabled:opacity-40"
             onClick={() => onStep(-5)}
             disabled={current <= 0}
             aria-label={`${label}を5減らす`}
@@ -2192,7 +2192,7 @@ function CountField({
           </button>
           <button
             type="button"
-            className="rounded-lg border border-neutral-200 bg-white px-2 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 active:bg-neutral-100"
+            className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-2 py-2 text-xs font-semibold text-muted hover:bg-white/[0.07] active:bg-white/[0.06]"
             onClick={() => onStep(5)}
             aria-label={`${label}を5増やす`}
           >
@@ -2245,60 +2245,60 @@ function PosteriorOddsTable({
     <div className="overflow-x-auto">
       <table className="w-full min-w-[680px] border-collapse text-sm">
         <thead>
-          <tr className="text-left text-neutral-600">
-            <th className="px-3 py-2 border border-neutral-200">設定</th>
-            <th className="px-3 py-2 border border-neutral-200">確率</th>
-            <th className="px-3 py-2 border border-neutral-200">{bigLabelForJudge}</th>
+          <tr className="text-left text-muted">
+            <th className="px-3 py-2 border border-white/[0.08]">設定</th>
+            <th className="px-3 py-2 border border-white/[0.08]">確率</th>
+            <th className="px-3 py-2 border border-white/[0.08]">{bigLabelForJudge}</th>
             {showReg ? (
-              <th className="px-3 py-2 border border-neutral-200">{regLabel}</th>
+              <th className="px-3 py-2 border border-white/[0.08]">{regLabel}</th>
             ) : null}
             {showTotal ? (
-              <th className="px-3 py-2 border border-neutral-200">{totalLabel}</th>
+              <th className="px-3 py-2 border border-white/[0.08]">{totalLabel}</th>
             ) : null}
             {hasSuikaCzRate ? (
-              <th className="px-3 py-2 border border-neutral-200">{suikaCzRateLabel}</th>
+              <th className="px-3 py-2 border border-white/[0.08]">{suikaCzRateLabel}</th>
             ) : null}
             {hasUraAtRate ? (
-              <th className="px-3 py-2 border border-neutral-200">{uraAtRateLabel}</th>
+              <th className="px-3 py-2 border border-white/[0.08]">{uraAtRateLabel}</th>
             ) : null}
-            <th className="px-3 py-2 border border-neutral-200">機械割(%)</th>
+            <th className="px-3 py-2 border border-white/[0.08]">機械割(%)</th>
           </tr>
         </thead>
         <tbody>
           {posteriors.map((p) => {
             const odds = oddsBySetting.get(String(p.s));
             return (
-              <tr key={String(p.s)} className="text-neutral-800">
-                <td className="px-3 py-2 font-semibold border border-neutral-200">{p.s}</td>
-                <td className="px-3 py-2 border border-neutral-200">{fmtPct(p.posterior)}</td>
-                <td className="px-3 py-2 border border-neutral-200">
+              <tr key={String(p.s)} className="text-white">
+                <td className="px-3 py-2 font-semibold border border-white/[0.08]">{p.s}</td>
+                <td className="px-3 py-2 border border-white/[0.08]">{fmtPct(p.posterior)}</td>
+                <td className="px-3 py-2 border border-white/[0.08]">
                   {odds ? `1/${fmt(odds.big)}` : "-"}
                 </td>
                 {showReg ? (
-                  <td className="px-3 py-2 border border-neutral-200">
+                  <td className="px-3 py-2 border border-white/[0.08]">
                     {odds ? `1/${fmt(odds.reg)}` : "-"}
                   </td>
                 ) : null}
                 {showTotal ? (
-                  <td className="px-3 py-2 border border-neutral-200">
+                  <td className="px-3 py-2 border border-white/[0.08]">
                     {odds ? `1/${fmt(odds.total)}` : "-"}
                   </td>
                 ) : null}
                 {hasSuikaCzRate ? (
-                  <td className="px-3 py-2 border border-neutral-200">
+                  <td className="px-3 py-2 border border-white/[0.08]">
                     {odds && typeof odds.suikaCzRate === "number"
                       ? `${(odds.suikaCzRate * 100).toFixed(1)}%`
                       : "-"}
                   </td>
                 ) : null}
                 {hasUraAtRate ? (
-                  <td className="px-3 py-2 border border-neutral-200">
+                  <td className="px-3 py-2 border border-white/[0.08]">
                     {odds && typeof odds.uraAtRate === "number"
                       ? `${(odds.uraAtRate * 100).toFixed(2)}%`
                       : "-"}
                   </td>
                 ) : null}
-                <td className="px-3 py-2 border border-neutral-200">{odds ? fmt(odds.rate) : "-"}</td>
+                <td className="px-3 py-2 border border-white/[0.08]">{odds ? fmt(odds.rate) : "-"}</td>
               </tr>
             );
           })}

@@ -13,7 +13,7 @@ export default function SubscribeCheckoutButton({
     <div className="mt-3 space-y-2">
       <a
         href={STRIPE_PAYMENT_LINK_URL}
-        className="block w-full rounded-xl bg-neutral-900 px-5 py-3 text-center text-sm font-semibold text-white"
+        className="block w-full rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-center text-sm font-semibold text-white"
         target="_blank"
         rel="noreferrer"
       >

@@ -14,14 +14,25 @@
     "db:init-auth": "node scripts/init-auth-tables.mjs",
     "db:init-community": "node scripts/init-community-table.mjs",
     "db:init-judge-results": "node scripts/init-judge-results-table.mjs",
-    "db:init-sessions": "node scripts/init-slot-sessions-table.mjs"
+    "db:init-sessions": "node scripts/init-slot-sessions-table.mjs",
+    "osm:fetch": "npx tsx scripts/fetchOsmPachinko.ts",
+    "osm:summarize": "npx tsx scripts/osm/normalizeAndSummarize.ts",
+    "osm:report": "npx tsx scripts/osm/generateCoverageReport.ts",
+    "osm:all": "npm run osm:fetch && npm run osm:summarize && npm run osm:report",
+    "db:migrate-source": "node scripts/migrate-add-source-canonical.mjs",
+    "db:mark-sample": "node scripts/mark-sample-stores.mjs",
+    "stores:import-osm": "npx tsx scripts/importOsmToStores.ts",
+    "stores:dedupe": "npx tsx scripts/dedupeStores.ts",
+    "stores:dedupe:dry": "npx tsx scripts/dedupeStores.ts --dry-run",
+    "db:migrate-daily": "node scripts/migrate-add-daily-summaries.mjs",
+    "stores:mock-daily": "npx tsx scripts/generateDailyMockData.ts",
+    "stores:backfill-city": "node scripts/backfillStoreCity.mjs"
   },
   "dependencies": {
     "@stripe/react-stripe-js": "^5.4.1",
     "@stripe/stripe-js": "^8.6.1",
     "@vercel/postgres": "^0.10.0",
     "bcryptjs": "^3.0.3",
-    "dotenv": "^17.2.3",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -34,9 +45,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.3.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }

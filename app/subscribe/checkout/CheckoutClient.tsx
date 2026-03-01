@@ -31,8 +31,8 @@ function PlanPicker({
   loading: boolean;
 }) {
   return (
-    <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-      <p className="text-sm font-semibold text-neutral-800">プラン</p>
+    <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+      <p className="text-sm font-semibold text-white">プラン</p>
       <div className="mt-2 grid grid-cols-2 gap-2">
         <button
           type="button"
@@ -40,12 +40,12 @@ function PlanPicker({
           disabled={loading}
           className={`rounded-xl border px-4 py-3 text-left text-sm font-semibold disabled:opacity-60 ${
             plan === "monthly"
-              ? "border-neutral-900 bg-white text-neutral-900"
-              : "border-neutral-200 bg-white text-neutral-900"
+              ? "border-white/[0.12] bg-white/[0.04] text-white"
+              : "border-white/[0.08] bg-white/[0.04] text-white"
           }`}
         >
           <div>月額680円</div>
-          <div className="mt-1 text-xs font-medium text-neutral-600">
+          <div className="mt-1 text-xs font-medium text-muted">
             2日間無料
           </div>
         </button>
@@ -56,18 +56,18 @@ function PlanPicker({
           disabled={loading || !hasYearly}
           className={`rounded-xl border px-4 py-3 text-left text-sm font-semibold disabled:opacity-60 ${
             plan === "yearly"
-              ? "border-neutral-900 bg-white text-neutral-900"
-              : "border-neutral-200 bg-white text-neutral-900"
+              ? "border-white/[0.12] bg-white/[0.04] text-white"
+              : "border-white/[0.08] bg-white/[0.04] text-white"
           }`}
         >
           <div>年額（準備中）</div>
-          <div className="mt-1 text-xs font-medium text-neutral-600">
+          <div className="mt-1 text-xs font-medium text-muted">
             2日間無料
           </div>
         </button>
       </div>
       {!hasYearly ? (
-        <p className="mt-2 text-xs text-neutral-600">※年額プランは現在準備中です。</p>
+        <p className="mt-2 text-xs text-muted">※年額プランは現在準備中です。</p>
       ) : null}
     </div>
   );
@@ -106,9 +106,9 @@ function InnerForm({ plan }: { plan: Plan }) {
 
   return (
     <form onSubmit={onSubmit} className="mt-4 space-y-3">
-      <div className="rounded-lg border border-neutral-200 bg-white p-3">
-        <p className="text-sm font-semibold text-neutral-900">お支払い情報</p>
-        <p className="mt-1 text-xs text-neutral-600">
+      <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] p-3">
+        <p className="text-sm font-semibold text-white">お支払い情報</p>
+        <p className="mt-1 text-xs text-muted">
           ※初回のみ。2日間無料終了後は月額680円で自動更新されます
           <br />
           クレカ登録のみ・すぐ解約OK
@@ -121,7 +121,7 @@ function InnerForm({ plan }: { plan: Plan }) {
       <button
         type="submit"
         disabled={!stripe || !elements || submitting}
-        className="w-full rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+        className="w-full rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
       >
         {submitting ? "処理中..." : "この内容で進む"}
       </button>
@@ -131,13 +131,13 @@ function InnerForm({ plan }: { plan: Plan }) {
       <div className="flex items-center justify-between">
         <Link
           href="/subscribe/cancel"
-          className="text-sm font-medium text-neutral-700 underline underline-offset-2"
+          className="text-sm font-medium text-muted underline underline-offset-2"
         >
           やめる
         </Link>
         <Link
           href="/account"
-          className="text-sm font-medium text-neutral-700 underline underline-offset-2"
+          className="text-sm font-medium text-muted underline underline-offset-2"
         >
           アカウントへ
         </Link>
@@ -236,12 +236,12 @@ export default function CheckoutClient({ hasYearly }: { hasYearly: boolean }) {
   const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
   if (!publishableKey.trim()) {
     return (
-      <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-        <p className="text-sm font-semibold text-neutral-800">Stripe設定が必要です</p>
-        <p className="mt-1 text-sm text-neutral-700">
+      <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+        <p className="text-sm font-semibold text-white">Stripe設定が必要です</p>
+        <p className="mt-1 text-sm text-muted">
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY が未設定です。
         </p>
-        <p className="mt-2 text-xs text-neutral-600">
+        <p className="mt-2 text-xs text-muted">
           ローカルは .env.development.local に設定してください。
         </p>
       </div>
@@ -253,8 +253,8 @@ export default function CheckoutClient({ hasYearly }: { hasYearly: boolean }) {
       <PlanPicker plan={plan} hasYearly={hasYearly} setPlan={setPlan} loading={loading} />
 
       {loading ? (
-        <div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
-          <p className="text-sm font-semibold text-neutral-800">決済を準備中...</p>
+        <div className="mt-4 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
+          <p className="text-sm font-semibold text-white">決済を準備中...</p>
         </div>
       ) : null}
 
@@ -266,7 +266,7 @@ export default function CheckoutClient({ hasYearly }: { hasYearly: boolean }) {
         </Elements>
       ) : null}
 
-      <p className="mt-3 text-xs text-neutral-500">
+      <p className="mt-3 text-xs text-white/40">
         ※決済の反映はWebhook経由なので、数秒〜数十秒かかることがあります。
       </p>
     </>

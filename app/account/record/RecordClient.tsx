@@ -843,21 +843,21 @@ export default function RecordClient({
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <header className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <header className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h1 className="text-lg font-semibold">収支管理</h1>
-        <p className="mt-1 text-sm text-neutral-700">日付をクリックして実戦データを追加します。</p>
+        <p className="mt-1 text-sm text-muted">日付をクリックして実戦データを追加します。</p>
 
         {!isLoggedIn ? (
-          <p className="mt-2 text-xs text-neutral-600">
+          <p className="mt-2 text-xs text-muted">
             ログインなしの場合、データはこの端末に保存されます。端末変更やブラウザ削除で消える可能性があります
           </p>
         ) : (
-          <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3">
-            <p className="text-sm font-semibold text-neutral-800">ログイン中</p>
+          <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-white/[0.08] bg-white/[0.03] p-3">
+            <p className="text-sm font-semibold text-white">ログイン中</p>
             <button
               type="button"
               onClick={syncFromDevice}
-              className="rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-900"
+              className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-sm font-semibold text-white"
             >
               データを同期（取り込み）
             </button>
@@ -865,22 +865,22 @@ export default function RecordClient({
         )}
       </header>
 
-      <section className="mt-4 rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="mt-4 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <h2 className="text-base font-semibold text-neutral-900">店舗ごとの台番サマリ</h2>
-            <p className="mt-1 text-xs text-neutral-600">
+            <h2 className="text-base font-semibold text-white">店舗ごとの台番サマリ</h2>
+            <p className="mt-1 text-xs text-muted">
               同一店舗 + 同一台番の実戦を合算して表示します。
             </p>
           </div>
 
           <div className="w-full sm:w-auto sm:shrink-0">
             <label className="block">
-              <span className="text-xs font-semibold text-neutral-700">店舗</span>
+              <span className="text-xs font-semibold text-muted">店舗</span>
               <select
                 value={selectedShopName}
                 onChange={(e) => setSelectedShopName(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm sm:w-[220px]"
+                className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm sm:w-[220px]"
               >
                 <option value="">（選択してください）</option>
                 {shopCandidates.map((s) => (
@@ -895,7 +895,7 @@ export default function RecordClient({
               {selectedShopName.trim() ? (
                 <Link
                   href={`/record/store-summary?shop=${encodeURIComponent(selectedShopName.trim())}`}
-                  className="inline-flex w-full items-center justify-center rounded-xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white"
+                  className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-3 text-sm font-semibold text-white"
                 >
                   店舗サマリを見る
                 </Link>
@@ -903,12 +903,12 @@ export default function RecordClient({
                 <button
                   type="button"
                   disabled
-                  className="w-full rounded-xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white opacity-50"
+                  className="w-full rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-3 text-sm font-semibold text-white opacity-50"
                 >
                   店舗サマリを見る
                 </button>
               )}
-              <p className="mt-2 text-xs text-neutral-600">
+              <p className="mt-2 text-xs text-muted">
                 ※モバイルでは別ページで見やすく表示します
               </p>
             </div>
@@ -916,9 +916,9 @@ export default function RecordClient({
         </div>
 
         {!selectedShopName.trim() ? (
-          <p className="mt-3 text-sm text-neutral-700">店舗を選択するとサマリが表示されます。</p>
+          <p className="mt-3 text-sm text-muted">店舗を選択するとサマリが表示されます。</p>
         ) : machineNoSummaryRows.length === 0 ? (
-          <p className="mt-3 text-sm text-neutral-700">
+          <p className="mt-3 text-sm text-muted">
             この店舗の「台番あり」の実戦データがありません。
           </p>
         ) : (
@@ -930,34 +930,34 @@ export default function RecordClient({
                 { title: "回数Top5", rows: topPlays5 },
               ] as const
             ).map((card) => (
-              <div key={card.title} className="rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-                <p className="text-sm font-semibold text-neutral-900">{card.title}</p>
+              <div key={card.title} className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
+                <p className="text-sm font-semibold text-white">{card.title}</p>
 
                 {card.rows.length === 0 ? (
-                  <p className="mt-2 text-sm text-neutral-700">該当データがありません。</p>
+                  <p className="mt-2 text-sm text-muted">該当データがありません。</p>
                 ) : (
                   <div className="mt-3 overflow-x-auto">
                     <table className="w-full min-w-[520px] border-collapse text-xs">
                       <thead>
-                        <tr className="text-left text-neutral-600">
-                          <th className="px-3 py-2 border border-neutral-200">台番</th>
-                          <th className="px-3 py-2 border border-neutral-200 text-right">回数</th>
-                          <th className="px-3 py-2 border border-neutral-200 text-right">累計</th>
-                          <th className="px-3 py-2 border border-neutral-200 text-right">平均</th>
-                          <th className="px-3 py-2 border border-neutral-200 text-right">最終日</th>
+                        <tr className="text-left text-muted">
+                          <th className="px-3 py-2 border border-white/[0.08]">台番</th>
+                          <th className="px-3 py-2 border border-white/[0.08] text-right">回数</th>
+                          <th className="px-3 py-2 border border-white/[0.08] text-right">累計</th>
+                          <th className="px-3 py-2 border border-white/[0.08] text-right">平均</th>
+                          <th className="px-3 py-2 border border-white/[0.08] text-right">最終日</th>
                         </tr>
                       </thead>
                       <tbody>
                         {card.rows.map((r) => {
                           const active = selectedMachineNo.trim() === r.machineNumber;
                           const profitClass =
-                            r.totalProfit < 0 ? "text-red-600" : "text-neutral-900";
+                            r.totalProfit < 0 ? "text-red-600" : "text-white";
                           return (
                             <tr
                               key={`${r.shopName}__${r.machineNumber}`}
                               className={
                                 "cursor-pointer " +
-                                (active ? "bg-white" : "bg-neutral-50")
+                                (active ? "bg-white/[0.04]" : "bg-white/[0.03]")
                               }
                               onClick={() =>
                                 setSelectedMachineNo((prev) =>
@@ -965,20 +965,20 @@ export default function RecordClient({
                                 )
                               }
                             >
-                              <td className="px-3 py-2 border border-neutral-200 font-semibold text-neutral-900">
+                              <td className="px-3 py-2 border border-white/[0.08] font-semibold text-white">
                                 {r.machineNumber}
                                 {active ? "（選択中）" : ""}
                               </td>
-                              <td className="px-3 py-2 border border-neutral-200 text-right text-neutral-900">
+                              <td className="px-3 py-2 border border-white/[0.08] text-right text-white">
                                 {r.plays}
                               </td>
-                              <td className={`px-3 py-2 border border-neutral-200 text-right font-semibold ${profitClass}`}>
+                              <td className={`px-3 py-2 border border-white/[0.08] text-right font-semibold ${profitClass}`}>
                                 {formatSignedYen(r.totalProfit)}
                               </td>
-                              <td className={`px-3 py-2 border border-neutral-200 text-right font-semibold ${profitClass}`}>
+                              <td className={`px-3 py-2 border border-white/[0.08] text-right font-semibold ${profitClass}`}>
                                 {formatSignedYen(r.avgProfit)}
                               </td>
-                              <td className="px-3 py-2 border border-neutral-200 text-right text-neutral-900">
+                              <td className="px-3 py-2 border border-white/[0.08] text-right text-white">
                                 {r.lastPlayedAt}
                               </td>
                             </tr>
@@ -991,13 +991,13 @@ export default function RecordClient({
               </div>
             ))}
 
-            <div className="rounded-xl border border-neutral-200 bg-white p-4">
+            <div className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-4">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-neutral-900">この店舗の実戦履歴</p>
+                <p className="text-sm font-semibold text-white">この店舗の実戦履歴</p>
                 {selectedMachineNo.trim() ? (
                   <button
                     type="button"
-                    className="rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-900"
+                    className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs font-semibold text-white"
                     onClick={() => setSelectedMachineNo("")}
                   >
                     台番フィルタ解除（{selectedMachineNo}）
@@ -1006,7 +1006,7 @@ export default function RecordClient({
               </div>
 
               {filteredStoreEntries.length === 0 ? (
-                <p className="mt-2 text-sm text-neutral-700">該当データがありません。</p>
+                <p className="mt-2 text-sm text-muted">該当データがありません。</p>
               ) : (
                 <div className="mt-3 space-y-2">
                   {[...filteredStoreEntries]
@@ -1017,27 +1017,27 @@ export default function RecordClient({
                       return (
                         <div
                           key={`${s.id}`}
-                          className="rounded-xl border border-neutral-200 bg-neutral-50 p-3"
+                          className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-3"
                         >
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
-                              <p className="text-sm font-semibold text-neutral-900">
+                              <p className="text-sm font-semibold text-white">
                                 {s.date} / 台番 {s.machineNumber ?? "-"}
                               </p>
-                              <p className="mt-1 truncate text-xs text-neutral-700">
+                              <p className="mt-1 truncate text-xs text-muted">
                                 {s.machineName}
                               </p>
                               {s.memo ? (
-                                <p className="mt-1 max-h-16 overflow-hidden whitespace-pre-wrap text-xs text-neutral-700">
+                                <p className="mt-1 max-h-16 overflow-hidden whitespace-pre-wrap text-xs text-muted">
                                   メモ：{s.memo}
                                 </p>
                               ) : null}
                             </div>
                             <div className="shrink-0 text-right">
-                              <p className={"text-sm font-semibold " + (profit < 0 ? "text-red-600" : "text-neutral-900")}>
+                              <p className={"text-sm font-semibold " + (profit < 0 ? "text-red-600" : "text-white")}>
                                 {formatSignedYen(profit)}
                               </p>
-                              <p className="mt-1 text-xs font-semibold text-neutral-700">
+                              <p className="mt-1 text-xs font-semibold text-muted">
                                 差枚 {formatSignedNumber(s.diffCoins)}
                               </p>
                             </div>
@@ -1046,7 +1046,7 @@ export default function RecordClient({
                       );
                     })}
                   {filteredStoreEntries.length > 50 ? (
-                    <p className="pt-1 text-xs text-neutral-600">
+                    <p className="pt-1 text-xs text-muted">
                       表示は最新50件までです。
                     </p>
                   ) : null}
@@ -1057,29 +1057,29 @@ export default function RecordClient({
         )}
       </section>
 
-      <section className="mt-4 rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="mt-4 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <div className="flex items-center justify-between gap-2">
           <button
             type="button"
             onClick={() => setCursorMonth((m) => addMonths(m, -1))}
-            className="rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-neutral-900"
+            className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-semibold text-white"
           >
             前月
           </button>
 
-          <h2 className="text-base font-semibold text-neutral-900">{formatMonthTitle(cursorMonth)}</h2>
+          <h2 className="text-base font-semibold text-white">{formatMonthTitle(cursorMonth)}</h2>
 
           <button
             type="button"
             onClick={() => setCursorMonth((m) => addMonths(m, 1))}
-            className="rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-neutral-900"
+            className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-semibold text-white"
           >
             翌月
           </button>
         </div>
 
-        <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
-          <p className="text-sm font-semibold text-neutral-900">今月の収支</p>
+        <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
+          <p className="text-sm font-semibold text-white">今月の収支</p>
           <p
             className={
               "mt-2 truncate text-xl font-semibold " +
@@ -1087,14 +1087,14 @@ export default function RecordClient({
                 ? "text-red-600"
                 : monthlyStats.totalProfit > 0
                   ? "text-green-600"
-                  : "text-neutral-900")
+                  : "text-white")
             }
           >
             {formatSignedYen(monthlyStats.totalProfit)}円
           </p>
         </div>
 
-        <div className="mt-4 grid grid-cols-7 gap-2 text-center text-xs font-semibold text-neutral-700">
+        <div className="mt-4 grid grid-cols-7 gap-2 text-center text-xs font-semibold text-muted">
           <div>日</div>
           <div>月</div>
           <div>火</div>
@@ -1114,12 +1114,12 @@ export default function RecordClient({
             const profitText = dayProfit === null ? "" : formatSignedYen(dayProfit);
             const profitClass =
               dayProfit === null
-                ? "text-neutral-400"
+                ? "text-white/30"
                 : dayProfit < 0
                   ? "text-red-600"
                   : dayProfit > 0
                     ? "text-green-600"
-                    : "text-neutral-700";
+                    : "text-muted";
 
             return (
               <button
@@ -1127,13 +1127,13 @@ export default function RecordClient({
                 type="button"
                 onClick={() => openForDate(cell.date)}
                 className={
-                  "rounded-xl border border-neutral-200 bg-white px-2 py-2 text-left " +
+                  "rounded-xl border border-white/[0.08] bg-white/[0.04] px-2 py-2 text-left " +
                   (cell.inMonth ? "" : "opacity-50")
                 }
               >
                 <div className="flex min-h-[56px] flex-col justify-between">
                   <div className="text-left">
-                    <span className="text-xs font-semibold text-neutral-700">
+                    <span className="text-xs font-semibold text-muted">
                       {cell.date.getDate()}
                     </span>
                   </div>
@@ -1160,43 +1160,43 @@ export default function RecordClient({
           <button
             type="button"
             aria-label="閉じる"
-            className="fixed inset-0 z-0 bg-neutral-900/40"
+            className="fixed inset-0 z-0 bg-gradient-to-r from-cta-from to-cta-to/40"
             onClick={closeModal}
           />
 
-          <div className="relative z-10 mx-auto w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-5">
+          <div className="relative z-10 mx-auto w-full max-w-md rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-neutral-900">収支入力</h3>
+              <h3 className="text-base font-semibold text-white">収支入力</h3>
               <button
                 type="button"
                 onClick={closeModal}
-                className="rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm font-semibold text-neutral-900"
+                className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-semibold text-white"
               >
                 閉じる
               </button>
             </div>
 
-            <div className="mt-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3">
-              <p className="text-sm font-semibold text-neutral-900">この日の合計</p>
+            <div className="mt-3 rounded-xl border border-white/[0.08] bg-white/[0.03] p-3">
+              <p className="text-sm font-semibold text-white">この日の合計</p>
               <div className="mt-1 flex items-center justify-between gap-3 text-sm">
-                <p className="text-neutral-700">差枚</p>
-                <p className="font-semibold text-neutral-900">{formatSignedNumber(modalDayTotals.diffCoinsTotal)}</p>
+                <p className="text-muted">差枚</p>
+                <p className="font-semibold text-white">{formatSignedNumber(modalDayTotals.diffCoinsTotal)}</p>
               </div>
               <div className="mt-1 flex items-center justify-between gap-3 text-sm">
-                <p className="text-neutral-700">収支</p>
-                <p className={"font-semibold " + (modalDayTotals.profitTotal < 0 ? "text-red-600" : "text-neutral-900")}>
+                <p className="text-muted">収支</p>
+                <p className={"font-semibold " + (modalDayTotals.profitTotal < 0 ? "text-red-600" : "text-white")}>
                   {formatSignedYen(modalDayTotals.profitTotal)}
                 </p>
               </div>
             </div>
 
-            <div className="mt-3 rounded-xl border border-neutral-200 bg-white p-3">
-              <p className="text-sm font-semibold text-neutral-900">この日のセッション</p>
+            <div className="mt-3 rounded-xl border border-white/[0.08] bg-white/[0.04] p-3">
+              <p className="text-sm font-semibold text-white">この日のセッション</p>
               {sessionsForModalDate.length === 0 ? (
-                <p className="mt-1 text-sm text-neutral-700">まだ登録がありません。</p>
+                <p className="mt-1 text-sm text-muted">まだ登録がありません。</p>
               ) : (
                 <div className="mt-2">
-                  <div className="hidden md:grid md:grid-cols-12 md:gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-[11px] font-semibold text-neutral-700">
+                  <div className="hidden md:grid md:grid-cols-12 md:gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-[11px] font-semibold text-muted">
                     <div className="col-span-4">機種</div>
                     <div className="col-span-2 text-right">G</div>
                     <div className="col-span-2 text-right">差枚</div>
@@ -1208,28 +1208,28 @@ export default function RecordClient({
                     {sessionsForModalDate.map((s) => {
                       const profit = calcProfit(s.invest, s.collect);
                       return (
-                        <div key={s.id} className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
+                        <div key={s.id} className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-3">
                           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 md:grid-cols-12 md:gap-2">
                             <div className="min-w-0 md:col-span-4">
-                              <p className="truncate text-sm font-semibold text-neutral-900">{s.machineName}</p>
+                              <p className="truncate text-sm font-semibold text-white">{s.machineName}</p>
 
                               {/* Mobile: numbers live in the left column to avoid being hidden by action buttons */}
                               <div className="mt-2 space-y-1 md:hidden">
                                 <div className="flex items-center justify-between gap-3 text-[11px]">
-                                  <span className="text-neutral-700">G</span>
-                                  <span className="font-semibold text-neutral-900">
+                                  <span className="text-muted">G</span>
+                                  <span className="font-semibold text-white">
                                     {new Intl.NumberFormat("ja-JP").format(s.games)}
                                   </span>
                                 </div>
                                 <div className="flex items-center justify-between gap-3 text-[11px]">
-                                  <span className="text-neutral-700">差枚</span>
-                                  <span className="font-semibold text-neutral-900">{formatSignedNumber(s.diffCoins)}</span>
+                                  <span className="text-muted">差枚</span>
+                                  <span className="font-semibold text-white">{formatSignedNumber(s.diffCoins)}</span>
                                 </div>
                                 <div className="flex items-center justify-between gap-3 text-[11px]">
-                                  <span className="text-neutral-700">収支</span>
+                                  <span className="text-muted">収支</span>
                                   <span
                                     className={
-                                      "font-semibold " + (profit < 0 ? "text-red-600" : "text-neutral-900")
+                                      "font-semibold " + (profit < 0 ? "text-red-600" : "text-white")
                                     }
                                   >
                                     {formatSignedYen(profit)}
@@ -1237,11 +1237,11 @@ export default function RecordClient({
                                 </div>
                               </div>
 
-                              <p className="mt-1 text-[11px] text-neutral-700">
+                              <p className="mt-1 text-[11px] text-muted">
                                 投資 {new Intl.NumberFormat("ja-JP").format(s.invest)} / 回収 {new Intl.NumberFormat("ja-JP").format(s.collect)}
                               </p>
                               {s.machineNumber || s.judgeInputCount || s.hintTotalCount ? (
-                                <p className="mt-1 text-[11px] text-neutral-700">
+                                <p className="mt-1 text-[11px] text-muted">
                                   {s.machineNumber ? `台番 ${s.machineNumber}` : null}
                                   {s.machineNumber && (s.judgeInputCount || s.hintTotalCount) ? " / " : null}
                                   {typeof s.judgeInputCount === "number" ? `判別要素 ${s.judgeInputCount}` : null}
@@ -1253,22 +1253,22 @@ export default function RecordClient({
                               ) : null}
 
                               {s.memo ? (
-                                <p className="mt-1 max-h-16 overflow-hidden whitespace-pre-wrap text-[11px] text-neutral-700">
+                                <p className="mt-1 max-h-16 overflow-hidden whitespace-pre-wrap text-[11px] text-muted">
                                   メモ：{s.memo}
                                 </p>
                               ) : null}
                             </div>
 
                             <div className="hidden text-right md:block md:col-span-2">
-                              <p className="text-sm font-semibold text-neutral-900">{new Intl.NumberFormat("ja-JP").format(s.games)}</p>
+                              <p className="text-sm font-semibold text-white">{new Intl.NumberFormat("ja-JP").format(s.games)}</p>
                             </div>
 
                             <div className="hidden text-right md:block md:col-span-2">
-                              <p className="text-sm font-semibold text-neutral-900">{formatSignedNumber(s.diffCoins)}</p>
+                              <p className="text-sm font-semibold text-white">{formatSignedNumber(s.diffCoins)}</p>
                             </div>
 
                             <div className="hidden text-right md:block md:col-span-2">
-                              <p className={"text-sm font-semibold " + (profit < 0 ? "text-red-600" : "text-neutral-900")}>
+                              <p className={"text-sm font-semibold " + (profit < 0 ? "text-red-600" : "text-white")}>
                                 {formatSignedYen(profit)}
                               </p>
                             </div>
@@ -1278,14 +1278,14 @@ export default function RecordClient({
                                 <button
                                   type="button"
                                   onClick={() => startEditSession(s)}
-                                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 md:w-auto"
+                                  className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs font-semibold text-white md:w-auto"
                                 >
                                   編集
                                 </button>
                                 <button
                                   type="button"
                                   onClick={() => deleteSession(s.date, s.id, s.dbId)}
-                                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 md:w-auto"
+                                  className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs font-semibold text-white md:w-auto"
                                 >
                                   削除
                                 </button>
@@ -1302,15 +1302,15 @@ export default function RecordClient({
 
             <div className="mt-4 space-y-3">
               {editingSession ? (
-                <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
+                <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-3">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="min-w-0 truncate text-sm font-semibold text-neutral-900">
+                    <p className="min-w-0 truncate text-sm font-semibold text-white">
                       編集中：{editingSession.machineName}
                     </p>
                     <button
                       type="button"
                       onClick={clearEditing}
-                      className="shrink-0 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs font-semibold text-neutral-900"
+                      className="shrink-0 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs font-semibold text-white"
                     >
                       編集解除
                     </button>
@@ -1318,20 +1318,20 @@ export default function RecordClient({
                 </div>
               ) : null}
               {isJudgePrefill ? (
-                <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
-                  <p className="text-sm font-semibold text-neutral-900">実戦情報（自動入力）</p>
-                  <div className="mt-2 space-y-1 text-sm text-neutral-700">
+                <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-3">
+                  <p className="text-sm font-semibold text-white">実戦情報（自動入力）</p>
+                  <div className="mt-2 space-y-1 text-sm text-muted">
                     <div className="flex items-center justify-between gap-3">
                       <span>日付</span>
-                      <span className="font-semibold text-neutral-900">{modalDate}</span>
+                      <span className="font-semibold text-white">{modalDate}</span>
                     </div>
                     <div className="flex items-center justify-between gap-3">
                       <span>機種</span>
-                      <span className="truncate font-semibold text-neutral-900">{modalMachineName}</span>
+                      <span className="truncate font-semibold text-white">{modalMachineName}</span>
                     </div>
                     <div className="flex items-center justify-between gap-3">
                       <span>G数</span>
-                      <span className="font-semibold text-neutral-900">
+                      <span className="font-semibold text-white">
                         {new Intl.NumberFormat("ja-JP").format(parseNonNegativeIntOrZero(modalGames))}
                       </span>
                     </div>
@@ -1349,18 +1349,18 @@ export default function RecordClient({
                     <p className="mt-1 text-xs font-semibold text-red-600">{modalValidation.fieldErrors.games}</p>
                   ) : null}
 
-                  <div className="mt-3 space-y-3 border-t border-neutral-200 pt-3">
-                    <p className="text-sm font-semibold text-neutral-900">追加情報（任意）</p>
+                  <div className="mt-3 space-y-3 border-t border-white/[0.08] pt-3">
+                    <p className="text-sm font-semibold text-white">追加情報（任意）</p>
 
                     <div className="grid grid-cols-2 gap-2">
                       <label className="block">
-                        <span className="text-sm font-semibold text-neutral-900">BIG</span>
+                        <span className="text-sm font-semibold text-white">BIG</span>
                         <input
                           type="number"
                           inputMode="numeric"
                           value={modalBigCount}
                           onChange={(e) => setModalBigCount(e.target.value)}
-                          className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                          className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                         />
                         {modalValidation.fieldErrors.bigCount ? (
                           <p className="mt-1 text-xs font-semibold text-red-600">
@@ -1370,13 +1370,13 @@ export default function RecordClient({
                       </label>
 
                       <label className="block">
-                        <span className="text-sm font-semibold text-neutral-900">REG</span>
+                        <span className="text-sm font-semibold text-white">REG</span>
                         <input
                           type="number"
                           inputMode="numeric"
                           value={modalRegCount}
                           onChange={(e) => setModalRegCount(e.target.value)}
-                          className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                          className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                         />
                         {modalValidation.fieldErrors.regCount ? (
                           <p className="mt-1 text-xs font-semibold text-red-600">
@@ -1387,13 +1387,13 @@ export default function RecordClient({
                     </div>
 
                     <label className="block">
-                      <span className="text-sm font-semibold text-neutral-900">推測設定（1〜6）</span>
+                      <span className="text-sm font-semibold text-white">推測設定（1〜6）</span>
                       <input
                         type="number"
                         inputMode="numeric"
                         value={modalGuessedSetting}
                         onChange={(e) => setModalGuessedSetting(e.target.value)}
-                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                        className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                       />
                       {modalValidation.fieldErrors.guessedSetting ? (
                         <p className="mt-1 text-xs font-semibold text-red-600">
@@ -1403,32 +1403,32 @@ export default function RecordClient({
                     </label>
 
                     <label className="block">
-                      <span className="text-sm font-semibold text-neutral-900">台番</span>
+                      <span className="text-sm font-semibold text-white">台番</span>
                       <input
                         type="text"
                         value={modalMachineNumber}
                         onChange={(e) => setModalMachineNumber(e.target.value)}
-                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                        className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                       />
                     </label>
 
                     <label className="block">
-                      <span className="text-sm font-semibold text-neutral-900">店舗名</span>
+                      <span className="text-sm font-semibold text-white">店舗名</span>
                       <input
                         type="text"
                         value={modalShopName}
                         onChange={(e) => setModalShopName(e.target.value)}
-                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                        className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                       />
                     </label>
 
                     <label className="block">
-                      <span className="text-sm font-semibold text-neutral-900">メモ（備考）</span>
+                      <span className="text-sm font-semibold text-white">メモ（備考）</span>
                       <textarea
                         value={modalMemo}
                         onChange={(e) => setModalMemo(e.target.value)}
                         rows={3}
-                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                        className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                         placeholder="例：イベント日 / 末尾 / 据え置き濃厚 など"
                       />
                       {modalValidation.fieldErrors.memo ? (
@@ -1442,12 +1442,12 @@ export default function RecordClient({
               ) : (
                 <>
                   <label className="block">
-                    <span className="text-sm font-semibold text-neutral-900">日付</span>
+                    <span className="text-sm font-semibold text-white">日付</span>
                     <input
                       type="date"
                       value={modalDate}
                       onChange={(e) => setModalDate(e.target.value)}
-                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                     />
                     {modalValidation.fieldErrors.date ? (
                       <p className="mt-1 text-xs font-semibold text-red-600">{modalValidation.fieldErrors.date}</p>
@@ -1455,12 +1455,12 @@ export default function RecordClient({
                   </label>
 
                   <label className="block">
-                    <span className="text-sm font-semibold text-neutral-900">機種名</span>
+                    <span className="text-sm font-semibold text-white">機種名</span>
                     <input
                       type="text"
                       value={modalMachineName}
                       onChange={(e) => setModalMachineName(e.target.value)}
-                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                     />
                     {modalValidation.fieldErrors.machineName ? (
                       <p className="mt-1 text-xs font-semibold text-red-600">
@@ -1470,13 +1470,13 @@ export default function RecordClient({
                   </label>
 
                   <label className="block">
-                    <span className="text-sm font-semibold text-neutral-900">G数</span>
+                    <span className="text-sm font-semibold text-white">G数</span>
                     <input
                       type="number"
                       inputMode="numeric"
                       value={modalGames}
                       onChange={(e) => setModalGames(e.target.value)}
-                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                     />
                     {modalValidation.fieldErrors.games ? (
                       <p className="mt-1 text-xs font-semibold text-red-600">{modalValidation.fieldErrors.games}</p>
@@ -1485,13 +1485,13 @@ export default function RecordClient({
 
                   <div className="grid grid-cols-2 gap-2">
                     <label className="block">
-                      <span className="text-sm font-semibold text-neutral-900">BIG</span>
+                      <span className="text-sm font-semibold text-white">BIG</span>
                       <input
                         type="number"
                         inputMode="numeric"
                         value={modalBigCount}
                         onChange={(e) => setModalBigCount(e.target.value)}
-                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                        className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                       />
                       {modalValidation.fieldErrors.bigCount ? (
                         <p className="mt-1 text-xs font-semibold text-red-600">
@@ -1501,13 +1501,13 @@ export default function RecordClient({
                     </label>
 
                     <label className="block">
-                      <span className="text-sm font-semibold text-neutral-900">REG</span>
+                      <span className="text-sm font-semibold text-white">REG</span>
                       <input
                         type="number"
                         inputMode="numeric"
                         value={modalRegCount}
                         onChange={(e) => setModalRegCount(e.target.value)}
-                        className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                        className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                       />
                       {modalValidation.fieldErrors.regCount ? (
                         <p className="mt-1 text-xs font-semibold text-red-600">
@@ -1518,13 +1518,13 @@ export default function RecordClient({
                   </div>
 
                   <label className="block">
-                    <span className="text-sm font-semibold text-neutral-900">推測設定（1〜6）</span>
+                    <span className="text-sm font-semibold text-white">推測設定（1〜6）</span>
                     <input
                       type="number"
                       inputMode="numeric"
                       value={modalGuessedSetting}
                       onChange={(e) => setModalGuessedSetting(e.target.value)}
-                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                     />
                     {modalValidation.fieldErrors.guessedSetting ? (
                       <p className="mt-1 text-xs font-semibold text-red-600">
@@ -1534,32 +1534,32 @@ export default function RecordClient({
                   </label>
 
                   <label className="block">
-                    <span className="text-sm font-semibold text-neutral-900">台番</span>
+                    <span className="text-sm font-semibold text-white">台番</span>
                     <input
                       type="text"
                       value={modalMachineNumber}
                       onChange={(e) => setModalMachineNumber(e.target.value)}
-                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                     />
                   </label>
 
                   <label className="block">
-                    <span className="text-sm font-semibold text-neutral-900">店舗名</span>
+                    <span className="text-sm font-semibold text-white">店舗名</span>
                     <input
                       type="text"
                       value={modalShopName}
                       onChange={(e) => setModalShopName(e.target.value)}
-                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                     />
                   </label>
 
                   <label className="block">
-                    <span className="text-sm font-semibold text-neutral-900">メモ（備考）</span>
+                    <span className="text-sm font-semibold text-white">メモ（備考）</span>
                     <textarea
                       value={modalMemo}
                       onChange={(e) => setModalMemo(e.target.value)}
                       rows={3}
-                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                       placeholder="例：イベント日 / 末尾 / 据え置き濃厚 など"
                     />
                     {modalValidation.fieldErrors.memo ? (
@@ -1568,13 +1568,13 @@ export default function RecordClient({
                   </label>
 
                   <label className="block">
-                    <span className="text-sm font-semibold text-neutral-900">差枚</span>
+                    <span className="text-sm font-semibold text-white">差枚</span>
                     <input
                       type="number"
                       inputMode="numeric"
                       value={modalDiffCoins}
                       onChange={(e) => setModalDiffCoins(e.target.value)}
-                      className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                     />
                     {modalValidation.fieldErrors.diffCoins ? (
                       <p className="mt-1 text-xs font-semibold text-red-600">{modalValidation.fieldErrors.diffCoins}</p>
@@ -1584,13 +1584,13 @@ export default function RecordClient({
               )}
 
               <label className="block">
-                <span className="text-sm font-semibold text-neutral-900">投資</span>
+                <span className="text-sm font-semibold text-white">投資</span>
                 <input
                   type="number"
                   inputMode="numeric"
                   value={modalInvest}
                   onChange={(e) => setModalInvest(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                  className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                 />
                 {modalValidation.fieldErrors.invest ? (
                   <p className="mt-1 text-xs font-semibold text-red-600">{modalValidation.fieldErrors.invest}</p>
@@ -1598,22 +1598,22 @@ export default function RecordClient({
               </label>
 
               <label className="block">
-                <span className="text-sm font-semibold text-neutral-900">回収</span>
+                <span className="text-sm font-semibold text-white">回収</span>
                 <input
                   type="number"
                   inputMode="numeric"
                   value={modalCollect}
                   onChange={(e) => setModalCollect(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm"
+                  className="mt-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
                 />
                 {modalValidation.fieldErrors.collect ? (
                   <p className="mt-1 text-xs font-semibold text-red-600">{modalValidation.fieldErrors.collect}</p>
                 ) : null}
               </label>
 
-              <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
-                <p className="text-sm font-semibold text-neutral-900">収支（回収 - 投資）</p>
-                <p className={"mt-1 text-lg font-semibold " + (modalProfit < 0 ? "text-red-600" : "text-neutral-900")}>
+              <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-3">
+                <p className="text-sm font-semibold text-white">収支（回収 - 投資）</p>
+                <p className={"mt-1 text-lg font-semibold " + (modalProfit < 0 ? "text-red-600" : "text-white")}>
                   {formatSignedYen(modalProfit)}
                 </p>
               </div>
@@ -1625,7 +1625,7 @@ export default function RecordClient({
                   disabled={!modalValidation.isValid}
                   aria-disabled={!modalValidation.isValid}
                   className={
-                    "flex-1 rounded-xl bg-neutral-900 px-4 py-3 text-sm font-semibold text-white " +
+                    "flex-1 rounded-xl bg-gradient-to-r from-cta-from to-cta-to px-4 py-3 text-sm font-semibold text-white " +
                     (!modalValidation.isValid ? "opacity-50" : "")
                   }
                 >
@@ -1634,7 +1634,7 @@ export default function RecordClient({
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-900"
+                  className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm font-semibold text-white"
                 >
                   キャンセル
                 </button>
@@ -1646,7 +1646,7 @@ export default function RecordClient({
 
       {toastMessage ? (
         <div className="fixed bottom-4 left-1/2 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2">
-          <div className="rounded-xl border border-neutral-200 bg-white px-4 py-3 text-sm font-semibold text-neutral-900">
+          <div className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-sm font-semibold text-white">
             {toastMessage}
           </div>
         </div>

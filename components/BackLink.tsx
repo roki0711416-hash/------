@@ -11,7 +11,7 @@ export default function BackLink() {
       onClick={() => {
         router.push("/ios");
       }}
-      className="mt-2 inline-flex items-center text-sm font-medium text-zinc-600 hover:text-zinc-900 hover:underline"
+      className="mt-2 inline-flex items-center text-sm font-medium text-muted hover:text-white hover:underline"
     >
       ← TOPに戻る
     </button>

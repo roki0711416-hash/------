@@ -5,10 +5,10 @@ export const metadata = {
 export default function TermsPage() {
   return (
     <main className="mx-auto w-full max-w-xl px-4 pb-10 pt-6">
-      <section className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
         <h1 className="text-lg font-semibold">利用規約</h1>
 
-        <div className="mt-4 space-y-4 text-sm text-neutral-700">
+        <div className="mt-4 space-y-4 text-sm text-muted">
           <div className="space-y-2">
             <p>（スロカスくん）</p>
             <p>
@@ -153,7 +153,7 @@ export default function TermsPage() {
             <p className="mt-2">本規約に関するお問い合わせは、当サイトのお問い合わせページよりご連絡ください。</p>
           </div>
 
-          <p className="text-xs text-neutral-500">最終更新日：2026年1月13日</p>
+          <p className="text-xs text-white/40">最終更新日：2026年1月13日</p>
         </div>
       </section>
     </main>
