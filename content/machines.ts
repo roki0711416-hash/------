@@ -1395,6 +1395,33 @@ export const machines = [
     },
   },
 
+  // --- SAMMY 新台追加（p-town 4930） ---
+  {
+    id: "smart-kabaneri-unato-kessen",
+    name: "スマスロ 甲鉄城のカバネリ 海門（うなと）決戦",
+    maker: "サミー",
+    series: "甲鉄城のカバネリ",
+    category: "SMART",
+    inHall: true,
+    description:
+      "ボーナス初当り/ST確率ベースの簡易判別。確率・機械割はp-town（4930）参照。50枚あたり約31.4G（独自調査値）。",
+    metricsLabels: {
+      bigLabel: "ボーナス初当り",
+      regLabel: "ST確率",
+      totalLabel: null,
+    },
+    odds: {
+      settings: [
+        { s: 1, big: 254.2, reg: 422.5, total: 254.2, rate: 97.5 },
+        { s: 2, big: 242.3, reg: 405.9, total: 242.3, rate: 98.5 },
+        { s: 3, big: 239.6, reg: 398.7, total: 239.6, rate: 100.8 },
+        { s: 4, big: 214.0, reg: 357.2, total: 214.0, rate: 106.0 },
+        { s: 5, big: 203.2, reg: 332.6, total: 203.2, rate: 111.0 },
+        { s: 6, big: 195.1, reg: 318.5, total: 195.1, rate: 114.9 },
+      ],
+    },
+  },
+
   // --- ENTERRISE L追加 ---
   {
     id: "smart-onimusha-3",
