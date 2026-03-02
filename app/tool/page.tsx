@@ -3,6 +3,7 @@ import SideMenu from "../../components/SideMenu";
 import MachineOddsTable from "../../components/MachineOddsTable";
 import ToolJudgeAndReviews from "../../components/ToolJudgeAndReviews";
 import { getMachineById, getMachinesData } from "../../lib/machines";
+import { IS_PREMIUM_FREE_OPEN } from "../../lib/premium";
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -102,7 +103,7 @@ export default async function ToolPage({
           <>
             <MachineOddsTable machine={selectedMachine} />
             {selectedMachine.toolMode !== "odds-only" ? (
-              <ToolJudgeAndReviews machine={selectedMachine} isPremium={false} />
+              <ToolJudgeAndReviews machine={selectedMachine} isPremium={IS_PREMIUM_FREE_OPEN} />
             ) : null}
           </>
         ) : null}

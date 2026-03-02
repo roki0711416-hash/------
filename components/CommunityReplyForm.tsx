@@ -85,7 +85,7 @@ export default function CommunityReplyForm({
           書き込む
         </button>
 
-        <p className="text-xs text-white/40">※有料会員限定。ユーザーネーム固定で投稿されます。</p>
+        <p className="text-xs text-white/40">※無料開放中。ユーザーネーム固定で投稿されます。</p>
       </div>
     </div>
   );

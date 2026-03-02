@@ -2,6 +2,13 @@ import { getDb } from "./db";
 import { getCurrentUserFromCookies } from "./auth";
 import { isAdminRole, shouldBeAdminFromEnv } from "./roles";
 
+/**
+ * サブスク会員機能の無料開放スイッチ。
+ * - 未設定時は無料開放（true）
+ * - 課金制に戻す場合は SLOKASU_PREMIUM_FREE_OPEN=0
+ */
+export const IS_PREMIUM_FREE_OPEN = process.env.SLOKASU_PREMIUM_FREE_OPEN !== "0";
+
 export type SubscriptionRow = {
   user_id: string;
   stripe_subscription_id: string | null;
@@ -20,6 +27,7 @@ export function isPremiumForUserAndSubscription(
   user: { id: string; email: string; role?: string | null } | null,
   sub: { status: string | null } | null,
 ) {
+  if (IS_PREMIUM_FREE_OPEN) return true;
   if (!user) return false;
   if (isAdminRole(user.role) || shouldBeAdminFromEnv({ userId: user.id, email: user.email })) {
     return true;
@@ -51,6 +59,8 @@ export async function getSubscriptionForUserId(userId: string) {
 }
 
 export async function getIsPremiumFromCookies() {
+  if (IS_PREMIUM_FREE_OPEN) return true;
+
   const user = await getCurrentUserFromCookies();
   if (!user) return false;
 

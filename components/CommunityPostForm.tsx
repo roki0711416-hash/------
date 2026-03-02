@@ -179,7 +179,7 @@ export default function CommunityPostForm() {
   return (
     <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
       <p className="text-sm font-semibold">投稿する</p>
-      <p className="mt-1 text-xs text-white/40">※有料会員限定の掲示板です。</p>
+      <p className="mt-1 text-xs text-white/40">※無料開放中。ログインユーザー向け掲示板です。</p>
 
       <div className="mt-3 grid gap-3">
         <label className="block">

@@ -187,7 +187,7 @@ export default function PremiumMemberCard({
 
   return (
     <section className="rounded-2xl border border-white/[0.08] bg-white/[0.04] p-5">
-      <h2 className="text-lg font-semibold">サブスク会員限定</h2>
+      <h2 className="text-lg font-semibold">AI拡張分析（無料開放中）</h2>
       <p className="mt-2 text-sm text-muted">
         入力された数値をもとに、
         <br />
@@ -204,12 +204,12 @@ export default function PremiumMemberCard({
       {!isPremium ? (
         <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
           <p className="text-sm font-semibold text-muted">AI続行判定</p>
-          <p className="mt-1 text-sm text-muted">サブスク会員限定の機能です。</p>
+          <p className="mt-1 text-sm text-muted">現在この機能は無料開放中です。</p>
           <Link
-            href="/account"
+            href="/login"
             className="mt-2 inline-block text-sm font-semibold text-white underline underline-offset-2"
           >
-            サブスク登録・ログインはこちら
+            ログインはこちら
           </Link>
         </div>
       ) : !posteriors ? (
