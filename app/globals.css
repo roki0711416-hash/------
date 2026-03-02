@@ -91,17 +91,26 @@ footer {
   display: none !important;
 }
 
-/* Vercel Toolbar（右下ボタン）を非表示 */
+/* Vercel Toolbar / Speed Insights / Analytics ウィジェットを完全非表示 */
 [data-vercel-toolbar],
 [data-vercel-toolbar-launcher],
 [id*="vercel-toolbar"],
 [class*="vercel-toolbar"],
 iframe[src*="vercel.live"],
-iframe[src*="vercel.com/toolbar"] {
+iframe[src*="vercel.com/toolbar"],
+[data-testid="vercel-live-feedback"],
+vercel-live-feedback,
+#vercel-live-feedback,
+body > div[style*="z-index"][style*="position: fixed"][style*="right"],
+body > iframe[title*="Vercel"],
+body > div > iframe[src*="vercel"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
 }
 
 /* ================================================================== */
