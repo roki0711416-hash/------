@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-03-02-002",
+    "date": "2026-03-02",
+    "title": "shimoDanBell対応",
+    "href": "/tool?machine=shimoDanBell",
+    "body": "shimoDanBellを追加しました。"
+  },
+  {
     "id": "2026-03-02-001",
     "date": "2026-03-02",
     "title": "スマスロ 甲鉄城のカバネリ 海門（うなと）決戦対応",
