@@ -29,7 +29,9 @@ export default function SideMenu({
   selectedMachine,
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [openMaker, setOpenMaker] = useState<string | null>(selectedMaker ?? null);
+  const [openMaker, setOpenMaker] = useState<string | null>(
+    selectedMaker ?? makers[0]?.name ?? null,
+  );
   const [machineQuery, setMachineQuery] = useState("");
   const router = useRouter();
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -55,28 +57,13 @@ export default function SideMenu({
     };
   }, [isOpen]);
 
-  const makersByName = useMemo(() => {
-    const map = new Map<string, Maker>();
-    for (const m of makers) map.set(m.name, m);
-    return map;
-  }, [makers]);
-
-  const effectiveOpenMaker = openMaker ?? makers[0]?.name ?? null;
-  const machinesForOpenMaker = useMemo(() => {
-    if (!effectiveOpenMaker) return [];
-    return makersByName.get(effectiveOpenMaker)?.machines ?? [];
-  }, [effectiveOpenMaker, makersByName]);
+  const effectiveOpenMaker = openMaker ?? selectedMaker ?? makers[0]?.name ?? null;
 
   const allMachines: MachineWithMaker[] = useMemo(() => {
     return makers.flatMap((mk) =>
       mk.machines.map((mc) => ({ ...mc, makerName: mk.name })),
     );
   }, [makers]);
-
-  const machinesForOpenMakerWithMaker: MachineWithMaker[] = useMemo(() => {
-    if (!effectiveOpenMaker) return [];
-    return machinesForOpenMaker.map((mc) => ({ ...mc, makerName: effectiveOpenMaker }));
-  }, [effectiveOpenMaker, machinesForOpenMaker]);
 
   const normalizedQuery = useMemo(() => {
     return machineQuery
@@ -86,13 +73,8 @@ export default function SideMenu({
   }, [machineQuery]);
 
   const filteredMachines: MachineWithMaker[] = useMemo(() => {
-    const base: MachineWithMaker[] = normalizedQuery
-      ? allMachines
-      : machinesForOpenMakerWithMaker;
-
-    if (!normalizedQuery) return base;
-
-    return base.filter((mc) =>
+    if (!normalizedQuery) return [];
+    return allMachines.filter((mc) =>
       mc.name
         .replace(/\u3000/g, " ")
         .replace(/^スマスロ\s*/u, "L ")
@@ -100,7 +82,7 @@ export default function SideMenu({
         .toLowerCase()
         .includes(normalizedQuery),
     );
-  }, [allMachines, machinesForOpenMakerWithMaker, normalizedQuery]);
+  }, [allMachines, normalizedQuery]);
 
   function displayMachineName(name: string) {
     return name.replace(/^スマスロ\s*/u, "L ").replace(/^スマスロ/u, "L");
@@ -118,7 +100,12 @@ export default function SideMenu({
       <button
         type="button"
         aria-label="メニュー"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => {
+          if (!isOpen && !openMaker) {
+            setOpenMaker(selectedMaker ?? makers[0]?.name ?? null);
+          }
+          setIsOpen((prev) => !prev);
+        }}
         className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-medium"
       >
         ≡ 機種
@@ -173,48 +160,97 @@ export default function SideMenu({
           </div>
 
           <div className="max-h-[52vh] overflow-y-auto p-2">
-            <div className="space-y-1">
-              {filteredMachines.map((mc) => {
-                const isSelected =
-                  mc.id === selectedMachine &&
-                  (normalizedQuery
-                    ? mc.makerName === selectedMaker
-                    : effectiveOpenMaker === selectedMaker);
-                return (
-                  <button
-                    key={mc.id}
-                    type="button"
-                    onClick={() => {
-                      const makerForSelected = normalizedQuery
-                        ? mc.makerName
-                        : effectiveOpenMaker;
-                      router.push(buildToolUrl(makerForSelected, mc.id));
-                      setIsOpen(false);
-                    }}
-                    className={`w-full rounded-lg px-3 py-2 text-left text-sm leading-5 whitespace-normal break-words transition ${
-                      isSelected
-                        ? "bg-white/[0.12] font-semibold text-white"
-                        : "text-white/75 hover:bg-white/[0.06]"
-                    }`}
-                  >
-                    <span>{displayMachineName(mc.name)}</span>
-                    {normalizedQuery ? (
+            {normalizedQuery ? (
+              <div className="space-y-1">
+                {filteredMachines.map((mc) => {
+                  const isSelected =
+                    mc.id === selectedMachine && mc.makerName === selectedMaker;
+                  return (
+                    <button
+                      key={`${mc.makerName}:${mc.id}`}
+                      type="button"
+                      onClick={() => {
+                        router.push(buildToolUrl(mc.makerName, mc.id));
+                        setOpenMaker(mc.makerName);
+                        setIsOpen(false);
+                      }}
+                      className={`w-full rounded-lg px-3 py-2 text-left text-sm leading-5 whitespace-normal break-words transition ${
+                        isSelected
+                          ? "bg-white/[0.12] font-semibold text-white"
+                          : "text-white/75 hover:bg-white/[0.06]"
+                      }`}
+                    >
+                      <span>{displayMachineName(mc.name)}</span>
                       <span className="ml-2 text-xs text-white/45">({mc.makerName})</span>
-                    ) : null}
-                  </button>
-                );
-              })}
+                    </button>
+                  );
+                })}
 
-              {makers.length === 0 ? (
-                <p className="px-2 py-2 text-sm text-muted">機種データがありません。</p>
-              ) : null}
+                {makers.length > 0 && filteredMachines.length === 0 ? (
+                  <p className="px-2 py-2 text-sm text-muted">検索結果がありません。</p>
+                ) : null}
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {makers.map((mk) => {
+                  const isOpenMaker = mk.name === effectiveOpenMaker;
+                  return (
+                    <section
+                      key={mk.name}
+                      className="rounded-xl border border-white/[0.08] bg-white/[0.03]"
+                    >
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setOpenMaker((prev) => (prev === mk.name ? null : mk.name))
+                        }
+                        className="flex w-full items-center justify-between gap-3 px-3 py-2 text-left"
+                      >
+                        <span className="text-sm font-semibold text-white/85">{mk.name}</span>
+                        <span className="flex items-center gap-2 text-xs text-white/45">
+                          <span>{mk.machines.length}</span>
+                          <span aria-hidden>{isOpenMaker ? "▴" : "▾"}</span>
+                        </span>
+                      </button>
 
-              {makers.length > 0 && filteredMachines.length === 0 ? (
-                <p className="px-2 py-2 text-sm text-muted">
-                  {normalizedQuery ? "検索結果がありません。" : "機種がありません。"}
-                </p>
-              ) : null}
-            </div>
+                      {isOpenMaker ? (
+                        <div className="space-y-1 border-t border-white/[0.06] p-2">
+                          {mk.machines.map((mc) => {
+                            const isSelected =
+                              mc.id === selectedMachine && mk.name === selectedMaker;
+                            return (
+                              <button
+                                key={mc.id}
+                                type="button"
+                                onClick={() => {
+                                  router.push(buildToolUrl(mk.name, mc.id));
+                                  setIsOpen(false);
+                                }}
+                                className={`w-full rounded-lg px-3 py-2 text-left text-sm leading-5 whitespace-normal break-words transition ${
+                                  isSelected
+                                    ? "bg-white/[0.12] font-semibold text-white"
+                                    : "text-white/75 hover:bg-white/[0.06]"
+                                }`}
+                              >
+                                {displayMachineName(mc.name)}
+                              </button>
+                            );
+                          })}
+
+                          {mk.machines.length === 0 ? (
+                            <p className="px-2 py-2 text-sm text-muted">機種がありません。</p>
+                          ) : null}
+                        </div>
+                      ) : null}
+                    </section>
+                  );
+                })}
+
+                {makers.length === 0 ? (
+                  <p className="px-2 py-2 text-sm text-muted">機種データがありません。</p>
+                ) : null}
+              </div>
+            )}
           </div>
         </div>
       ) : null}
