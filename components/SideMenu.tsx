@@ -112,7 +112,7 @@ export default function SideMenu({
       </button>
 
       {isOpen ? (
-        <div className="absolute left-0 top-full z-[70] mt-2 w-[min(92vw,520px)] overflow-hidden rounded-2xl border border-white/[0.12] bg-[#0b1026]/95 shadow-2xl backdrop-blur-sm">
+        <div className="absolute left-0 top-full z-[70] mt-2 w-[min(92vw,520px)] overflow-hidden rounded-2xl border border-white/[0.14] bg-[#0b1026] shadow-[0_20px_60px_rgba(0,0,0,0.55)] ring-1 ring-black/30">
           <div className="border-b border-white/[0.08] p-3">
             <div className="flex items-center justify-between gap-2">
               <p className="text-sm font-semibold text-white">機種選択</p>
@@ -197,7 +197,7 @@ export default function SideMenu({
                   return (
                     <section
                       key={mk.name}
-                      className="rounded-xl border border-white/[0.08] bg-white/[0.03]"
+                      className="rounded-xl border border-white/[0.1] bg-[#121938]"
                     >
                       <button
                         type="button"
