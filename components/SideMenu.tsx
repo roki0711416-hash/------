@@ -103,38 +103,39 @@ export default function SideMenu({
       </button>
 
       {isOpen ? (
-        <div className="fixed inset-0 z-50">
+        <div className="fixed inset-0 z-[70]">
           <button
             type="button"
             aria-label="閉じる"
             onClick={() => setIsOpen(false)}
-            className="absolute inset-0 bg-black/30"
+            className="absolute inset-0 bg-black/55 backdrop-blur-[1px]"
           />
 
-          <div className="absolute inset-y-0 left-0 flex w-[92vw] max-w-sm flex-col overflow-x-hidden bg-white/[0.04] shadow-sm">
-            <div className="flex flex-wrap items-center gap-2 border-b border-white/[0.08] p-4">
-              <p className="text-sm font-semibold text-white">機種一覧</p>
+          <div className="absolute inset-y-0 left-0 flex w-[94vw] max-w-[460px] flex-col overflow-hidden border-r border-white/[0.12] bg-[#0b1026]/95 shadow-2xl">
+            <div className="border-b border-white/[0.08] p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-white">機種一覧</p>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg border border-white/[0.12] bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-white/80 transition hover:bg-white/[0.08]"
+                >
+                  閉じる
+                </button>
+              </div>
 
-              <label className="min-w-0 flex-1">
+              <label className="mt-3 block min-w-0">
                 <span className="sr-only">機種を検索</span>
                 <input
                   value={machineQuery}
                   onChange={(e) => setMachineQuery(e.target.value)}
                   placeholder="機種を検索…"
-                  className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-white/[0.12] bg-white/[0.06] px-3 py-2 text-sm text-white placeholder:text-white/35 outline-none transition focus:border-white/[0.24] focus:bg-white/[0.1]"
                 />
               </label>
-
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-sm font-medium"
-              >
-                閉じる
-              </button>
             </div>
 
-            <div className="grid min-w-0 flex-1 grid-cols-2 gap-0 overflow-hidden">
+            <div className="grid min-w-0 flex-1 grid-cols-[42%,58%] gap-0 overflow-hidden">
               <div className="min-w-0 overflow-y-auto border-r border-white/[0.08] p-2">
                 <p className="px-2 pb-2 text-xs font-semibold text-white/40">
                   メーカー
@@ -150,10 +151,10 @@ export default function SideMenu({
                           setOpenMaker(mk.name);
                           setMachineQuery("");
                         }}
-                        className={`w-full rounded-lg px-3 py-2 text-left text-sm whitespace-normal break-words ${
+                        className={`w-full rounded-lg px-2.5 py-2 text-left text-xs leading-5 whitespace-normal break-words transition ${
                           isActive
-                            ? "bg-white/[0.06] font-semibold text-white"
-                            : "text-muted"
+                            ? "bg-white/[0.12] font-semibold text-white"
+                            : "text-white/65 hover:bg-white/[0.05]"
                         }`}
                       >
                         {mk.name}
@@ -189,10 +190,10 @@ export default function SideMenu({
                           router.push(buildToolUrl(makerForSelected, mc.id));
                           setIsOpen(false);
                         }}
-                        className={`w-full rounded-lg px-3 py-2 text-left text-sm whitespace-normal break-words ${
+                        className={`w-full rounded-lg px-3 py-2 text-left text-sm leading-5 whitespace-normal break-words transition ${
                           isSelected
-                            ? "bg-white/[0.06] font-semibold text-white"
-                            : "text-muted"
+                            ? "bg-white/[0.12] font-semibold text-white"
+                            : "text-white/70 hover:bg-white/[0.05]"
                         }`}
                       >
                         {displayMachineName(mc.name)}
