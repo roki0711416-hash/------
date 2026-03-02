@@ -66,6 +66,23 @@ export interface StoreDailyMachineRow {
   updated_at: string;
 }
 
+/* ── ヘルパー: DATE 列正規化 ── */
+
+/**
+ * PostgreSQL DATE 列は @vercel/postgres 経由で JS Date として返るため
+ * 文字列 "YYYY-MM-DD" に変換する。ローカル TZ で解釈されるので
+ * getFullYear/getMonth/getDate を使う。
+ */
+function normalizeDate(d: unknown): string {
+  if (d instanceof Date) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  }
+  return String(d ?? "");
+}
+
 /* ── Store CRUD ── */
 
 export async function listStoresByPrefecture(
@@ -126,10 +143,15 @@ export async function getStoreById(
 ): Promise<StoreRow | null> {
   const db = getDb();
   if (!db) return null;
-  const { rows } = await db.sql`
-    SELECT * FROM stores WHERE id = ${id} LIMIT 1
-  `;
-  return (rows[0] as StoreRow) ?? null;
+  try {
+    const { rows } = await db.sql`
+      SELECT * FROM stores WHERE id = ${id} LIMIT 1
+    `;
+    return (rows[0] as StoreRow) ?? null;
+  } catch (e) {
+    console.error("[storeAnalytics] getStoreById error:", e);
+    return null;
+  }
 }
 
 /** external_id (例: "osm:n12345") で店舗を検索 */
@@ -138,10 +160,15 @@ export async function getStoreByExternalId(
 ): Promise<StoreRow | null> {
   const db = getDb();
   if (!db) return null;
-  const { rows } = await db.sql`
-    SELECT * FROM stores WHERE external_id = ${externalId} LIMIT 1
-  `;
-  return (rows[0] as StoreRow) ?? null;
+  try {
+    const { rows } = await db.sql`
+      SELECT * FROM stores WHERE external_id = ${externalId} LIMIT 1
+    `;
+    return (rows[0] as StoreRow) ?? null;
+  } catch (e) {
+    console.error("[storeAnalytics] getStoreByExternalId error:", e);
+    return null;
+  }
 }
 
 export async function listAllStores(): Promise<StoreRow[]> {
@@ -244,13 +271,21 @@ export async function getRecentSignals(
 ): Promise<StoreDailySignalRow[]> {
   const db = getDb();
   if (!db) return [];
-  const { rows } = await db.sql`
-    SELECT * FROM store_daily_signals
-    WHERE store_id = ${storeId}
-    ORDER BY date DESC
-    LIMIT ${days}
-  `;
-  return rows as StoreDailySignalRow[];
+  try {
+    const { rows } = await db.sql`
+      SELECT * FROM store_daily_signals
+      WHERE store_id = ${storeId}
+      ORDER BY date DESC
+      LIMIT ${days}
+    `;
+    return (rows as StoreDailySignalRow[]).map((r) => ({
+      ...r,
+      date: normalizeDate(r.date),
+    }));
+  } catch (e) {
+    console.error("[storeAnalytics] getRecentSignals error:", e);
+    return [];
+  }
 }
 
 export async function getLatestSignalForStores(
@@ -260,19 +295,24 @@ export async function getLatestSignalForStores(
   if (!db) return new Map();
   if (storeIds.length === 0) return new Map();
 
-  // DISTINCT ON で各店舗の最新1件を取得
-  const idList = storeIds.join("','");
-  const { rows } = await db.sql`
-    SELECT DISTINCT ON (store_id) *
-    FROM store_daily_signals
-    WHERE store_id = ANY(${storeIds as unknown as string}::text[])
-    ORDER BY store_id, date DESC
-  `;
-  const map = new Map<string, StoreDailySignalRow>();
-  for (const row of rows as StoreDailySignalRow[]) {
-    map.set(row.store_id, row);
+  try {
+    // DISTINCT ON で各店舗の最新1件を取得
+    const idList = storeIds.join("','");
+    const { rows } = await db.sql`
+      SELECT DISTINCT ON (store_id) *
+      FROM store_daily_signals
+      WHERE store_id = ANY(${storeIds as unknown as string}::text[])
+      ORDER BY store_id, date DESC
+    `;
+    const map = new Map<string, StoreDailySignalRow>();
+    for (const row of rows as StoreDailySignalRow[]) {
+      map.set(row.store_id, { ...row, date: normalizeDate(row.date) });
+    }
+    return map;
+  } catch (e) {
+    console.error("[storeAnalytics] getLatestSignalForStores error:", e);
+    return new Map();
   }
-  return map;
 }
 
 /* ── Daily Summaries / Machines ── */
@@ -284,13 +324,21 @@ export async function getDailySummaries(
 ): Promise<StoreDailySummaryRow[]> {
   const db = getDb();
   if (!db) return [];
-  const { rows } = await db.sql`
-    SELECT * FROM store_daily_summaries
-    WHERE store_id = ${storeId}
-    ORDER BY date DESC
-    LIMIT ${days}
-  `;
-  return rows as StoreDailySummaryRow[];
+  try {
+    const { rows } = await db.sql`
+      SELECT * FROM store_daily_summaries
+      WHERE store_id = ${storeId}
+      ORDER BY date DESC
+      LIMIT ${days}
+    `;
+    return (rows as StoreDailySummaryRow[]).map((r) => ({
+      ...r,
+      date: normalizeDate(r.date),
+    }));
+  } catch (e) {
+    console.error("[storeAnalytics] getDailySummaries error:", e);
+    return [];
+  }
 }
 
 /** 指定日の機種別データを取得 */
@@ -300,11 +348,19 @@ export async function getDailyMachines(
 ): Promise<StoreDailyMachineRow[]> {
   const db = getDb();
   if (!db) return [];
-  const { rows } = await db.sql`
-    SELECT * FROM store_daily_machines
-    WHERE store_id = ${storeId}
-      AND date = ${date}
-    ORDER BY diff_sum DESC
-  `;
-  return rows as StoreDailyMachineRow[];
+  try {
+    const { rows } = await db.sql`
+      SELECT * FROM store_daily_machines
+      WHERE store_id = ${storeId}
+        AND date = ${date}
+      ORDER BY diff_sum DESC
+    `;
+    return (rows as StoreDailyMachineRow[]).map((r) => ({
+      ...r,
+      date: normalizeDate(r.date),
+    }));
+  } catch (e) {
+    console.error("[storeAnalytics] getDailyMachines error:", e);
+    return [];
+  }
 }
