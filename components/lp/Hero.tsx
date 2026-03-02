@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { APPSTORE_URL, WEB_ANALYTICS_URL } from "@/lib/constants";
+import { APPSTORE_URL, IS_APP_UNDER_REVIEW, WEB_ANALYTICS_URL } from "@/lib/constants";
 
 export default function Hero() {
   return (
@@ -36,15 +36,42 @@ export default function Hero() {
 
             {/* CTA（上部） */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
-              <a
-                href={APPSTORE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-8 py-4 text-base font-bold text-white shadow-lg shadow-orange-500/25 transition-all duration-300 hover:scale-[1.04] hover:shadow-xl hover:shadow-orange-500/40 active:scale-[0.98]"
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-orange-400 to-pink-400 opacity-0 transition-opacity group-hover:opacity-100" />
-                <span className="relative">🍎 App Storeで入手</span>
-              </a>
+              {IS_APP_UNDER_REVIEW ? (
+                <div className="group relative inline-flex">
+                  <button
+                    type="button"
+                    disabled
+                    title="審査中のため現在インストールできません"
+                    className="relative inline-flex cursor-not-allowed items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500/90 to-pink-500/90 px-8 py-4 text-base font-bold text-white shadow-lg shadow-orange-500/20"
+                  >
+                    <span className="relative">🍎 まもなく配信（審査中）</span>
+                    <span className="relative rounded-full border border-white/30 bg-white/15 px-2 py-0.5 text-xs font-semibold">
+                      審査中
+                    </span>
+                  </button>
+                  <span className="pointer-events-none absolute -top-10 left-1/2 hidden -translate-x-1/2 whitespace-nowrap rounded-lg border border-white/15 bg-black/80 px-3 py-1.5 text-xs text-white/90 shadow-lg group-hover:block">
+                    審査中のため現在インストールできません
+                  </span>
+                </div>
+              ) : (
+                <a
+                  href={APPSTORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-8 py-4 text-base font-bold text-white shadow-lg shadow-orange-500/25 transition-all duration-300 hover:scale-[1.04] hover:shadow-xl hover:shadow-orange-500/40 active:scale-[0.98]"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-orange-400 to-pink-400 opacity-0 transition-opacity group-hover:opacity-100" />
+                  <span className="relative">🍎 App Storeで入手</span>
+                </a>
+              )}
+              {IS_APP_UNDER_REVIEW ? (
+                <Link
+                  href="/#notify"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-8 py-4 text-base font-semibold text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/25 hover:bg-white/10"
+                >
+                  配信開始を通知する →
+                </Link>
+              ) : null}
               <Link
                 href={WEB_ANALYTICS_URL}
                 className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-8 py-4 text-base font-semibold text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/25 hover:bg-white/10"
@@ -54,7 +81,9 @@ export default function Hero() {
             </div>
 
             <p className="mt-4 text-xs text-white/40">
-              無料で使えます（※一部機能は順次拡充予定）
+              {IS_APP_UNDER_REVIEW
+                ? "App Storeの審査完了後に公開されます"
+                : "無料で使えます（※一部機能は順次拡充予定）"}
             </p>
           </div>
 

@@ -41,6 +41,17 @@ ipconfig getifaddr en0
 npm run dev:local
 ```
 
+### App Store審査中表示の切り替え
+
+LP CTA は環境変数で切り替えできます。
+
+- `NEXT_PUBLIC_APP_STORE_STATUS=review`
+	- 表示: `🍎 まもなく配信（審査中）`
+	- App Store遷移: 無効
+- `NEXT_PUBLIC_APP_STORE_STATUS=live`
+	- 表示: `🍎 App Storeで入手`
+	- App Store遷移: 有効
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
