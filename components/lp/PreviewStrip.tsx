@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Reveal from "./Reveal";
 
 const SCREENS = [
   {
     title: "機種選択",
     desc: "一覧から機種を選んでタップ",
+    image: "/lp-machine-select-preview.png",
     emoji: "📱",
     color: "from-orange-500/20 to-orange-600/5",
   },
@@ -55,19 +57,31 @@ export default function PreviewStrip() {
             {SCREENS.map((s) => (
               <div key={s.title} className="w-[220px] flex-shrink-0 sm:w-[260px]">
                 <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/[0.05]">
-                  {/* Screen placeholder */}
-                  <div
-                    className={`flex h-[320px] items-center justify-center bg-gradient-to-b ${s.color} sm:h-[380px]`}
-                  >
-                    <div className="text-center">
-                      <p className="text-5xl opacity-40">{s.emoji}</p>
-                      <p className="mt-4 text-xs font-semibold text-white/30">
-                        スクリーンショット
-                        <br />
-                        準備中
-                      </p>
+                  {"image" in s && s.image ? (
+                    <div className="relative h-[320px] bg-black/10 sm:h-[380px]">
+                      <Image
+                        src={s.image}
+                        alt={`${s.title}の画面プレビュー`}
+                        fill
+                        className="object-cover object-top"
+                        sizes="(min-width: 640px) 260px, 220px"
+                        priority={s.title === "機種選択"}
+                      />
                     </div>
-                  </div>
+                  ) : (
+                    <div
+                      className={`flex h-[320px] items-center justify-center bg-gradient-to-b ${s.color} sm:h-[380px]`}
+                    >
+                      <div className="text-center">
+                        <p className="text-5xl opacity-40">{s.emoji}</p>
+                        <p className="mt-4 text-xs font-semibold text-white/30">
+                          スクリーンショット
+                          <br />
+                          準備中
+                        </p>
+                      </div>
+                    </div>
+                  )}
                   {/* Label */}
                   <div className="p-4">
                     <p className="text-sm font-bold text-white">{s.title}</p>
