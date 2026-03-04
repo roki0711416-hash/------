@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Hero from "@/components/lp/Hero";
 import Features from "@/components/lp/Features";
-import PreviewStrip from "@/components/lp/PreviewStrip";
 import HowItWorks from "@/components/lp/HowItWorks";
 import BottomCTA from "@/components/lp/BottomCTA";
 import LpStoreAnalyticsTeaser from "@/components/lp/StoreAnalyticsTeaser";
@@ -30,9 +29,6 @@ export default function Home() {
 
         <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         <Features />
-
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        <PreviewStrip />
 
         <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         <HowItWorks />
