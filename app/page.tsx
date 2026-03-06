@@ -3,7 +3,6 @@ import Hero from "@/components/lp/Hero";
 import Features from "@/components/lp/Features";
 import HowItWorks from "@/components/lp/HowItWorks";
 import BottomCTA from "@/components/lp/BottomCTA";
-import LpStoreAnalyticsTeaser from "@/components/lp/StoreAnalyticsTeaser";
 import FAQ from "@/components/lp/FAQ";
 import StickyCTA from "@/components/lp/StickyCTA";
 
@@ -12,7 +11,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://slokasukun.com";
 export const metadata: Metadata = {
   title: "スロカスくん｜パチスロ設定判別アプリ（iOS）",
   description:
-    "スロカスくんは、パチスロの設定判別・店舗分析・収支管理をサポートする無料iOSアプリです。App Storeから今すぐ入手。",
+    "スロカスくんは、パチスロの設定判別・収支管理をサポートする無料iOSアプリです。App Storeから今すぐ入手。",
   alternates: { canonical: `${BASE_URL}/` },
 };
 
@@ -34,9 +33,6 @@ export default function Home() {
         <HowItWorks />
 
         <BottomCTA />
-
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        <LpStoreAnalyticsTeaser />
 
         <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         <FAQ />

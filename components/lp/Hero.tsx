@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { APPSTORE_URL, IS_APP_UNDER_REVIEW, WEB_ANALYTICS_URL } from "@/lib/constants";
+import { APPSTORE_URL, IS_APP_UNDER_REVIEW } from "@/lib/constants";
 
 export default function Hero() {
   return (
@@ -72,12 +72,6 @@ export default function Hero() {
                   配信開始を通知する →
                 </Link>
               ) : null}
-              <Link
-                href={WEB_ANALYTICS_URL}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-8 py-4 text-base font-semibold text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/25 hover:bg-white/10"
-              >
-                Webで店舗分析を見る →
-              </Link>
             </div>
 
             <p className="mt-4 text-xs text-white/40">
@@ -129,12 +123,6 @@ export default function Hero() {
                         </div>
                       ))}
                     </div>
-                  </div>
-
-                  {/* 店舗分析 mock card */}
-                  <div className="rounded-xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-teal-500/5 p-3">
-                    <p className="text-[10px] font-bold text-emerald-400">🏢 店舗分析</p>
-                    <p className="mt-0.5 text-[8px] text-white/40">地域の傾向をチェック</p>
                   </div>
 
                   {/* 収支管理 mock card */}

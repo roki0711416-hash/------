@@ -24,12 +24,6 @@ const SCREENS = [
     color: "from-violet-500/20 to-violet-600/5",
   },
   {
-    title: "店舗分析",
-    desc: "地域の出玉傾向をチェック",
-    emoji: "🏢",
-    color: "from-emerald-500/20 to-emerald-600/5",
-  },
-  {
     title: "収支グラフ",
     desc: "日々の実戦結果を可視化",
     emoji: "📈",

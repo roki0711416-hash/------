@@ -34,7 +34,7 @@ export default function LpFooter() {
 
         <p className="mt-6 text-center text-[10px] leading-relaxed text-white/30">
           ※ 本ページ・本サービスは公開情報等を基にした独自集計の参考情報であり、
-          設定判別やホール分析の結果を保証するものではありません。
+          設定判別の結果を保証するものではありません。
           遊技に関する最終的な判断はご自身の責任で行ってください。
         </p>
         <p className="mt-3 text-center text-xs text-white/30">

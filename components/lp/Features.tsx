@@ -12,14 +12,6 @@ const FEATURES = [
     glow: "hover:shadow-orange-500/10",
   },
   {
-    icon: "🏢",
-    title: "店舗分析（Web）",
-    body: "47都道府県のホール出玉データを集計。地域・店舗ごとの傾向を無料でチェックできます。",
-    accent: "from-emerald-500 to-teal-500",
-    border: "border-emerald-500/20",
-    glow: "hover:shadow-emerald-500/10",
-  },
-  {
     icon: "📊",
     title: "収支管理",
     body: "日々の実戦結果をかんたんに記録。データを振り返って立ち回りの改善に活かせます。",
